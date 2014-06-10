@@ -1,0 +1,7 @@
+syntax: glob
+*/build/**
+*/.gradle/**
+*/.settings/**
+syntax: regexp
+(?i)^opendse/[^/]*/bin/
+(?i)^projects/bin/
