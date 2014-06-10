@@ -1,10 +1,10 @@
 package net.sf.opendse.optimization;
 
-import net.sf.opendse.model.constraints.SpecificationCapacityConstraints;
-import net.sf.opendse.model.constraints.SpecificationConnectConstraints;
-import net.sf.opendse.model.constraints.SpecificationConstraints;
-import net.sf.opendse.model.constraints.SpecificationConstraintsMulti;
-import net.sf.opendse.model.constraints.SpecificationRouterConstraints;
+import net.sf.opendse.optimization.constraints.SpecificationCapacityConstraints;
+import net.sf.opendse.optimization.constraints.SpecificationConnectConstraints;
+import net.sf.opendse.optimization.constraints.SpecificationConstraints;
+import net.sf.opendse.optimization.constraints.SpecificationConstraintsMulti;
+import net.sf.opendse.optimization.constraints.SpecificationRouterConstraints;
 
 import org.opt4j.core.config.annotations.Parent;
 import org.opt4j.core.problem.ProblemModule;

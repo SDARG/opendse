@@ -6,11 +6,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.sf.opendse.encoding.CommunicationLearn;
-import net.sf.opendse.encoding.Encoding;
-import net.sf.opendse.encoding.RoutingFilter;
-import net.sf.opendse.encoding.common.ConstraintPreprocessing;
 import net.sf.opendse.model.Specification;
+import net.sf.opendse.optimization.encoding.CommunicationLearn;
+import net.sf.opendse.optimization.encoding.Encoding;
+import net.sf.opendse.optimization.encoding.RoutingFilter;
+import net.sf.opendse.optimization.encoding.common.ConstraintPreprocessing;
 
 import org.opt4j.satdecoding.Constraint;
 import org.opt4j.satdecoding.Literal;

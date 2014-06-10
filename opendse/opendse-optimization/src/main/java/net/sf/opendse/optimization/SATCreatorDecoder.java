@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sf.opendse.encoding.Interpreter;
-import net.sf.opendse.encoding.variables.CR;
-import net.sf.opendse.encoding.variables.EAVI;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Specification;
+import net.sf.opendse.optimization.encoding.Interpreter;
+import net.sf.opendse.optimization.encoding.variables.CR;
+import net.sf.opendse.optimization.encoding.variables.EAVI;
 
 import org.opt4j.core.Genotype;
 import org.opt4j.core.common.random.Rand;

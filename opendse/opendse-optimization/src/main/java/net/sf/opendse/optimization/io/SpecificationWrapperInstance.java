@@ -1,8 +1,8 @@
 package net.sf.opendse.optimization.io;
 
-import net.sf.opendse.encoding.RoutingFilter;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.optimization.SpecificationWrapper;
+import net.sf.opendse.optimization.encoding.RoutingFilter;
 
 public class SpecificationWrapperInstance implements SpecificationWrapper {
 

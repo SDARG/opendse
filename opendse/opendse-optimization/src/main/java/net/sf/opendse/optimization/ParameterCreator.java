@@ -14,12 +14,12 @@ import java.util.TreeMap;
 import net.sf.opendse.model.Element;
 import net.sf.opendse.model.Models;
 import net.sf.opendse.model.Specification;
-import net.sf.opendse.model.constraints.SpecificationConstraints;
 import net.sf.opendse.model.parameter.Parameter;
 import net.sf.opendse.model.parameter.ParameterRange;
 import net.sf.opendse.model.parameter.ParameterReference;
 import net.sf.opendse.model.parameter.ParameterSelect;
 import net.sf.opendse.model.parameter.ParameterUniqueID;
+import net.sf.opendse.optimization.constraints.SpecificationConstraints;
 
 import org.opt4j.core.Genotype;
 import org.opt4j.core.common.random.Rand;
