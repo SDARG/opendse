@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specification>
+  <architecture>
+    <resource id="r0">
+      <attributes>
+        <attribute name="TYPE" type="STRING">CAN</attribute>
+        <attribute name="scheduler" type="STRING">FIXEDPRIORITY_NONPREEMPTIVE</attribute>
+      </attributes>
+    </resource>
+    <resource id="r1">
+      <attributes>
+        <attribute name="TYPE" type="STRING">ECU</attribute>
+        <attribute name="scheduler" type="STRING">FIXEDPRIORITY_PREEMPTIVE</attribute>
+      </attributes>
+    </resource>
+    <resource id="r2">
+      <attributes>
+        <attribute name="TYPE" type="STRING">ECU</attribute>
+        <attribute name="scheduler" type="STRING">FIXEDPRIORITY_PREEMPTIVE</attribute>
+      </attributes>
+    </resource>
+    <resource id="r3">
+      <attributes>
+        <attribute name="TYPE" type="STRING">ECU</attribute>
+        <attribute name="scheduler" type="STRING">FIXEDPRIORITY_PREEMPTIVE</attribute>
+      </attributes>
+    </resource>
+    <link id="l2" source="r0" destination="r3" type="UNDIRECTED"/>
+    <link id="l0" source="r0" destination="r1" type="UNDIRECTED"/>
+    <link id="l1" source="r0" destination="r2" type="UNDIRECTED"/>
+  </architecture>
+  <application>
+    <task id="p7">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.51</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="prio" type="INT">10</attribute>
+      </attributes>
+    </task>
+    <task id="p6">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.1</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="prio" type="INT">7</attribute>
+      </attributes>
+    </task>
+    <task id="p5">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.28</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="prio" type="INT">4</attribute>
+      </attributes>
+    </task>
+    <task id="p4">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">13.23516</attribute>
+        <attribute name="e" type="DOUBLE">0.49</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="prio" type="INT">23</attribute>
+      </attributes>
+    </task>
+    <task id="p3">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.4</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="prio" type="INT">20</attribute>
+      </attributes>
+    </task>
+    <task id="p2">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">8.73587</attribute>
+        <attribute name="e" type="DOUBLE">0.59</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="prio" type="INT">21</attribute>
+      </attributes>
+    </task>
+    <task id="p1">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.85</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="prio" type="INT">18</attribute>
+      </attributes>
+    </task>
+    <task id="p0">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.39</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="prio" type="INT">17</attribute>
+      </attributes>
+    </task>
+    <task id="p9">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">4.78393</attribute>
+        <attribute name="e" type="DOUBLE">0.66</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="prio" type="INT">16</attribute>
+      </attributes>
+    </task>
+    <task id="p8">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">4.66351</attribute>
+        <attribute name="e" type="DOUBLE">0.23</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="prio" type="INT">13</attribute>
+      </attributes>
+    </task>
+    <communication id="c6">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="prio" type="INT">9</attribute>
+      </attributes>
+    </communication>
+    <communication id="c5">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="prio" type="INT">8</attribute>
+      </attributes>
+    </communication>
+    <task id="p10">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.96</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="prio" type="INT">1</attribute>
+      </attributes>
+    </task>
+    <communication id="c4">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="prio" type="INT">12</attribute>
+      </attributes>
+    </communication>
+    <communication id="c3">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+      </attributes>
+    </communication>
+    <communication id="c9">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="prio" type="INT">2</attribute>
+      </attributes>
+    </communication>
+    <communication id="c8">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="prio" type="INT">5</attribute>
+      </attributes>
+    </communication>
+    <communication id="c7">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="prio" type="INT">14</attribute>
+      </attributes>
+    </communication>
+    <task id="p14">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">3.96289</attribute>
+        <attribute name="e" type="DOUBLE">0.91</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="prio" type="INT">11</attribute>
+      </attributes>
+    </task>
+    <communication id="c1">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="prio" type="INT">19</attribute>
+      </attributes>
+    </communication>
+    <task id="p13">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">4.46646</attribute>
+        <attribute name="e" type="DOUBLE">0.5</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="prio" type="INT">15</attribute>
+      </attributes>
+    </task>
+    <communication id="c2">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+      </attributes>
+    </communication>
+    <task id="p12">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.3</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="prio" type="INT">6</attribute>
+      </attributes>
+    </task>
+    <task id="p11">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.14</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="prio" type="INT">3</attribute>
+      </attributes>
+    </task>
+    <communication id="c0">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="prio" type="INT">22</attribute>
+      </attributes>
+    </communication>
+    <dependency id="d9" source="p0" destination="c3" type="DIRECTED"/>
+    <dependency id="d8" source="p0" destination="c2" type="DIRECTED"/>
+    <dependency id="d5" source="c2" destination="p4" type="DIRECTED"/>
+    <dependency id="d4" source="c1" destination="p4" type="DIRECTED"/>
+    <dependency id="d7" source="p1" destination="c1" type="DIRECTED"/>
+    <dependency id="d6" source="p3" destination="c0" type="DIRECTED"/>
+    <dependency id="d0" source="c3" destination="p1" type="DIRECTED"/>
+    <dependency id="d25" source="p11" destination="c8" type="DIRECTED"/>
+    <dependency id="d1" source="c1" destination="p2" type="DIRECTED"/>
+    <dependency id="d24" source="p12" destination="c7" type="DIRECTED"/>
+    <dependency id="d2" source="c1" destination="p3" type="DIRECTED"/>
+    <dependency id="d23" source="c9" destination="p14" type="DIRECTED"/>
+    <dependency id="d22" source="c8" destination="p14" type="DIRECTED"/>
+    <dependency id="d3" source="c0" destination="p4" type="DIRECTED"/>
+    <dependency id="d21" source="c7" destination="p14" type="DIRECTED"/>
+    <dependency id="d20" source="c7" destination="p13" type="DIRECTED"/>
+    <dependency id="d26" source="p10" destination="c9" type="DIRECTED"/>
+    <dependency id="d12" source="c6" destination="p7" type="DIRECTED"/>
+    <dependency id="d11" source="c5" destination="p7" type="DIRECTED"/>
+    <dependency id="d14" source="c4" destination="p9" type="DIRECTED"/>
+    <dependency id="d13" source="c4" destination="p8" type="DIRECTED"/>
+    <dependency id="d10" source="c6" destination="p6" type="DIRECTED"/>
+    <dependency id="d19" source="c8" destination="p12" type="DIRECTED"/>
+    <dependency id="d16" source="p6" destination="c5" type="DIRECTED"/>
+    <dependency id="d15" source="p7" destination="c4" type="DIRECTED"/>
+    <dependency id="d18" source="c9" destination="p11" type="DIRECTED"/>
+    <dependency id="d17" source="p5" destination="c6" type="DIRECTED"/>
+    <functions>
+      <function anchor="p4">
+        <attributes>
+          <attribute name="ID" type="STRING">func0</attribute>
+        </attributes>
+      </function>
+      <function anchor="p14">
+        <attributes>
+          <attribute name="ID" type="STRING">func2</attribute>
+        </attributes>
+      </function>
+      <function anchor="p7">
+        <attributes>
+          <attribute name="ID" type="STRING">func1</attribute>
+        </attributes>
+      </function>
+    </functions>
+  </application>
+  <mappings>
+    <mapping id="m-p2-r2" source="p2" target="r2"/>
+    <mapping id="m-p4-r3" source="p4" target="r3"/>
+    <mapping id="m-p14-r1" source="p14" target="r1"/>
+    <mapping id="m-p3-r1" source="p3" target="r1"/>
+    <mapping id="m-p12-r1" source="p12" target="r1"/>
+    <mapping id="m-p1-r3" source="p1" target="r3"/>
+    <mapping id="m-p0-r3" source="p0" target="r3"/>
+    <mapping id="m-p7-r1" source="p7" target="r1"/>
+    <mapping id="m-p8-r2" source="p8" target="r2"/>
+    <mapping id="m-p10-r2" source="p10" target="r2"/>
+    <mapping id="m-p6-r3" source="p6" target="r3"/>
+    <mapping id="m-p11-r3" source="p11" target="r3"/>
+    <mapping id="m-p5-r3" source="p5" target="r3"/>
+    <mapping id="m-p13-r3" source="p13" target="r3"/>
+    <mapping id="m-p9-r3" source="p9" target="r3"/>
+  </mappings>
+  <routings>
+    <routing source="c1">
+      <resource id="r0"/>
+      <resource id="r1"/>
+      <resource id="r2"/>
+      <resource id="r3"/>
+      <link id="l2" source="r3" destination="r0" type="DIRECTED"/>
+      <link id="l0" source="r0" destination="r1" type="DIRECTED"/>
+      <link id="l1" source="r0" destination="r2" type="DIRECTED"/>
+    </routing>
+    <routing source="c2">
+      <resource id="r3"/>
+    </routing>
+    <routing source="c0">
+      <resource id="r0"/>
+      <resource id="r1"/>
+      <resource id="r3"/>
+      <link id="l2" source="r0" destination="r3" type="DIRECTED"/>
+      <link id="l0" source="r1" destination="r0" type="DIRECTED"/>
+    </routing>
+    <routing source="c6">
+      <resource id="r0"/>
+      <resource id="r1"/>
+      <resource id="r3"/>
+      <link id="l2" source="r3" destination="r0" type="DIRECTED"/>
+      <link id="l0" source="r0" destination="r1" type="DIRECTED"/>
+    </routing>
+    <routing source="c5">
+      <resource id="r0"/>
+      <resource id="r1"/>
+      <resource id="r3"/>
+      <link id="l2" source="r3" destination="r0" type="DIRECTED"/>
+      <link id="l0" source="r0" destination="r1" type="DIRECTED"/>
+    </routing>
+    <routing source="c4">
+      <resource id="r0"/>
+      <resource id="r1"/>
+      <resource id="r2"/>
+      <resource id="r3"/>
+      <link id="l2" source="r0" destination="r3" type="DIRECTED"/>
+      <link id="l0" source="r1" destination="r0" type="DIRECTED"/>
+      <link id="l1" source="r0" destination="r2" type="DIRECTED"/>
+    </routing>
+    <routing source="c3">
+      <resource id="r3"/>
+    </routing>
+    <routing source="c9">
+      <resource id="r0"/>
+      <resource id="r1"/>
+      <resource id="r2"/>
+      <resource id="r3"/>
+      <link id="l2" source="r0" destination="r3" type="DIRECTED"/>
+      <link id="l0" source="r0" destination="r1" type="DIRECTED"/>
+      <link id="l1" source="r2" destination="r0" type="DIRECTED"/>
+    </routing>
+    <routing source="c8">
+      <resource id="r0"/>
+      <resource id="r1"/>
+      <resource id="r3"/>
+      <link id="l2" source="r3" destination="r0" type="DIRECTED"/>
+      <link id="l0" source="r0" destination="r1" type="DIRECTED"/>
+    </routing>
+    <routing source="c7">
+      <resource id="r0"/>
+      <resource id="r1"/>
+      <resource id="r3"/>
+      <link id="l2" source="r0" destination="r3" type="DIRECTED"/>
+      <link id="l0" source="r1" destination="r0" type="DIRECTED"/>
+    </routing>
+  </routings>
+  <attributes>
+    <attribute name="deadlineScale" type="DOUBLE">1.0947194917663194</attribute>
+    <attribute name="nCANs" type="INT">1</attribute>
+    <attribute name="nECUs" type="INT">3</attribute>
+    <attribute name="nFuncs" type="INT">3</attribute>
+    <attribute name="nPeriods" type="INT">5</attribute>
+    <attribute name="seed" type="java.lang.Long">-1160629452687687108</attribute>
+  </attributes>
+</specification>

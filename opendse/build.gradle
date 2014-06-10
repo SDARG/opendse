@@ -1,0 +1,22 @@
+apply plugin: 'base'
+
+version = '0.3'
+
+ext {
+	dateISO = new Date().format("yyyy-MM-dd")
+}
+
+allprojects {
+    group = 'net.sf.opendse'
+    
+    repositories {
+    	mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    
+    version = parent.version
+}

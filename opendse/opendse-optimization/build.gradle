@@ -1,0 +1,9 @@
+dependencies {	
+	compile project(':opendse-model')
+	compile project(':opendse-io')
+	compile project(':opendse-visualization')
+	
+	compile group: 'org.opt4j',	name: 'opt4j-satdecoding', 	version: '3.1'
+	compile group: 'org.opt4j',	name: 'opt4j-optimizers', 	version: '3.1'
+	compile group: 'org.opt4j',	name: 'opt4j-viewer', 		version: '3.1'
+}
