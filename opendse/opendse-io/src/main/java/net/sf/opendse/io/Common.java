@@ -1,5 +1,18 @@
+/**
+ * OpenDSE is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * 
+ * OpenDSE is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with OpenDSE. If not, see http://www.gnu.org/licenses/.
+ */
 package net.sf.opendse.io;
-
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -53,7 +66,7 @@ public class Common {
 		classMap.put("dependency", Dependency.class);
 		classMap.put("mapping", Mapping.class);
 	}
-	
+
 	protected static Set<Class<?>> primitives = new HashSet<Class<?>>();
 	static {
 		primitives.add(Boolean.class);
@@ -65,11 +78,19 @@ public class Common {
 		primitives.add(Long.class);
 		primitives.add(Double.class);
 	}
-	
-	protected static boolean isPrimitive(Class<?> cls){
+
+	protected static boolean isPrimitive(Class<?> cls) {
 		return cls.isPrimitive() || primitives.contains(cls);
 	}
 
+	/**
+	 * Transforms an {@code Elements} object into a set of iterable
+	 * {@code Element} objects.
+	 * 
+	 * @param elements
+	 *            the elements object
+	 * @return the iterable element objects
+	 */
 	public static Iterable<nu.xom.Element> iterable(final nu.xom.Elements elements) {
 		return new Iterable<nu.xom.Element>() {
 			@Override
@@ -126,8 +147,16 @@ public class Common {
 			e.setAttribute(name, attributes.get(name));
 		}
 	}
-	
-	/** Read the object from Base64 string. */
+
+	/**
+	 * Transforms a Base64 string into an object.
+	 * 
+	 * @param s
+	 *            the string
+	 * @return the object
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public static Object fromString(String s) throws IOException, ClassNotFoundException {
 		byte[] data = Base64Coder.decode(s);
 		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
@@ -136,13 +165,20 @@ public class Common {
 		return o;
 	}
 
-	/** Write the object to a Base64 string. */
+	/**
+	 * Transforms an object into a Base64 string.
+	 * 
+	 * @param o
+	 *            the object
+	 * @return the string
+	 * @throws IOException
+	 */
 	public static String toString(Serializable o) throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ObjectOutputStream oos = new ObjectOutputStream(baos);
 		oos.writeObject(o);
 		oos.close();
-		
+
 		return new String(Base64Coder.encode(baos.toByteArray()));
 
 	}

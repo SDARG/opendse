@@ -1,3 +1,17 @@
+/**
+ * OpenDSE is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * 
+ * OpenDSE is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with OpenDSE. If not, see http://www.gnu.org/licenses/.
+ */
 package net.sf.opendse.io;
 
 import static net.sf.opendse.io.Common.getType;
@@ -39,10 +53,26 @@ import edu.uci.ics.jung.graph.util.Pair;
  */
 public class SpecificationWriter {
 
+	/**
+	 * Write the specification to a file.
+	 * 
+	 * @param specification
+	 *            the specification
+	 * @param filename
+	 *            the name of the target file
+	 */
 	public void write(Specification specification, String filename) {
 		write(specification, new File(filename));
 	}
 
+	/**
+	 * Write the specification to a file.
+	 * 
+	 * @param specification
+	 *            the specification
+	 * @param file
+	 *            the file
+	 */
 	public void write(Specification specification, File file) {
 		try {
 			FileOutputStream out = new FileOutputStream(file);
@@ -56,6 +86,14 @@ public class SpecificationWriter {
 
 	}
 
+	/**
+	 * Write the specification to an output stream.
+	 * 
+	 * @param specification
+	 *            the specification
+	 * @param out
+	 *            the output stream
+	 */
 	public void write(Specification specification, OutputStream out) {
 
 		nu.xom.Element eSpec = toElement(specification);
@@ -72,6 +110,14 @@ public class SpecificationWriter {
 		}
 	}
 
+	/**
+	 * Write a collection of specifications to an output stream.
+	 * 
+	 * @param specifications
+	 *            the specifications
+	 * @param out
+	 *            the output stream
+	 */
 	public void write(Collection<Specification> specifications, OutputStream out) {
 
 		nu.xom.Element eSpecs = new nu.xom.Element("specifications");
@@ -93,13 +139,19 @@ public class SpecificationWriter {
 		}
 	}
 
+	/**
+	 * Transform a specification to an XML element.
+	 * 
+	 * @param specification
+	 *            the specification
+	 * @return the XML element
+	 */
 	public nu.xom.Element toElement(Specification specification) {
 		nu.xom.Element eSpec = new nu.xom.Element("specification");
 		eSpec.appendChild(toElement(specification.getArchitecture()));
 		eSpec.appendChild(toElement(specification.getApplication()));
 		eSpec.appendChild(toElement(specification.getMappings()));
-		eSpec.appendChild(toElement(specification.getRoutings(),
-				specification.getArchitecture()));
+		eSpec.appendChild(toElement(specification.getRoutings(), specification.getArchitecture()));
 
 		if (specification.getAttributes().size() > 0) {
 			eSpec.appendChild(toElement(specification.getAttributes()));
@@ -108,7 +160,7 @@ public class SpecificationWriter {
 		return eSpec;
 	}
 
-	public nu.xom.Element toElement(Routings<Task, Resource, Link> routings,
+	protected nu.xom.Element toElement(Routings<Task, Resource, Link> routings,
 			Architecture<Resource, Link> architecture) {
 		nu.xom.Element eRoutings = new nu.xom.Element("routings");
 
@@ -122,8 +174,7 @@ public class SpecificationWriter {
 		return eRoutings;
 	}
 
-	public nu.xom.Element toElement(Architecture<Resource, Link> routing,
-			Architecture<Resource, Link> architecture) {
+	protected nu.xom.Element toElement(Architecture<Resource, Link> routing, Architecture<Resource, Link> architecture) {
 		nu.xom.Element eArch = new nu.xom.Element("routing");
 
 		for (Resource resource : routing) {
@@ -135,8 +186,8 @@ public class SpecificationWriter {
 		}
 		for (Link link : routing.getEdges()) {
 			Pair<Resource> endpoints = routing.getEndpoints(link);
-			nu.xom.Element element = toElement(link, "link", endpoints.getFirst(),
-					endpoints.getSecond(), routing.getEdgeType(link), true);
+			nu.xom.Element element = toElement(link, "link", endpoints.getFirst(), endpoints.getSecond(),
+					routing.getEdgeType(link), true);
 			if (link.getParent() != architecture.getVertex(link.getId())) {
 				element.removeChildren();
 			}
@@ -146,7 +197,7 @@ public class SpecificationWriter {
 		return eArch;
 	}
 
-	public nu.xom.Element toElement(Architecture<Resource, Link> architecture) {
+	protected nu.xom.Element toElement(Architecture<Resource, Link> architecture) {
 		nu.xom.Element eArch = new nu.xom.Element("architecture");
 
 		for (Resource resource : architecture) {
@@ -154,14 +205,14 @@ public class SpecificationWriter {
 		}
 		for (Link link : architecture.getEdges()) {
 			Pair<Resource> endpoints = architecture.getEndpoints(link);
-			eArch.appendChild(toElement(link, "link", endpoints.getFirst(),
-					endpoints.getSecond(), architecture.getEdgeType(link), false));
+			eArch.appendChild(toElement(link, "link", endpoints.getFirst(), endpoints.getSecond(),
+					architecture.getEdgeType(link), false));
 		}
 
 		return eArch;
 	}
 
-	public nu.xom.Element toElement(Application<Task, Dependency> application) {
+	protected nu.xom.Element toElement(Application<Task, Dependency> application) {
 		nu.xom.Element eArch = new nu.xom.Element("application");
 
 		for (Task task : application) {
@@ -174,8 +225,8 @@ public class SpecificationWriter {
 		}
 		for (Dependency dependency : application.getEdges()) {
 			Pair<Task> endpoints = application.getEndpoints(dependency);
-			eArch.appendChild(toElement(dependency, "dependency", endpoints.getFirst(),
-					endpoints.getSecond(), application.getEdgeType(dependency), false));
+			eArch.appendChild(toElement(dependency, "dependency", endpoints.getFirst(), endpoints.getSecond(),
+					application.getEdgeType(dependency), false));
 		}
 		nu.xom.Element eFunctions = new nu.xom.Element("functions");
 		eArch.appendChild(eFunctions);
@@ -186,7 +237,7 @@ public class SpecificationWriter {
 		return eArch;
 	}
 
-	public nu.xom.Element toElement(Function<Task, Dependency> function) {
+	protected nu.xom.Element toElement(Function<Task, Dependency> function) {
 		nu.xom.Element eFunction = new nu.xom.Element("function");
 
 		Task t = function.getVertices().iterator().next();
@@ -196,7 +247,7 @@ public class SpecificationWriter {
 		return eFunction;
 	}
 
-	public nu.xom.Element toElement(Mappings<Task, Resource> mappings) {
+	protected nu.xom.Element toElement(Mappings<Task, Resource> mappings) {
 		nu.xom.Element eMappings = new nu.xom.Element("mappings");
 		for (Mapping<Task, Resource> mapping : mappings) {
 			eMappings.appendChild(toElement(mapping));
@@ -205,7 +256,7 @@ public class SpecificationWriter {
 		return eMappings;
 	}
 
-	public nu.xom.Element toElement(Mapping<Task, Resource> mapping) {
+	protected nu.xom.Element toElement(Mapping<Task, Resource> mapping) {
 		nu.xom.Element eMapping = new nu.xom.Element("mapping");
 		eMapping.addAttribute(new nu.xom.Attribute("id", mapping.getId()));
 		if (!getType(mapping.getClass()).equals("mapping")) {
@@ -220,22 +271,20 @@ public class SpecificationWriter {
 		return eMapping;
 	}
 
-	public nu.xom.Element toElement(Node node, String name, boolean local) {
+	protected nu.xom.Element toElement(Node node, String name, boolean local) {
 		nu.xom.Element eElem = new nu.xom.Element(name);
 		eElem.addAttribute(new nu.xom.Attribute("id", node.getId()));
 		if (!getType(node.getClass()).equals(name)) {
 			eElem.addAttribute(new nu.xom.Attribute("class", getType(node.getClass())));
 		}
-		nu.xom.Element eAttributes = toElement(local ? node.getLocalAttributes() : node
-				.getAttributes());
+		nu.xom.Element eAttributes = toElement(local ? node.getLocalAttributes() : node.getAttributes());
 		if (eAttributes.getChildCount() > 0) {
 			eElem.appendChild(eAttributes);
 		}
 		return eElem;
 	}
 
-	public nu.xom.Element toElement(Edge edge, String name, Node source, Node dest,
-			EdgeType edgeType, boolean local) {
+	protected nu.xom.Element toElement(Edge edge, String name, Node source, Node dest, EdgeType edgeType, boolean local) {
 		nu.xom.Element eElem = new nu.xom.Element(name);
 		eElem.addAttribute(new nu.xom.Attribute("id", edge.getId()));
 		if (!getType(edge.getClass()).equals(name)) {
@@ -244,15 +293,14 @@ public class SpecificationWriter {
 		eElem.addAttribute(new nu.xom.Attribute("source", source.getId()));
 		eElem.addAttribute(new nu.xom.Attribute("destination", dest.getId()));
 		eElem.addAttribute(new nu.xom.Attribute("type", edgeType.toString()));
-		nu.xom.Element eAttributes = toElement(local ? edge.getLocalAttributes() : edge
-				.getAttributes());
+		nu.xom.Element eAttributes = toElement(local ? edge.getLocalAttributes() : edge.getAttributes());
 		if (eAttributes.getChildCount() > 0) {
 			eElem.appendChild(eAttributes);
 		}
 		return eElem;
 	}
 
-	public nu.xom.Element toElement(Attributes attributes) {
+	protected nu.xom.Element toElement(Attributes attributes) {
 		nu.xom.Element eAttributes = new nu.xom.Element("attributes");
 
 		for (String attributeName : attributes.getAttributeNames()) {
@@ -268,8 +316,7 @@ public class SpecificationWriter {
 					Parameter parameter = attributes.getAttributeParameter(attributeName);
 					eAttr.appendChild(parameter.toString());
 					eAttr.addAttribute(new nu.xom.Attribute("type", getType(cls)));
-					eAttr.addAttribute(new nu.xom.Attribute("parameter", getType(parameter
-							.getClass())));
+					eAttr.addAttribute(new nu.xom.Attribute("parameter", getType(parameter.getClass())));
 
 				} else if (Common.isPrimitive(cls) || cls.equals(String.class)) {
 
@@ -279,8 +326,7 @@ public class SpecificationWriter {
 				} else if (attributes instanceof Serializable) {
 
 					Serializable s = (Serializable) attribute;
-					eAttr.addAttribute(new nu.xom.Attribute("type", Serializable.class
-							.getName()));
+					eAttr.addAttribute(new nu.xom.Attribute("type", Serializable.class.getName()));
 					try {
 						eAttr.appendChild(Common.toString(s));
 					} catch (IOException e) {
