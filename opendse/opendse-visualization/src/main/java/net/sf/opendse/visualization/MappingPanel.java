@@ -1,3 +1,17 @@
+/**
+ * OpenDSE is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * 
+ * OpenDSE is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with OpenDSE. If not, see http://www.gnu.org/licenses/.
+ */
 package net.sf.opendse.visualization;
 
 import java.awt.BorderLayout;
@@ -24,8 +38,8 @@ import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.SortedList;
 import ca.odell.glazedlists.gui.AdvancedTableFormat;
-import ca.odell.glazedlists.swing.EventSelectionModel;
-import ca.odell.glazedlists.swing.EventTableModel;
+import ca.odell.glazedlists.swing.DefaultEventSelectionModel;
+import ca.odell.glazedlists.swing.DefaultEventTableModel;
 import ca.odell.glazedlists.swing.TableComparatorChooser;
 
 public class MappingPanel extends JPanel implements ElementSelectionListener, ListSelectionListener {
@@ -36,8 +50,8 @@ public class MappingPanel extends JPanel implements ElementSelectionListener, Li
 	protected final EventList<Mapping<Task, Resource>> mappings = new BasicEventList<Mapping<Task, Resource>>();
 
 	protected final JTable table;
-	protected final EventTableModel<Mapping<Task, Resource>> model;
-	protected final EventSelectionModel<Mapping<Task, Resource>> selectionModel;
+	protected final DefaultEventTableModel<Mapping<Task, Resource>> model;
+	protected final DefaultEventSelectionModel<Mapping<Task, Resource>> selectionModel;
 
 	class MappingTableFormat implements AdvancedTableFormat<Mapping<Task, Resource>> {
 
@@ -167,10 +181,10 @@ public class MappingPanel extends JPanel implements ElementSelectionListener, Li
 
 		setLayout(new BorderLayout());
 
-		model = new EventTableModel<Mapping<Task, Resource>>(sortedMappings, new MappingTableFormat());
+		model = new DefaultEventTableModel<Mapping<Task, Resource>>(sortedMappings, new MappingTableFormat());
 
-		selectionModel = new EventSelectionModel<Mapping<Task, Resource>>(sortedMappings);
-		selectionModel.setSelectionMode(EventSelectionModel.SINGLE_SELECTION);
+		selectionModel = new DefaultEventSelectionModel<Mapping<Task, Resource>>(sortedMappings);
+		selectionModel.setSelectionMode(DefaultEventSelectionModel.SINGLE_SELECTION);
 		selectionModel.addListSelectionListener(this);
 
 		table = new JTable(model);

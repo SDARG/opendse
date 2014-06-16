@@ -1,3 +1,17 @@
+/**
+ * OpenDSE is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * 
+ * OpenDSE is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with OpenDSE. If not, see http://www.gnu.org/licenses/.
+ */
 package net.sf.opendse.visualization;
 
 import java.awt.Polygon;
@@ -22,7 +36,7 @@ public abstract class AbstractGraphPanelFormat implements GraphPanelFormat {
 	public String getTooltip(Edge edge) {
 		return ViewUtil.getTooltip(edge);
 	}
-	
+
 	protected class CustomVertexShapeFactory extends VertexShapeFactory<Node> {
 
 		public CustomVertexShapeFactory() {
@@ -38,18 +52,18 @@ public abstract class AbstractGraphPanelFormat implements GraphPanelFormat {
 				}
 			});
 		}
-		
-		public Shape getInnerOut(Node node){
-			int s = vsf.transform(node)/2;
-			Polygon poly = new Polygon();	
-			poly.addPoint(s/2, 0);
-			poly.addPoint(-s/3, -2*s/3);
-			poly.addPoint(-s/3, 2*s/3);
+
+		public Shape getInnerOut(Node node) {
+			int s = vsf.transform(node) / 2;
+			Polygon poly = new Polygon();
+			poly.addPoint(s / 2, 0);
+			poly.addPoint(-s / 3, -2 * s / 3);
+			poly.addPoint(-s / 3, 2 * s / 3);
 			return poly;
 		}
-		
-		public Shape getInnerIn(Node node){
-			int s = vsf.transform(node)/4;
+
+		public Shape getInnerIn(Node node) {
+			int s = vsf.transform(node) / 4;
 			Polygon poly = new Polygon();
 			poly.addPoint(0, 0);
 			poly.addPoint(-s, -s);
@@ -77,5 +91,5 @@ public abstract class AbstractGraphPanelFormat implements GraphPanelFormat {
 	public boolean drawEdge(Edge edge) {
 		return true;
 	}
-	
+
 }

@@ -1,3 +1,17 @@
+/**
+ * OpenDSE is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * 
+ * OpenDSE is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with OpenDSE. If not, see http://www.gnu.org/licenses/.
+ */
 package net.sf.opendse.visualization;
 
 import static javax.swing.JSplitPane.HORIZONTAL_SPLIT;
@@ -19,10 +33,6 @@ import javax.swing.UIManager;
 
 import net.sf.opendse.io.SpecificationReader;
 import net.sf.opendse.io.SpecificationWriter;
-import net.sf.opendse.model.Application;
-import net.sf.opendse.model.Architecture;
-import net.sf.opendse.model.Dependency;
-import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Mappings;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Specification;
@@ -49,8 +59,8 @@ public class SpecificationPanel extends JPanel {
 	protected void setSpecification(final Specification specification) {
 		this.removeAll();
 
-		Application<Task, Dependency> application = specification.getApplication();
-		Architecture<Resource, Link> architecture = specification.getArchitecture();
+		//Application<Task, Dependency> application = specification.getApplication();
+		//Architecture<Resource, Link> architecture = specification.getArchitecture();
 		Mappings<Task, Resource> mappings = specification.getMappings();
 
 		ElementSelection selection = new ElementSelection();
