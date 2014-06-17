@@ -1,5 +1,6 @@
 apply plugin: 'base'
 apply plugin: 'maven'
+apply plugin: 'application'
 
 version = 'SNAPSHOT'
 
@@ -117,5 +118,28 @@ task alldocs(type: Javadoc) {
 		} else {
 			classpath = subproject.sourceSets.main.output + subproject.sourceSets.main.compileClasspath
 		}
+	}
+}
+
+mainClassName = 'org.opt4j.core.start.Opt4J'
+
+task fatjar(dependsOn: subprojects.jar, type: Jar) {
+    destinationDir = new File(project.buildDir, 'fatjar')
+    from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest {
+		attributes 'Main-Class': mainClassName
+    }
+}
+
+dependencies {
+	runtime project(':opendse-model')
+	runtime project(':opendse-io')
+	runtime project(':opendse-visualization')
+	runtime project(':opendse-optimization')
+}
+
+jar {
+	manifest { 
+		attributes 'Main-Class': mainClassName
 	}
 }
