@@ -33,7 +33,7 @@ import edu.uci.ics.jung.graph.util.Pair;
  * 
  * @param <T>
  *            the type of vertices
- * @param <E>
+ * @param <D>
  *            the type of edges
  */
 public class Application<T extends Task, D extends Dependency> extends Graph<T, D> {

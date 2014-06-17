@@ -15,7 +15,7 @@
 package net.sf.opendse.model;
 
 /**
- * The {@code Dependency} is the basic edge element in {@link Applications}
+ * The {@code Dependency} is the basic edge element in {@link Application}
  * graphs.
  * 
  * @author lukasiewycz

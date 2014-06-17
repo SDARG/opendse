@@ -20,8 +20,7 @@ import java.util.Set;
 import net.sf.opendse.model.parameter.Parameter;
 
 /**
- * The {@code Element} is the default implementation of the {@link IElement}
- * interface.
+ * The {@code Element} is the default element.
  * 
  * @author Martin Lukasiewycz
  * 

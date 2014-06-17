@@ -28,10 +28,10 @@ import edu.uci.ics.jung.graph.Graph;
 
 /**
  * The {@code StrongComponentClusterer} clusters a graph into strongly connected
- * components using Tarjan's algorithms.
+ * components using Tarjan's algorithms. See: Robert Tarjan: Depth-first search
+ * and linear graph algorithms. In: SIAM Journal on Computing. Vol. 1 (1972),
+ * No. 2, P. 146-160.
  * 
- * @see Robert Tarjan: Depth-first search and linear graph algorithms. In: SIAM
- *      Journal on Computing. Vol. 1 (1972), No. 2, P. 146-160.
  * @author lukasiewycz
  * 
  * @param <V>
@@ -40,7 +40,7 @@ import edu.uci.ics.jung.graph.Graph;
  *            the type of edges
  */
 public class StrongComponentClusterer<V, E> implements Transformer<Graph<V, E>, Set<Set<V>>> {
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -52,7 +52,6 @@ public class StrongComponentClusterer<V, E> implements Transformer<Graph<V, E>, 
 		Algorithm algorithm = new Algorithm();
 		return algorithm.transform(graph);
 	}
-	
 
 	private class Algorithm implements Transformer<Graph<V, E>, Set<Set<V>>> {
 
@@ -71,7 +70,7 @@ public class StrongComponentClusterer<V, E> implements Transformer<Graph<V, E>, 
 				if (!indexMap.containsKey(v)) {
 					go(v);
 				}
-			}			
+			}
 			return scc;
 		}
 
@@ -89,11 +88,11 @@ public class StrongComponentClusterer<V, E> implements Transformer<Graph<V, E>, 
 					lowlinkMap.put(v, min(lowlinkMap.get(v), indexMap.get(vs)));
 				}
 			}
-			
+
 			final int lowlink = lowlinkMap.get(v);
 			final int index = indexMap.get(v);
-			
-			if (lowlink == index) {				
+
+			if (lowlink == index) {
 				Set<V> component = new HashSet<V>();
 				V vs = null;
 				do {

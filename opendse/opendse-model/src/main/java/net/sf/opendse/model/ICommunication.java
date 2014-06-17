@@ -16,7 +16,7 @@ package net.sf.opendse.model;
 
 /**
  * The {@code ICommunication} is a marker interface for communication nodes
- * (messages, streams) in the {@link IApplication}.
+ * (messages, streams) in the {@link Application}.
  * 
  * 
  * @author Martin Lukasiewycz

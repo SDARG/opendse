@@ -22,7 +22,7 @@ package net.sf.opendse.model;
  * 
  * @param <R>
  *            the type of vertices
- * @param <E>
+ * @param <L>
  *            the type of edges
  */
 public class Architecture<R extends Resource, L extends Link> extends Graph<R, L> {

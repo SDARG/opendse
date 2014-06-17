@@ -33,7 +33,7 @@ import org.apache.commons.collections15.map.LazyMap;
  *            the type of task
  * @param <R>
  *            the type of resource
- * @param <E>
+ * @param <L>
  *            the type of edge (in the architecture)
  */
 public class Routings<T extends Task, R extends Resource, L extends Link> {
