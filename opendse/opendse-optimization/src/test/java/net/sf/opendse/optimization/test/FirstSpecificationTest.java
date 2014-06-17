@@ -119,11 +119,6 @@ public class FirstSpecificationTest {
 		specification = single.get(specification, true);
 		System.out.println(specification);
 		SpecificationViewer.view(specification);
-		
-		
-		
-		
-		
 	}
 
 	public static void fillRoutings(Specification specification) {

@@ -30,6 +30,7 @@ import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Mappings;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
+import net.sf.opendse.optimization.encoding.Generator;
 
 /**
  * The {@code MappingGenerator} contains several methods to generate and

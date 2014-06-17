@@ -26,7 +26,6 @@ import net.sf.opendse.optimization.ImplementationWrapper;
 import net.sf.opendse.optimization.OptimizationModule;
 import net.sf.opendse.optimization.SpecificationWrapper;
 import net.sf.opendse.optimization.io.SpecificationWrapperInstance;
-import net.sf.opendse.optimization.test.generator.RoutingGenerator;
 
 import org.opt4j.core.Individual;
 import org.opt4j.core.optimizer.Archive;

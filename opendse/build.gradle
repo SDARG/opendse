@@ -1,22 +1,121 @@
 apply plugin: 'base'
+apply plugin: 'maven'
 
-version = '0.3'
+version = 'SNAPSHOT'
 
-ext {
-	dateISO = new Date().format("yyyy-MM-dd")
-}
+def stagingURL = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+def snapshotURL = 'https://oss.sonatype.org/content/repositories/snapshots/'
+
+def descriptions = [
+	'opendse-io' : 'The IO module of OpenDSE', 
+	'opendse-model' : 'The algorithms module of OpenDSE',
+	'opendse-visualization' : 'The visualization module of OpenDSE',
+	'opendse-optimization' : 'The optimization module of OpenDSE'
+]
 
 allprojects {
     group = 'net.sf.opendse'
     
     repositories {
     	mavenCentral()
+		mavenLocal()
     }
 }
 
 subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
-    
+    apply plugin: 'signing'
+	
     version = parent.version
+	
+	task sourcesJar(type: Jar, dependsOn:classes) {
+		from sourceSets.main.allSource 
+		classifier = 'sources' 
+	} 
+
+	task javadocJar(type: Jar, dependsOn:javadoc) {
+		from javadoc.destinationDir 
+		classifier = 'javadoc' 
+	}
+
+	artifacts { 
+		archives jar
+		archives sourcesJar 
+		archives javadocJar 
+	}
+
+	signing {
+	    sign configurations.archives
+	}
+	
+	uploadArchives {
+	    repositories {
+	        mavenDeployer {
+	            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+	 
+	            repository(url: stagingURL) {
+	              authentication(userName: sonatypeUsername, password: sonatypePassword)
+	            }
+	 
+	            pom.project {
+	               name 'OpenDSE'
+	               packaging 'jar'
+	               description descriptions[project.name]
+	               url 'http://opendse.sf.net'
+	 
+	               scm {
+	                   url 'http://hg.code.sf.net/p/opendse/hgroot'
+	                   connection 'http://hg.code.sf.net/p/opendse/hgroot'
+	               }
+	 
+	               licenses {
+	                   license {
+	                       name 'GNU Lesser General Public License'
+	                       url 'http://www.gnu.org/licenses/lgpl.txt'
+	                       distribution 'repo'
+	                   }
+	               }
+	 
+	               developers {
+	                   developer {
+	                       id 'lukasiewycz'
+	                       name 'Martin Lukasiewycz'
+	                   }
+	               }
+	           }
+	        }
+	    }
+	}
+}
+
+ext {
+	dateISO = new Date().format("yyyy-MM-dd")
+}
+
+uploadArchives.doFirst {
+	println "Sonatype Username: "+sonatypeUsername 
+	println "Private Key: "+project.ext.get("signing.secretKeyRingFile")
+	println "Private Key ID: "+project.ext.get("signing.keyId")
+}
+
+task alldocs(type: Javadoc) {
+	title = "OpenDSE version $version Project API Documentation"
+	destinationDir = new File(project.buildDir, 'docs/javadoc')
+	
+	options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PUBLIC
+	options.links 'http://docs.oracle.com/javase/6/docs/api/','http://google-guice.googlecode.com/svn/tags/3.0/javadoc/'
+	options.linkSource = true
+
+	subprojects.each {subproject ->
+		source subproject.sourceSets.main.java
+	}
+
+	subprojects.each { subproject ->
+		if( classpath ) {
+			classpath += subproject.sourceSets.main.output + subproject.sourceSets.main.compileClasspath
+		} else {
+			classpath = subproject.sourceSets.main.output + subproject.sourceSets.main.compileClasspath
+		}
+	}
 }

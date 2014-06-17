@@ -27,6 +27,7 @@ import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.ICommunication;
 import net.sf.opendse.model.Task;
+import net.sf.opendse.optimization.encoding.Generator;
 
 /**
  * The {@code ApplicationGenerator} contains several methods to generate and

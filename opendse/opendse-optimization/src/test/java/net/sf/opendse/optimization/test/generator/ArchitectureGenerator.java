@@ -19,6 +19,7 @@ import java.util.Random;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Resource;
+import net.sf.opendse.optimization.encoding.Generator;
 
 /**
  * The {@code ArchitectureGenerator} contains several methods to generate and
