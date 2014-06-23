@@ -34,6 +34,43 @@ public class Specification implements IAttributes {
 	protected Attributes attributes = new Attributes();
 
 	/**
+	 * Constructs the specification. The routings are the architecture for each
+	 * task.
+	 * 
+	 * @param application
+	 *            the application
+	 * @param architecture
+	 *            the architecture
+	 * @param mappings
+	 *            the mappings
+	 */
+	public Specification(Application<?, ?> application, Architecture<?, ?> architecture, Mappings<?, ?> mappings) {
+		this(application, architecture, mappings, fill(application, architecture));
+	}
+
+	protected static Routings<?, ?, ?> fill(Application<?, ?> application, Architecture<?, ?> architecture) {
+		Routings<Task, Resource, Link> routings = new Routings<Task, Resource, Link>();
+		@SuppressWarnings("unchecked")
+		Architecture<Resource, Link> arch = (Architecture<Resource, Link>)architecture;
+
+		for (Task task : application) {
+			if (task instanceof ICommunication) {
+				Architecture<Resource, Link> routing = new Architecture<Resource, Link>();
+
+				for (Resource resource : architecture.getVertices()) {
+					routing.addVertex(resource);
+				}
+				for (Link link : architecture.getEdges()) {
+					routing.addEdge(link, arch.getEndpoints(link), arch.getEdgeType(link));
+				}
+				routings.set(task, routing);
+			}
+		}
+
+		return routings;
+	}
+
+	/**
 	 * Constructs the specification.
 	 * 
 	 * @param application

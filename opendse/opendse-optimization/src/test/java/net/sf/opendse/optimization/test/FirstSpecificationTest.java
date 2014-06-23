@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.sf.opendse.io.SpecificationWriter;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Communication;
@@ -30,6 +31,9 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
+import net.sf.opendse.model.parameter.Parameter;
+import net.sf.opendse.model.parameter.Parameters;
+import net.sf.opendse.optimization.constraints.SpecificationConstraints;
 import net.sf.opendse.optimization.encoding.SingleImplementation;
 import net.sf.opendse.visualization.SpecificationViewer;
 import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
@@ -46,6 +50,7 @@ public class FirstSpecificationTest {
 	}
 
 	public static void noCommunication() {
+		
 		// 1. Application
 		Application<Task, Dependency> application = new Application<Task, Dependency>();
 		Task t1 = new Task("t1");
@@ -74,95 +79,68 @@ public class FirstSpecificationTest {
 
 		Specification specification = new Specification(application, architecture, mappings,
 				routings);
+		
 		SpecificationViewer.view(specification);
 
 	}
 
 	public static void withCommunication() {
+		
 		// 1. Application
 		Application<Task, Dependency> application = new Application<Task, Dependency>();
 		Task t1 = new Task("t1");
+		t1.setAttribute("memory", 40);
 		Communication c1 = new Communication("c1");
+		c1.setAttribute("memory", 1);
 		Task t2 = new Task("t2");
 		application.addVertex(t1);
 		application.addVertex(t2);
 		application.addEdge(new Dependency("d1"), t1, c1);
 		application.addEdge(new Dependency("d2"), c1, t2);
+		
 		// 2. Architecture
 		Architecture<Resource, Link> architecture = new Architecture<Resource, Link>();
 		Resource r1 = new Resource("r1");
 		r1.setAttribute("costs", 100);
+		r1.setAttribute("memory"+SpecificationConstraints.CAPACITY_MAX, 128);
 		Resource r2 = new Resource("r2");
 		r2.setAttribute("costs", 50);
+		r2.setAttribute("memory"+SpecificationConstraints.CAPACITY_MAX, 64);
 		Resource r3 = new Resource("r3");
 		r3.setAttribute("costs", 50);
+		r3.setAttribute("memory"+SpecificationConstraints.CAPACITY_MAX, Parameters.select(64, 128, 196));
 		Link l1 = new Link("l1");
 		Link l2 = new Link("l2");
 		architecture.addVertex(r1);
 		architecture.addVertex(r2);
 		architecture.addEdge(l1, r1, r2);
 		architecture.addEdge(l2, r2, r3);
+		
 		// 3. Mappings
 		Mappings<Task, Resource> mappings = new Mappings<Task, Resource>();
 		Mapping<Task, Resource> m1 = new Mapping<Task, Resource>("m1", t1, r1);
 		Mapping<Task, Resource> m2 = new Mapping<Task, Resource>("m2", t2, r2);
+		m2.setAttribute("memory", 70);
+		Mapping<Task, Resource> m3 = new Mapping<Task, Resource>("m3", t2, r3);
+		m3.setAttribute("memory", 75);
+		
 		mappings.add(m1);
 		mappings.add(m2);
-		
-		// 4. Routings\
-		Routings<Task, Resource, Link> routings = new Routings<Task, Resource, Link>();
+		mappings.add(m3);
 		
 		
-		Specification specification = new Specification(application, architecture, mappings,
-				routings);
+		Specification specification = new Specification(application, architecture, mappings);
+		SpecificationWriter writer = new SpecificationWriter();
+		writer.write(specification, "spec.xml");
+		
 		SingleImplementation single = new SingleImplementation();
 		specification = single.get(specification, true);
-		System.out.println(specification);
+		
+		
+		
 		SpecificationViewer.view(specification);
-	}
-
-	public static void fillRoutings(Specification specification) {
-		Application<Task, Dependency> application = specification.getApplication();
-		Architecture<Resource, Link> architecture = specification.getArchitecture();
-		Mappings<Task, Resource> mappings = specification.getMappings();
-		Routings<Task, Resource, Link> routings = specification.getRoutings();
-
-		for (Task task : application) {
-			if (Models.isCommunication(task)) {
-				Collection<Task> predecessors = application.getPredecessors(task);
-				Task predecessor = predecessors.iterator().next();
-				Collection<Task> successors = application.getSuccessors(task);
-
-				Set<Resource> targets = new HashSet<Resource>();
-
-				Set<Mapping<Task, Resource>> predecessorMappings = mappings.get(predecessor);
-				Resource source = predecessorMappings.iterator().next().getTarget();
-
-				Set<Mapping<Task, Resource>> successorMappings = new HashSet<Mapping<Task, Resource>>();
-				for (Task successor : successors) {
-					successorMappings.addAll(mappings.get(successor));
-				}
-				for (Mapping<Task, Resource> successorMapping : successorMappings) {
-					targets.add(successorMapping.getTarget());
-				}
-
-				System.out.println("source " + source);
-				System.out.println("targets " + targets);
-
-				DijkstraShortestPath<Resource, Link> dijkstra = new DijkstraShortestPath<Resource, Link>(
-						architecture);
-				Set<Link> links = new HashSet<Link>();
-				for(Resource target: targets){
-					links.addAll(dijkstra.getPath(source, target));
-				}
-				Architecture<Resource, Link> routing = new Architecture<Resource, Link>();
-				for(Link link: links){
-					Pair<Resource> endpoints = architecture.getEndpoints(link);
-					routing.addEdge(link, endpoints, EdgeType.DIRECTED);
-				}
-				routings.set(task, routing);				
-			}
-		}
+		
+		
 	}
 
 }
