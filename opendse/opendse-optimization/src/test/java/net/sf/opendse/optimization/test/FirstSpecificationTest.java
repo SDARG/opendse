@@ -14,10 +14,6 @@
  */
 package net.sf.opendse.optimization.test;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 import net.sf.opendse.io.SpecificationWriter;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
@@ -26,19 +22,14 @@ import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Mappings;
-import net.sf.opendse.model.Models;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
-import net.sf.opendse.model.parameter.Parameter;
 import net.sf.opendse.model.parameter.Parameters;
 import net.sf.opendse.optimization.constraints.SpecificationConstraints;
 import net.sf.opendse.optimization.encoding.SingleImplementation;
 import net.sf.opendse.visualization.SpecificationViewer;
-import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
-import edu.uci.ics.jung.graph.util.EdgeType;
-import edu.uci.ics.jung.graph.util.Pair;
 
 public class FirstSpecificationTest {
 
