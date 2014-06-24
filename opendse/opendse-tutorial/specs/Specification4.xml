@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specification>
+  <architecture>
+    <resource id="bus1">
+      <attributes>
+        <attribute name="costs" type="INT">20</attribute>
+        <attribute name="utilization:CAPACITY-MAX" type="INT">25</attribute>
+      </attributes>
+    </resource>
+    <resource id="bus2">
+      <attributes>
+        <attribute name="costs" type="INT">20</attribute>
+        <attribute name="utilization:CAPACITY-MAX" type="INT">25</attribute>
+      </attributes>
+    </resource>
+    <resource id="r1">
+      <attributes>
+        <attribute name="cc:CONNECT-MAX" type="INT" parameter="SELECT">1 [1, 2, 3] variant</attribute>
+        <attribute name="costs" type="INT">70</attribute>
+        <attribute name="memory:CAPACITY-MAX" type="INT" parameter="SELECT">15 [15, 20, 30] variant</attribute>
+        <attribute name="variant" type="STRING" parameter="SELECT">alpha [alpha, beta, gamma]</attribute>
+      </attributes>
+    </resource>
+    <resource id="r2">
+      <attributes>
+        <attribute name="cc:CONNECT-MAX" type="INT">2</attribute>
+        <attribute name="costs" type="INT">50</attribute>
+        <attribute name="memory:CAPACITY-MAX" type="INT">15</attribute>
+      </attributes>
+    </resource>
+    <resource id="r3">
+      <attributes>
+        <attribute name="cc:CONNECT-MAX" type="INT">2</attribute>
+        <attribute name="memory:CAPACITY-MAX" type="INT">15</attribute>
+      </attributes>
+    </resource>
+    <link id="l4" source="r2" destination="bus2" type="UNDIRECTED">
+      <attributes>
+        <attribute name="TYPE" type="STRING">cc</attribute>
+      </attributes>
+    </link>
+    <link id="l5" source="r3" destination="bus2" type="UNDIRECTED">
+      <attributes>
+        <attribute name="TYPE" type="STRING">cc</attribute>
+      </attributes>
+    </link>
+    <link id="l2" source="r2" destination="bus1" type="UNDIRECTED">
+      <attributes>
+        <attribute name="TYPE" type="STRING">cc</attribute>
+      </attributes>
+    </link>
+    <link id="l3" source="r1" destination="bus2" type="UNDIRECTED">
+      <attributes>
+        <attribute name="TYPE" type="STRING">cc</attribute>
+      </attributes>
+    </link>
+    <link id="l1" source="r1" destination="bus1" type="UNDIRECTED">
+      <attributes>
+        <attribute name="TYPE" type="STRING">cc</attribute>
+      </attributes>
+    </link>
+  </architecture>
+  <application>
+    <task id="t3">
+      <attributes>
+        <attribute name="memory" type="INT">5</attribute>
+      </attributes>
+    </task>
+    <task id="t2">
+      <attributes>
+        <attribute name="memory" type="INT">5</attribute>
+      </attributes>
+    </task>
+    <task id="t1">
+      <attributes>
+        <attribute name="memory" type="INT">5</attribute>
+      </attributes>
+    </task>
+    <communication id="c1">
+      <attributes>
+        <attribute name="utilization" type="INT">10</attribute>
+      </attributes>
+    </communication>
+    <communication id="c2">
+      <attributes>
+        <attribute name="utilization" type="INT">10</attribute>
+      </attributes>
+    </communication>
+    <task id="t4">
+      <attributes>
+        <attribute name="memory" type="INT">5</attribute>
+      </attributes>
+    </task>
+    <task id="t5">
+      <attributes>
+        <attribute name="memory" type="INT">5</attribute>
+      </attributes>
+    </task>
+    <task id="t6">
+      <attributes>
+        <attribute name="memory" type="INT">5</attribute>
+      </attributes>
+    </task>
+    <communication id="c3">
+      <attributes>
+        <attribute name="utilization" type="INT">10</attribute>
+      </attributes>
+    </communication>
+    <dependency id="d1" source="t1" destination="c1" type="DIRECTED"/>
+    <dependency id="d2" source="c1" destination="t2" type="DIRECTED"/>
+    <dependency id="d3" source="t3" destination="c2" type="DIRECTED"/>
+    <dependency id="d5" source="c2" destination="t5" type="DIRECTED"/>
+    <dependency id="d4" source="c2" destination="t4" type="DIRECTED"/>
+    <dependency id="d7" source="c3" destination="t6" type="DIRECTED"/>
+    <dependency id="d6" source="t5" destination="c3" type="DIRECTED"/>
+    <functions>
+      <function anchor="t2">
+        <attributes>
+          <attribute name="ID" type="STRING">func0</attribute>
+        </attributes>
+      </function>
+      <function anchor="t3">
+        <attributes>
+          <attribute name="ID" type="STRING">func1</attribute>
+        </attributes>
+      </function>
+    </functions>
+  </application>
+  <mappings>
+    <mapping id="m5" source="t3" target="r3"/>
+    <mapping id="m6" source="t4" target="r3"/>
+    <mapping id="m7" source="t5" target="r2"/>
+    <mapping id="m8" source="t6" target="r1"/>
+    <mapping id="m1" source="t1" target="r1">
+      <attributes>
+        <attribute name="memory" type="INT">2</attribute>
+      </attributes>
+    </mapping>
+    <mapping id="m2" source="t2" target="r2"/>
+    <mapping id="m3" source="t1" target="r3"/>
+    <mapping id="m4" source="t2" target="r3"/>
+  </mappings>
+  <routings>
+    <routing source="c1">
+      <resource id="bus1"/>
+      <resource id="bus2"/>
+      <resource id="r1"/>
+      <resource id="r2"/>
+      <resource id="r3"/>
+      <link id="l4" source="r2" destination="bus2" type="UNDIRECTED">
+        <attributes>
+          <attribute name="TYPE" type="STRING">cc</attribute>
+        </attributes>
+      </link>
+      <link id="l5" source="r3" destination="bus2" type="UNDIRECTED">
+        <attributes>
+          <attribute name="TYPE" type="STRING">cc</attribute>
+        </attributes>
+      </link>
+      <link id="l2" source="r2" destination="bus1" type="UNDIRECTED">
+        <attributes>
+          <attribute name="TYPE" type="STRING">cc</attribute>
+        </attributes>
+      </link>
+      <link id="l3" source="r1" destination="bus2" type="UNDIRECTED">
+        <attributes>
+          <attribute name="TYPE" type="STRING">cc</attribute>
+        </attributes>
+      </link>
+      <link id="l1" source="r1" destination="bus1" type="UNDIRECTED">
+        <attributes>
+          <attribute name="TYPE" type="STRING">cc</attribute>
+        </attributes>
+      </link>
+    </routing>
+    <routing source="c2">
+      <resource id="bus1"/>
+      <resource id="bus2"/>
+      <resource id="r1"/>
+      <resource id="r2"/>
+      <resource id="r3"/>
+      <link id="l4" source="r2" destination="bus2" type="UNDIRECTED">
+        <attributes>
+          <attribute name="TYPE" type="STRING">cc</attribute>
+        </attributes>
+      </link>
+      <link id="l5" source="r3" destination="bus2" type="UNDIRECTED">
+        <attributes>
+          <attribute name="TYPE" type="STRING">cc</attribute>
+        </attributes>
+      </link>
+      <link id="l2" source="r2" destination="bus1" type="UNDIRECTED">
+        <attributes>
+          <attribute name="TYPE" type="STRING">cc</attribute>
+        </attributes>
+      </link>
+      <link id="l3" source="r1" destination="bus2" type="UNDIRECTED">
+        <attributes>
+          <attribute name="TYPE" type="STRING">cc</attribute>
+        </attributes>
+      </link>
+      <link id="l1" source="r1" destination="bus1" type="UNDIRECTED">
+        <attributes>
+          <attribute name="TYPE" type="STRING">cc</attribute>
+        </attributes>
+      </link>
+    </routing>
+    <routing source="c3">
+      <resource id="bus1"/>
+      <resource id="bus2"/>
+      <resource id="r1"/>
+      <resource id="r2"/>
+      <resource id="r3"/>
+      <link id="l4" source="r2" destination="bus2" type="UNDIRECTED">
+        <attributes>
+          <attribute name="TYPE" type="STRING">cc</attribute>
+        </attributes>
+      </link>
+      <link id="l5" source="r3" destination="bus2" type="UNDIRECTED">
+        <attributes>
+          <attribute name="TYPE" type="STRING">cc</attribute>
+        </attributes>
+      </link>
+      <link id="l2" source="r2" destination="bus1" type="UNDIRECTED">
+        <attributes>
+          <attribute name="TYPE" type="STRING">cc</attribute>
+        </attributes>
+      </link>
+      <link id="l3" source="r1" destination="bus2" type="UNDIRECTED">
+        <attributes>
+          <attribute name="TYPE" type="STRING">cc</attribute>
+        </attributes>
+      </link>
+      <link id="l1" source="r1" destination="bus1" type="UNDIRECTED">
+        <attributes>
+          <attribute name="TYPE" type="STRING">cc</attribute>
+        </attributes>
+      </link>
+    </routing>
+  </routings>
+</specification>

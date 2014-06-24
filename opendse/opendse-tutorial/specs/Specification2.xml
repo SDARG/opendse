@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specification>
+  <architecture>
+    <resource id="bus">
+      <attributes>
+        <attribute name="costs" type="INT">20</attribute>
+      </attributes>
+    </resource>
+    <resource id="r1">
+      <attributes>
+        <attribute name="costs" type="INT">100</attribute>
+      </attributes>
+    </resource>
+    <resource id="r2">
+      <attributes>
+        <attribute name="costs" type="INT">50</attribute>
+      </attributes>
+    </resource>
+    <link id="l2" source="bus" destination="r2" type="UNDIRECTED"/>
+    <link id="l1" source="r1" destination="bus" type="UNDIRECTED"/>
+  </architecture>
+  <application>
+    <task id="t2"/>
+    <task id="t1"/>
+    <communication id="c1"/>
+    <dependency id="d1" source="t1" destination="c1" type="DIRECTED"/>
+    <dependency id="d2" source="c1" destination="t2" type="DIRECTED"/>
+    <functions>
+      <function anchor="t2">
+        <attributes>
+          <attribute name="ID" type="STRING">func0</attribute>
+        </attributes>
+      </function>
+    </functions>
+  </application>
+  <mappings>
+    <mapping id="m1" source="t1" target="r1"/>
+    <mapping id="m2" source="t2" target="r2"/>
+  </mappings>
+  <routings>
+    <routing source="c1">
+      <resource id="bus"/>
+      <resource id="r1"/>
+      <resource id="r2"/>
+      <link id="l2" source="bus" destination="r2" type="UNDIRECTED"/>
+      <link id="l1" source="r1" destination="bus" type="UNDIRECTED"/>
+    </routing>
+  </routings>
+</specification>

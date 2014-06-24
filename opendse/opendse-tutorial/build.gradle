@@ -22,7 +22,20 @@ task filterSources(type: Copy) {
 	into new File(project.buildDir,'tutorialsrc')
 }
 
-task tutorial(type: Copy, dependsOn: filterSources) {
+task filterXML(type: Copy) {
+	from('specs') {
+        include '**/*.xml'
+		filter { String line -> 
+			line.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+		}
+		def regexp = new org.apache.tools.ant.types.RegularExpression()
+  		regexp.pattern = '[^ \n\t\r]+'
+  		filter(org.apache.tools.ant.filters.LineContainsRegExp, regexps:[regexp])
+	}
+	into new File(project.buildDir,'tutorialsrc')
+}
+
+task tutorial(type: Copy, dependsOn: [filterSources, filterXML]) {
 	def Pattern p = Pattern.compile(".*(@file\\(([\\w/\\.]+)\\)).*");
 	from('src/main/tutorial'){
 		include '**/*html'

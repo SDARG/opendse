@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specification>
+  <architecture>
+    <resource id="r1">
+      <attributes>
+        <attribute name="costs" type="INT">100</attribute>
+        <attribute name="memory:CAPACITY-MAX" type="INT">128</attribute>
+      </attributes>
+    </resource>
+    <resource id="r2">
+      <attributes>
+        <attribute name="costs" type="INT">50</attribute>
+        <attribute name="memory:CAPACITY-MAX" type="INT">64</attribute>
+      </attributes>
+    </resource>
+    <resource id="r3">
+      <attributes>
+        <attribute name="costs" type="INT">50</attribute>
+        <attribute name="memory:CAPACITY-MAX" type="INT" parameter="SELECT">64 [128, 196]</attribute>
+      </attributes>
+    </resource>
+    <link id="l2" source="r2" destination="r3" type="UNDIRECTED"/>
+    <link id="l1" source="r1" destination="r2" type="UNDIRECTED"/>
+  </architecture>
+  <application>
+    <task id="t2"/>
+    <task id="t1">
+      <attributes>
+        <attribute name="memory" type="INT">40</attribute>
+      </attributes>
+    </task>
+    <communication id="c1">
+      <attributes>
+        <attribute name="memory" type="INT">1</attribute>
+      </attributes>
+    </communication>
+    <dependency id="d1" source="t1" destination="c1" type="DIRECTED"/>
+    <dependency id="d2" source="c1" destination="t2" type="DIRECTED"/>
+    <functions>
+      <function anchor="t2">
+        <attributes>
+          <attribute name="ID" type="STRING">func0</attribute>
+        </attributes>
+      </function>
+    </functions>
+  </application>
+  <mappings>
+    <mapping id="m1" source="t1" target="r1"/>
+    <mapping id="m2" source="t2" target="r2">
+      <attributes>
+        <attribute name="memory" type="INT">70</attribute>
+      </attributes>
+    </mapping>
+    <mapping id="m3" source="t2" target="r3">
+      <attributes>
+        <attribute name="memory" type="INT">75</attribute>
+      </attributes>
+    </mapping>
+  </mappings>
+  <routings>
+    <routing source="c1">
+      <resource id="r1"/>
+      <resource id="r2"/>
+      <resource id="r3"/>
+      <link id="l2" source="r2" destination="r3" type="UNDIRECTED"/>
+      <link id="l1" source="r1" destination="r2" type="UNDIRECTED"/>
+    </routing>
+  </routings>
+</specification>

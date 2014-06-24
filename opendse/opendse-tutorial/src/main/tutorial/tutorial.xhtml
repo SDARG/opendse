@@ -14,35 +14,141 @@
 
 	<h2 class="nocount">Contents</h2>
 	<ol>
-		<li><a href="#modeling">Modeling</a></li>
+		<li><a href="#basic">Basic Specification</a></li>
+		<li><a href="#communication">Communication and Routings</a></li>
+		<li><a href="#implementation">Specification and Implementation</a></li>
+		<li><a href="#constraints">Constraints</a></li>
+		<li><a href="#parameters">Parameters</a></li>
 		<li><a href="#optimization">Optimization</a></li>
 	</ol>
 
 	<h2>
-		<a id="modeling"></a>Modeling
+		<a id="basic"></a>Basic Specification
 	</h2>
 	
-	<p>A specification consists of an application, the architecture, and the mappings. 
-	In Java, it can be defined as follows:</p>
+	<p>In the following, it is shown how to model specifications in Java and XML.
+	A specification consists of an application, the architecture, and the mappings. 
+	In Java, a basic implementation can be defined as follows:</p>
 	
-	<pre class="prettyprint">@file(net.sf.opendse.optimization.test.java)</pre>
+	<pre class="prettyprint">@file(net/sf/opendse/tutorial/Part1.java)</pre>
 	
-	<h3>
-		Basic Specification
-	</h3>
+	The corresponding XML representation looks as follows:
 	
-	<p>A specification consists of an application, the architecture, and the mappings. 
-	In Java, it can be defined as follows:</p>
+	<pre class="prettyprint">@file(Specification1.xml)</pre>
 
+	<p>The resulting specification looks as follows in the viewer:</p>
 	
-	<p>The resulting specification looks as follows:</p>
+	<img src="img/Specification1.png" alt="Basic Specification"/>
 	
-	<img src="img/specification.png" alt="Basic Specification"/>
 	
+	
+	<h2>
+		<a id="communication"></a>Communication and Routings
+	</h2>
+	
+	<p>The application can be extended with communication tasks and the specification might also be initialized with routings:</p>
+	
+	<pre class="prettyprint">@file(net/sf/opendse/tutorial/Part2.java)</pre>
+	
+	The corresponding XML representation looks as follows (the routings are added automatically in the Java implementations):
+	
+	<pre class="prettyprint">@file(Specification2.xml)</pre>
+
+	<p>The resulting specification looks as follows in the viewer:</p>
+	
+	<img src="img/Specification2.png" alt="Communication and Routings"/>
+	
+
+	<h2>
+		<a id="implementation"></a>Specification and Implementation
+	</h2>
+	
+	<p>A specification by definition contains a set of feasible implementations. 
+	In the code, each implementation is also a Specification class.
+	It is possible to obtain a single feasible implementation for a given specification:
+	</p>
+	
+	<pre class="prettyprint">@file(net/sf/opendse/tutorial/Part3.java)</pre>
+	
+	The corresponding XML representation of the specification looks as follows:
+	
+	<pre class="prettyprint">@file(Specification3.xml)</pre>
+	
+	The corresponding XML representation of the obtained implementation looks as follows:
+	
+	<pre class="prettyprint">@file(Implementation3.xml)</pre>
+
+	<p>The resulting implementation looks as follows in the viewer:</p>
+	
+	<img src="img/Implementation3.png" alt="Implementation"/>
+	
+	
+	
+	
+	<h2>
+		<a id="constraints"></a>Constraints
+	</h2>
+	
+	<p>It is possible to define further constraints:
+	</p>
+	
+	<pre class="prettyprint">@file(net/sf/opendse/tutorial/Part4.java)</pre>
+	
+	The corresponding XML representation of the specification looks as follows:
+	
+	<pre class="prettyprint">@file(Specification4.xml)</pre>
+	
+	The corresponding XML representation of the obtained implementation looks as follows:
+	
+	<pre class="prettyprint">@file(Implementation4.xml)</pre>
+
+	<p>The resulting implementation looks as follows in the viewer:</p>
+	
+	<img src="img/Implementation4.png" alt="Implementation"/>
+	
+	<h2>
+		<a id="parameters"></a>Parameters
+	</h2>
+	
+	<p>It is further possible to define parameters that shall be explored:
+	</p>
+	
+	<pre class="prettyprint">@file(net/sf/opendse/tutorial/Part5.java)</pre>
+	
+	The corresponding XML representation of the specification looks as follows:
+	
+	<a id="optimizationfile"></a>
+	<pre class="prettyprint">@file(Specification5.xml)</pre>
+	
+	The corresponding XML representation of the obtained implementation looks as follows:
+	
+	<pre class="prettyprint">@file(Implementation5.xml)</pre>
+
+	<p>The resulting implementation looks as follows in the viewer:</p>
+	
+	<img src="img/Implementation5.png" alt="Implementation"/>
+
+
+
 	<h2>
 		<a id="optimization"></a>Optimization
 	</h2>
-
+	
+	<p>
+	For each specification, an optimization can be carried out.
+	The optimization can be started by running the main method of the Opt4J class:</p>
+	<img src="img/Optimization6.png" alt="Implementation"/>
+	
+	<p>The optimization has to be properly configured by selecting the modules as illustrated. 
+	Additionally, it is necessary to select an input file which we set to <a href="#optimizationfile">this file</a>.
+	We optimize a single objective which are the costs.
+	It is possible to implement any kind of evaluator, including non-linear objectives. 
+	Furthermore, it is possible to use external evaluators, i.e., programs that receive the respective implementation as XML and return their result as XML. </p>
+	
+	<p>
+	The exploration delivers after a few iterations the optimal solution: </p>
+	
+	<img src="img/Exploration6.png" alt="Implementation"/>
 
 </body>
 </html>

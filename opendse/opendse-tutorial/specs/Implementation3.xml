@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specification>
+  <architecture>
+    <resource id="bus1">
+      <attributes>
+        <attribute name="costs" type="INT">20</attribute>
+      </attributes>
+    </resource>
+    <resource id="bus2">
+      <attributes>
+        <attribute name="costs" type="INT">20</attribute>
+      </attributes>
+    </resource>
+    <resource id="r1">
+      <attributes>
+        <attribute name="costs" type="INT">70</attribute>
+      </attributes>
+    </resource>
+    <resource id="r2">
+      <attributes>
+        <attribute name="costs" type="INT">50</attribute>
+      </attributes>
+    </resource>
+    <resource id="r3"/>
+    <link id="l4" source="r2" destination="bus2" type="UNDIRECTED"/>
+    <link id="l5" source="r3" destination="bus2" type="UNDIRECTED"/>
+    <link id="l2" source="r2" destination="bus1" type="UNDIRECTED"/>
+    <link id="l3" source="r1" destination="bus2" type="UNDIRECTED"/>
+    <link id="l1" source="r1" destination="bus1" type="UNDIRECTED"/>
+  </architecture>
+  <application>
+    <task id="t3"/>
+    <task id="t2"/>
+    <task id="t1"/>
+    <communication id="c1"/>
+    <communication id="c2"/>
+    <task id="t4"/>
+    <task id="t5"/>
+    <task id="t6"/>
+    <communication id="c3"/>
+    <dependency id="d1" source="t1" destination="c1" type="DIRECTED"/>
+    <dependency id="d2" source="c1" destination="t2" type="DIRECTED"/>
+    <dependency id="d3" source="t3" destination="c2" type="DIRECTED"/>
+    <dependency id="d5" source="c2" destination="t5" type="DIRECTED"/>
+    <dependency id="d4" source="c2" destination="t4" type="DIRECTED"/>
+    <dependency id="d7" source="c3" destination="t6" type="DIRECTED"/>
+    <dependency id="d6" source="t5" destination="c3" type="DIRECTED"/>
+    <functions>
+      <function anchor="t2">
+        <attributes>
+          <attribute name="ID" type="STRING">func0</attribute>
+        </attributes>
+      </function>
+      <function anchor="t3">
+        <attributes>
+          <attribute name="ID" type="STRING">func1</attribute>
+        </attributes>
+      </function>
+    </functions>
+  </application>
+  <mappings>
+    <mapping id="m5" source="t3" target="r3"/>
+    <mapping id="m6" source="t4" target="r3"/>
+    <mapping id="m7" source="t5" target="r2"/>
+    <mapping id="m8" source="t6" target="r1"/>
+    <mapping id="m1" source="t1" target="r1"/>
+    <mapping id="m2" source="t2" target="r2"/>
+    <mapping id="m3" source="t1" target="r3"/>
+    <mapping id="m4" source="t2" target="r3"/>
+  </mappings>
+  <routings>
+    <routing source="c1">
+      <resource id="bus1"/>
+      <resource id="bus2"/>
+      <resource id="r1"/>
+      <resource id="r2"/>
+      <resource id="r3"/>
+      <link id="l4" source="r2" destination="bus2" type="UNDIRECTED"/>
+      <link id="l5" source="r3" destination="bus2" type="UNDIRECTED"/>
+      <link id="l2" source="r2" destination="bus1" type="UNDIRECTED"/>
+      <link id="l3" source="r1" destination="bus2" type="UNDIRECTED"/>
+      <link id="l1" source="r1" destination="bus1" type="UNDIRECTED"/>
+    </routing>
+    <routing source="c2">
+      <resource id="bus1"/>
+      <resource id="bus2"/>
+      <resource id="r1"/>
+      <resource id="r2"/>
+      <resource id="r3"/>
+      <link id="l4" source="r2" destination="bus2" type="UNDIRECTED"/>
+      <link id="l5" source="r3" destination="bus2" type="UNDIRECTED"/>
+      <link id="l2" source="r2" destination="bus1" type="UNDIRECTED"/>
+      <link id="l3" source="r1" destination="bus2" type="UNDIRECTED"/>
+      <link id="l1" source="r1" destination="bus1" type="UNDIRECTED"/>
+    </routing>
+    <routing source="c3">
+      <resource id="bus1"/>
+      <resource id="bus2"/>
+      <resource id="r1"/>
+      <resource id="r2"/>
+      <link id="l4" source="r2" destination="bus2" type="UNDIRECTED"/>
+      <link id="l2" source="r2" destination="bus1" type="UNDIRECTED"/>
+      <link id="l3" source="r1" destination="bus2" type="UNDIRECTED"/>
+      <link id="l1" source="r1" destination="bus1" type="UNDIRECTED"/>
+    </routing>
+  </routings>
+</specification>
