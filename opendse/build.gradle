@@ -171,4 +171,4 @@ task copyTutorial(type: Copy, dependsOn: ":opendse-tutorial:tutorial"){
 
 task website(dependsOn: [copyWebsite, copyJavadoc, copyTutorial]) {}
 
-task release(dependsOn: [distZip,website] ){}
+task release(dependsOn: [fatjar,website] ){}
