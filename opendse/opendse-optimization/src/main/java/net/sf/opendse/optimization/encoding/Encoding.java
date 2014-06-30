@@ -61,8 +61,7 @@ import edu.uci.ics.jung.graph.util.Pair;
  */
 public class Encoding {
 
-	public static List<Class<?>> order = Arrays.<Class<?>> asList(Resource.class, Link.class, Mapping.class, CR.class,
-			CLRR.class);
+	public static List<Class<?>> order = Arrays.<Class<?>> asList(Resource.class, Link.class, Mapping.class, CR.class, CLRR.class);
 
 	public static class VariableComparator implements Comparator<Object>, Serializable {
 
@@ -94,44 +93,38 @@ public class Encoding {
 		this.specificationConstraints = specificationConstraints;
 	}
 
-	public List<Constraint> toConstraints(Specification specification) {
-		List<Constraint> constraints = new ArrayList<Constraint>();
-
-		Application<Task, Dependency> application = specification.getApplication();
-		Architecture<Resource, Link> architecture = specification.getArchitecture();
-		Mappings<Task, Resource> mappings = specification.getMappings();
-		Routings<Task, Resource, Link> routings = specification.getRoutings();
-
-		// EQ1
-		for (Task task : filterProcesses(application)) {
+	protected void EQ1(List<Constraint> constraints, Specification specification) {
+		for (Task task : filterProcesses(specification.getApplication())) {
 			Constraint constraint = new Constraint("=", 1);
-			for (Mapping<Task, Resource> m : mappings.get(task)) {
+			for (Mapping<Task, Resource> m : specification.getMappings().get(task)) {
 				constraint.add(p(m));
 			}
 			constraints.add(constraint);
 		}
-
-		// EQ2
-		for (Mapping<Task, Resource> m : mappings) {
+	}
+	
+	protected void EQ2(List<Constraint> constraints, Specification specification) {
+		for (Mapping<Task, Resource> m : specification.getMappings()) {
 			Constraint constraint = new Constraint(">=", 0);
 			Resource r = m.getTarget();
 			constraint.add(p(r));
 			constraint.add(-1, p(m));
 			constraints.add(constraint);
 		}
-
-		// EQ3 + EQ4
-		for (Dependency dependency : application.getEdges()) {
-			Task p0 = application.getSource(dependency);
-			Task p1 = application.getDest(dependency);
+	}
+	
+	protected void EQ3EQ4(List<Constraint> constraints, Specification specification){
+		for (Dependency dependency : specification.getApplication().getEdges()) {
+			Task p0 = specification.getApplication().getSource(dependency);
+			Task p1 = specification.getApplication().getDest(dependency);
 
 			if (isProcess(p0) && isProcess(p1)) {
-				for (Mapping<Task, Resource> m0 : mappings.get(p0)) {
-					for (Mapping<Task, Resource> m1 : mappings.get(p1)) {
+				for (Mapping<Task, Resource> m0 : specification.getMappings().get(p0)) {
+					for (Mapping<Task, Resource> m1 : specification.getMappings().get(p1)) {
 						Resource r0 = m0.getTarget();
 						Resource r1 = m1.getTarget();
 
-						Edge l = architecture.findEdge(r0, r1);
+						Edge l = specification.getArchitecture().findEdge(r0, r1);
 
 						if (l != null) {
 							Constraint constraint = new Constraint(">=", -1); // EQ3
@@ -149,10 +142,11 @@ public class Encoding {
 				}
 			}
 		}
-
-		// EQ5
-		for (Link l : architecture.getEdges()) {
-			Pair<Resource> pair = architecture.getEndpoints(l);
+	}
+	
+	protected void EQ5(List<Constraint> constraints, Specification specification){
+		for (Link l : specification.getArchitecture().getEdges()) {
+			Pair<Resource> pair = specification.getArchitecture().getEndpoints(l);
 			Resource r0 = pair.getFirst();
 			Resource r1 = pair.getSecond();
 
@@ -162,21 +156,23 @@ public class Encoding {
 			constraint.add(p(r1));
 			constraints.add(constraint);
 		}
-
-		// EQ6
-		for (Task c : filterCommunications(application)) {
-			Architecture<Resource, Link> routing = routings.get(c);
+	}
+	
+	protected void EQ6(List<Constraint> constraints, Specification specification){
+		for (Task c : filterCommunications(specification.getApplication())) {
+			Architecture<Resource, Link> routing = specification.getRoutings().get(c);
 			for (Resource r : routing) {
 				Constraint constraint = new Constraint(">=", 0);
 				constraint.add(p(r));
 				constraint.add(-1, p(var(c, r)));
 				constraints.add(constraint);
 			}
-		}
-
-		// EQ7
-		for (Task c : filterCommunications(application)) {
-			Architecture<Resource, Link> routing = routings.get(c);
+		}		
+	}
+	
+	protected void EQ7(List<Constraint> constraints, Specification specification){
+		for (Task c : filterCommunications(specification.getApplication())) {
+			Architecture<Resource, Link> routing = specification.getRoutings().get(c);
 			for (DirectedLink lrr : getLinks(routing)) {
 				Constraint constraint = new Constraint(">=", 0);
 				constraint.add(p(lrr.getLink()));
@@ -184,10 +180,11 @@ public class Encoding {
 				constraints.add(constraint);
 			}
 		}
-
-		// EQ8
-		for (Task c : filterCommunications(application)) {
-			Architecture<Resource, Link> routing = routings.get(c);
+	}
+	
+	protected void EQ8(List<Constraint> constraints, Specification specification){
+		for (Task c : filterCommunications(specification.getApplication())) {
+			Architecture<Resource, Link> routing = specification.getRoutings().get(c);
 			for (DirectedLink lrr : getLinks(routing)) {
 				Resource r0 = lrr.getSource();
 				Resource r1 = lrr.getDest();
@@ -199,10 +196,11 @@ public class Encoding {
 				constraints.add(constraint);
 			}
 		}
+	}
 
-		// EQ9
-		for (Task c : filterCommunications(application)) {
-			Architecture<Resource, Link> routing = routings.get(c);
+	protected void EQ9(List<Constraint> constraints, Specification specification){
+		for (Task c : filterCommunications(specification.getApplication())) {
+			Architecture<Resource, Link> routing = specification.getRoutings().get(c);
 
 			for (Link l : routing.getEdges()) {
 				if (routing.getEdgeType(l) == UNDIRECTED) {
@@ -217,14 +215,15 @@ public class Encoding {
 				}
 			}
 		}
-
-		// EQ10 + EQ11
-		for (Task c : filterCommunications(application)) {
-			for (Task p : filterProcesses(application.getNeighbors(c))) {
-				for (Mapping<Task, Resource> m : mappings.get(p)) {
+	}
+	
+	protected void EQ10EQ11(List<Constraint> constraints, Specification specification){
+		for (Task c : filterCommunications(specification.getApplication())) {
+			for (Task p : filterProcesses(specification.getApplication().getNeighbors(c))) {
+				for (Mapping<Task, Resource> m : specification.getMappings().get(p)) {
 					Resource r = m.getTarget();
 
-					if (routings.get(c).containsVertex(r)) {
+					if (specification.getRoutings().get(c).containsVertex(r)) {
 						Constraint constraint = new Constraint(">=", 0); // EQ10
 						constraint.add(p(var(c, r)));
 						constraint.add(-1, p(m));
@@ -237,13 +236,14 @@ public class Encoding {
 				}
 			}
 		}
-
-		// EQ12
-		for (Task c : filterCommunications(application)) {
-			for (Task p : filterProcesses(application.getPredecessors(c))) {
-				for (Mapping<Task, Resource> m : mappings.get(p)) {
+	}
+	
+	protected void EQ12(List<Constraint> constraints, Specification specification){
+		for (Task c : filterCommunications(specification.getApplication())) {
+			for (Task p : filterProcesses(specification.getApplication().getPredecessors(c))) {
+				for (Mapping<Task, Resource> m : specification.getMappings().get(p)) {
 					Resource r0 = m.getTarget();
-					Architecture<Resource, Link> routing = routings.get(c);
+					Architecture<Resource, Link> routing = specification.getRoutings().get(c);
 
 					for (DirectedLink lrr : getInLinks(routing, r0)) {
 						Constraint constraint = new Constraint("<=", 1);
@@ -255,10 +255,11 @@ public class Encoding {
 				}
 			}
 		}
-
-		// EQ13
-		for (Task c : filterCommunications(application)) {
-			Architecture<Resource, Link> routing = routings.get(c);
+	}
+	
+	protected void EQ13(List<Constraint> constraints, Specification specification){
+		for (Task c : filterCommunications(specification.getApplication())) {
+			Architecture<Resource, Link> routing = specification.getRoutings().get(c);
 
 			for (Resource r0 : routing) {
 				Constraint constraint = new Constraint("<=", 1);
@@ -268,30 +269,18 @@ public class Encoding {
 				constraints.add(constraint);
 			}
 		}
-
-		// EQ12
-		/*
-		 * for (Task p : filterProcesses(application)) { for (Task c :
-		 * filterCommunications(application.getNeighbors(p))) {
-		 * 
-		 * Architecture<Resource, Edge> routing = routings.get(c);
-		 * 
-		 * Constraint constraint = new Constraint(">=", 1); for (Mapping<Task,
-		 * Resource> m : mappings.get(p)) { Resource r = m.getTarget(); if
-		 * (routing.containsVertex(r)) { constraint.add(p(var(c, r))); } }
-		 * constraints.add(constraint); } }
-		 */
-
-		// EQ14
-		for (Task c : filterCommunications(application)) {
-			Architecture<Resource, Link> routing = routings.get(c);
+	}
+	
+	protected void EQ14(List<Constraint> constraints, Specification specification){
+		for (Task c : filterCommunications(specification.getApplication())) {
+			Architecture<Resource, Link> routing = specification.getRoutings().get(c);
 
 			for (Resource r0 : routing) {
 				Constraint constraint = new Constraint(">=", 0);
 				constraint.add(-1, p(var(c, r0)));
 
-				for (Task p : filterProcesses(application.getSuccessors(c))) {
-					for (Mapping<Task, Resource> m : mappings.get(p, r0)) {
+				for (Task p : filterProcesses(specification.getApplication().getSuccessors(c))) {
+					for (Mapping<Task, Resource> m : specification.getMappings().get(p, r0)) {
 						constraint.add(p(m));
 					}
 				}
@@ -301,17 +290,18 @@ public class Encoding {
 				constraints.add(constraint);
 			}
 		}
-
-		// EQ15
-		for (Task c : filterCommunications(application)) {
-			Architecture<Resource, Link> routing = routings.get(c);
+	}
+	
+	protected void EQ15(List<Constraint> constraints, Specification specification){
+		for (Task c : filterCommunications(specification.getApplication())) {
+			Architecture<Resource, Link> routing = specification.getRoutings().get(c);
 
 			for (Resource r0 : routing) {
 				Constraint constraint = new Constraint(">=", 0);
 				constraint.add(-1, p(var(c, r0)));
 
-				for (Task p : filterProcesses(application.getPredecessors(c))) {
-					for (Mapping<Task, Resource> m : mappings.get(p, r0)) {
+				for (Task p : filterProcesses(specification.getApplication().getPredecessors(c))) {
+					for (Mapping<Task, Resource> m : specification.getMappings().get(p, r0)) {
 						constraint.add(p(m));
 					}
 				}
@@ -322,6 +312,199 @@ public class Encoding {
 				constraints.add(constraint);
 			}
 		}
+	}
+	
+	protected void EQ16(List<Constraint> constraints, Specification specification){
+		for (Task c : filterCommunications(specification.getApplication())) {
+			Architecture<Resource, Link> routing = specification.getRoutings().get(c);
+
+			for (Resource r0 : routing) {
+				Constraint constraint = new Constraint("<=", 1);
+				for (DirectedLink lrr : getOutLinks(routing, r0)) {
+					constraint.add(p(var(c, lrr)));
+				}
+				constraints.add(constraint);
+			}
+		}
+	}
+	
+	protected void EQ17(List<Constraint> constraints, Specification specification){
+		final Application<Task, Dependency> application = specification.getApplication();
+		
+		for (Task c : filterCommunications(application)) {
+			assert (application.getPredecessorCount(c) == 1);
+			assert (application.getSuccessorCount(c) == 1);
+
+			Task p0 = application.getPredecessors(c).iterator().next();
+			Task p1 = application.getSuccessors(c).iterator().next();
+
+			Architecture<Resource, Link> routing = specification.getRoutings().get(c);
+
+			for (Resource r0 : routing) {
+				Constraint constraint = new Constraint("=", 0);
+
+				for (DirectedLink lrr : getOutLinks(routing, r0)) {
+					constraint.add(1, p(var(c, lrr)));
+				}
+				for (DirectedLink lrr : getInLinks(routing, r0)) {
+					constraint.add(-1, p(var(c, lrr)));
+				}
+				for (Mapping<Task, Resource> m : specification.getMappings().get(p0, r0)) {
+					constraint.add(-1, p(m));
+				}
+				for (Mapping<Task, Resource> m : specification.getMappings().get(p1, r0)) {
+					constraint.add(1, p(m));
+				}
+				constraints.add(constraint);
+			}
+		}
+	}
+	
+	protected void EQ18(List<Constraint> constraints, Specification specification){
+		final Application<Task, Dependency> application = specification.getApplication();
+		
+		for (Task c : filterCommunications(application)) {
+			for (Task p0 : filterProcesses(application.getPredecessors(c))) {
+				for (Task p1 : filterProcesses(application.getSuccessors(c))) {
+					for (Mapping<Task, Resource> m : specification.getMappings().get(p0)) {
+						Resource r0 = m.getTarget();
+						Architecture<Resource, Link> routing = specification.getRoutings().get(c);
+
+						for (DirectedLink lrr : getInLinks(routing, r0)) {
+							Constraint constraint = new Constraint("<=", 1);
+							constraint.add(p(m));
+							constraint.add(p(var(c, lrr, p1)));
+							constraints.add(constraint);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	protected void EQ19(List<Constraint> constraints, Specification specification){
+		final Application<Task, Dependency> application = specification.getApplication();
+		
+		for (Task c : filterCommunications(application)) {
+			for (Task p : filterProcesses(application.getSuccessors(c))) {
+				Architecture<Resource, Link> routing = specification.getRoutings().get(c);
+
+				for (Resource r0 : routing) {
+					Constraint constraint = new Constraint("<=", 1);
+					for (DirectedLink lrr : getInLinks(routing, r0)) {
+						constraint.add(p(var(c, lrr, p)));
+					}
+					constraints.add(constraint);
+				}
+			}
+		}
+	}
+	
+	protected void EQ20(List<Constraint> constraints, Specification specification){
+		final Application<Task, Dependency> application = specification.getApplication();
+		
+		for (Task c : filterCommunications(application)) {
+			for (Task p : filterProcesses(application.getSuccessors(c))) {
+				Architecture<Resource, Link> routing = specification.getRoutings().get(c);
+
+				for (Resource r0 : routing) {
+					Constraint constraint = new Constraint("<=", 1);
+					for (Link l : routing.getOutEdges(r0)) {
+						Resource r1 = routing.getOpposite(r0, l);
+						constraint.add(p(var(c, l, r0, r1, p)));
+					}
+					constraints.add(constraint);
+				}
+			}
+		}
+	}
+	
+	protected void EQ21(List<Constraint> constraints, Specification specification){
+		final Application<Task, Dependency> application = specification.getApplication();
+		
+		for (Task c : filterCommunications(application)) {
+			assert (application.getPredecessorCount(c) == 1);
+			Task p0 = application.getPredecessors(c).iterator().next();
+			for (Task p1 : filterProcesses(application.getSuccessors(c))) {
+				Architecture<Resource, Link> routing = specification.getRoutings().get(c);
+
+				for (Resource r0 : routing) {
+					Constraint constraint = new Constraint("=", 0);
+
+					for (DirectedLink lrr : getOutLinks(routing, r0)) {
+						constraint.add(1, p(var(c, lrr, p1)));
+					}
+					for (DirectedLink lrr : getInLinks(routing, r0)) {
+						constraint.add(-1, p(var(c, lrr, p1)));
+					}
+					for (Mapping<Task, Resource> m : specification.getMappings().get(p0, r0)) {
+						constraint.add(-1, p(m));
+					}
+					for (Mapping<Task, Resource> m : specification.getMappings().get(p1, r0)) {
+						constraint.add(1, p(m));
+					}
+					constraints.add(constraint);
+				}
+			}
+		}
+	}
+	
+	protected void EQ22(List<Constraint> constraints, Specification specification){
+		final Application<Task, Dependency> application = specification.getApplication();
+		for (Task c : filterCommunications(application)) {
+			Architecture<Resource, Link> routing = specification.getRoutings().get(c);
+			for (DirectedLink lrr : getLinks(routing)) {
+				Constraint constraint = new Constraint(">=", 0);
+				constraint.add(-1, p(var(c, lrr)));
+				for (Task p : filterProcesses(application.getSuccessors(c))) {
+					constraint.add(p(var(c, lrr, p)));
+				}
+				constraints.add(constraint);
+			}
+		}
+	}
+	
+	protected void EQ23(List<Constraint> constraints, Specification specification){
+		final Application<Task, Dependency> application = specification.getApplication();
+		for (Task c : filterCommunications(application)) {
+			for (Task p : filterProcesses(application.getSuccessors(c))) {
+				Architecture<Resource, Link> routing = specification.getRoutings().get(c);
+				for (DirectedLink lrr : getLinks(routing)) {
+					Constraint constraint = new Constraint(">=", 0);
+					constraint.add(-1, p(var(c, lrr, p)));
+					constraint.add(p(var(c, lrr)));
+					constraints.add(constraint);
+				}
+			}
+		}
+	}
+	
+	
+	public List<Constraint> toConstraints(Specification specification) {
+		List<Constraint> constraints = new ArrayList<Constraint>();
+
+		Application<Task, Dependency> application = specification.getApplication();
+		Architecture<Resource, Link> architecture = specification.getArchitecture();
+		Mappings<Task, Resource> mappings = specification.getMappings();
+		Routings<Task, Resource, Link> routings = specification.getRoutings();
+
+		EQ1(constraints, specification);
+		EQ2(constraints, specification);
+		EQ3EQ4(constraints, specification);
+		EQ5(constraints, specification);
+		EQ6(constraints, specification);
+		
+		EQ7(constraints, specification);
+		EQ8(constraints, specification);
+		EQ9(constraints, specification);
+		EQ10EQ11(constraints, specification);
+		EQ12(constraints, specification);
+		EQ13(constraints, specification);
+		EQ14(constraints, specification);
+		EQ15(constraints, specification);
+		
+
+
 
 		boolean isUnicast = false;
 		boolean isMulticast1 = true;
@@ -330,153 +513,16 @@ public class Encoding {
 		final int Tmax = 6;
 
 		if (isUnicast) {
-
-			// EQ16 - unicast
-			for (Task c : filterCommunications(application)) {
-				Architecture<Resource, Link> routing = routings.get(c);
-
-				for (Resource r0 : routing) {
-					Constraint constraint = new Constraint("<=", 1);
-					for (DirectedLink lrr : getOutLinks(routing, r0)) {
-						constraint.add(p(var(c, lrr)));
-					}
-					constraints.add(constraint);
-				}
-			}
-
-			// EQ17 - unicast
-			for (Task c : filterCommunications(application)) {
-				assert (application.getPredecessorCount(c) == 1);
-				assert (application.getSuccessorCount(c) == 1);
-
-				Task p0 = application.getPredecessors(c).iterator().next();
-				Task p1 = application.getSuccessors(c).iterator().next();
-
-				Architecture<Resource, Link> routing = routings.get(c);
-
-				for (Resource r0 : routing) {
-					Constraint constraint = new Constraint("=", 0);
-
-					for (DirectedLink lrr : getOutLinks(routing, r0)) {
-						constraint.add(1, p(var(c, lrr)));
-					}
-					for (DirectedLink lrr : getInLinks(routing, r0)) {
-						constraint.add(-1, p(var(c, lrr)));
-					}
-					for (Mapping<Task, Resource> m : mappings.get(p0, r0)) {
-						constraint.add(-1, p(m));
-					}
-					for (Mapping<Task, Resource> m : mappings.get(p1, r0)) {
-						constraint.add(1, p(m));
-					}
-					constraints.add(constraint);
-				}
-			}
-
+			EQ16(constraints, specification);
+			EQ17(constraints, specification);
 		}
 		if (isMulticast1) {
-			// EQ18
-			for (Task c : filterCommunications(application)) {
-				for (Task p0 : filterProcesses(application.getPredecessors(c))) {
-					for (Task p1 : filterProcesses(application.getSuccessors(c))) {
-						for (Mapping<Task, Resource> m : mappings.get(p0)) {
-							Resource r0 = m.getTarget();
-							Architecture<Resource, Link> routing = routings.get(c);
-
-							for (DirectedLink lrr : getInLinks(routing, r0)) {
-								Constraint constraint = new Constraint("<=", 1);
-								constraint.add(p(m));
-								constraint.add(p(var(c, lrr, p1)));
-								constraints.add(constraint);
-							}
-						}
-					}
-				}
-			}
-
-			// EQ19
-			for (Task c : filterCommunications(application)) {
-				for (Task p : filterProcesses(application.getSuccessors(c))) {
-					Architecture<Resource, Link> routing = routings.get(c);
-
-					for (Resource r0 : routing) {
-						Constraint constraint = new Constraint("<=", 1);
-						for (DirectedLink lrr : getInLinks(routing, r0)) {
-							constraint.add(p(var(c, lrr, p)));
-						}
-						constraints.add(constraint);
-					}
-				}
-			}
-
-			// EQ20
-			for (Task c : filterCommunications(application)) {
-				for (Task p : filterProcesses(application.getSuccessors(c))) {
-					Architecture<Resource, Link> routing = routings.get(c);
-
-					for (Resource r0 : routing) {
-						Constraint constraint = new Constraint("<=", 1);
-						for (Link l : routing.getOutEdges(r0)) {
-							Resource r1 = routing.getOpposite(r0, l);
-							constraint.add(p(var(c, l, r0, r1, p)));
-						}
-						constraints.add(constraint);
-					}
-				}
-			}
-
-			// EQ21
-			for (Task c : filterCommunications(application)) {
-				assert (application.getPredecessorCount(c) == 1);
-				Task p0 = application.getPredecessors(c).iterator().next();
-				for (Task p1 : filterProcesses(application.getSuccessors(c))) {
-					Architecture<Resource, Link> routing = routings.get(c);
-
-					for (Resource r0 : routing) {
-						Constraint constraint = new Constraint("=", 0);
-
-						for (DirectedLink lrr : getOutLinks(routing, r0)) {
-							constraint.add(1, p(var(c, lrr, p1)));
-						}
-						for (DirectedLink lrr : getInLinks(routing, r0)) {
-							constraint.add(-1, p(var(c, lrr, p1)));
-						}
-						for (Mapping<Task, Resource> m : mappings.get(p0, r0)) {
-							constraint.add(-1, p(m));
-						}
-						for (Mapping<Task, Resource> m : mappings.get(p1, r0)) {
-							constraint.add(1, p(m));
-						}
-						constraints.add(constraint);
-					}
-				}
-			}
-
-			// EQ22
-			for (Task c : filterCommunications(application)) {
-				Architecture<Resource, Link> routing = routings.get(c);
-				for (DirectedLink lrr : getLinks(routing)) {
-					Constraint constraint = new Constraint(">=", 0);
-					constraint.add(-1, p(var(c, lrr)));
-					for (Task p : filterProcesses(application.getSuccessors(c))) {
-						constraint.add(p(var(c, lrr, p)));
-					}
-					constraints.add(constraint);
-				}
-			}
-
-			// EQ23
-			for (Task c : filterCommunications(application)) {
-				for (Task p : filterProcesses(application.getSuccessors(c))) {
-					Architecture<Resource, Link> routing = routings.get(c);
-					for (DirectedLink lrr : getLinks(routing)) {
-						Constraint constraint = new Constraint(">=", 0);
-						constraint.add(-1, p(var(c, lrr, p)));
-						constraint.add(p(var(c, lrr)));
-						constraints.add(constraint);
-					}
-				}
-			}
+			EQ18(constraints, specification);
+			EQ19(constraints, specification);
+			EQ20(constraints, specification);
+			EQ21(constraints, specification);
+			EQ22(constraints, specification);
+			EQ23(constraints, specification);
 		}
 
 		if (isMulticast2) {

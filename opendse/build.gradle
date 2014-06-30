@@ -159,7 +159,7 @@ task copyWebsite(type: Copy){
 	into 'build/website/'
 }
 
-task copyJavadoc(type: Copy){
+task copyJavadoc(type: Copy, dependsOn: alldocs){
 	from new File(project.buildDir, 'docs/javadoc')
 	into 'build/website/javadoc/'+version
 }
