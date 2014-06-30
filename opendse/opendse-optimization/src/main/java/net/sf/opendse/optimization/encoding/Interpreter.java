@@ -157,11 +157,18 @@ public class Interpreter {
 			Set<Set<Resource>> cluster = clusterer.transform(iRouting);
 
 			Task sender = iApplication.getPredecessors(c).iterator().next();
-			Resource root = iMappings.getTargets(sender).iterator().next();
-			assert (root != null);
+			
+			Set<Resource> targets = iMappings.getTargets(sender);
 
 			for (Set<Resource> set : cluster) {
-				if (!set.contains(root)) {
+				boolean containsAny = false;
+				for(Resource target: targets){
+					if(set.contains(target)){
+						containsAny = true;
+						break;
+					}
+				}
+				if (!containsAny) {
 					for (Resource r : set) {
 						iRouting.removeVertex(r);
 					}
