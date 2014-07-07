@@ -29,15 +29,18 @@ import org.opt4j.core.Objectives;
 import org.opt4j.core.problem.Evaluator;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 public class DesignSpaceExplorationEvaluator implements Evaluator<ImplementationWrapper> {
 
 	protected final List<ImplementationEvaluator> evaluators;
+	protected final Provider<Objectives> objectivesProvider;
 
 	@Inject
-	public DesignSpaceExplorationEvaluator(Set<ImplementationEvaluator> evaluators) {
+	public DesignSpaceExplorationEvaluator(Set<ImplementationEvaluator> evaluators, Provider<Objectives> objectivesProvider) {
 		super();
 		this.evaluators = new ArrayList<ImplementationEvaluator>(evaluators);
+		this.objectivesProvider = objectivesProvider;
 		Collections.sort(this.evaluators, new Comparator<ImplementationEvaluator>() {
 			@Override
 			public int compare(ImplementationEvaluator o1, ImplementationEvaluator o2) {
@@ -51,7 +54,7 @@ public class DesignSpaceExplorationEvaluator implements Evaluator<Implementation
 	@Override
 	public Objectives evaluate(ImplementationWrapper wrapper) {
 
-		Objectives objectives = new Objectives();
+		Objectives objectives = objectivesProvider.get();
 		for (ImplementationEvaluator evaluator : evaluators) {
 			Specification impl = evaluator.evaluate(wrapper.getImplementation(), objectives);
 			if (impl != null) {
