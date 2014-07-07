@@ -2,18 +2,19 @@ apply plugin: 'base'
 apply plugin: 'maven'
 apply plugin: 'application'
 
-version = '1.1d'
+version = '1.1'
 
 def stagingURL = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
 def snapshotURL = 'https://oss.sonatype.org/content/repositories/snapshots/'
 
 def descriptions = [
+	'opendse-generator' : 'The test case generator module of OpenDSE',
 	'opendse-io' : 'The IO module of OpenDSE', 
 	'opendse-model' : 'The algorithms module of OpenDSE',
 	'opendse-visualization' : 'The visualization module of OpenDSE',
 	'opendse-optimization' : 'The optimization module of OpenDSE',
-	'opendse-tutorial' : 'The tutorial module of OpenDSE',
-	'opendse-generator' : 'The test case generator module of OpenDSE']
+	'opendse-tutorial' : 'The tutorial module of OpenDSE'
+]
 
 allprojects {
     group = 'net.sf.opendse'

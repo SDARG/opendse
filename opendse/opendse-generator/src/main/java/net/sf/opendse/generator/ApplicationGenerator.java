@@ -17,6 +17,8 @@ package net.sf.opendse.generator;
 import static java.lang.Math.min;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -200,8 +202,8 @@ public class ApplicationGenerator extends Generator {
 			}
 		}
 	}
-
-	public Application<Task, Dependency> merge(Application<Task, Dependency>... applications) {
+	
+	public Application<Task, Dependency> merge(Collection<Application<Task, Dependency>> applications) {
 		Application<Task, Dependency> application = new Application<Task, Dependency>();
 		for (Application<Task, Dependency> appl : applications) {
 			for (Task task : appl.getVertices()) {
@@ -212,6 +214,11 @@ public class ApplicationGenerator extends Generator {
 			}
 		}
 		return application;
+	}
+
+	public Application<Task, Dependency> merge(Application<Task, Dependency>... applications) {
+		Collection<Application<Task, Dependency>> apps = Arrays.asList(applications);
+		return merge(apps);
 	}
 
 }
