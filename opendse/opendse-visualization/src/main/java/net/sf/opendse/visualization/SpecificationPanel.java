@@ -43,6 +43,8 @@ import org.opt4j.core.config.Icons;
 public class SpecificationPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	
+	protected JToolBar bar = null;
 
 	public SpecificationPanel(final Specification specification) {
 
@@ -53,7 +55,6 @@ public class SpecificationPanel extends JPanel {
 		}
 
 		setSpecification(specification);
-
 	}
 
 	protected void setSpecification(final Specification specification) {
@@ -77,7 +78,7 @@ public class SpecificationPanel extends JPanel {
 		this.setLayout(new BorderLayout());
 		this.add(split);
 
-		JToolBar bar = new JToolBar();
+		bar = new JToolBar();
 		bar.setFloatable(false);
 		this.add(BorderLayout.NORTH, bar);
 
