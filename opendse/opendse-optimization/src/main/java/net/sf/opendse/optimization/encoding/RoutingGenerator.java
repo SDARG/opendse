@@ -14,8 +14,6 @@
  */
 package net.sf.opendse.optimization.encoding;
 
-import java.util.Random;
-
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Dependency;
@@ -32,23 +30,12 @@ import net.sf.opendse.model.Task;
  * @author lukasiewycz
  * 
  */
-public class RoutingGenerator extends Generator {
+public class RoutingGenerator {
 
 	/**
 	 * Construct a {@code RoutingGenerator} with a random seed.
 	 */
 	public RoutingGenerator() {
-		this(System.currentTimeMillis());
-	}
-
-	/**
-	 * Construct a {@code RoutingGenerator} with a random seed.
-	 * 
-	 * @param seed
-	 *            the seed
-	 */
-	public RoutingGenerator(long seed) {
-		super(new Random(seed));
 	}
 
 	/**

@@ -12,14 +12,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with OpenDSE. If not, see http://www.gnu.org/licenses/.
  */
-package net.sf.opendse.optimization.test.generator;
+package net.sf.opendse.generator;
 
 import java.util.Random;
 
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Resource;
-import net.sf.opendse.optimization.encoding.Generator;
 
 /**
  * The {@code ArchitectureGenerator} contains several methods to generate and

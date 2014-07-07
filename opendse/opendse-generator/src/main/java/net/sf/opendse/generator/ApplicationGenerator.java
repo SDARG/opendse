@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with OpenDSE. If not, see http://www.gnu.org/licenses/.
  */
-package net.sf.opendse.optimization.test.generator;
+package net.sf.opendse.generator;
 
 import static java.lang.Math.min;
 
@@ -27,7 +27,6 @@ import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.ICommunication;
 import net.sf.opendse.model.Task;
-import net.sf.opendse.optimization.encoding.Generator;
 
 /**
  * The {@code ApplicationGenerator} contains several methods to generate and

@@ -12,8 +12,8 @@ def descriptions = [
 	'opendse-model' : 'The algorithms module of OpenDSE',
 	'opendse-visualization' : 'The visualization module of OpenDSE',
 	'opendse-optimization' : 'The optimization module of OpenDSE',
-	'opendse-tutorial' : 'The tutorial module of OpenDSE'
-]
+	'opendse-tutorial' : 'The tutorial module of OpenDSE',
+	'opendse-generator' : 'The test case generator module of OpenDSE']
 
 allprojects {
     group = 'net.sf.opendse'

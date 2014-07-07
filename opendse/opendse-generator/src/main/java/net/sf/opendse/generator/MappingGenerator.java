@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with OpenDSE. If not, see http://www.gnu.org/licenses/.
  */
-package net.sf.opendse.optimization.test.generator;
+package net.sf.opendse.generator;
 
 import static net.sf.opendse.model.Models.filterProcesses;
 
@@ -30,7 +30,6 @@ import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Mappings;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
-import net.sf.opendse.optimization.encoding.Generator;
 
 /**
  * The {@code MappingGenerator} contains several methods to generate and
