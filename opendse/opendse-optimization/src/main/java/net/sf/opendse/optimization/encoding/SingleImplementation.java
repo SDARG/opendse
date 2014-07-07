@@ -16,6 +16,7 @@ package net.sf.opendse.optimization.encoding;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Resource;
@@ -43,6 +44,15 @@ import com.google.inject.Module;
  * 
  */
 public class SingleImplementation {
+	
+	protected final List<Module> modules = new ArrayList<Module>();
+	
+	public SingleImplementation(){
+	}
+	
+	public SingleImplementation(Collection<Module> modules){
+		this.modules.addAll(modules);
+	}
 
 	public Specification get(final Specification spec) {
 		return get(spec, false);
@@ -81,6 +91,10 @@ public class SingleImplementation {
 		modules.add(ea);
 		modules.add(opt);
 		modules.add(specModule);
+		
+		for(Module module: this.modules){
+			modules.add(module);
+		}
 
 		Opt4JTask task = new Opt4JTask(false);
 		task.init(modules);
