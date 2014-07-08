@@ -33,22 +33,34 @@ import org.opt4j.satdecoding.Model;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+/**
+ * The {@code SATConstraints} objects initializes constraints and applies the
+ * preprocessing.
+ * 
+ * @author martin.lukasiewycz
+ *
+ */
 @Singleton
 public class SATConstraints {
 
 	protected final SpecificationWrapper specificationWrapper;
 	protected final List<Constraint> constraints = new ArrayList<Constraint>();
 	protected final List<Object> variables = new ArrayList<Object>();
-	protected final ConstraintPreprocessing pp = new ConstraintPreprocessing(true, true,
-			new Encoding.VariableComparator(), null, true);
+	protected final ConstraintPreprocessing pp;
 	protected boolean isInit = false;
 	protected Encoding encoding;
 
 	@Inject
 	public SATConstraints(SpecificationWrapper specificationWrapper, Encoding encoding) {
+		this(specificationWrapper, encoding, new ConstraintPreprocessing(true, true,
+				new Encoding.VariableComparator(), null, true));
+	}
+
+	public SATConstraints(SpecificationWrapper specificationWrapper, Encoding encoding, ConstraintPreprocessing pp) {
 		super();
 		this.specificationWrapper = specificationWrapper;
 		this.encoding = encoding;
+		this.pp = pp;
 	}
 
 	public synchronized List<Constraint> getConstraints() {
@@ -79,9 +91,10 @@ public class SATConstraints {
 				constraint.add(literal);
 				constraints.add(constraint);
 			}
-			/*for (Constraint constraint : constraints) {
-				System.out.println(constraint);
-			}*/
+			/*
+			 * for (Constraint constraint : constraints) {
+			 * System.out.println(constraint); }
+			 */
 			// this.constraints.addAll(constraints);
 			this.constraints.addAll(pp.process(constraints));
 
@@ -104,8 +117,8 @@ public class SATConstraints {
 		// return model;
 		return pp.decorate(model);
 	}
-	
-	public ConstraintPreprocessing getPreprocessing(){
+
+	public ConstraintPreprocessing getPreprocessing() {
 		return pp;
 	}
 
