@@ -183,10 +183,10 @@ public class ConstraintPreprocessing {
 			double plits = (double) s1.lits * 100 / s0.lits;
 			double pvars = (double) s1.vars * 100 / s0.vars;
 
-			System.out.println("Constraints [" + format.format(pcons) + "%] " + s1.cons);
-			System.out.println("Literals [" + format.format(plits) + "%] " + s1.lits);
-			System.out.println("Variables [" + format.format(pvars) + "%] " + s1.vars);
-			System.out.println("Units " + units.size() + " Equalities " + equalities.size());
+			//System.out.println("Constraints [" + format.format(pcons) + "%] " + s1.cons);
+			//System.out.println("Literals [" + format.format(plits) + "%] " + s1.lits);
+			//System.out.println("Variables [" + format.format(pvars) + "%] " + s1.vars);
+			//System.out.println("Units " + units.size() + " Equalities " + equalities.size());
 		}
 
 		List<Constraint> list = new ArrayList<Constraint>(this.constraints);
