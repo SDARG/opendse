@@ -20,12 +20,26 @@ import org.opt4j.satdecoding.Solver;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+/**
+ * The {@code SATIncremental} class is used to add constraints at run time.
+ * 
+ * @author martin.lukasiewycz
+ *
+ */
 @Singleton
 public class SATIncremental {
 
 	protected final SATConstraints satConstraints;
 	protected final Solver solver;
 
+	/**
+	 * Constructs the {@code SATIncremental} object.
+	 * 
+	 * @param satConstraints
+	 *            the constraints
+	 * @param solver
+	 *            the solver
+	 */
 	@Inject
 	public SATIncremental(SATConstraints satConstraints, Solver solver) {
 		super();
@@ -33,7 +47,23 @@ public class SATIncremental {
 		this.solver = solver;
 	}
 
+	/**
+	 * Add a constraint.
+	 * 
+	 * @param constraint the constraint to be added
+	 */
+	@Deprecated
 	public void exclude(Constraint constraint) {
+		Constraint c = satConstraints.getPreprocessing().processAfterInit(constraint);
+		solver.addConstraint(c);
+	}
+
+	/**
+	 * Add a constraint.
+	 * 
+	 * @param constraint the constraint to be added
+	 */
+	public void add(Constraint constraint) {
 		Constraint c = satConstraints.getPreprocessing().processAfterInit(constraint);
 		solver.addConstraint(c);
 	}
