@@ -20,20 +20,45 @@ import javax.swing.JFrame;
 
 import net.sf.opendse.model.Specification;
 
+/**
+ * The {@code SpecificationViewer} views a specification in a separate frame.
+ * 
+ * @author martin.lukasiewycz
+ *
+ */
 public class SpecificationViewer {
 
+	/**
+	 * View the {@link Specification}. Exit once the window is closed.
+	 * 
+	 * @param specification
+	 *            the specification to be viewed.
+	 */
 	public static void view(Specification specification) {
+		view(specification, true);
+	}
+
+	/**
+	 * View the {@link Specification}.
+	 * 
+	 * @param specification
+	 *            the specification to be viewed.
+	 * @param existOnClose
+	 *            set close operation
+	 */
+	public static void view(Specification specification, boolean existOnClose) {
 		JFrame frame = new JFrame();
-		
+
 		SpecificationPanel panel = new SpecificationPanel(specification);
-		
+
 		frame.setLayout(new BorderLayout());
 		frame.add(panel);
 
 		frame.pack();
 		frame.setVisible(true);
 
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		if (existOnClose) {
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		}
 	}
 }
