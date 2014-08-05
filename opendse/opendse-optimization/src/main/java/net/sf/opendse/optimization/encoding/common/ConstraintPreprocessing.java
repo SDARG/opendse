@@ -505,7 +505,7 @@ public class ConstraintPreprocessing {
 	 *            keep
 	 * @param l2
 	 *            replace
-	 * @return
+	 * @return collection of constraints
 	 */
 	protected Collection<Constraint> propagateEquality(Literal l1, Literal l2) {
 		Object v1 = l1.variable();
