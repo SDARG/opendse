@@ -153,7 +153,16 @@ public class SpecificationConnectConstraints extends AbstractSpecificationConstr
 			List<Term> linkTerms = new ArrayList<Term>();
 			
 			for(Link link: links){
-				linkTerms.add(new Term(1, p(link)));
+				int weight = 1;
+				if(link.getType().contains(":")){
+					try {
+						weight = Integer.parseInt(link.getType().split(":")[1]);
+					} catch (NumberFormatException e){
+						System.err.println("Cannot parse weight of type "+link.getType()+" for link "+link);
+					}
+				}
+				
+				linkTerms.add(new Term(weight, p(link)));
 			}
 			
 			if(!max.isNull()){
