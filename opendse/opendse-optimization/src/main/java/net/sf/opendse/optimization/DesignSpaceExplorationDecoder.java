@@ -30,11 +30,11 @@ import net.sf.opendse.model.parameter.ParameterSelect;
 import org.opt4j.core.Genotype;
 import org.opt4j.core.genotype.CompositeGenotype;
 import org.opt4j.core.problem.Decoder;
+import org.opt4j.satdecoding.ContradictionException;
 
 import com.google.inject.Inject;
 
-public class DesignSpaceExplorationDecoder implements
-		Decoder<CompositeGenotype<String, Genotype>, ImplementationWrapper> {
+public class DesignSpaceExplorationDecoder implements Decoder<CompositeGenotype<String, Genotype>, ImplementationWrapper> {
 
 	protected final SATCreatorDecoder satDecoder;
 	protected final ParameterDecoder parameterDecoder;
@@ -43,8 +43,7 @@ public class DesignSpaceExplorationDecoder implements
 	protected final Map<ParameterReference, List<Object>> selectParametersMap = new HashMap<ParameterReference, List<Object>>();
 
 	@Inject
-	public DesignSpaceExplorationDecoder(SATCreatorDecoder satDecoder, ParameterDecoder parameterDecoder,
-			SpecificationWrapper specWrapper) {
+	public DesignSpaceExplorationDecoder(SATCreatorDecoder satDecoder, ParameterDecoder parameterDecoder, SpecificationWrapper specWrapper) {
 		super();
 		this.satDecoder = satDecoder;
 		this.parameterDecoder = parameterDecoder;
@@ -74,7 +73,13 @@ public class DesignSpaceExplorationDecoder implements
 		Genotype satGenotype = genotype.get("SAT");
 		CompositeGenotype<String, Genotype> parameterGenotype = genotype.get("PARAMETER");
 
-		ImplementationWrapper wrapper = satDecoder.decode(satGenotype);
+		ImplementationWrapper wrapper = null;
+		try {
+			wrapper = satDecoder.decode(satGenotype);
+		} catch (ContradictionException e) {
+			System.err.println("Stopping");
+			throw e;
+		}
 		ParameterMap parameterMap = parameterDecoder.decode(parameterGenotype);
 
 		Specification implementation = wrapper.getImplementation();
