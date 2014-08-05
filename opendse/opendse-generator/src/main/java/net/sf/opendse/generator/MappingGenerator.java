@@ -92,8 +92,8 @@ public class MappingGenerator extends Generator {
 	 * 
 	 * @param application
 	 *            the application
-	 * @param architecture
-	 *            the architecture
+	 * @param resources
+	 *            the resources
 	 * @param min
 	 *            the minimal number of mappings per task
 	 * @param max
