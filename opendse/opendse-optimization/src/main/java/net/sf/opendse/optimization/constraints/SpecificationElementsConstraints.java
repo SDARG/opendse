@@ -54,7 +54,7 @@ public class SpecificationElementsConstraints implements SpecificationConstraint
 				for(String str: excludeList){
 					c.add(p(elementsMap.get(str)));
 				}
-				System.out.println(c);
+				//System.out.println(c);
 				constraints.add(c);
 			}
 			if(requireList != null){
@@ -63,7 +63,7 @@ public class SpecificationElementsConstraints implements SpecificationConstraint
 				for(String str: requireList){
 					c.add(p(elementsMap.get(str)));
 				}
-				System.out.println(c);
+				//System.out.println(c);
 				constraints.add(c);
 			}
 		}
