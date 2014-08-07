@@ -43,6 +43,9 @@ public interface SpecificationConstraints {
 	public static String CAPACITY_VALUE = ":CAPACITY-VALUE";
 	public static String CAPACITY_RATIO = ":CAPACITY-RATIO";
 	
+	public static String ELEMENTS_EXCLUDE = "ELEMENTS_EXCLUDE";
+	public static String ELEMENTS_REQUIRE = "ELEMENTS_REQUIRE";
+	
 	public static String ROUTER = "ROUTER";
 
 }

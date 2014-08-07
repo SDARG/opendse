@@ -14,11 +14,13 @@
  */
 package net.sf.opendse.optimization.test;
 
+import net.sf.opendse.io.SpecificationReader;
 import net.sf.opendse.io.SpecificationWriter;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Dependency;
+import net.sf.opendse.model.Element;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Mappings;
@@ -27,6 +29,7 @@ import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.parameter.Parameters;
+import net.sf.opendse.optimization.constraints.ElementList;
 import net.sf.opendse.optimization.constraints.SpecificationConstraints;
 import net.sf.opendse.optimization.encoding.SingleImplementation;
 import net.sf.opendse.visualization.SpecificationViewer;
@@ -98,8 +101,8 @@ public class ConnectSpecificationTest {
 		r2.setAttribute("costs", 50);
 		r2.setAttribute("variant", Parameters.select("alpha", "alpha", "beta", "gamma"));
 		r2.setAttribute("memory" + SpecificationConstraints.CAPACITY_MAX, 64);
-		r2.setAttribute("GPIO" + SpecificationConstraints.CONNECT_MAX, Parameters.selectRef("variant", 1, 3, 3, 3));
-		r2.setAttribute("GPIO" + SpecificationConstraints.CONNECT_MIN, Parameters.selectRef("variant", 1, 3, 3, 3));
+		r2.setAttribute("GPIO" + SpecificationConstraints.CONNECT_MAX, Parameters.selectRef("variant", 1, 1, 2, 3));
+		r2.setAttribute("GPIO" + SpecificationConstraints.CONNECT_MIN, Parameters.selectRef("variant", 1, 1, 2, 3));
 		Resource r3 = new Resource("r3");
 		r3.setAttribute("costs", 50);
 		r3.setAttribute("memory" + SpecificationConstraints.CAPACITY_MAX, Parameters.select(64, 128, 196));
@@ -107,15 +110,21 @@ public class ConnectSpecificationTest {
 
 		Link l12 = new Link("l1-2");
 		Link l11 = new Link("l1-1");
+		Link l13 = new Link("l1-3");
 		Link l2 = new Link("l2");
-		l12.setType("GPIO:2");
-		l11.setType("GPIO:1");
+		l12.setType("GPIO:1");
+		l11.setType("GPIO:2");
+		l13.setType("GPIO:3");
+		
+		addAtMostOne(l12,l11,l13);
+		
 		l2.setType("GPIO:2");
 		architecture.addVertex(r1);
 		architecture.addVertex(r2);
 		
 		architecture.addEdge(l12, r1, r2);
 		architecture.addEdge(l11, r1, r2);
+		architecture.addEdge(l13, r1, r2);
 		architecture.addEdge(l2, r1, r3);
 
 		// 3. Mappings
@@ -130,11 +139,25 @@ public class ConnectSpecificationTest {
 
 		Specification specification = new Specification(application, architecture, mappings);
 
+		SpecificationWriter writer = new SpecificationWriter();
+		SpecificationReader reader = new SpecificationReader();
+		
+		writer.write(specification, "spec.xml");
+		specification = reader.read("spec.xml");
+		
 		SingleImplementation single = new SingleImplementation();
 		specification = single.get(specification, true);
 
 		SpecificationViewer.view(specification);
 
+	}
+	
+	protected static void addAtMostOne(Element... elements){
+		ElementList list = ElementList.elements(elements);
+		
+		for(Element element: elements){
+			element.setAttribute(SpecificationConstraints.ELEMENTS_EXCLUDE, list.without(element));
+		}
 	}
 
 }

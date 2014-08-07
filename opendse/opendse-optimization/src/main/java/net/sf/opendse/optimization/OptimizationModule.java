@@ -18,6 +18,7 @@ import net.sf.opendse.optimization.constraints.SpecificationCapacityConstraints;
 import net.sf.opendse.optimization.constraints.SpecificationConnectConstraints;
 import net.sf.opendse.optimization.constraints.SpecificationConstraints;
 import net.sf.opendse.optimization.constraints.SpecificationConstraintsMulti;
+import net.sf.opendse.optimization.constraints.SpecificationElementsConstraints;
 import net.sf.opendse.optimization.constraints.SpecificationRouterConstraints;
 
 import org.opt4j.core.config.annotations.Parent;
@@ -42,6 +43,7 @@ public class OptimizationModule extends ProblemModule {
 				SpecificationConstraints.class);
 		scmulti.addBinding().to(SpecificationCapacityConstraints.class);
 		scmulti.addBinding().to(SpecificationConnectConstraints.class);
+		scmulti.addBinding().to(SpecificationElementsConstraints.class);
 		scmulti.addBinding().to(SpecificationRouterConstraints.class);
 
 		Multibinder.newSetBinder(binder(), ImplementationEvaluator.class);
