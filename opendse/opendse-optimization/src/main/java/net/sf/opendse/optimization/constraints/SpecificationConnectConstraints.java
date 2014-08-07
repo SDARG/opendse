@@ -181,7 +181,7 @@ public class SpecificationConnectConstraints extends AbstractSpecificationConstr
 					eq.add(-1, p(resource));
 					constraints.add(eq);
 				}
-				System.out.println(cmax);
+				//System.out.println(cmax);
 				constraints.add(cmax);
 			}
 			
@@ -201,7 +201,7 @@ public class SpecificationConnectConstraints extends AbstractSpecificationConstr
 					eq.add(-1, p(resource));
 					constraints.add(eq);
 				}
-				System.out.println(cmin);
+				//System.out.println(cmin);
 				constraints.add(cmin);
 			}
 		}
