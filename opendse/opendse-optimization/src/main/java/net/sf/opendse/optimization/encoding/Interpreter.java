@@ -151,7 +151,10 @@ public class Interpreter {
 					Resource r1 = iRouting.getVertex(lrr.getDest());
 					iRouting.addEdge((Link) copy(l), r0, r1, DIRECTED);
 				}
+				//System.out.println(c+" "+lrr.getLink()+" "+lrr.getSource()+" "+lrr.getDest()+" "+model.get(var(c, lrr)));
 			}
+			
+			//System.out.println(sRouting+" "+iRouting);
 
 			WeakComponentClusterer<Resource, Link> clusterer = new WeakComponentClusterer<Resource, Link>();
 			Set<Set<Resource>> cluster = clusterer.transform(iRouting);

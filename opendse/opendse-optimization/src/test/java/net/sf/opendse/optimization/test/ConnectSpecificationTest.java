@@ -98,8 +98,8 @@ public class ConnectSpecificationTest {
 		r2.setAttribute("costs", 50);
 		r2.setAttribute("variant", Parameters.select("alpha", "alpha", "beta", "gamma"));
 		r2.setAttribute("memory" + SpecificationConstraints.CAPACITY_MAX, 64);
-		r2.setAttribute("GPIO" + SpecificationConstraints.CONNECT_MAX, Parameters.selectRef("variant", 1, 1, 2, 3));
-		r2.setAttribute("GPIO" + SpecificationConstraints.CONNECT_MIN, Parameters.selectRef("variant", 1, 1, 2, 3));
+		r2.setAttribute("GPIO" + SpecificationConstraints.CONNECT_MAX, Parameters.selectRef("variant", 1, 3, 3, 3));
+		r2.setAttribute("GPIO" + SpecificationConstraints.CONNECT_MIN, Parameters.selectRef("variant", 1, 3, 3, 3));
 		Resource r3 = new Resource("r3");
 		r3.setAttribute("costs", 50);
 		r3.setAttribute("memory" + SpecificationConstraints.CAPACITY_MAX, Parameters.select(64, 128, 196));
