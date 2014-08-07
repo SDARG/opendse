@@ -42,7 +42,6 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
-import net.sf.opendse.visualization.GraphPanel.LocalEdge;
 import net.sf.opendse.visualization.GraphPanelFormatApplication.FunctionTask;
 
 import org.apache.commons.collections15.Transformer;

@@ -102,9 +102,15 @@ public class FirstSpecificationTest {
 		r3.setAttribute("memory"+SpecificationConstraints.CAPACITY_MAX, Parameters.select(64, 128, 196));
 		Link l1 = new Link("l1");
 		Link l2 = new Link("l2");
+		Link l3 = new Link("l3");
+		Link l4 = new Link("l4");
+		Link l5 = new Link("l5");
 		architecture.addVertex(r1);
 		architecture.addVertex(r2);
 		architecture.addEdge(l1, r1, r2);
+		architecture.addEdge(l3, r1, r2);
+		architecture.addEdge(l4, r1, r2);
+		architecture.addEdge(l5, r2, r1);
 		architecture.addEdge(l2, r2, r3);
 		
 		// 3. Mappings
@@ -124,8 +130,8 @@ public class FirstSpecificationTest {
 		SpecificationWriter writer = new SpecificationWriter();
 		writer.write(specification, "spec.xml");
 		
-		SingleImplementation single = new SingleImplementation();
-		specification = single.get(specification, true);
+		//SingleImplementation single = new SingleImplementation();
+		//specification = single.get(specification, true);
 		
 		
 		

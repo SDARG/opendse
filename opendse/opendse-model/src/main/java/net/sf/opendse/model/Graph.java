@@ -17,7 +17,7 @@ package net.sf.opendse.model;
 import java.util.Collection;
 import java.util.Iterator;
 
-import edu.uci.ics.jung.graph.SparseGraph;
+import edu.uci.ics.jung.graph.SparseMultigraph;
 
 /**
  * The {@code Graph} is the default graph implementation.
@@ -29,7 +29,7 @@ import edu.uci.ics.jung.graph.SparseGraph;
  * @param <E>
  *            the type of edges
  */
-public class Graph<V extends Node, E extends Edge> extends SparseGraph<V, E> implements Iterable<V> {
+public class Graph<V extends Node, E extends Edge> extends SparseMultigraph<V, E> implements Iterable<V> {
 
 	private static final long serialVersionUID = 1L;
 

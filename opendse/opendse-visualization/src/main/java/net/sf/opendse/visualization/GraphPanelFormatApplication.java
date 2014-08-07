@@ -38,7 +38,6 @@ import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.parameter.Parameter;
-import net.sf.opendse.visualization.GraphPanel.LocalEdge;
 import net.sf.opendse.visualization.algorithm.DistanceFlowLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.DirectedGraph;

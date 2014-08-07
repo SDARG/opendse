@@ -20,7 +20,6 @@ import java.awt.Shape;
 import net.sf.opendse.model.Edge;
 import net.sf.opendse.model.Graph;
 import net.sf.opendse.model.Node;
-import net.sf.opendse.visualization.GraphPanel.LocalEdge;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.DirectedGraph;
 import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;

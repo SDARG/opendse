@@ -96,20 +96,26 @@ public class ConnectSpecificationTest {
 		r1.setAttribute("GPIO" + SpecificationConstraints.CONNECT_MAX, Parameters.select(1, 1, 2, 3, 4, 5, 6));
 		Resource r2 = new Resource("r2");
 		r2.setAttribute("costs", 50);
+		r2.setAttribute("variant", Parameters.select("alpha", "alpha", "beta", "gamma"));
 		r2.setAttribute("memory" + SpecificationConstraints.CAPACITY_MAX, 64);
-		r2.setAttribute("GPIO" + SpecificationConstraints.CONNECT_MAX, 2);
+		r2.setAttribute("GPIO" + SpecificationConstraints.CONNECT_MAX, Parameters.selectRef("variant", 1, 1, 2, 3));
+		r2.setAttribute("GPIO" + SpecificationConstraints.CONNECT_MIN, Parameters.selectRef("variant", 1, 1, 2, 3));
 		Resource r3 = new Resource("r3");
 		r3.setAttribute("costs", 50);
 		r3.setAttribute("memory" + SpecificationConstraints.CAPACITY_MAX, Parameters.select(64, 128, 196));
 		r3.setAttribute("GPIO" + SpecificationConstraints.CONNECT_MAX, 2);
 
-		Link l1 = new Link("l1");
+		Link l12 = new Link("l1-2");
+		Link l11 = new Link("l1-1");
 		Link l2 = new Link("l2");
-		l1.setType("GPIO:2");
+		l12.setType("GPIO:2");
+		l11.setType("GPIO:1");
 		l2.setType("GPIO:2");
 		architecture.addVertex(r1);
 		architecture.addVertex(r2);
-		architecture.addEdge(l1, r1, r2);
+		
+		architecture.addEdge(l12, r1, r2);
+		architecture.addEdge(l11, r1, r2);
 		architecture.addEdge(l2, r1, r3);
 
 		// 3. Mappings
