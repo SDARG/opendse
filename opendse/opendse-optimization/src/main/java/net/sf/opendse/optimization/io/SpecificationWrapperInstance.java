@@ -24,6 +24,7 @@ public class SpecificationWrapperInstance implements SpecificationWrapper {
 	
 	public SpecificationWrapperInstance(Specification specification) {
 		super();
+		assert specification != null;
 		this.specification = specification;
 		RoutingFilter.filter(this.specification);
 	}

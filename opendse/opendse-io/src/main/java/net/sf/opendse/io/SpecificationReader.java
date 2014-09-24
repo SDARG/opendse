@@ -106,10 +106,8 @@ public class SpecificationReader {
 
 			return toSpecification(eSpec);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			throw new IllegalArgumentException(ex);
 		}
-
-		return null;
 	}
 
 	/**
@@ -142,9 +140,8 @@ public class SpecificationReader {
 
 			return specification;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			throw new IllegalArgumentException(ex);
 		}
-		return null;
 	}
 
 	protected Routings<Task, Resource, Link> toRoutings(nu.xom.Element eRoutings,
@@ -251,6 +248,9 @@ public class SpecificationReader {
 
 			Task source = map.get(eDependency.getAttributeValue("source"));
 			Task destination = map.get(eDependency.getAttributeValue("destination"));
+			
+			assert source != null : "Invalid source: " + eDependency.toXML();
+			assert destination != null : "Invalid destination: " + eDependency.toXML();
 
 			application.addEdge(dependency, source, destination, EdgeType.DIRECTED);
 		}
