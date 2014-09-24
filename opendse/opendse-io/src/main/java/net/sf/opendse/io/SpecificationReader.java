@@ -124,14 +124,21 @@ public class SpecificationReader {
 			nu.xom.Element eArchitecture = eSpecification.getChildElements("architecture").get(0);
 			nu.xom.Element eApplication = eSpecification.getChildElements("application").get(0);
 			nu.xom.Element eMappings = eSpecification.getChildElements("mappings").get(0);
-			nu.xom.Element eRoutings = eSpecification.getChildElements("routings").get(0);
 
 			Architecture<Resource, Link> architecture = toArchitecture(eArchitecture);
 			Application<Task, Dependency> application = toApplication(eApplication);
 			Mappings<Task, Resource> mappings = toMappings(eMappings, architecture, application);
-			Routings<Task, Resource, Link> routings = toRoutings(eRoutings, architecture, application);
 
-			Specification specification = new Specification(application, architecture, mappings, routings);
+			Specification specification = null;
+
+			Elements routingElements = eSpecification.getChildElements("routings");
+			if (routingElements != null && routingElements.size() > 0) {
+				nu.xom.Element eRoutings = routingElements.get(0);
+				Routings<Task, Resource, Link> routings = toRoutings(eRoutings, architecture, application);
+				specification = new Specification(application, architecture, mappings, routings);
+			} else {
+				specification = new Specification(application, architecture, mappings);
+			}
 
 			Elements elements = eSpecification.getChildElements("attributes");
 			if (elements.size() > 0) {
