@@ -1,5 +1,8 @@
 package net.sf.opendse.realtime.et.qcqp;
 
+import static net.sf.opendse.model.Models.isCommunication;
+import static net.sf.opendse.model.Models.isProcess;
+import net.sf.opendse.model.Node;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.realtime.et.graph.TimingElement;
@@ -15,6 +18,15 @@ public class MyTimingPropertyAnnotater {
 
 		for (TimingElement te : tg) {
 			Task task = te.getTask();
+
+			Node node = null;
+
+			if (isProcess(task)) {
+				node = task;
+			} else if (isCommunication(task)) {
+				node = implementation.getRoutings().get(task).getVertex(te.getResource());
+			}
+
 			// Resource resource = te.getResource();
 
 			Double executionTime = te.getAttribute("e");
@@ -22,10 +34,10 @@ public class MyTimingPropertyAnnotater {
 			Double delay = te.getAttribute("delay");
 			Double responseTime = te.getAttribute("response");
 
-			task.setAttribute("jitter[in]" + postfix, jitter);
-			task.setAttribute("jitter[out]" + postfix, adjust(jitter + (responseTime - executionTime)));
-			task.setAttribute("delay" + postfix, delay);
-			task.setAttribute("response" + postfix, responseTime);
+			//node.setAttribute("jitter[in]" + postfix, jitter);
+			node.setAttribute("jitter" + postfix, adjust(jitter + (responseTime - executionTime)));
+			node.setAttribute("delay" + postfix, delay);
+			node.setAttribute("response" + postfix, responseTime);
 		}
 
 	}

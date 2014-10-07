@@ -36,9 +36,9 @@ public class MyEncoder {
 
 	protected boolean forbidGlobalCycles = false;
 	protected final boolean uniquePriorityAssignment;
-	protected Objective objective = null;
+	protected OptimizationObjective objective = null;
 
-	public enum Objective {
+	public enum OptimizationObjective {
 		DELAY, DELAY_AND_JITTER_ALL;
 	}
 
@@ -48,7 +48,7 @@ public class MyEncoder {
 		this(null);
 	}
 
-	public MyEncoder(Objective objective) {
+	public MyEncoder(OptimizationObjective objective) {
 		this(objective, new Transformer<TimingDependencyPriority, Boolean>() {
 			public Boolean transform(TimingDependencyPriority input) {
 				return null;
@@ -56,11 +56,11 @@ public class MyEncoder {
 		});
 	}
 
-	public MyEncoder(Objective objective, Transformer<TimingDependencyPriority, Boolean> definedPriorities) {
+	public MyEncoder(OptimizationObjective objective, Transformer<TimingDependencyPriority, Boolean> definedPriorities) {
 		this(objective, definedPriorities, true);
 	}
 
-	public MyEncoder(Objective objective, Transformer<TimingDependencyPriority, Boolean> definedPriorities, boolean uniquePriorityAssignment) {
+	public MyEncoder(OptimizationObjective objective, Transformer<TimingDependencyPriority, Boolean> definedPriorities, boolean uniquePriorityAssignment) {
 		this.objective = objective;
 		this.definedPriorities = definedPriorities;
 		this.uniquePriorityAssignment = uniquePriorityAssignment;
@@ -88,7 +88,7 @@ public class MyEncoder {
 
 				Boolean p = definedPriorities.transform(tdp);
 				if (p != null) {
-					System.out.println(problem.add(sum(a(td)), "=", p ? 1 : 0));
+					problem.add(sum(a(td)), "=", p ? 1 : 0);
 				}
 
 				TimingElement t1 = tg.getSource(td);
@@ -184,8 +184,7 @@ public class MyEncoder {
 					}
 				}
 
-				MpConstraint constraint = problem.add(lhs, "=", rhs);
-				System.out.println(constraint);
+				problem.add(lhs, "=", rhs);
 			} else if (PriorityScheduler.FIXEDPRIORITY_NONPREEMPTIVE.equals(scheduler)) {
 				// problem.add(e().add(d(te)), "=", e().con(e(task)));
 
@@ -212,8 +211,7 @@ public class MyEncoder {
 					}
 				}
 
-				MpConstraint constraint = problem.add(lhs, "=", rhs);
-				System.out.println(constraint);
+				problem.add(lhs, "=", rhs);
 			} else if (PriorityScheduler.FIXEDDELAY.equals(scheduler)) {
 
 				Double delay = resource.getAttribute(PriorityScheduler.DELAY);
@@ -222,8 +220,7 @@ public class MyEncoder {
 					delay = 0.0;
 				}
 
-				MpConstraint constraint = problem.add(sum(r(te)), "=", sum(e(te) + delay));
-				System.out.println(constraint);
+				problem.add(sum(r(te)), "=", sum(e(te) + delay));
 			}
 
 		}
@@ -305,7 +302,7 @@ public class MyEncoder {
 
 		}
 
-		if (objective == Objective.DELAY) {
+		if (objective == OptimizationObjective.DELAY) {
 			MpExpr objective = sum();
 			for (TimingElement te : tg.getVertices()) {
 				Double deadline = te.getAttribute("deadline");
@@ -318,7 +315,7 @@ public class MyEncoder {
 				// objective.add(j(te));
 			}
 			problem.setObjective(objective, MpDirection.MIN);
-		} else if (objective == Objective.DELAY_AND_JITTER_ALL) {
+		} else if (objective == OptimizationObjective.DELAY_AND_JITTER_ALL) {
 			MpExpr objective = sum();
 			for (TimingElement te : tg.getVertices()) {
 				objective.add(d(te));

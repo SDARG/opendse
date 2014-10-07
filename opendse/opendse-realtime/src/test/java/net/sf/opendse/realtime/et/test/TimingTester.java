@@ -35,6 +35,7 @@ import net.sf.opendse.optimization.encoding.RoutingFilter;
 import net.sf.opendse.optimization.encoding.RoutingGenerator;
 import net.sf.opendse.optimization.encoding.SingleImplementation;
 import net.sf.opendse.realtime.et.PriorityScheduler;
+import net.sf.opendse.realtime.et.SolverProvider;
 import net.sf.opendse.realtime.et.TimingGraphViewer;
 import net.sf.opendse.realtime.et.graph.ApplicationDependencyInterferencePredicate;
 import net.sf.opendse.realtime.et.graph.ApplicationPriorityCyclesPredicate;
@@ -48,10 +49,9 @@ import net.sf.opendse.realtime.et.graph.TimingGraphModifierFilterEdge;
 import net.sf.opendse.realtime.et.graph.TimingGraphModifierFilterVertex;
 import net.sf.opendse.realtime.et.qcqp.MyConflictRefinementDeletion;
 import net.sf.opendse.realtime.et.qcqp.MyEncoder;
-import net.sf.opendse.realtime.et.qcqp.MyEncoder.Objective;
+import net.sf.opendse.realtime.et.qcqp.MyEncoder.OptimizationObjective;
 import net.sf.opendse.realtime.et.qcqp.MyInterpreter;
 import net.sf.opendse.realtime.et.qcqp.MyTimingPropertyAnnotater;
-import net.sf.opendse.realtime.et.qcqp.SolverProvider;
 import net.sf.opendse.visualization.SpecificationViewer;
 import edu.uci.ics.jung.algorithms.shortestpath.DijkstraDistance;
 
@@ -65,12 +65,21 @@ public class TimingTester {
 		 * 6, 1.0, 0).getImpl();
 		 */
 		Specification impl = getImplementationScalability();
+		
+		for(Task task: impl.getApplication()){
+			task.setAttribute("prio", null);
+		}
+		
 
 		// Specification impl =
 		// SpecificationGenerator.getImplementationScalabilityGateway(2, 6,
 		// 5, 6, 1.0, 0).getImpl();
 
 		SpecificationViewer.view(impl);
+		
+	}
+	
+	public static void schedule(Specification impl){
 
 		/*
 		 * for (Task task : application) { double e = (5.0 + random.nextInt(6))
@@ -103,7 +112,7 @@ public class TimingTester {
 
 		// eaOptimizer.optimize(tg);
 
-		MyEncoder encoder = new MyEncoder(Objective.DELAY);
+		MyEncoder encoder = new MyEncoder(OptimizationObjective.DELAY_AND_JITTER_ALL);
 		MpProblem problem = encoder.encode(tg);
 
 		// normalize here:

@@ -1,5 +1,9 @@
 package net.sf.opendse.realtime.et.qcqp;
 
+import static net.sf.opendse.model.Models.isCommunication;
+import static net.sf.opendse.model.Models.isProcess;
+import static net.sf.opendse.realtime.et.PriorityScheduler.FIXEDPRIORITY_NONPREEMPTIVE;
+import static net.sf.opendse.realtime.et.PriorityScheduler.FIXEDPRIORITY_PREEMPTIVE;
 import static net.sf.opendse.realtime.et.qcqp.vars.Vars.a;
 
 import java.util.ArrayList;
@@ -11,13 +15,18 @@ import java.util.Set;
 import net.sf.jmpi.main.MpProblem;
 import net.sf.jmpi.main.MpResult;
 import net.sf.jmpi.main.MpSolver;
+import net.sf.opendse.model.Node;
+import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Specification;
+import net.sf.opendse.model.Task;
+import net.sf.opendse.realtime.et.PriorityScheduler;
+import net.sf.opendse.realtime.et.SolverProvider;
 import net.sf.opendse.realtime.et.graph.TimingDependency;
 import net.sf.opendse.realtime.et.graph.TimingDependencyPriority;
 import net.sf.opendse.realtime.et.graph.TimingDependencyTrigger;
 import net.sf.opendse.realtime.et.graph.TimingElement;
 import net.sf.opendse.realtime.et.graph.TimingGraph;
-import net.sf.opendse.realtime.et.qcqp.MyEncoder.Objective;
+import net.sf.opendse.realtime.et.qcqp.MyEncoder.OptimizationObjective;
 import net.sf.opendse.realtime.et.qcqp.vars.Vars;
 import net.sf.opendse.visualization.algorithm.BellmanFord;
 
@@ -30,8 +39,6 @@ public class MyInterpreter {
 	protected final SolverProvider solverProvider;
 	protected final boolean considerTiming;
 
-	
-	
 	public MyInterpreter(SolverProvider solverProvider) {
 		this(true, solverProvider);
 	}
@@ -41,34 +48,28 @@ public class MyInterpreter {
 		this.considerTiming = considerTiming;
 		this.solverProvider = solverProvider;
 	}
-	
 
 	public TimingGraph interprete(TimingGraph tg, Specification implementation, MpResult result) {
 		TimingGraph rtg = new TimingGraph();
 
 		System.out.println(result);
-		
-		
-		if (considerTiming){
+
+		if (considerTiming) {
 			final MpResult oResult = result;
 			Transformer<TimingDependencyPriority, Boolean> transformer = new Transformer<TimingDependencyPriority, Boolean>() {
 				public Boolean transform(TimingDependencyPriority input) {
 					return oResult.getBoolean(a(input));
 				}
 			};
-			MyEncoder encoder = new MyEncoder(Objective.DELAY_AND_JITTER_ALL, transformer);
+			MyEncoder encoder = new MyEncoder(OptimizationObjective.DELAY_AND_JITTER_ALL, transformer);
 			MpProblem problem = encoder.encode(tg);
-			
+
 			MpSolver solver = solverProvider.get();
 			solver.add(problem);
 
 			result = solver.solve();
 			System.out.println(result);
 		}
-		
-		
-		
-		
 
 		for (TimingElement timingElement : tg.getVertices()) {
 			rtg.addVertex(timingElement);
@@ -83,27 +84,28 @@ public class MyInterpreter {
 			}
 			// System.out.println(timingElement + " " + d + " " + dd + " " + j);
 		}
-		
+
 		for (TimingDependency timingDependency : tg.getEdges()) {
 			if (timingDependency instanceof TimingDependencyTrigger) {
-				// rtg.addEdge(timingDependency, tg.getEndpoints(timingDependency));
+				// rtg.addEdge(timingDependency,
+				// tg.getEndpoints(timingDependency));
 			} else if (result.getBoolean(a(timingDependency))) {
 				rtg.addEdge(timingDependency, tg.getEndpoints(timingDependency));
 			}
 		}
-		
+
 		WeakComponentClusterer<TimingElement, TimingDependency> clusterer = new WeakComponentClusterer<TimingElement, TimingDependency>();
 		Set<Set<TimingElement>> clusters = clusterer.transform(rtg);
-		
-		for(Set<TimingElement> cluster: clusters){
+
+		for (Set<TimingElement> cluster : clusters) {
 			TimingGraph clusterGraph = new TimingGraph();
-			for(TimingElement te: cluster){
+			for (TimingElement te : cluster) {
 				clusterGraph.addVertex(te);
-				for(TimingDependency td: rtg.getOutEdges(te)){
+				for (TimingDependency td : rtg.getOutEdges(te)) {
 					clusterGraph.addEdge(td, te, rtg.getDest(td));
 				}
 			}
-			
+
 			BellmanFord<TimingElement, TimingDependency> bellmanFord = new BellmanFord<TimingElement, TimingDependency>();
 			final Transformer<TimingElement, Double> transformer = bellmanFord.transform(clusterGraph);
 
@@ -118,14 +120,22 @@ public class MyInterpreter {
 			int prio = 1;
 
 			for (TimingElement te : order) {
-				te.getTask().setAttribute("prio:"+te.getResource().getId(), prio++);
+				Resource resource = te.getResource();
+				String scheduler = resource.getAttribute("scheduler");
+				if (FIXEDPRIORITY_NONPREEMPTIVE.equals(scheduler) || FIXEDPRIORITY_PREEMPTIVE.equals(scheduler)) {
+					Task task = te.getTask();
+
+					Node node = null;
+					if (isProcess(task)) {
+						node = task;
+					} else if (isCommunication(task)) {
+						te.getTask().setAttribute("prio:" + te.getResource().getId(), prio++);
+						node = implementation.getRoutings().get(task).getVertex(te.getResource());
+					}
+					node.setAttribute("prio", prio++);
+				}
 			}
 		}
-		
-		
-		
-
-		
 
 		return rtg;
 

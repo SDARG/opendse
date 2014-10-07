@@ -14,6 +14,7 @@ import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Function;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
+import net.sf.opendse.realtime.et.SolverProvider;
 import net.sf.opendse.realtime.et.graph.TimingDependency;
 import net.sf.opendse.realtime.et.graph.TimingDependencyPriority;
 import net.sf.opendse.realtime.et.graph.TimingElement;

@@ -8,6 +8,10 @@ import net.sf.opendse.realtime.et.graph.TimingGraph;
 
 public interface MyConflictRefinement {
 
+	public enum ConflictRefinementMethod {
+		DELETION, HIERARCHICAL;
+	}
+
 	public Set<TimingElement> find(TimingGraph tg, Specification impl);
 
 }

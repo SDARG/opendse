@@ -11,6 +11,7 @@ import net.sf.jmpi.main.MpProblem;
 import net.sf.jmpi.main.MpResult;
 import net.sf.jmpi.main.MpSolver;
 import net.sf.opendse.model.Specification;
+import net.sf.opendse.realtime.et.SolverProvider;
 import net.sf.opendse.realtime.et.graph.TimingDependency;
 import net.sf.opendse.realtime.et.graph.TimingDependencyPriority;
 import net.sf.opendse.realtime.et.graph.TimingElement;

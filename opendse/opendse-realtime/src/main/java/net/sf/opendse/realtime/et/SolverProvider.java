@@ -1,4 +1,4 @@
-package net.sf.opendse.realtime.et.qcqp;
+package net.sf.opendse.realtime.et;
 
 import net.sf.jmpi.main.MpSolver;
 
