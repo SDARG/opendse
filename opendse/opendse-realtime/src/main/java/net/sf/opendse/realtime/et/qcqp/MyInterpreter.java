@@ -4,12 +4,16 @@ import static net.sf.opendse.model.Models.isCommunication;
 import static net.sf.opendse.model.Models.isProcess;
 import static net.sf.opendse.realtime.et.PriorityScheduler.FIXEDPRIORITY_NONPREEMPTIVE;
 import static net.sf.opendse.realtime.et.PriorityScheduler.FIXEDPRIORITY_PREEMPTIVE;
+import static net.sf.opendse.realtime.et.PriorityScheduler.PRIORITY;
+import static net.sf.opendse.realtime.et.PriorityScheduler.SCHEDULER;
 import static net.sf.opendse.realtime.et.qcqp.vars.Vars.a;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import net.sf.jmpi.main.MpProblem;
@@ -19,7 +23,6 @@ import net.sf.opendse.model.Node;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
-import net.sf.opendse.realtime.et.PriorityScheduler;
 import net.sf.opendse.realtime.et.SolverProvider;
 import net.sf.opendse.realtime.et.graph.TimingDependency;
 import net.sf.opendse.realtime.et.graph.TimingDependencyPriority;
@@ -117,22 +120,31 @@ public class MyInterpreter {
 				}
 			});
 
-			int prio = 1;
+			Map<Resource,Integer> priorities = new HashMap<Resource,Integer>();
 
 			for (TimingElement te : order) {
 				Resource resource = te.getResource();
-				String scheduler = resource.getAttribute("scheduler");
+				String scheduler = resource.getAttribute(SCHEDULER);
 				if (FIXEDPRIORITY_NONPREEMPTIVE.equals(scheduler) || FIXEDPRIORITY_PREEMPTIVE.equals(scheduler)) {
+					int prio;
+					if(priorities.containsKey(resource)){
+						prio = (priorities.get(resource))+1;
+					} else {
+						prio = 1;
+					}
+					priorities.put(resource, prio);
+					
+					
 					Task task = te.getTask();
 
 					Node node = null;
 					if (isProcess(task)) {
 						node = task;
 					} else if (isCommunication(task)) {
-						te.getTask().setAttribute("prio:" + te.getResource().getId(), prio++);
+						te.getTask().setAttribute(PRIORITY+":" + te.getResource().getId(), prio);
 						node = implementation.getRoutings().get(task).getVertex(te.getResource());
 					}
-					node.setAttribute("prio", prio++);
+					node.setAttribute(PRIORITY, prio);
 				}
 			}
 		}

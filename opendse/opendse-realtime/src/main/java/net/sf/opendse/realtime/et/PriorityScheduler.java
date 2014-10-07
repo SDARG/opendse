@@ -94,7 +94,7 @@ public class PriorityScheduler {
 	}
 	
 	public TimingGraph getReducedTimingGraph() {
-		return originalTimingGraph;
+		return resultingTimingGraph;
 	}
 
 	public Set<TimingElement> determineIIS(ConflictRefinementMethod method) {
