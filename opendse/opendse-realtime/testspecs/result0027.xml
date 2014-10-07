@@ -1,0 +1,1447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specification>
+  <architecture>
+    <resource id="r2">
+      <attributes>
+        <attribute name="TYPE" type="STRING">ECU</attribute>
+        <attribute name="scheduler" type="STRING">FIXEDPRIORITY_PREEMPTIVE</attribute>
+      </attributes>
+    </resource>
+    <resource id="r3">
+      <attributes>
+        <attribute name="TYPE" type="STRING">ECU</attribute>
+        <attribute name="scheduler" type="STRING">FIXEDPRIORITY_PREEMPTIVE</attribute>
+      </attributes>
+    </resource>
+    <resource id="r4">
+      <attributes>
+        <attribute name="TYPE" type="STRING">ECU</attribute>
+        <attribute name="scheduler" type="STRING">FIXEDPRIORITY_PREEMPTIVE</attribute>
+      </attributes>
+    </resource>
+    <resource id="r5">
+      <attributes>
+        <attribute name="TYPE" type="STRING">CAN</attribute>
+        <attribute name="scheduler" type="STRING">FIXEDPRIORITY_NONPREEMPTIVE</attribute>
+      </attributes>
+    </resource>
+    <resource id="r6">
+      <attributes>
+        <attribute name="TYPE" type="STRING">ECU</attribute>
+        <attribute name="scheduler" type="STRING">FIXEDPRIORITY_PREEMPTIVE</attribute>
+      </attributes>
+    </resource>
+    <resource id="r7">
+      <attributes>
+        <attribute name="TYPE" type="STRING">ECU</attribute>
+        <attribute name="scheduler" type="STRING">FIXEDPRIORITY_PREEMPTIVE</attribute>
+      </attributes>
+    </resource>
+    <resource id="r8">
+      <attributes>
+        <attribute name="TYPE" type="STRING">ECU</attribute>
+        <attribute name="scheduler" type="STRING">FIXEDPRIORITY_PREEMPTIVE</attribute>
+      </attributes>
+    </resource>
+    <resource id="r9">
+      <attributes>
+        <attribute name="TYPE" type="STRING">ECU</attribute>
+        <attribute name="scheduler" type="STRING">FIXEDPRIORITY_PREEMPTIVE</attribute>
+      </attributes>
+    </resource>
+    <resource id="r10">
+      <attributes>
+        <attribute name="TYPE" type="STRING">ECU</attribute>
+        <attribute name="scheduler" type="STRING">FIXEDPRIORITY_PREEMPTIVE</attribute>
+      </attributes>
+    </resource>
+    <resource id="r11">
+      <attributes>
+        <attribute name="TYPE" type="STRING">ECU</attribute>
+        <attribute name="scheduler" type="STRING">FIXEDPRIORITY_PREEMPTIVE</attribute>
+      </attributes>
+    </resource>
+    <resource id="gateway">
+      <attributes>
+        <attribute name="TYPE" type="STRING">gateway</attribute>
+        <attribute name="scheduler" type="STRING">FIXEDDELAY</attribute>
+      </attributes>
+    </resource>
+    <resource id="r0">
+      <attributes>
+        <attribute name="TYPE" type="STRING">CAN</attribute>
+        <attribute name="scheduler" type="STRING">FIXEDPRIORITY_NONPREEMPTIVE</attribute>
+      </attributes>
+    </resource>
+    <resource id="r1">
+      <attributes>
+        <attribute name="TYPE" type="STRING">ECU</attribute>
+        <attribute name="scheduler" type="STRING">FIXEDPRIORITY_PREEMPTIVE</attribute>
+      </attributes>
+    </resource>
+    <link id="l0" source="r0" destination="r1" type="UNDIRECTED"/>
+    <link id="l1" source="r0" destination="r2" type="UNDIRECTED"/>
+    <link id="link_r5" source="r5" destination="gateway" type="UNDIRECTED"/>
+    <link id="l2" source="r0" destination="r3" type="UNDIRECTED"/>
+    <link id="l3" source="r0" destination="r4" type="UNDIRECTED"/>
+    <link id="l4" source="r5" destination="r6" type="UNDIRECTED"/>
+    <link id="l5" source="r5" destination="r7" type="UNDIRECTED"/>
+    <link id="l6" source="r5" destination="r8" type="UNDIRECTED"/>
+    <link id="l7" source="r5" destination="r9" type="UNDIRECTED"/>
+    <link id="l8" source="r5" destination="r10" type="UNDIRECTED"/>
+    <link id="l9" source="r5" destination="r11" type="UNDIRECTED"/>
+    <link id="link_r0" source="r0" destination="gateway" type="UNDIRECTED"/>
+  </architecture>
+  <application>
+    <task id="p10">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">1.07</attribute>
+        <attribute name="e" type="DOUBLE">0.93</attribute>
+        <attribute name="h" type="DOUBLE">10.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.0</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">0.14</attribute>
+        <attribute name="prio" type="INT">4</attribute>
+        <attribute name="prio:r8" type="INT">2</attribute>
+        <attribute name="response" type="DOUBLE">1.07</attribute>
+      </attributes>
+    </task>
+    <task id="p12">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">2.49</attribute>
+        <attribute name="e" type="DOUBLE">0.38</attribute>
+        <attribute name="h" type="DOUBLE">10.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.34</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">0.34</attribute>
+        <attribute name="prio" type="INT">13</attribute>
+        <attribute name="prio:r9" type="INT">1</attribute>
+        <attribute name="response" type="DOUBLE">0.38</attribute>
+      </attributes>
+    </task>
+    <task id="p11">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">2.11</attribute>
+        <attribute name="e" type="DOUBLE">0.64</attribute>
+        <attribute name="h" type="DOUBLE">10.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.34</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">0.34</attribute>
+        <attribute name="prio" type="INT">10</attribute>
+        <attribute name="prio:r9" type="INT">2</attribute>
+        <attribute name="response" type="DOUBLE">0.64</attribute>
+      </attributes>
+    </task>
+    <task id="p14">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">3.58877</attribute>
+        <attribute name="delay" type="DOUBLE">3.58</attribute>
+        <attribute name="e" type="DOUBLE">0.49</attribute>
+        <attribute name="h" type="DOUBLE">10.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.94</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">0.94</attribute>
+        <attribute name="prio" type="INT">21</attribute>
+        <attribute name="prio:r7" type="INT">1</attribute>
+        <attribute name="response" type="DOUBLE">0.49</attribute>
+      </attributes>
+    </task>
+    <task id="p13">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">3.23791</attribute>
+        <attribute name="delay" type="DOUBLE">3.23</attribute>
+        <attribute name="e" type="DOUBLE">0.14</attribute>
+        <attribute name="h" type="DOUBLE">10.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.74</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">0.74</attribute>
+        <attribute name="prio" type="INT">18</attribute>
+        <attribute name="prio:r10" type="INT">1</attribute>
+        <attribute name="response" type="DOUBLE">0.14</attribute>
+      </attributes>
+    </task>
+    <task id="p16">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">6.46</attribute>
+        <attribute name="e" type="DOUBLE">0.17</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">4.12</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">5.87</attribute>
+        <attribute name="prio" type="INT">59</attribute>
+        <attribute name="prio:r10" type="INT">5</attribute>
+        <attribute name="response" type="DOUBLE">1.92</attribute>
+      </attributes>
+    </task>
+    <task id="p15">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">1.54</attribute>
+        <attribute name="e" type="DOUBLE">0.22</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.0</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">1.32</attribute>
+        <attribute name="prio" type="INT">49</attribute>
+        <attribute name="prio:r7" type="INT">4</attribute>
+        <attribute name="response" type="DOUBLE">1.54</attribute>
+      </attributes>
+    </task>
+    <task id="p18">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">10.78634</attribute>
+        <attribute name="delay" type="DOUBLE">10.76</attribute>
+        <attribute name="e" type="DOUBLE">0.18</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">8.47</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">9.79</attribute>
+        <attribute name="prio" type="INT">64</attribute>
+        <attribute name="prio:r11" type="INT">4</attribute>
+        <attribute name="response" type="DOUBLE">1.5</attribute>
+      </attributes>
+    </task>
+    <task id="p17">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">11.83</attribute>
+        <attribute name="e" type="DOUBLE">0.7</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">8.47</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">10.34</attribute>
+        <attribute name="prio" type="INT">63</attribute>
+        <attribute name="prio:r7" type="INT">6</attribute>
+        <attribute name="response" type="DOUBLE">2.57</attribute>
+      </attributes>
+    </task>
+    <task id="p19">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">16.87119</attribute>
+        <attribute name="delay" type="DOUBLE">16.83</attribute>
+        <attribute name="e" type="DOUBLE">0.24</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">13.14</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">14.9</attribute>
+        <attribute name="prio" type="INT">66</attribute>
+        <attribute name="prio:r8" type="INT">5</attribute>
+        <attribute name="response" type="DOUBLE">2.0</attribute>
+      </attributes>
+    </task>
+    <communication id="c0">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">13.42</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">7.67</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">11.47</attribute>
+        <attribute name="prio" type="INT">79</attribute>
+        <attribute name="prio:r5" type="INT">20</attribute>
+        <attribute name="response" type="DOUBLE">4.0</attribute>
+      </attributes>
+    </communication>
+    <task id="p21">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">4.24</attribute>
+        <attribute name="e" type="DOUBLE">0.24</attribute>
+        <attribute name="h" type="DOUBLE">40.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">2.87</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">3.46</attribute>
+        <attribute name="prio" type="INT">39</attribute>
+        <attribute name="prio:r11" type="INT">3</attribute>
+        <attribute name="response" type="DOUBLE">0.83</attribute>
+      </attributes>
+    </task>
+    <communication id="c1">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">9.3</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">4.27</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">7.67</attribute>
+        <attribute name="prio" type="INT">71</attribute>
+        <attribute name="prio:r5" type="INT">17</attribute>
+        <attribute name="response" type="DOUBLE">3.6</attribute>
+      </attributes>
+    </communication>
+    <task id="p20">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">1.41</attribute>
+        <attribute name="e" type="DOUBLE">0.34</attribute>
+        <attribute name="h" type="DOUBLE">40.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.0</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">1.07</attribute>
+        <attribute name="prio" type="INT">6</attribute>
+        <attribute name="prio:r8" type="INT">4</attribute>
+        <attribute name="response" type="DOUBLE">1.41</attribute>
+      </attributes>
+    </task>
+    <communication id="c2">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">6.93</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">2.0</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">6.2</attribute>
+        <attribute name="prio" type="INT">80</attribute>
+        <attribute name="prio:r5" type="INT">21</attribute>
+        <attribute name="response" type="DOUBLE">4.4</attribute>
+      </attributes>
+    </communication>
+    <task id="p23">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">7.57851</attribute>
+        <attribute name="delay" type="DOUBLE">7.56</attribute>
+        <attribute name="e" type="DOUBLE">0.53</attribute>
+        <attribute name="h" type="DOUBLE">40.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">5.26</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">6.05</attribute>
+        <attribute name="prio" type="INT">46</attribute>
+        <attribute name="prio:r7" type="INT">3</attribute>
+        <attribute name="response" type="DOUBLE">1.32</attribute>
+      </attributes>
+    </task>
+    <communication id="c3">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+      </attributes>
+    </communication>
+    <task id="p22">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">7.66</attribute>
+        <attribute name="e" type="DOUBLE">0.35</attribute>
+        <attribute name="h" type="DOUBLE">40.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">5.26</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">6.33</attribute>
+        <attribute name="prio" type="INT">45</attribute>
+        <attribute name="prio:r8" type="INT">3</attribute>
+        <attribute name="response" type="DOUBLE">1.42</attribute>
+      </attributes>
+    </task>
+    <communication id="c4">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">3.62</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.4</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">0.6</attribute>
+        <attribute name="prio" type="INT">14</attribute>
+        <attribute name="prio:r0" type="INT">2</attribute>
+        <attribute name="response" type="DOUBLE">0.4</attribute>
+      </attributes>
+    </communication>
+    <task id="p25">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">11.43793</attribute>
+        <attribute name="delay" type="DOUBLE">11.41</attribute>
+        <attribute name="e" type="DOUBLE">0.48</attribute>
+        <attribute name="h" type="DOUBLE">40.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">8.13</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">9.4</attribute>
+        <attribute name="prio" type="INT">53</attribute>
+        <attribute name="prio:r10" type="INT">4</attribute>
+        <attribute name="response" type="DOUBLE">1.75</attribute>
+      </attributes>
+    </task>
+    <communication id="c5">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">2.32</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.2</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">0.4</attribute>
+        <attribute name="prio" type="INT">8</attribute>
+        <attribute name="prio:r0" type="INT">1</attribute>
+        <attribute name="response" type="DOUBLE">0.4</attribute>
+      </attributes>
+    </communication>
+    <task id="p24">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">11.27754</attribute>
+        <attribute name="delay" type="DOUBLE">11.25</attribute>
+        <attribute name="e" type="DOUBLE">0.1</attribute>
+        <attribute name="h" type="DOUBLE">40.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">8.13</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">9.62</attribute>
+        <attribute name="prio" type="INT">55</attribute>
+        <attribute name="prio:r9" type="INT">4</attribute>
+        <attribute name="response" type="DOUBLE">1.59</attribute>
+      </attributes>
+    </task>
+    <communication id="c6">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">1.22</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.0</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">0.2</attribute>
+        <attribute name="prio" type="INT">3</attribute>
+        <attribute name="prio:r0" type="INT">3</attribute>
+        <attribute name="response" type="DOUBLE">0.4</attribute>
+      </attributes>
+    </communication>
+    <task id="p27">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">2.09</attribute>
+        <attribute name="e" type="DOUBLE">0.55</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.0</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">1.54</attribute>
+        <attribute name="prio" type="INT">56</attribute>
+        <attribute name="prio:r7" type="INT">5</attribute>
+        <attribute name="response" type="DOUBLE">2.09</attribute>
+      </attributes>
+    </task>
+    <communication id="c7">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">3.09</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">10.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.34</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">0.74</attribute>
+        <attribute name="prio" type="INT">16</attribute>
+        <attribute name="prio:r5" type="INT">3</attribute>
+        <attribute name="response" type="DOUBLE">0.6</attribute>
+      </attributes>
+    </communication>
+    <task id="p26">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">10.76629</attribute>
+        <attribute name="delay" type="DOUBLE">10.74</attribute>
+        <attribute name="e" type="DOUBLE">0.49</attribute>
+        <attribute name="h" type="DOUBLE">40.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">8.13</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">8.72</attribute>
+        <attribute name="prio" type="INT">54</attribute>
+        <attribute name="prio:r11" type="INT">2</attribute>
+        <attribute name="response" type="DOUBLE">1.08</attribute>
+      </attributes>
+    </task>
+    <communication id="c8">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">2.91</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">10.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.34</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">0.94</attribute>
+        <attribute name="prio" type="INT">19</attribute>
+        <attribute name="prio:r5" type="INT">4</attribute>
+        <attribute name="response" type="DOUBLE">0.8</attribute>
+      </attributes>
+    </communication>
+    <task id="p29">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">10.47558</attribute>
+        <attribute name="delay" type="DOUBLE">10.45</attribute>
+        <attribute name="e" type="DOUBLE">0.46</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">8.46</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">8.58</attribute>
+        <attribute name="prio" type="INT">75</attribute>
+        <attribute name="prio:r6" type="INT">2</attribute>
+        <attribute name="response" type="DOUBLE">0.58</attribute>
+      </attributes>
+    </task>
+    <communication id="c9">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">1.47</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">10.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.14</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">0.34</attribute>
+        <attribute name="prio" type="INT">7</attribute>
+        <attribute name="prio:r5" type="INT">1</attribute>
+        <attribute name="response" type="DOUBLE">0.4</attribute>
+      </attributes>
+    </communication>
+    <task id="p28">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">7.07</attribute>
+        <attribute name="e" type="DOUBLE">0.46</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">3.94</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">5.86</attribute>
+        <attribute name="prio" type="INT">60</attribute>
+        <attribute name="prio:r10" type="INT">6</attribute>
+        <attribute name="response" type="DOUBLE">2.38</attribute>
+      </attributes>
+    </task>
+    <task id="p0">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">2.53</attribute>
+        <attribute name="e" type="DOUBLE">0.53</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.0</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">2.0</attribute>
+        <attribute name="prio" type="INT">67</attribute>
+        <attribute name="prio:r8" type="INT">6</attribute>
+        <attribute name="response" type="DOUBLE">2.53</attribute>
+      </attributes>
+    </task>
+    <task id="p1">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">5.7</attribute>
+        <attribute name="e" type="DOUBLE">0.9</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">2.0</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">4.27</attribute>
+        <attribute name="prio" type="INT">69</attribute>
+        <attribute name="prio:r8" type="INT">8</attribute>
+        <attribute name="response" type="DOUBLE">3.17</attribute>
+      </attributes>
+    </task>
+    <task id="p2">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">11.9592</attribute>
+        <attribute name="delay" type="DOUBLE">11.93</attribute>
+        <attribute name="e" type="DOUBLE">0.25</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">7.67</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">10.05</attribute>
+        <attribute name="prio" type="INT">73</attribute>
+        <attribute name="prio:r10" type="INT">7</attribute>
+        <attribute name="response" type="DOUBLE">2.63</attribute>
+      </attributes>
+    </task>
+    <communication id="c11">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">9.26</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">5.87</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">8.47</attribute>
+        <attribute name="prio" type="INT">62</attribute>
+        <attribute name="prio:r5" type="INT">13</attribute>
+        <attribute name="response" type="DOUBLE">2.8</attribute>
+      </attributes>
+    </communication>
+    <task id="p3">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">9.42</attribute>
+        <attribute name="e" type="DOUBLE">0.12</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">7.67</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">7.67</attribute>
+        <attribute name="prio" type="INT">74</attribute>
+        <attribute name="prio:r6" type="INT">1</attribute>
+        <attribute name="response" type="DOUBLE">0.12</attribute>
+      </attributes>
+    </task>
+    <communication id="c10">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">14.83</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">10.34</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">13.14</attribute>
+        <attribute name="prio" type="INT">65</attribute>
+        <attribute name="prio:r5" type="INT">16</attribute>
+        <attribute name="response" type="DOUBLE">3.0</attribute>
+      </attributes>
+    </communication>
+    <task id="p4">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">15.25725</attribute>
+        <attribute name="delay" type="DOUBLE">15.22</attribute>
+        <attribute name="e" type="DOUBLE">0.3</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">11.47</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">12.97</attribute>
+        <attribute name="prio" type="INT">83</attribute>
+        <attribute name="prio:r11" type="INT">5</attribute>
+        <attribute name="response" type="DOUBLE">1.8</attribute>
+      </attributes>
+    </task>
+    <communication id="c13">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">9.66</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">40.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">6.33</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">8.13</attribute>
+        <attribute name="prio" type="INT">51</attribute>
+        <attribute name="prio:r5" type="INT">9</attribute>
+        <attribute name="response" type="DOUBLE">2.0</attribute>
+      </attributes>
+    </communication>
+    <task id="p5">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">0.82</attribute>
+        <attribute name="e" type="DOUBLE">0.82</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.0</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">0.0</attribute>
+        <attribute name="prio" type="INT">1</attribute>
+        <attribute name="prio:r4" type="INT">1</attribute>
+        <attribute name="response" type="DOUBLE">0.82</attribute>
+      </attributes>
+    </task>
+    <communication id="c12">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">4.54</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">1.32</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">4.12</attribute>
+        <attribute name="prio" type="INT">58</attribute>
+        <attribute name="prio:r5" type="INT">15</attribute>
+        <attribute name="response" type="DOUBLE">3.0</attribute>
+      </attributes>
+    </communication>
+    <task id="p6">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">1.92</attribute>
+        <attribute name="e" type="DOUBLE">0.7</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.2</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">0.2</attribute>
+        <attribute name="prio" type="INT">5</attribute>
+        <attribute name="prio:r1" type="INT">1</attribute>
+        <attribute name="response" type="DOUBLE">0.7</attribute>
+      </attributes>
+    </task>
+    <communication id="c15">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">6.24</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">40.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">3.46</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">5.26</attribute>
+        <attribute name="prio" type="INT">42</attribute>
+        <attribute name="prio:r5" type="INT">10</attribute>
+        <attribute name="response" type="DOUBLE">2.0</attribute>
+      </attributes>
+    </communication>
+    <task id="p7">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">3.22</attribute>
+        <attribute name="e" type="DOUBLE">0.9</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.4</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">0.4</attribute>
+        <attribute name="prio" type="INT">12</attribute>
+        <attribute name="prio:r4" type="INT">3</attribute>
+        <attribute name="response" type="DOUBLE">0.9</attribute>
+      </attributes>
+    </task>
+    <communication id="c14">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">3.41</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">40.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">1.07</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">2.87</attribute>
+        <attribute name="prio" type="INT">37</attribute>
+        <attribute name="prio:r5" type="INT">11</attribute>
+        <attribute name="response" type="DOUBLE">2.0</attribute>
+      </attributes>
+    </communication>
+    <task id="p8">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">3.90955</attribute>
+        <attribute name="delay" type="DOUBLE">3.9</attribute>
+        <attribute name="e" type="DOUBLE">0.68</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.4</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">0.4</attribute>
+        <attribute name="prio" type="INT">15</attribute>
+        <attribute name="prio:r4" type="INT">2</attribute>
+        <attribute name="response" type="DOUBLE">0.68</attribute>
+      </attributes>
+    </task>
+    <communication id="c17">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">9.87</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">5.86</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">8.46</attribute>
+        <attribute name="prio" type="INT">61</attribute>
+        <attribute name="prio:r5" type="INT">14</attribute>
+        <attribute name="response" type="DOUBLE">2.8</attribute>
+      </attributes>
+    </communication>
+    <task id="p9">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">4.3005</attribute>
+        <attribute name="delay" type="DOUBLE">4.29</attribute>
+        <attribute name="e" type="DOUBLE">0.67</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.6</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">0.6</attribute>
+        <attribute name="prio" type="INT">17</attribute>
+        <attribute name="prio:r3" type="INT">1</attribute>
+        <attribute name="response" type="DOUBLE">0.67</attribute>
+      </attributes>
+    </task>
+    <communication id="c16">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">4.69</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">1.54</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">3.94</attribute>
+        <attribute name="prio" type="INT">57</attribute>
+        <attribute name="prio:r5" type="INT">12</attribute>
+        <attribute name="response" type="DOUBLE">2.6</attribute>
+      </attributes>
+    </communication>
+    <communication id="c19">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">5.27</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">10.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">2.7</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">3.5</attribute>
+        <attribute name="prio" type="INT">35</attribute>
+        <attribute name="prio:r0" type="INT">5</attribute>
+        <attribute name="response" type="DOUBLE">1.0</attribute>
+      </attributes>
+    </communication>
+    <communication id="c18">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">6.98</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">10.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">3.5</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">4.3</attribute>
+        <attribute name="prio" type="INT">43</attribute>
+        <attribute name="prio:r0" type="INT">6</attribute>
+        <attribute name="response" type="DOUBLE">1.0</attribute>
+      </attributes>
+    </communication>
+    <task id="p30">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">12.70101</attribute>
+        <attribute name="delay" type="DOUBLE">12.67</attribute>
+        <attribute name="e" type="DOUBLE">0.27</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">8.46</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">10.99</attribute>
+        <attribute name="prio" type="INT">68</attribute>
+        <attribute name="prio:r8" type="INT">7</attribute>
+        <attribute name="response" type="DOUBLE">2.8</attribute>
+      </attributes>
+    </task>
+    <task id="p32">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">0.14</attribute>
+        <attribute name="e" type="DOUBLE">0.14</attribute>
+        <attribute name="h" type="DOUBLE">10.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.0</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">0.0</attribute>
+        <attribute name="prio" type="INT">2</attribute>
+        <attribute name="prio:r8" type="INT">1</attribute>
+        <attribute name="response" type="DOUBLE">0.14</attribute>
+      </attributes>
+    </task>
+    <task id="p31">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">14.40517</attribute>
+        <attribute name="delay" type="DOUBLE">14.37</attribute>
+        <attribute name="e" type="DOUBLE">0.8</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">8.46</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">12.16</attribute>
+        <attribute name="prio" type="INT">70</attribute>
+        <attribute name="prio:r8" type="INT">9</attribute>
+        <attribute name="response" type="DOUBLE">4.5</attribute>
+      </attributes>
+    </task>
+    <task id="p34">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">4.27</attribute>
+        <attribute name="e" type="DOUBLE">0.72</attribute>
+        <attribute name="h" type="DOUBLE">10.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">2.0</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">2.7</attribute>
+        <attribute name="prio" type="INT">32</attribute>
+        <attribute name="prio:r1" type="INT">2</attribute>
+        <attribute name="response" type="DOUBLE">1.42</attribute>
+      </attributes>
+    </task>
+    <task id="p33">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">2.85</attribute>
+        <attribute name="e" type="DOUBLE">0.21</attribute>
+        <attribute name="h" type="DOUBLE">10.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">1.2</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">1.9</attribute>
+        <attribute name="prio" type="INT">23</attribute>
+        <attribute name="prio:r1" type="INT">3</attribute>
+        <attribute name="response" type="DOUBLE">0.91</attribute>
+      </attributes>
+    </task>
+    <task id="p36">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">9.98438</attribute>
+        <attribute name="delay" type="DOUBLE">9.96</attribute>
+        <attribute name="e" type="DOUBLE">0.58</attribute>
+        <attribute name="h" type="DOUBLE">10.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">4.3</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">6.7</attribute>
+        <attribute name="prio" type="INT">44</attribute>
+        <attribute name="prio:r4" type="INT">4</attribute>
+        <attribute name="response" type="DOUBLE">2.98</attribute>
+      </attributes>
+    </task>
+    <task id="p35">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">5.98</attribute>
+        <attribute name="e" type="DOUBLE">0.71</attribute>
+        <attribute name="h" type="DOUBLE">10.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">3.5</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">3.5</attribute>
+        <attribute name="prio" type="INT">40</attribute>
+        <attribute name="prio:r2" type="INT">1</attribute>
+        <attribute name="response" type="DOUBLE">0.71</attribute>
+      </attributes>
+    </task>
+    <task id="p38">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">2.9873</attribute>
+        <attribute name="delay" type="DOUBLE">2.98</attribute>
+        <attribute name="e" type="DOUBLE">0.59</attribute>
+        <attribute name="h" type="DOUBLE">20.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">1.89</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">1.89</attribute>
+        <attribute name="prio" type="INT">30</attribute>
+        <attribute name="prio:r11" type="INT">1</attribute>
+        <attribute name="response" type="DOUBLE">0.59</attribute>
+      </attributes>
+    </task>
+    <task id="p37">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">0.79</attribute>
+        <attribute name="e" type="DOUBLE">0.3</attribute>
+        <attribute name="h" type="DOUBLE">20.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.0</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">0.49</attribute>
+        <attribute name="prio" type="INT">26</attribute>
+        <attribute name="prio:r7" type="INT">2</attribute>
+        <attribute name="response" type="DOUBLE">0.79</attribute>
+      </attributes>
+    </task>
+    <task id="p39">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">3.66896</attribute>
+        <attribute name="delay" type="DOUBLE">3.66</attribute>
+        <attribute name="e" type="DOUBLE">0.62</attribute>
+        <attribute name="h" type="DOUBLE">20.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">1.89</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">2.54</attribute>
+        <attribute name="prio" type="INT">34</attribute>
+        <attribute name="prio:r10" type="INT">3</attribute>
+        <attribute name="response" type="DOUBLE">1.27</attribute>
+      </attributes>
+    </task>
+    <communication id="c20">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">10.0</attribute>
+      </attributes>
+    </communication>
+    <communication id="c22">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">1.74</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">10.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">1.2</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">1.2</attribute>
+        <attribute name="prio" type="INT">38</attribute>
+        <attribute name="prio:gateway" type="INT">1</attribute>
+        <attribute name="prio:r0" type="INT">8</attribute>
+        <attribute name="prio:r5" type="INT">6</attribute>
+        <attribute name="response" type="DOUBLE">0.2</attribute>
+      </attributes>
+    </communication>
+    <communication id="c21">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">2.74</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">10.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">1.0</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">2.0</attribute>
+        <attribute name="prio" type="INT">29</attribute>
+        <attribute name="prio:gateway" type="INT">1</attribute>
+        <attribute name="prio:r0" type="INT">7</attribute>
+        <attribute name="prio:r5" type="INT">5</attribute>
+        <attribute name="response" type="DOUBLE">1.2</attribute>
+      </attributes>
+    </communication>
+    <communication id="c24">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">2.39</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">20.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.49</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">1.89</attribute>
+        <attribute name="prio" type="INT">27</attribute>
+        <attribute name="prio:r5" type="INT">7</attribute>
+        <attribute name="response" type="DOUBLE">1.6</attribute>
+      </attributes>
+    </communication>
+    <communication id="c23">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">0.94</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">10.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.4</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">0.4</attribute>
+        <attribute name="prio" type="INT">20</attribute>
+        <attribute name="prio:gateway" type="INT">1</attribute>
+        <attribute name="prio:r0" type="INT">4</attribute>
+        <attribute name="prio:r5" type="INT">2</attribute>
+        <attribute name="response" type="DOUBLE">0.2</attribute>
+      </attributes>
+    </communication>
+    <communication id="c26">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+      </attributes>
+    </communication>
+    <communication id="c25">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">4.64</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">20.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">2.03</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">3.43</attribute>
+        <attribute name="prio" type="INT">33</attribute>
+        <attribute name="prio:r5" type="INT">8</attribute>
+        <attribute name="response" type="DOUBLE">1.6</attribute>
+      </attributes>
+    </communication>
+    <communication id="c28">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">3.16</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.71</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">2.51</attribute>
+        <attribute name="prio" type="INT">72</attribute>
+        <attribute name="prio:gateway" type="INT">1</attribute>
+        <attribute name="prio:r0" type="INT">10</attribute>
+        <attribute name="prio:r5" type="INT">18</attribute>
+        <attribute name="response" type="DOUBLE">2.0</attribute>
+      </attributes>
+    </communication>
+    <communication id="c27">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">13.07</attribute>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">11.3</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">11.3</attribute>
+        <attribute name="prio" type="INT">81</attribute>
+        <attribute name="prio:gateway" type="INT">1</attribute>
+        <attribute name="prio:r0" type="INT">9</attribute>
+        <attribute name="prio:r5" type="INT">19</attribute>
+        <attribute name="response" type="DOUBLE">0.2</attribute>
+      </attributes>
+    </communication>
+    <communication id="c29">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.2</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+      </attributes>
+    </communication>
+    <task id="p41">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">6.14501</attribute>
+        <attribute name="delay" type="DOUBLE">6.13</attribute>
+        <attribute name="e" type="DOUBLE">0.47</attribute>
+        <attribute name="h" type="DOUBLE">20.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">3.43</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">4.45</attribute>
+        <attribute name="prio" type="INT">36</attribute>
+        <attribute name="prio:r9" type="INT">3</attribute>
+        <attribute name="response" type="DOUBLE">1.49</attribute>
+      </attributes>
+    </task>
+    <task id="p40">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">3.04</attribute>
+        <attribute name="e" type="DOUBLE">0.51</attribute>
+        <attribute name="h" type="DOUBLE">20.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">1.89</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">2.03</attribute>
+        <attribute name="prio" type="INT">31</attribute>
+        <attribute name="prio:r10" type="INT">2</attribute>
+        <attribute name="response" type="DOUBLE">0.65</attribute>
+      </attributes>
+    </task>
+    <task id="p43">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">6.74</attribute>
+        <attribute name="e" type="DOUBLE">0.6</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">2.51</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">5.49</attribute>
+        <attribute name="prio" type="INT">52</attribute>
+        <attribute name="prio:r4" type="INT">6</attribute>
+        <attribute name="response" type="DOUBLE">3.58</attribute>
+      </attributes>
+    </task>
+    <task id="p42">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">1.16</attribute>
+        <attribute name="e" type="DOUBLE">0.45</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">0.0</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">0.71</attribute>
+        <attribute name="prio" type="INT">41</attribute>
+        <attribute name="prio:r2" type="INT">2</attribute>
+        <attribute name="response" type="DOUBLE">1.16</attribute>
+      </attributes>
+    </task>
+    <task id="p45">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">7.55</attribute>
+        <attribute name="e" type="DOUBLE">0.81</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">2.51</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">6.09</attribute>
+        <attribute name="prio" type="INT">48</attribute>
+        <attribute name="prio:r4" type="INT">7</attribute>
+        <attribute name="response" type="DOUBLE">4.39</attribute>
+      </attributes>
+    </task>
+    <task id="p44">
+      <attributes>
+        <attribute name="delay" type="DOUBLE">9.07</attribute>
+        <attribute name="e" type="DOUBLE">0.32</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">6.11</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">7.7</attribute>
+        <attribute name="prio" type="INT">76</attribute>
+        <attribute name="prio:r9" type="INT">5</attribute>
+        <attribute name="response" type="DOUBLE">1.91</attribute>
+      </attributes>
+    </task>
+    <task id="p46">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">18.74577</attribute>
+        <attribute name="delay" type="DOUBLE">18.7</attribute>
+        <attribute name="e" type="DOUBLE">0.65</attribute>
+        <attribute name="h" type="DOUBLE">50.0</attribute>
+        <attribute name="jitter[in]" type="DOUBLE">13.1</attribute>
+        <attribute name="jitter[out]" type="DOUBLE">16.08</attribute>
+        <attribute name="prio" type="INT">82</attribute>
+        <attribute name="prio:r4" type="INT">5</attribute>
+        <attribute name="response" type="DOUBLE">3.63</attribute>
+      </attributes>
+    </task>
+    <dependency id="d52" source="c19" destination="p35" type="DIRECTED"/>
+    <dependency id="d51" source="c21" destination="p34" type="DIRECTED"/>
+    <dependency id="d54" source="c18" destination="p36" type="DIRECTED"/>
+    <dependency id="d10" source="c6" destination="p6" type="DIRECTED"/>
+    <dependency id="d53" source="c22" destination="p35" type="DIRECTED"/>
+    <dependency id="d56" source="p34" destination="c19" type="DIRECTED"/>
+    <dependency id="d12" source="c6" destination="p7" type="DIRECTED"/>
+    <dependency id="d55" source="p35" destination="c18" type="DIRECTED"/>
+    <dependency id="d11" source="c5" destination="p7" type="DIRECTED"/>
+    <dependency id="d58" source="p32" destination="c21" type="DIRECTED"/>
+    <dependency id="d14" source="c4" destination="p9" type="DIRECTED"/>
+    <dependency id="d57" source="p33" destination="c20" type="DIRECTED"/>
+    <dependency id="d13" source="c4" destination="p8" type="DIRECTED"/>
+    <dependency id="d16" source="p6" destination="c5" type="DIRECTED"/>
+    <dependency id="d59" source="p32" destination="c22" type="DIRECTED"/>
+    <dependency id="d15" source="p7" destination="c4" type="DIRECTED"/>
+    <dependency id="d18" source="c9" destination="p11" type="DIRECTED"/>
+    <dependency id="d17" source="p5" destination="c6" type="DIRECTED"/>
+    <dependency id="d19" source="c8" destination="p12" type="DIRECTED"/>
+    <dependency id="d61" source="c24" destination="p38" type="DIRECTED"/>
+    <dependency id="d60" source="p32" destination="c23" type="DIRECTED"/>
+    <dependency id="d63" source="c24" destination="p40" type="DIRECTED"/>
+    <dependency id="d62" source="c24" destination="p39" type="DIRECTED"/>
+    <dependency id="d21" source="c7" destination="p14" type="DIRECTED"/>
+    <dependency id="d65" source="p37" destination="c24" type="DIRECTED"/>
+    <dependency id="d20" source="c7" destination="p13" type="DIRECTED"/>
+    <dependency id="d64" source="c25" destination="p41" type="DIRECTED"/>
+    <dependency id="d23" source="c9" destination="p14" type="DIRECTED"/>
+    <dependency id="d67" source="c28" destination="p43" type="DIRECTED"/>
+    <dependency id="d22" source="c8" destination="p14" type="DIRECTED"/>
+    <dependency id="d66" source="p40" destination="c25" type="DIRECTED"/>
+    <dependency id="d25" source="p11" destination="c8" type="DIRECTED"/>
+    <dependency id="d69" source="c28" destination="p45" type="DIRECTED"/>
+    <dependency id="d24" source="p12" destination="c7" type="DIRECTED"/>
+    <dependency id="d68" source="c28" destination="p44" type="DIRECTED"/>
+    <dependency id="d27" source="c12" destination="p16" type="DIRECTED"/>
+    <dependency id="d26" source="p10" destination="c9" type="DIRECTED"/>
+    <dependency id="d29" source="c11" destination="p18" type="DIRECTED"/>
+    <dependency id="d28" source="c11" destination="p17" type="DIRECTED"/>
+    <dependency id="d70" source="c26" destination="p46" type="DIRECTED"/>
+    <dependency id="d72" source="c29" destination="p46" type="DIRECTED"/>
+    <dependency id="d71" source="c27" destination="p46" type="DIRECTED"/>
+    <dependency id="d74" source="p44" destination="c27" type="DIRECTED"/>
+    <dependency id="d30" source="c10" destination="p19" type="DIRECTED"/>
+    <dependency id="d73" source="p45" destination="c26" type="DIRECTED"/>
+    <dependency id="d76" source="p43" destination="c29" type="DIRECTED"/>
+    <dependency id="d32" source="p16" destination="c11" type="DIRECTED"/>
+    <dependency id="d75" source="p42" destination="c28" type="DIRECTED"/>
+    <dependency id="d31" source="p17" destination="c10" type="DIRECTED"/>
+    <dependency id="d34" source="c14" destination="p21" type="DIRECTED"/>
+    <dependency id="d33" source="p15" destination="c12" type="DIRECTED"/>
+    <dependency id="d36" source="c15" destination="p23" type="DIRECTED"/>
+    <dependency id="d35" source="c15" destination="p22" type="DIRECTED"/>
+    <dependency id="d38" source="c13" destination="p25" type="DIRECTED"/>
+    <dependency id="d37" source="c13" destination="p24" type="DIRECTED"/>
+    <dependency id="d39" source="c13" destination="p26" type="DIRECTED"/>
+    <dependency id="d0" source="c3" destination="p1" type="DIRECTED"/>
+    <dependency id="d1" source="c1" destination="p2" type="DIRECTED"/>
+    <dependency id="d2" source="c1" destination="p3" type="DIRECTED"/>
+    <dependency id="d3" source="c0" destination="p4" type="DIRECTED"/>
+    <dependency id="d4" source="c1" destination="p4" type="DIRECTED"/>
+    <dependency id="d5" source="c2" destination="p4" type="DIRECTED"/>
+    <dependency id="d6" source="p3" destination="c0" type="DIRECTED"/>
+    <dependency id="d7" source="p1" destination="c1" type="DIRECTED"/>
+    <dependency id="d8" source="p0" destination="c2" type="DIRECTED"/>
+    <dependency id="d9" source="p0" destination="c3" type="DIRECTED"/>
+    <dependency id="d41" source="p20" destination="c14" type="DIRECTED"/>
+    <dependency id="d40" source="p22" destination="c13" type="DIRECTED"/>
+    <dependency id="d43" source="c16" destination="p28" type="DIRECTED"/>
+    <dependency id="d42" source="p21" destination="c15" type="DIRECTED"/>
+    <dependency id="d45" source="c17" destination="p30" type="DIRECTED"/>
+    <dependency id="d44" source="c17" destination="p29" type="DIRECTED"/>
+    <dependency id="d47" source="p27" destination="c16" type="DIRECTED"/>
+    <dependency id="d46" source="c17" destination="p31" type="DIRECTED"/>
+    <dependency id="d49" source="c23" destination="p33" type="DIRECTED"/>
+    <dependency id="d48" source="p28" destination="c17" type="DIRECTED"/>
+    <dependency id="d50" source="c20" destination="p34" type="DIRECTED"/>
+    <functions>
+      <function anchor="p23">
+        <attributes>
+          <attribute name="ID" type="STRING">func5</attribute>
+        </attributes>
+      </function>
+      <function anchor="c4">
+        <attributes>
+          <attribute name="ID" type="STRING">func6</attribute>
+        </attributes>
+      </function>
+      <function anchor="p38">
+        <attributes>
+          <attribute name="ID" type="STRING">func7</attribute>
+        </attributes>
+      </function>
+      <function anchor="p12">
+        <attributes>
+          <attribute name="ID" type="STRING">func8</attribute>
+        </attributes>
+      </function>
+      <function anchor="c11">
+        <attributes>
+          <attribute name="ID" type="STRING">func1</attribute>
+        </attributes>
+      </function>
+      <function anchor="p34">
+        <attributes>
+          <attribute name="ID" type="STRING">func2</attribute>
+        </attributes>
+      </function>
+      <function anchor="p27">
+        <attributes>
+          <attribute name="ID" type="STRING">func3</attribute>
+        </attributes>
+      </function>
+      <function anchor="p45">
+        <attributes>
+          <attribute name="ID" type="STRING">func4</attribute>
+        </attributes>
+      </function>
+      <function anchor="p0">
+        <attributes>
+          <attribute name="ID" type="STRING">func0</attribute>
+        </attributes>
+      </function>
+    </functions>
+  </application>
+  <mappings>
+    <mapping id="m-p0-r8" source="p0" target="r8"/>
+    <mapping id="m-p13-r10" source="p13" target="r10"/>
+    <mapping id="m-p4-r11" source="p4" target="r11"/>
+    <mapping id="m-p36-r4" source="p36" target="r4"/>
+    <mapping id="m-p11-r9" source="p11" target="r9"/>
+    <mapping id="m-p34-r1" source="p34" target="r1"/>
+    <mapping id="m-p18-r11" source="p18" target="r11"/>
+    <mapping id="m-p39-r10" source="p39" target="r10"/>
+    <mapping id="m-p44-r9" source="p44" target="r9"/>
+    <mapping id="m-p26-r11" source="p26" target="r11"/>
+    <mapping id="m-p23-r7" source="p23" target="r7"/>
+    <mapping id="m-p25-r10" source="p25" target="r10"/>
+    <mapping id="m-p8-r4" source="p8" target="r4"/>
+    <mapping id="m-p45-r4" source="p45" target="r4"/>
+    <mapping id="m-p6-r1" source="p6" target="r1"/>
+    <mapping id="m-p31-r8" source="p31" target="r8"/>
+    <mapping id="m-p21-r11" source="p21" target="r11"/>
+    <mapping id="m-p14-r7" source="p14" target="r7"/>
+    <mapping id="m-p38-r11" source="p38" target="r11"/>
+    <mapping id="m-p1-r8" source="p1" target="r8"/>
+    <mapping id="m-p37-r7" source="p37" target="r7"/>
+    <mapping id="m-p33-r1" source="p33" target="r1"/>
+    <mapping id="m-p12-r9" source="p12" target="r9"/>
+    <mapping id="m-p10-r8" source="p10" target="r8"/>
+    <mapping id="m-p35-r2" source="p35" target="r2"/>
+    <mapping id="m-p16-r10" source="p16" target="r10"/>
+    <mapping id="m-p29-r6" source="p29" target="r6"/>
+    <mapping id="m-p2-r10" source="p2" target="r10"/>
+    <mapping id="m-p20-r8" source="p20" target="r8"/>
+    <mapping id="m-p43-r4" source="p43" target="r4"/>
+    <mapping id="m-p41-r9" source="p41" target="r9"/>
+    <mapping id="m-p27-r7" source="p27" target="r7"/>
+    <mapping id="m-p22-r8" source="p22" target="r8"/>
+    <mapping id="m-p46-r4" source="p46" target="r4"/>
+    <mapping id="m-p24-r9" source="p24" target="r9"/>
+    <mapping id="m-p9-r3" source="p9" target="r3"/>
+    <mapping id="m-p42-r2" source="p42" target="r2"/>
+    <mapping id="m-p28-r10" source="p28" target="r10"/>
+    <mapping id="m-p40-r10" source="p40" target="r10"/>
+    <mapping id="m-p32-r8" source="p32" target="r8"/>
+    <mapping id="m-p30-r8" source="p30" target="r8"/>
+    <mapping id="m-p15-r7" source="p15" target="r7"/>
+    <mapping id="m-p3-r6" source="p3" target="r6"/>
+    <mapping id="m-p7-r4" source="p7" target="r4"/>
+    <mapping id="m-p5-r4" source="p5" target="r4"/>
+    <mapping id="m-p17-r7" source="p17" target="r7"/>
+    <mapping id="m-p19-r8" source="p19" target="r8"/>
+  </mappings>
+  <routings>
+    <routing source="c11">
+      <resource id="r10"/>
+      <resource id="r11"/>
+      <resource id="r5"/>
+      <resource id="r7"/>
+      <link id="l5" source="r5" destination="r7" type="DIRECTED"/>
+      <link id="l8" source="r10" destination="r5" type="DIRECTED"/>
+      <link id="l9" source="r5" destination="r11" type="DIRECTED"/>
+    </routing>
+    <routing source="c10">
+      <resource id="r5"/>
+      <resource id="r7"/>
+      <resource id="r8"/>
+      <link id="l5" source="r7" destination="r5" type="DIRECTED"/>
+      <link id="l6" source="r5" destination="r8" type="DIRECTED"/>
+    </routing>
+    <routing source="c13">
+      <resource id="r10"/>
+      <resource id="r11"/>
+      <resource id="r5"/>
+      <resource id="r8"/>
+      <resource id="r9"/>
+      <link id="l6" source="r8" destination="r5" type="DIRECTED"/>
+      <link id="l7" source="r5" destination="r9" type="DIRECTED"/>
+      <link id="l8" source="r5" destination="r10" type="DIRECTED"/>
+      <link id="l9" source="r5" destination="r11" type="DIRECTED"/>
+    </routing>
+    <routing source="c12">
+      <resource id="r10"/>
+      <resource id="r5"/>
+      <resource id="r7"/>
+      <link id="l5" source="r7" destination="r5" type="DIRECTED"/>
+      <link id="l8" source="r5" destination="r10" type="DIRECTED"/>
+    </routing>
+    <routing source="c15">
+      <resource id="r11"/>
+      <resource id="r5"/>
+      <resource id="r7"/>
+      <resource id="r8"/>
+      <link id="l5" source="r5" destination="r7" type="DIRECTED"/>
+      <link id="l6" source="r5" destination="r8" type="DIRECTED"/>
+      <link id="l9" source="r11" destination="r5" type="DIRECTED"/>
+    </routing>
+    <routing source="c14">
+      <resource id="r11"/>
+      <resource id="r5"/>
+      <resource id="r8"/>
+      <link id="l6" source="r8" destination="r5" type="DIRECTED"/>
+      <link id="l9" source="r5" destination="r11" type="DIRECTED"/>
+    </routing>
+    <routing source="c17">
+      <resource id="r10"/>
+      <resource id="r5"/>
+      <resource id="r6"/>
+      <resource id="r8"/>
+      <link id="l4" source="r5" destination="r6" type="DIRECTED"/>
+      <link id="l6" source="r5" destination="r8" type="DIRECTED"/>
+      <link id="l8" source="r10" destination="r5" type="DIRECTED"/>
+    </routing>
+    <routing source="c16">
+      <resource id="r10"/>
+      <resource id="r5"/>
+      <resource id="r7"/>
+      <link id="l5" source="r7" destination="r5" type="DIRECTED"/>
+      <link id="l8" source="r5" destination="r10" type="DIRECTED"/>
+    </routing>
+    <routing source="c19">
+      <resource id="r2"/>
+      <resource id="r0"/>
+      <resource id="r1"/>
+      <link id="l0" source="r1" destination="r0" type="DIRECTED"/>
+      <link id="l1" source="r0" destination="r2" type="DIRECTED"/>
+    </routing>
+    <routing source="c18">
+      <resource id="r2"/>
+      <resource id="r4"/>
+      <resource id="r0"/>
+      <link id="l1" source="r2" destination="r0" type="DIRECTED"/>
+      <link id="l3" source="r0" destination="r4" type="DIRECTED"/>
+    </routing>
+    <routing source="c20">
+      <resource id="r1"/>
+    </routing>
+    <routing source="c22">
+      <resource id="r2"/>
+      <resource id="r5"/>
+      <resource id="r8"/>
+      <resource id="gateway"/>
+      <resource id="r0"/>
+      <link id="l1" source="r0" destination="r2" type="DIRECTED"/>
+      <link id="link_r5" source="r5" destination="gateway" type="DIRECTED"/>
+      <link id="l6" source="r8" destination="r5" type="DIRECTED"/>
+      <link id="link_r0" source="gateway" destination="r0" type="DIRECTED"/>
+    </routing>
+    <routing source="c21">
+      <resource id="r5"/>
+      <resource id="r8"/>
+      <resource id="gateway"/>
+      <resource id="r0"/>
+      <resource id="r1"/>
+      <link id="l0" source="r0" destination="r1" type="DIRECTED"/>
+      <link id="link_r5" source="r5" destination="gateway" type="DIRECTED"/>
+      <link id="l6" source="r8" destination="r5" type="DIRECTED"/>
+      <link id="link_r0" source="gateway" destination="r0" type="DIRECTED"/>
+    </routing>
+    <routing source="c24">
+      <resource id="r10"/>
+      <resource id="r11"/>
+      <resource id="r5"/>
+      <resource id="r7"/>
+      <link id="l5" source="r7" destination="r5" type="DIRECTED"/>
+      <link id="l8" source="r5" destination="r10" type="DIRECTED"/>
+      <link id="l9" source="r5" destination="r11" type="DIRECTED"/>
+    </routing>
+    <routing source="c23">
+      <resource id="r5"/>
+      <resource id="r8"/>
+      <resource id="gateway"/>
+      <resource id="r0"/>
+      <resource id="r1"/>
+      <link id="l0" source="r0" destination="r1" type="DIRECTED"/>
+      <link id="link_r5" source="r5" destination="gateway" type="DIRECTED"/>
+      <link id="l6" source="r8" destination="r5" type="DIRECTED"/>
+      <link id="link_r0" source="gateway" destination="r0" type="DIRECTED"/>
+    </routing>
+    <routing source="c26">
+      <resource id="r4"/>
+    </routing>
+    <routing source="c25">
+      <resource id="r10"/>
+      <resource id="r5"/>
+      <resource id="r9"/>
+      <link id="l7" source="r5" destination="r9" type="DIRECTED"/>
+      <link id="l8" source="r10" destination="r5" type="DIRECTED"/>
+    </routing>
+    <routing source="c28">
+      <resource id="r2"/>
+      <resource id="r4"/>
+      <resource id="r5"/>
+      <resource id="r9"/>
+      <resource id="gateway"/>
+      <resource id="r0"/>
+      <link id="l1" source="r2" destination="r0" type="DIRECTED"/>
+      <link id="link_r5" source="gateway" destination="r5" type="DIRECTED"/>
+      <link id="l3" source="r0" destination="r4" type="DIRECTED"/>
+      <link id="l7" source="r5" destination="r9" type="DIRECTED"/>
+      <link id="link_r0" source="r0" destination="gateway" type="DIRECTED"/>
+    </routing>
+    <routing source="c27">
+      <resource id="r4"/>
+      <resource id="r5"/>
+      <resource id="r9"/>
+      <resource id="gateway"/>
+      <resource id="r0"/>
+      <link id="link_r5" source="r5" destination="gateway" type="DIRECTED"/>
+      <link id="l3" source="r0" destination="r4" type="DIRECTED"/>
+      <link id="l7" source="r9" destination="r5" type="DIRECTED"/>
+      <link id="link_r0" source="gateway" destination="r0" type="DIRECTED"/>
+    </routing>
+    <routing source="c29">
+      <resource id="r4"/>
+    </routing>
+    <routing source="c0">
+      <resource id="r11"/>
+      <resource id="r5"/>
+      <resource id="r6"/>
+      <link id="l4" source="r6" destination="r5" type="DIRECTED"/>
+      <link id="l9" source="r5" destination="r11" type="DIRECTED"/>
+    </routing>
+    <routing source="c1">
+      <resource id="r10"/>
+      <resource id="r11"/>
+      <resource id="r5"/>
+      <resource id="r6"/>
+      <resource id="r8"/>
+      <link id="l4" source="r5" destination="r6" type="DIRECTED"/>
+      <link id="l6" source="r8" destination="r5" type="DIRECTED"/>
+      <link id="l8" source="r5" destination="r10" type="DIRECTED"/>
+      <link id="l9" source="r5" destination="r11" type="DIRECTED"/>
+    </routing>
+    <routing source="c2">
+      <resource id="r11"/>
+      <resource id="r5"/>
+      <resource id="r8"/>
+      <link id="l6" source="r8" destination="r5" type="DIRECTED"/>
+      <link id="l9" source="r5" destination="r11" type="DIRECTED"/>
+    </routing>
+    <routing source="c3">
+      <resource id="r8"/>
+    </routing>
+    <routing source="c4">
+      <resource id="r3"/>
+      <resource id="r4"/>
+      <resource id="r0"/>
+      <link id="l2" source="r0" destination="r3" type="DIRECTED"/>
+      <link id="l3" source="r4" destination="r0" type="DIRECTED"/>
+    </routing>
+    <routing source="c5">
+      <resource id="r4"/>
+      <resource id="r0"/>
+      <resource id="r1"/>
+      <link id="l0" source="r1" destination="r0" type="DIRECTED"/>
+      <link id="l3" source="r0" destination="r4" type="DIRECTED"/>
+    </routing>
+    <routing source="c6">
+      <resource id="r4"/>
+      <resource id="r0"/>
+      <resource id="r1"/>
+      <link id="l0" source="r0" destination="r1" type="DIRECTED"/>
+      <link id="l3" source="r4" destination="r0" type="DIRECTED"/>
+    </routing>
+    <routing source="c7">
+      <resource id="r10"/>
+      <resource id="r5"/>
+      <resource id="r7"/>
+      <resource id="r9"/>
+      <link id="l5" source="r5" destination="r7" type="DIRECTED"/>
+      <link id="l7" source="r9" destination="r5" type="DIRECTED"/>
+      <link id="l8" source="r5" destination="r10" type="DIRECTED"/>
+    </routing>
+    <routing source="c8">
+      <resource id="r5"/>
+      <resource id="r7"/>
+      <resource id="r9"/>
+      <link id="l5" source="r5" destination="r7" type="DIRECTED"/>
+      <link id="l7" source="r9" destination="r5" type="DIRECTED"/>
+    </routing>
+    <routing source="c9">
+      <resource id="r5"/>
+      <resource id="r7"/>
+      <resource id="r8"/>
+      <resource id="r9"/>
+      <link id="l5" source="r5" destination="r7" type="DIRECTED"/>
+      <link id="l6" source="r8" destination="r5" type="DIRECTED"/>
+      <link id="l7" source="r5" destination="r9" type="DIRECTED"/>
+    </routing>
+  </routings>
+  <attributes>
+    <attribute name="deadlineScale" type="DOUBLE">1.0024472129835245</attribute>
+    <attribute name="nCANs" type="INT">2</attribute>
+    <attribute name="nECUs" type="INT">10</attribute>
+    <attribute name="nFuncs" type="INT">9</attribute>
+    <attribute name="nPeriods" type="INT">5</attribute>
+    <attribute name="runtime" type="DOUBLE">1.697</attribute>
+    <attribute name="seed" type="java.lang.Long">8319638437045870127</attribute>
+  </attributes>
+</specification>

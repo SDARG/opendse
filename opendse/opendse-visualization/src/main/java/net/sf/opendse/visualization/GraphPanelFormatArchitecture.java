@@ -154,6 +154,9 @@ public class GraphPanelFormatArchitecture extends AbstractGraphPanelFormat {
 	public boolean isActive(Edge edge, Node n0, Node n1) {
 		if (!selection.isNull() && selection.get() instanceof ICommunication) {
 			Architecture<Resource, Link> routing = routings.get((Task) selection.get());
+			if(!routing.containsVertex((Resource)n0) || !routing.containsVertex((Resource)n1)){
+				return false;
+			}
 			return routing.findEdgeSet((Resource) n0, (Resource) n1).contains(edge);
 		} else {
 			Pair<Resource> endpoints = architecture.getEndpoints((Link) edge);

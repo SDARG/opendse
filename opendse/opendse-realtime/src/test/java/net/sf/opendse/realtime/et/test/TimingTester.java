@@ -83,11 +83,11 @@ public class TimingTester {
 
 		TimingGraphBuilder builder = new TimingGraphBuilder();
 		builder.addModifiers(new TimingGraphModifierFilterVertex(new SourceTargetCommunicationPredicate(impl, builder.getTimingGraph())));
-		
+
 		// these two remove the edges due to deadline <= period
 		builder.addModifiers(new TimingGraphModifierFilterEdge(new ApplicationPriorityCyclesPredicate(builder.getTimingGraph())));
 		builder.addModifiers(new TimingGraphModifierFilterEdge(new ApplicationDependencyInterferencePredicate(builder.getTimingGraph())));
-		
+
 		builder.addModifiers(new TimingGraphModifierFilterEdge(new RateMonotonicEdgeFilterPredicate(builder.getTimingGraph())));
 		builder.addModifiers(new TimingGraphModifierFilterEdge(new DelaySchedulerEdgePredicate(builder.getTimingGraph())));
 		TimingGraph tg = builder.build(impl);
@@ -108,16 +108,15 @@ public class TimingTester {
 
 		// normalize here:
 		// end normalization
-		
-		 SolverProvider solverProvider = new SolverProvider(){
+
+		SolverProvider solverProvider = new SolverProvider() {
 			@Override
 			public MpSolver get() {
 				MpSolver solver = new SolverGurobi();
 				solver.setTimeout(3600);
 				return solver;
 			}
-		 };
-		
+		};
 
 		MpSolver solver = new SolverGurobi();
 		solver.add(problem);
@@ -362,7 +361,7 @@ public class TimingTester {
 		int[][] dependencies = { { 1, 2 }, { 2, 3 }, { 2, 4 }, { 5, 6 }, { 5, 7 }, { 6, 8 }, { 7, 9 }, { 8, 10 }, { 9, 11 }, { 10, 12 },
 				{ 11, 12 } };
 		double[][] deadlines = { { 3, 4.0 }, { 4, 4.0 }, { 12, 5.0 } };
-		//double[][] deadlines = { { 3, 5.0 }, { 4, 5.0 }, { 12, 5.0 } };
+		// double[][] deadlines = { { 3, 5.0 }, { 4, 5.0 }, { 12, 5.0 } };
 
 		Task[] t = new Task[13];
 		for (int i = 1; i <= 12; i++) {
