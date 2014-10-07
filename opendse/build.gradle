@@ -13,7 +13,8 @@ def descriptions = [
 	'opendse-model' : 'The algorithms module of OpenDSE',
 	'opendse-visualization' : 'The visualization module of OpenDSE',
 	'opendse-optimization' : 'The optimization module of OpenDSE',
-	'opendse-tutorial' : 'The tutorial module of OpenDSE'
+	'opendse-tutorial' : 'The tutorial module of OpenDSE',
+	'opendse-realtime' : 'The real-time module of OpenDSE'
 ]
 
 allprojects {
