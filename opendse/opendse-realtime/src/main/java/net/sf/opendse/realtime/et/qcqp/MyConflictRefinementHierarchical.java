@@ -30,14 +30,14 @@ public class MyConflictRefinementHierarchical implements MyConflictRefinement {
 		this.solverProvider = solverProvider;
 	}
 
-	public Set<TimingElement> find(TimingGraph tg, Specification impl) {
-		Set<TimingElement> predef = findFunctions(tg, impl);
+	public Set<TimingElement> find(TimingGraph tg, Specification impl, boolean rateMonotonic) {
+		Set<TimingElement> predef = findFunctions(tg, impl, rateMonotonic);
 		
 		MyConflictRefinementDeletion deletion = new MyConflictRefinementDeletion(solverProvider);
-		return deletion.find(tg, impl, predef);
+		return deletion.find(tg, impl, predef, rateMonotonic);
 	}
 	
-	public Set<TimingElement> findFunctions(TimingGraph tg, Specification impl) {
+	public Set<TimingElement> findFunctions(TimingGraph tg, Specification impl, boolean rateMonotonic) {
 
 		Set<TimingElement> iis = new HashSet<TimingElement>();
 		for (TimingElement te : tg.getVertices()) {
@@ -83,7 +83,7 @@ public class MyConflictRefinementHierarchical implements MyConflictRefinement {
 			
 
 			MyEncoder encoder = new MyEncoder();
-			MpProblem problem = encoder.encode(tg);
+			MpProblem problem = encoder.encode(tg, rateMonotonic);
 			// System.out.println(problem);
 
 			MpSolver solver = solverProvider.get();

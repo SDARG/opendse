@@ -140,7 +140,7 @@ public class TimingTester {
 			// MyConflictRefinementElastic conflictRefinement = new
 			// MyConflictRefinementElastic();
 			MyConflictRefinementDeletion conflictRefinement = new MyConflictRefinementDeletion(solverProvider);
-			Set<TimingElement> iis = conflictRefinement.find(tg, impl);
+			Set<TimingElement> iis = conflictRefinement.find(tg, impl, true);
 
 			System.out.println("IIS: " + iis);
 		}

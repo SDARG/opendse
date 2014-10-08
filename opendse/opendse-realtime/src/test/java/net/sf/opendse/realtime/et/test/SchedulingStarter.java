@@ -75,7 +75,7 @@ public class SchedulingStarter {
 
 		// "-qcqp", "-qcqpD", "-qcqpE"
 		if (method.startsWith("-qcqp")) {
-			PriorityScheduler scheduler = new PriorityScheduler(implementation, solverProvider);
+			PriorityScheduler scheduler = new PriorityScheduler(implementation, solverProvider, false);
 
 			if (!scheduler.solve(OptimizationObjective.DELAY)) {
 				System.out.println("Problem is infeasible.");

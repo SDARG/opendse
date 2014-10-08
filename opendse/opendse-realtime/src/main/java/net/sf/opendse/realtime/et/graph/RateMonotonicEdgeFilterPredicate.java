@@ -4,6 +4,7 @@ import net.sf.opendse.model.Task;
 
 import org.apache.commons.collections15.Predicate;
 
+@Deprecated
 public class RateMonotonicEdgeFilterPredicate implements Predicate<TimingDependency> {
 
 	protected TimingGraph timingGraph;

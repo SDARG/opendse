@@ -50,8 +50,7 @@ public class PriorityScheduler {
 	public static String SCHEDULER = "scheduler";
 	// public static String DELAY = "DELAY";
 
-	
-
+	protected final boolean rateMonotonic;
 	protected final Specification specification;
 	protected final SolverProvider solverProvider;
 	protected TimingGraph originalTimingGraph = null;
@@ -60,10 +59,11 @@ public class PriorityScheduler {
 	protected Boolean solved = false;
 	protected Boolean isInfeasible = null;
 
-	public PriorityScheduler(Specification specification, SolverProvider solverProvider) {
+	public PriorityScheduler(Specification specification, SolverProvider solverProvider, boolean rateMonotonic) {
 		super();
 		this.specification = specification;
 		this.solverProvider = solverProvider;
+		this.rateMonotonic = rateMonotonic;
 	}
 
 	public boolean solve(OptimizationObjective objective) {
@@ -73,7 +73,7 @@ public class PriorityScheduler {
 
 		originalTimingGraph = toTimingGraph(specification);
 		MyEncoder encoder = new MyEncoder(objective);
-		MpProblem problem = encoder.encode(originalTimingGraph);
+		MpProblem problem = encoder.encode(originalTimingGraph, rateMonotonic);
 
 		MpSolver solver = solverProvider.get();
 		solver.add(problem);
@@ -119,7 +119,7 @@ public class PriorityScheduler {
 			throw new IllegalArgumentException("unknown refinement method " + method);
 		}
 
-		Set<TimingElement> iis = conflictRefinement.find(originalTimingGraph, specification);
+		Set<TimingElement> iis = conflictRefinement.find(originalTimingGraph, specification, rateMonotonic);
 
 		System.out.println("IIS (size=" + iis.size() + "): " + iis);
 

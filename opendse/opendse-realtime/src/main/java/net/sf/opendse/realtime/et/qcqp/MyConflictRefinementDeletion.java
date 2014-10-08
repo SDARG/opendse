@@ -27,17 +27,17 @@ public class MyConflictRefinementDeletion implements MyConflictRefinement {
 		this.solverProvider = solverProvider;
 	}
 
-	public Set<TimingElement> find(TimingGraph tg, Specification impl) {
+	public Set<TimingElement> find(TimingGraph tg, Specification impl, boolean rateMonotonic) {
 		Set<TimingElement> iis = new HashSet<TimingElement>();
 
 		for (TimingElement te : tg.getVertices()) {
 			iis.add(te);
 		}
 
-		return find(tg, impl, iis);
+		return find(tg, impl, iis, rateMonotonic);
 	}
 
-	public Set<TimingElement> find(TimingGraph tg, Specification impl, Set<TimingElement> predef) {
+	public Set<TimingElement> find(TimingGraph tg, Specification impl, Set<TimingElement> predef, boolean rateMonotonic) {
 
 		Set<TimingElement> iis = new HashSet<TimingElement>(predef);
 

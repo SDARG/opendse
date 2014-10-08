@@ -5,6 +5,7 @@ import static net.sf.jmpi.main.expression.MpExpr.sum;
 import static net.sf.opendse.realtime.et.PriorityScheduler.FIXEDDELAY;
 import static net.sf.opendse.realtime.et.PriorityScheduler.FIXEDPRIORITY_NONPREEMPTIVE;
 import static net.sf.opendse.realtime.et.PriorityScheduler.FIXEDPRIORITY_PREEMPTIVE;
+import static net.sf.opendse.realtime.et.PriorityScheduler.PERIOD;
 import static net.sf.opendse.realtime.et.PriorityScheduler.SCHEDULER;
 import static net.sf.opendse.realtime.et.qcqp.vars.Vars.a;
 import static net.sf.opendse.realtime.et.qcqp.vars.Vars.b;
@@ -76,8 +77,12 @@ public class MyEncoder {
 		this.definedPriorities = definedPriorities;
 		this.uniquePriorityAssignment = uniquePriorityAssignment;
 	}
+	
+	public MpProblem encode(TimingGraph tg){
+		return encode(tg, false);
+	}
 
-	public MpProblem encode(TimingGraph tg) {
+	public MpProblem encode(TimingGraph tg, boolean rateMonotonic) {
 		MpProblem problem = new MpProblem();
 
 		// Map<Resource, Set<Task>> resourceToTask = getResourceToTasks(tg);
@@ -105,6 +110,15 @@ public class MyEncoder {
 
 				TimingElement t1 = tg.getSource(td);
 				TimingElement t2 = tg.getDest(td);
+			
+				if(rateMonotonic){
+					Double h1 = t1.getTask().getAttribute(PERIOD);
+					Double h2 = t2.getTask().getAttribute(PERIOD);
+					
+					if(h1 < h2){
+						problem.add(sum(a(td)), "=", 1);
+					}
+				}
 
 				problem.addVar(0, i(t1, t2), 1000, Integer.class);
 			}
