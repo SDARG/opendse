@@ -2,9 +2,13 @@ package net.sf.opendse.realtime.et.qcqp;
 
 import static net.sf.opendse.model.Models.isCommunication;
 import static net.sf.opendse.model.Models.isProcess;
+import static net.sf.opendse.realtime.et.PriorityScheduler.DELAY;
+import static net.sf.opendse.realtime.et.PriorityScheduler.JITTER;
+import static net.sf.opendse.realtime.et.PriorityScheduler.RESPONSE;
 import net.sf.opendse.model.Node;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
+import net.sf.opendse.realtime.et.PriorityScheduler;
 import net.sf.opendse.realtime.et.graph.TimingElement;
 import net.sf.opendse.realtime.et.graph.TimingGraph;
 
@@ -35,9 +39,9 @@ public class MyTimingPropertyAnnotater {
 			Double responseTime = te.getAttribute("response");
 
 			//node.setAttribute("jitter[in]" + postfix, jitter);
-			node.setAttribute("jitter" + postfix, adjust(jitter + (responseTime - executionTime)));
-			node.setAttribute("delay" + postfix, delay);
-			node.setAttribute("response" + postfix, responseTime);
+			node.setAttribute(JITTER + postfix, adjust(jitter + (responseTime - executionTime)));
+			node.setAttribute(DELAY + postfix, delay);
+			node.setAttribute(RESPONSE + postfix, responseTime); 
 		}
 
 	}

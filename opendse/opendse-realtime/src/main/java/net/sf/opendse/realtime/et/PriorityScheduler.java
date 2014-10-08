@@ -32,19 +32,25 @@ import net.sf.opendse.realtime.et.qcqp.MyInterpreter;
 import net.sf.opendse.realtime.et.qcqp.MyTimingPropertyAnnotater;
 
 public class PriorityScheduler {
-
-	public static String FIXEDPRIORITY_PREEMPTIVE = "FIXEDPRIORITY_PREEMPTIVE";
-	public static String FIXEDPRIORITY_NONPREEMPTIVE = "FIXEDPRIORITY_NONPREEMPTIVE";
-	public static String FIXEDDELAY = "FIXEDDELAY";
-	public static String SCHEDULER = "scheduler";
-	// public static String DELAY = "DELAY";
-
+	
 	public static String PRIORITY = "prio";
 	public static String DELAY = "delay";
 	public static String JITTER = "jitter";
 	public static String RESPONSE = "response";
 	public static String PERIOD = "h";
 	public static String EXECUTION_TIME = "e";
+	public static String DEADLINE = "deadline";
+
+	public static String FIXEDPRIORITY_PREEMPTIVE = "FIXEDPRIORITY_PREEMPTIVE";
+	public static String FIXEDPRIORITY_NONPREEMPTIVE = "FIXEDPRIORITY_NONPREEMPTIVE";
+	public static String FIXEDDELAY = "FIXEDDELAY";
+	public static String FIXEDDELAY_RESPONSE = "FIXEDDELAY_"+RESPONSE;
+	public static String FIXEDDELAY_JITTER = "FIXEDDELAY_"+JITTER;
+	
+	public static String SCHEDULER = "scheduler";
+	// public static String DELAY = "DELAY";
+
+	
 
 	protected final Specification specification;
 	protected final SolverProvider solverProvider;
@@ -83,8 +89,10 @@ public class PriorityScheduler {
 			MyInterpreter interpreter = new MyInterpreter(solverProvider);
 			MyTimingPropertyAnnotater annotator = new MyTimingPropertyAnnotater();
 
+			//System.out.println("Interprete.");
 			resultingTimingGraph = interpreter.interprete(originalTimingGraph, specification, result);
-			annotator.annotate(resultingTimingGraph, specification);
+			//System.out.println("Annotate.");
+			annotator.annotate(resultingTimingGraph, specification); 
 			return true;
 		}
 	}

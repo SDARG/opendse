@@ -1,5 +1,8 @@
 package net.sf.opendse.realtime.et.graph;
 
+import static net.sf.opendse.realtime.et.PriorityScheduler.EXECUTION_TIME;
+import static net.sf.opendse.realtime.et.PriorityScheduler.PERIOD;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,6 +18,7 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.ValidImplementationPredicate;
+import net.sf.opendse.realtime.et.PriorityScheduler;
 import net.sf.opendse.visualization.algorithm.BellmanFord;
 
 import org.apache.commons.collections15.Transformer;
@@ -54,8 +58,14 @@ public class TimingGraphBuilder {
 
 		for (TimingElement te : timingGraph.getVertices()) {
 
-			Double h = te.getTask().getAttribute("h");
-			Double e = te.getTask().getAttribute("e");
+			Double h = te.getTask().getAttribute(PERIOD);
+			Double e = null;
+			if(te.getTask().getAttributeNames().contains(EXECUTION_TIME+":"+te.getResource().getId())){
+				e = te.getTask().getAttribute(EXECUTION_TIME+":"+te.getResource().getId());
+			} else {
+				e = te.getTask().getAttribute(EXECUTION_TIME);
+			}
+			
 			Double deadline = te.getTask().getAttribute("deadline");
 
 			if (h == null || e == null) {

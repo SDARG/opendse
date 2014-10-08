@@ -24,6 +24,7 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.realtime.et.SolverProvider;
+import net.sf.opendse.realtime.et.TimingGraphViewer;
 import net.sf.opendse.realtime.et.graph.TimingDependency;
 import net.sf.opendse.realtime.et.graph.TimingDependencyPriority;
 import net.sf.opendse.realtime.et.graph.TimingDependencyTrigger;
@@ -32,6 +33,7 @@ import net.sf.opendse.realtime.et.graph.TimingGraph;
 import net.sf.opendse.realtime.et.qcqp.MyEncoder.OptimizationObjective;
 import net.sf.opendse.realtime.et.qcqp.vars.Vars;
 import net.sf.opendse.visualization.algorithm.BellmanFord;
+import net.sf.opendse.visualization.algorithm.CycleBreakFilter;
 
 import org.apache.commons.collections15.Transformer;
 
@@ -55,16 +57,17 @@ public class MyInterpreter {
 	public TimingGraph interprete(TimingGraph tg, Specification implementation, MpResult result) {
 		TimingGraph rtg = new TimingGraph();
 
-		System.out.println(result);
+		final MpResult oResult = result;
+		Transformer<TimingDependencyPriority, Boolean> edgeValueTransformer = new Transformer<TimingDependencyPriority, Boolean>() {
+			public Boolean transform(TimingDependencyPriority input) {
+				Boolean value = oResult.getBoolean(a(input));
+				// System.out.println(input.getId()+" "+value);
+				return value;
+			}
+		};
 
 		if (considerTiming) {
-			final MpResult oResult = result;
-			Transformer<TimingDependencyPriority, Boolean> transformer = new Transformer<TimingDependencyPriority, Boolean>() {
-				public Boolean transform(TimingDependencyPriority input) {
-					return oResult.getBoolean(a(input));
-				}
-			};
-			MyEncoder encoder = new MyEncoder(OptimizationObjective.DELAY_AND_JITTER_ALL, transformer);
+			MyEncoder encoder = new MyEncoder(OptimizationObjective.DELAY_AND_JITTER_ALL, edgeValueTransformer);
 			MpProblem problem = encoder.encode(tg);
 
 			MpSolver solver = solverProvider.get();
@@ -89,10 +92,7 @@ public class MyInterpreter {
 		}
 
 		for (TimingDependency timingDependency : tg.getEdges()) {
-			if (timingDependency instanceof TimingDependencyTrigger) {
-				// rtg.addEdge(timingDependency,
-				// tg.getEndpoints(timingDependency));
-			} else if (result.getBoolean(a(timingDependency))) {
+			if (timingDependency instanceof TimingDependencyPriority && result.getBoolean(a(timingDependency))) {
 				rtg.addEdge(timingDependency, tg.getEndpoints(timingDependency));
 			}
 		}
@@ -109,6 +109,12 @@ public class MyInterpreter {
 				}
 			}
 
+			CycleBreakFilter<TimingElement, TimingDependency> cycleBreak = new CycleBreakFilter<TimingElement, TimingDependency>();
+			Set<TimingDependency> edges = cycleBreak.transform(clusterGraph);
+			if(!edges.isEmpty()){
+				throw new RuntimeException("Found cycle, cannot assign priorities");
+			}
+			
 			BellmanFord<TimingElement, TimingDependency> bellmanFord = new BellmanFord<TimingElement, TimingDependency>();
 			final Transformer<TimingElement, Double> transformer = bellmanFord.transform(clusterGraph);
 
@@ -120,28 +126,27 @@ public class MyInterpreter {
 				}
 			});
 
-			Map<Resource,Integer> priorities = new HashMap<Resource,Integer>();
+			Map<Resource, Integer> priorities = new HashMap<Resource, Integer>();
 
 			for (TimingElement te : order) {
 				Resource resource = te.getResource();
 				String scheduler = resource.getAttribute(SCHEDULER);
 				if (FIXEDPRIORITY_NONPREEMPTIVE.equals(scheduler) || FIXEDPRIORITY_PREEMPTIVE.equals(scheduler)) {
 					int prio;
-					if(priorities.containsKey(resource)){
-						prio = (priorities.get(resource))+1;
+					if (priorities.containsKey(resource)) {
+						prio = (priorities.get(resource)) + 1;
 					} else {
 						prio = 1;
 					}
 					priorities.put(resource, prio);
-					
-					
+
 					Task task = te.getTask();
 
 					Node node = null;
 					if (isProcess(task)) {
 						node = task;
 					} else if (isCommunication(task)) {
-						te.getTask().setAttribute(PRIORITY+":" + te.getResource().getId(), prio);
+						te.getTask().setAttribute(PRIORITY + ":" + te.getResource().getId(), prio);
 						node = implementation.getRoutings().get(task).getVertex(te.getResource());
 					}
 					node.setAttribute(PRIORITY, prio);

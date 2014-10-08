@@ -2,6 +2,11 @@ package net.sf.opendse.realtime.et.qcqp;
 
 import static net.sf.jmpi.main.expression.MpExpr.prod;
 import static net.sf.jmpi.main.expression.MpExpr.sum;
+import static net.sf.opendse.realtime.et.PriorityScheduler.DELAY;
+import static net.sf.opendse.realtime.et.PriorityScheduler.FIXEDDELAY;
+import static net.sf.opendse.realtime.et.PriorityScheduler.FIXEDPRIORITY_NONPREEMPTIVE;
+import static net.sf.opendse.realtime.et.PriorityScheduler.FIXEDPRIORITY_PREEMPTIVE;
+import static net.sf.opendse.realtime.et.PriorityScheduler.SCHEDULER;
 import static net.sf.opendse.realtime.et.qcqp.vars.Vars.a;
 import static net.sf.opendse.realtime.et.qcqp.vars.Vars.b;
 import static net.sf.opendse.realtime.et.qcqp.vars.Vars.c;
@@ -34,12 +39,17 @@ import org.apache.commons.collections15.Transformer;
 
 public class MyEncoder {
 
-	protected boolean forbidGlobalCycles = false;
+	protected CycleCounter cycleCounter = CycleCounter.LOCAL;
+	//protected boolean forbidGlobalCycles = false;
 	protected final boolean uniquePriorityAssignment;
 	protected OptimizationObjective objective = null;
 
 	public enum OptimizationObjective {
 		DELAY, DELAY_AND_JITTER_ALL;
+	}
+	
+	public enum CycleCounter {
+		NONE, LOCAL, GLOBAL;
 	}
 
 	protected final Transformer<TimingDependencyPriority, Boolean> definedPriorities;
@@ -72,7 +82,7 @@ public class MyEncoder {
 		// Map<Resource, Set<Task>> resourceToTask = getResourceToTasks(tg);
 
 		for (TimingElement te : tg.getVertices()) {
-			if (uniquePriorityAssignment && forbidGlobalCycles) {
+			if (cycleCounter != CycleCounter.NONE) {
 				problem.addVar(0, c(te), 1000.0, Double.class);
 			}
 			problem.addVar(0, r(te), 1000.0, Double.class);
@@ -151,14 +161,14 @@ public class MyEncoder {
 		}
 
 		// global acyclic
-		if (uniquePriorityAssignment && forbidGlobalCycles) {
+		if (cycleCounter != CycleCounter.NONE) {
 			for (TimingDependency td : tg.getEdges()) {
 				TimingElement source = tg.getSource(td);
 				TimingElement dest = tg.getDest(td);
 
-				if (td instanceof TimingDependencyTrigger) {
+				if (td instanceof TimingDependencyTrigger && cycleCounter == CycleCounter.GLOBAL) {
 					problem.add(sum(c(source), 0.1), "<=", sum(c(dest)));
-				} else {
+				} else if (td instanceof TimingDependencyPriority) {
 					problem.add(sum(c(source), 0.1), "<=", sum(c(dest), prod(-10000.0, a(td)), 10000.0));
 				}
 			}
@@ -169,9 +179,9 @@ public class MyEncoder {
 		for (TimingElement te : tg.getVertices()) {
 			Resource resource = te.getResource();
 
-			String scheduler = resource.getAttribute("scheduler");
+			String scheduler = resource.getAttribute(SCHEDULER);
 
-			if (PriorityScheduler.FIXEDPRIORITY_PREEMPTIVE.equals(scheduler)) {
+			if (FIXEDPRIORITY_PREEMPTIVE.equals(scheduler)) {
 				MpExpr lhs = sum(r(te));
 				MpExpr rhs = sum(e(te));
 
@@ -185,7 +195,7 @@ public class MyEncoder {
 				}
 
 				problem.add(lhs, "=", rhs);
-			} else if (PriorityScheduler.FIXEDPRIORITY_NONPREEMPTIVE.equals(scheduler)) {
+			} else if (FIXEDPRIORITY_NONPREEMPTIVE.equals(scheduler)) {
 				// problem.add(e().add(d(te)), "=", e().con(e(task)));
 
 				problem.addVar(0, b(te), 1000.0, Double.class);
@@ -212,9 +222,9 @@ public class MyEncoder {
 				}
 
 				problem.add(lhs, "=", rhs);
-			} else if (PriorityScheduler.FIXEDDELAY.equals(scheduler)) {
+			} else if (FIXEDDELAY.equals(scheduler)) {
 
-				Double delay = resource.getAttribute(PriorityScheduler.DELAY);
+				Double delay = resource.getAttribute(PriorityScheduler.FIXEDDELAY_RESPONSE);
 
 				if (delay == null) {
 					delay = 0.0;
@@ -305,7 +315,7 @@ public class MyEncoder {
 		if (objective == OptimizationObjective.DELAY) {
 			MpExpr objective = sum();
 			for (TimingElement te : tg.getVertices()) {
-				Double deadline = te.getAttribute("deadline");
+				Double deadline = te.getAttribute(PriorityScheduler.DEADLINE);
 
 				if (deadline != null) {
 					objective.add(d(te));
@@ -325,6 +335,8 @@ public class MyEncoder {
 		}
 
 		// System.out.println(problem);
+		
+		System.out.println("Problem with "+problem.getVariablesCount()+" variables and "+problem.getConstraintsCount()+" constraints.");
 
 		return problem;
 	}
