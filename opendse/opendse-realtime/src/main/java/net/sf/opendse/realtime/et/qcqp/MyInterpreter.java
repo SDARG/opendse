@@ -43,15 +43,21 @@ public class MyInterpreter {
 
 	protected final SolverProvider solverProvider;
 	protected final boolean considerTiming;
+	protected final boolean considerPriorities;
 
 	public MyInterpreter(SolverProvider solverProvider) {
 		this(true, solverProvider);
 	}
 
 	public MyInterpreter(boolean considerTiming, SolverProvider solverProvider) {
+		this(considerTiming, true, solverProvider);
+	}
+
+	public MyInterpreter(boolean considerTiming, boolean considerPriorities, SolverProvider solverProvider) {
 		super();
 		this.considerTiming = considerTiming;
 		this.solverProvider = solverProvider;
+		this.considerPriorities = considerPriorities;
 	}
 
 	public TimingGraph interprete(TimingGraph tg, Specification implementation, MpResult result) {
@@ -61,13 +67,12 @@ public class MyInterpreter {
 		Transformer<TimingDependencyPriority, Boolean> edgeValueTransformer = new Transformer<TimingDependencyPriority, Boolean>() {
 			public Boolean transform(TimingDependencyPriority input) {
 				Boolean value = oResult.getBoolean(a(input));
-				// System.out.println(input.getId()+" "+value);
 				return value;
 			}
 		};
 
 		if (considerTiming) {
-			MyEncoder encoder = new MyEncoder(OptimizationObjective.DELAY_AND_JITTER_ALL, edgeValueTransformer);
+			MyEncoder encoder = new MyEncoder(OptimizationObjective.DELAY_AND_JITTER_ALL, edgeValueTransformer, false);
 			MpProblem problem = encoder.encode(tg);
 
 			MpSolver solver = solverProvider.get();
@@ -83,10 +88,12 @@ public class MyInterpreter {
 			if (considerTiming) {
 				double r = adjust(result.get(Vars.r(timingElement)).doubleValue());
 				double d = adjust(result.get(Vars.d(timingElement)).doubleValue());
-				double j = adjust(result.get(Vars.j(timingElement)).doubleValue());
+				double jIn = adjust(result.get(Vars.jIn(timingElement)).doubleValue());
+				double jOut = adjust(result.get(Vars.jOut(timingElement)).doubleValue());
 				timingElement.setAttribute("response", r);
 				timingElement.setAttribute("delay", d);
-				timingElement.setAttribute("jitter[in]", j);
+				timingElement.setAttribute("jitter[in]", jIn);
+				timingElement.setAttribute("jitter[out]", jOut);
 			}
 			// System.out.println(timingElement + " " + d + " " + dd + " " + j);
 		}
@@ -97,59 +104,61 @@ public class MyInterpreter {
 			}
 		}
 
-		WeakComponentClusterer<TimingElement, TimingDependency> clusterer = new WeakComponentClusterer<TimingElement, TimingDependency>();
-		Set<Set<TimingElement>> clusters = clusterer.transform(rtg);
+		if (considerPriorities) {
+			WeakComponentClusterer<TimingElement, TimingDependency> clusterer = new WeakComponentClusterer<TimingElement, TimingDependency>();
+			Set<Set<TimingElement>> clusters = clusterer.transform(rtg);
 
-		for (Set<TimingElement> cluster : clusters) {
-			TimingGraph clusterGraph = new TimingGraph();
-			for (TimingElement te : cluster) {
-				clusterGraph.addVertex(te);
-				for (TimingDependency td : rtg.getOutEdges(te)) {
-					clusterGraph.addEdge(td, te, rtg.getDest(td));
-				}
-			}
-
-			CycleBreakFilter<TimingElement, TimingDependency> cycleBreak = new CycleBreakFilter<TimingElement, TimingDependency>();
-			Set<TimingDependency> edges = cycleBreak.transform(clusterGraph);
-			if(!edges.isEmpty()){
-				throw new RuntimeException("Found cycle, cannot assign priorities");
-			}
-			
-			BellmanFord<TimingElement, TimingDependency> bellmanFord = new BellmanFord<TimingElement, TimingDependency>();
-			final Transformer<TimingElement, Double> transformer = bellmanFord.transform(clusterGraph);
-
-			List<TimingElement> order = new ArrayList<TimingElement>(clusterGraph.getVertices());
-			Collections.sort(order, new Comparator<TimingElement>() {
-				@Override
-				public int compare(TimingElement o1, TimingElement o2) {
-					return transformer.transform(o1).compareTo(transformer.transform(o2));
-				}
-			});
-
-			Map<Resource, Integer> priorities = new HashMap<Resource, Integer>();
-
-			for (TimingElement te : order) {
-				Resource resource = te.getResource();
-				String scheduler = resource.getAttribute(SCHEDULER);
-				if (FIXEDPRIORITY_NONPREEMPTIVE.equals(scheduler) || FIXEDPRIORITY_PREEMPTIVE.equals(scheduler)) {
-					int prio;
-					if (priorities.containsKey(resource)) {
-						prio = (priorities.get(resource)) + 1;
-					} else {
-						prio = 1;
+			for (Set<TimingElement> cluster : clusters) {
+				TimingGraph clusterGraph = new TimingGraph();
+				for (TimingElement te : cluster) {
+					clusterGraph.addVertex(te);
+					for (TimingDependency td : rtg.getOutEdges(te)) {
+						clusterGraph.addEdge(td, te, rtg.getDest(td));
 					}
-					priorities.put(resource, prio);
+				}
 
-					Task task = te.getTask();
+				CycleBreakFilter<TimingElement, TimingDependency> cycleBreak = new CycleBreakFilter<TimingElement, TimingDependency>();
+				Set<TimingDependency> edges = cycleBreak.transform(clusterGraph);
+				if (!edges.isEmpty()) {
+					throw new RuntimeException("Found cycle, cannot assign priorities");
+				}
 
-					Node node = null;
-					if (isProcess(task)) {
-						node = task;
-					} else if (isCommunication(task)) {
-						te.getTask().setAttribute(PRIORITY + ":" + te.getResource().getId(), prio);
-						node = implementation.getRoutings().get(task).getVertex(te.getResource());
+				BellmanFord<TimingElement, TimingDependency> bellmanFord = new BellmanFord<TimingElement, TimingDependency>();
+				final Transformer<TimingElement, Double> transformer = bellmanFord.transform(clusterGraph);
+
+				List<TimingElement> order = new ArrayList<TimingElement>(clusterGraph.getVertices());
+				Collections.sort(order, new Comparator<TimingElement>() {
+					@Override
+					public int compare(TimingElement o1, TimingElement o2) {
+						return transformer.transform(o1).compareTo(transformer.transform(o2));
 					}
-					node.setAttribute(PRIORITY, prio);
+				});
+
+				Map<Resource, Integer> priorities = new HashMap<Resource, Integer>();
+
+				for (TimingElement te : order) {
+					Resource resource = te.getResource();
+					String scheduler = resource.getAttribute(SCHEDULER);
+					if (FIXEDPRIORITY_NONPREEMPTIVE.equals(scheduler) || FIXEDPRIORITY_PREEMPTIVE.equals(scheduler)) {
+						int prio;
+						if (priorities.containsKey(resource)) {
+							prio = (priorities.get(resource)) + 1;
+						} else {
+							prio = 1;
+						}
+						priorities.put(resource, prio);
+
+						Task task = te.getTask();
+
+						Node node = null;
+						if (isProcess(task)) {
+							node = task;
+						} else if (isCommunication(task)) {
+							te.getTask().setAttribute(PRIORITY + ":" + te.getResource().getId(), prio);
+							node = implementation.getRoutings().get(task).getVertex(te.getResource());
+						}
+						node.setAttribute(PRIORITY, prio);
+					}
 				}
 			}
 		}

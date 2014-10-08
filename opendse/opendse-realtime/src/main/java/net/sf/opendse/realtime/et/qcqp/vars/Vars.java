@@ -13,8 +13,12 @@ public class Vars {
 		return var("r", t);
 	}
 
-	public static Object j(TimingElement t) {
-		return var("j", t);
+	public static Object jIn(TimingElement t) {
+		return var("j^in", t);
+	}
+	
+	public static Object jOut(TimingElement t) {
+		return var("j^out", t);
 	}
 
 	public static Object i(TimingElement t1, TimingElement t2) {

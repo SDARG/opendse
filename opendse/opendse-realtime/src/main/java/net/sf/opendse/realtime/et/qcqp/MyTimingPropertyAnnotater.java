@@ -34,12 +34,15 @@ public class MyTimingPropertyAnnotater {
 			// Resource resource = te.getResource();
 
 			Double executionTime = te.getAttribute("e");
-			Double jitter = te.getAttribute("jitter[in]");
+			Double jitterIn = te.getAttribute("jitter[in]");
+			Double jitterOut = te.getAttribute("jitter[out]");
 			Double delay = te.getAttribute("delay");
 			Double responseTime = te.getAttribute("response");
 
 			//node.setAttribute("jitter[in]" + postfix, jitter);
-			node.setAttribute(JITTER + postfix, adjust(jitter + (responseTime - executionTime)));
+			node.setAttribute(JITTER + postfix, jitterOut);
+			node.setAttribute(JITTER+"[in]" + postfix, jitterIn);
+			node.setAttribute(JITTER+"[out]" + postfix, jitterOut);
 			node.setAttribute(DELAY + postfix, delay);
 			node.setAttribute(RESPONSE + postfix, responseTime); 
 		}

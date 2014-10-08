@@ -64,7 +64,7 @@ public class TimingTester {
 		 * SpecificationGenerator.getImplementationScalabilityGateway(1, 3, 2,
 		 * 6, 1.0, 0).getImpl();
 		 */
-		Specification impl = getImplementationScalability();
+		Specification impl = getImplementationToy();
 		
 		for(Task task: impl.getApplication()){
 			task.setAttribute("prio", null);
@@ -74,6 +74,9 @@ public class TimingTester {
 		// Specification impl =
 		// SpecificationGenerator.getImplementationScalabilityGateway(2, 6,
 		// 5, 6, 1.0, 0).getImpl();
+		
+		
+		schedule(impl);
 
 		SpecificationViewer.view(impl);
 		

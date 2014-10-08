@@ -2,7 +2,6 @@ package net.sf.opendse.realtime.et.qcqp;
 
 import static net.sf.jmpi.main.expression.MpExpr.prod;
 import static net.sf.jmpi.main.expression.MpExpr.sum;
-import static net.sf.opendse.realtime.et.PriorityScheduler.DELAY;
 import static net.sf.opendse.realtime.et.PriorityScheduler.FIXEDDELAY;
 import static net.sf.opendse.realtime.et.PriorityScheduler.FIXEDPRIORITY_NONPREEMPTIVE;
 import static net.sf.opendse.realtime.et.PriorityScheduler.FIXEDPRIORITY_PREEMPTIVE;
@@ -12,7 +11,8 @@ import static net.sf.opendse.realtime.et.qcqp.vars.Vars.b;
 import static net.sf.opendse.realtime.et.qcqp.vars.Vars.c;
 import static net.sf.opendse.realtime.et.qcqp.vars.Vars.d;
 import static net.sf.opendse.realtime.et.qcqp.vars.Vars.i;
-import static net.sf.opendse.realtime.et.qcqp.vars.Vars.j;
+import static net.sf.opendse.realtime.et.qcqp.vars.Vars.jIn;
+import static net.sf.opendse.realtime.et.qcqp.vars.Vars.jOut;
 import static net.sf.opendse.realtime.et.qcqp.vars.Vars.r;
 
 import java.util.ArrayList;
@@ -34,6 +34,7 @@ import net.sf.opendse.realtime.et.graph.TimingDependencyPriority;
 import net.sf.opendse.realtime.et.graph.TimingDependencyTrigger;
 import net.sf.opendse.realtime.et.graph.TimingElement;
 import net.sf.opendse.realtime.et.graph.TimingGraph;
+import net.sf.opendse.realtime.et.qcqp.vars.Vars;
 
 import org.apache.commons.collections15.Transformer;
 
@@ -86,7 +87,8 @@ public class MyEncoder {
 				problem.addVar(0, c(te), 1000.0, Double.class);
 			}
 			problem.addVar(0, r(te), 1000.0, Double.class);
-			problem.addVar(0, j(te), 1000.0, Double.class);
+			problem.addVar(0, jIn(te), 1000.0, Double.class);
+			problem.addVar(0, jOut(te), 1000.0, Double.class);
 			problem.addVar(0, d(te), 1000.0, Double.class);
 		}
 
@@ -161,7 +163,7 @@ public class MyEncoder {
 		}
 
 		// global acyclic
-		if (cycleCounter != CycleCounter.NONE) {
+		if (uniquePriorityAssignment && cycleCounter != CycleCounter.NONE) {
 			for (TimingDependency td : tg.getEdges()) {
 				TimingElement source = tg.getSource(td);
 				TimingElement dest = tg.getDest(td);
@@ -190,10 +192,11 @@ public class MyEncoder {
 						TimingElement te2 = tg.getOpposite(te, td);
 						rhs.addTerm(e(te2), a(td), i(te2, te));
 
-						problem.add(sum(i(te2, te)), ">=", sum(prod(1d / h(te2), r(te)), prod(1d / h(te2), j(te2))));
+						problem.add(sum(i(te2, te)), ">=", sum(prod(1d / h(te2), r(te)), prod(1d / h(te2), jIn(te2))));
 					}
 				}
-
+				
+				problem.add(sum(jOut(te)), "=", sum(jIn(te), r(te), prod(-1,e(te))));
 				problem.add(lhs, "=", rhs);
 			} else if (FIXEDPRIORITY_NONPREEMPTIVE.equals(scheduler)) {
 				// problem.add(e().add(d(te)), "=", e().con(e(task)));
@@ -217,20 +220,28 @@ public class MyEncoder {
 						TimingElement te2 = tg.getOpposite(te, td);
 						rhs.addTerm(e(te2), a(td), i(te2, te));
 
-						problem.add(sum(i(te2, te)), ">=", sum(prod(1d / h(te2), r(te)), prod(1d / h(te2), j(te2)), -e(te) / h(te2)));
+						problem.add(sum(i(te2, te)), ">=", sum(prod(1d / h(te2), r(te)), prod(1d / h(te2), jIn(te2)), -e(te) / h(te2)));
 					}
 				}
+				
+				problem.add(sum(jOut(te)), "=", sum(jIn(te), r(te), prod(-1,e(te))));
 
 				problem.add(lhs, "=", rhs);
 			} else if (FIXEDDELAY.equals(scheduler)) {
 
 				Double delay = resource.getAttribute(PriorityScheduler.FIXEDDELAY_RESPONSE);
+				Double jitter = resource.getAttribute(PriorityScheduler.FIXEDDELAY_JITTER);
 
 				if (delay == null) {
 					delay = 0.0;
 				}
+				if (jitter == null) {
+					jitter = 0.0;
+				}
 
-				problem.add(sum(r(te)), "=", sum(e(te) + delay));
+				problem.add(sum(r(te)), "=", sum(delay));
+				problem.add(sum(jOut(te)), "=", sum(jIn(te), jitter));
+				
 			}
 
 		}
@@ -246,14 +257,15 @@ public class MyEncoder {
 			}
 
 			if (inEdges.isEmpty()) {
-				problem.add(sum(j(te)), "=", 0);
+				problem.add(sum(jIn(te)), "=", 0);
 				problem.add(sum(d(te)), "=", sum(r(te)));
 			} else {
 				for (TimingDependencyTrigger td : inEdges) {
 					TimingElement te2 = tg.getOpposite(te, td);
-					problem.add(sum(j(te)), ">=", sum(r(te2), -e(te2), j(te2)));
+					problem.add(sum(jIn(te)), ">=", sum(jOut(te2)));
 					problem.add(sum(d(te)), ">=", sum(r(te), d(te2)));
-					problem.add(sum(d(te)), ">=", sum(j(te)));
+					// the next one seems pretty redundant:
+					problem.add(sum(d(te)), ">=", sum(jOut(te)));
 				}
 			}
 
@@ -329,7 +341,7 @@ public class MyEncoder {
 			MpExpr objective = sum();
 			for (TimingElement te : tg.getVertices()) {
 				objective.add(d(te));
-				objective.add(j(te));
+				objective.add(jOut(te));
 			}
 			problem.setObjective(objective, MpDirection.MIN);
 		}
