@@ -63,6 +63,7 @@ public class Element implements IAttributes {
 	 * attributes.
 	 * 
 	 * @param parent
+	 *            the parent
 	 */
 	public Element(Element parent) {
 		this(parent.getId());
@@ -125,9 +126,9 @@ public class Element implements IAttributes {
 	 */
 	@Override
 	public boolean isDefined(String identifier) {
-		if(attributes.isDefined(identifier)){
+		if (attributes.isDefined(identifier)) {
 			return true;
-		} else if(parent != null){
+		} else if (parent != null) {
 			return parent.isDefined(identifier);
 		} else {
 			return false;

@@ -32,7 +32,9 @@ import edu.uci.ics.jung.graph.Graph;
  * @author lukasiewycz
  * 
  * @param <V>
+ *            the type of vertices
  * @param <E>
+ *            the type of edges
  */
 public class BellmanFord<V, E> implements Transformer<Graph<V, E>, Transformer<V, Double>> {
 

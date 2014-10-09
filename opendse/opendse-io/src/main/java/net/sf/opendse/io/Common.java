@@ -126,9 +126,8 @@ public class Common {
 	}
 
 	@SuppressWarnings("rawtypes")
-	protected static Object toInstance(String value, Class<?> clazz) throws IllegalArgumentException,
-			SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException,
-			NoSuchMethodException {
+	protected static Object toInstance(String value, Class<?> clazz) throws IllegalArgumentException, SecurityException,
+			InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		if (!clazz.isEnum()) {
 			return clazz.getConstructor(String.class).newInstance(value.trim());
 		} else {
@@ -155,7 +154,9 @@ public class Common {
 	 *            the string
 	 * @return the object
 	 * @throws IOException
+	 *             thrown in case of an IO error
 	 * @throws ClassNotFoundException
+	 *             thrown in case the class does not exist
 	 */
 	public static Object fromString(String s) throws IOException, ClassNotFoundException {
 		byte[] data = Base64Coder.decode(s);
@@ -172,6 +173,7 @@ public class Common {
 	 *            the object
 	 * @return the string
 	 * @throws IOException
+	 *             thrown in case of an IO error
 	 */
 	public static String toString(Serializable o) throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
