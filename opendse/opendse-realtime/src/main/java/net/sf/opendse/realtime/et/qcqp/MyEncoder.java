@@ -47,7 +47,7 @@ public class MyEncoder {
 	protected OptimizationObjective objective = null;
 
 	public enum OptimizationObjective {
-		DELAY, DELAY_AND_JITTER_ALL;
+		DELAY, DELAY_AND_JITTER_ALL, NONE;
 	}
 	
 	public enum CycleCounter {

@@ -16,6 +16,7 @@ import net.sf.jmpi.solver.gurobi.SolverGurobi;
 import net.sf.opendse.generator.ApplicationGenerator;
 import net.sf.opendse.generator.ArchitectureGenerator;
 import net.sf.opendse.generator.MappingGenerator;
+import net.sf.opendse.io.SpecificationWriter;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Communication;
@@ -66,99 +67,9 @@ public class TimingTester {
 		 */
 		Specification impl = getImplementationToy();
 		
-		for(Task task: impl.getApplication()){
-			task.setAttribute("prio", null);
-		}
+		SpecificationWriter writer = new SpecificationWriter();
+		writer.write(impl, "testspecs/toy.xml");
 		
-
-		// Specification impl =
-		// SpecificationGenerator.getImplementationScalabilityGateway(2, 6,
-		// 5, 6, 1.0, 0).getImpl();
-		
-		
-		schedule(impl);
-
-		SpecificationViewer.view(impl);
-		
-	}
-	
-	public static void schedule(Specification impl){
-
-		/*
-		 * for (Task task : application) { double e = (5.0 + random.nextInt(6))
-		 * / 10.0; if(Models.isCommunication(task)){ e = 0.2; }
-		 * task.setAttribute("e", e); task.setAttribute("h", 10.0);
-		 * 
-		 * if(application.getOutEdges(task).isEmpty()){
-		 * task.setAttribute("deadline", 17.7); } }
-		 */
-
-		TimingGraphBuilder builder = new TimingGraphBuilder();
-		builder.addModifiers(new TimingGraphModifierFilterVertex(new SourceTargetCommunicationPredicate(impl, builder.getTimingGraph())));
-
-		// these two remove the edges due to deadline <= period
-		builder.addModifiers(new TimingGraphModifierFilterEdge(new ApplicationPriorityCyclesPredicate(builder.getTimingGraph())));
-		builder.addModifiers(new TimingGraphModifierFilterEdge(new ApplicationDependencyInterferencePredicate(builder.getTimingGraph())));
-
-		builder.addModifiers(new TimingGraphModifierFilterEdge(new RateMonotonicEdgeFilterPredicate(builder.getTimingGraph())));
-		builder.addModifiers(new TimingGraphModifierFilterEdge(new DelaySchedulerEdgePredicate(builder.getTimingGraph())));
-		TimingGraph tg = builder.build(impl);
-
-		System.out.println("Overall: #td " + tg.getPriorityEdgeCount());
-
-		// MyTightDeadlineSetter tightDeadlineSetter = new
-		// MyTightDeadlineSetter(10, 1.1);
-		// tightDeadlineSetter.setTightDeadlines(tg, impl);
-		// tightDeadlineSetter.setTightDeadlines(tg, impl);
-
-		TimingGraphViewer.view(tg);
-
-		// eaOptimizer.optimize(tg);
-
-		MyEncoder encoder = new MyEncoder(OptimizationObjective.DELAY_AND_JITTER_ALL);
-		MpProblem problem = encoder.encode(tg);
-
-		// normalize here:
-		// end normalization
-
-		SolverProvider solverProvider = new SolverProvider() {
-			@Override
-			public MpSolver get() {
-				MpSolver solver = new SolverGurobi();
-				solver.setTimeout(3600);
-				return solver;
-			}
-		};
-
-		MpSolver solver = new SolverGurobi();
-		solver.add(problem);
-		solver.setTimeout(10);
-
-		MpResult result = solver.solve();
-
-		if (result == null) {
-			// MyConflictRefinementElastic conflictRefinement = new
-			// MyConflictRefinementElastic();
-			MyConflictRefinementDeletion conflictRefinement = new MyConflictRefinementDeletion(solverProvider);
-			Set<TimingElement> iis = conflictRefinement.find(tg, impl, true);
-
-			System.out.println("IIS: " + iis);
-		}
-
-		System.out.println("problem solved");
-
-		MyInterpreter interpreter = new MyInterpreter(solverProvider);
-		MyTimingPropertyAnnotater annotator = new MyTimingPropertyAnnotater();
-
-		TimingGraph rtg = interpreter.interprete(tg, impl, result);
-		annotator.annotate(rtg, impl);
-
-		System.out.println("interpretation done");
-
-		System.out.println("Opt: #td " + rtg.getPriorityEdgeCount());
-
-		TimingGraphViewer.view(rtg);
-		SpecificationViewer.view(impl);
 	}
 
 	public static Specification getImplementationScalability() {

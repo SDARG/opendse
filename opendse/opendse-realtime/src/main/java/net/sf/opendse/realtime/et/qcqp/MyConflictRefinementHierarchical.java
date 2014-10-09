@@ -24,20 +24,22 @@ import edu.uci.ics.jung.graph.util.Pair;
 public class MyConflictRefinementHierarchical implements MyConflictRefinement {
 
 	protected final SolverProvider solverProvider;
+	protected final boolean rateMonotonic;
 	
-	public MyConflictRefinementHierarchical(SolverProvider solverProvider) {
+	public MyConflictRefinementHierarchical(SolverProvider solverProvider, boolean rateMonotonic) {
 		super();
 		this.solverProvider = solverProvider;
+		this.rateMonotonic = rateMonotonic;
 	}
 
-	public Set<TimingElement> find(TimingGraph tg, Specification impl, boolean rateMonotonic) {
-		Set<TimingElement> predef = findFunctions(tg, impl, rateMonotonic);
+	public Set<TimingElement> find(TimingGraph tg, Specification impl) {
+		Set<TimingElement> predef = findFunctions(tg, impl);
 		
-		MyConflictRefinementDeletion deletion = new MyConflictRefinementDeletion(solverProvider);
-		return deletion.find(tg, impl, predef, rateMonotonic);
+		MyConflictRefinementDeletion deletion = new MyConflictRefinementDeletion(solverProvider, rateMonotonic);
+		return deletion.find(tg, impl, predef);
 	}
 	
-	public Set<TimingElement> findFunctions(TimingGraph tg, Specification impl, boolean rateMonotonic) {
+	public Set<TimingElement> findFunctions(TimingGraph tg, Specification impl) {
 
 		Set<TimingElement> iis = new HashSet<TimingElement>();
 		for (TimingElement te : tg.getVertices()) {

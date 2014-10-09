@@ -12,6 +12,6 @@ public interface MyConflictRefinement {
 		DELETION, HIERARCHICAL;
 	}
 
-	public Set<TimingElement> find(TimingGraph tg, Specification impl, boolean rateMonotonic);
+	public Set<TimingElement> find(TimingGraph tg, Specification impl);
 
 }

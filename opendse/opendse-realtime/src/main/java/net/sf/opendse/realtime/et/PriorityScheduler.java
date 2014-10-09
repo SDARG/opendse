@@ -8,6 +8,7 @@ import java.util.Set;
 import net.sf.jmpi.main.MpProblem;
 import net.sf.jmpi.main.MpResult;
 import net.sf.jmpi.main.MpSolver;
+import net.sf.jmpi.solver.gurobi.SolverGurobi;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Function;
 import net.sf.opendse.model.Specification;
@@ -58,6 +59,17 @@ public class PriorityScheduler {
 
 	protected Boolean solved = false;
 	protected Boolean isInfeasible = null;
+	
+	public PriorityScheduler(Specification specification){
+		this(specification, new SolverProvider() {
+			@Override
+			public MpSolver get() {
+				SolverGurobi solver = new SolverGurobi();
+				solver.setTimeout(3600);
+				return solver;
+			}
+		}, true);
+	}
 
 	public PriorityScheduler(Specification specification, SolverProvider solverProvider, boolean rateMonotonic) {
 		super();
@@ -89,9 +101,7 @@ public class PriorityScheduler {
 			MyInterpreter interpreter = new MyInterpreter(solverProvider);
 			MyTimingPropertyAnnotater annotator = new MyTimingPropertyAnnotater();
 
-			//System.out.println("Interprete.");
 			resultingTimingGraph = interpreter.interprete(originalTimingGraph, specification, result);
-			//System.out.println("Annotate.");
 			annotator.annotate(resultingTimingGraph, specification); 
 			return true;
 		}
@@ -112,14 +122,14 @@ public class PriorityScheduler {
 
 		MyConflictRefinement conflictRefinement = null;
 		if (method == ConflictRefinementMethod.DELETION) {
-			conflictRefinement = new MyConflictRefinementDeletion(solverProvider);
+			conflictRefinement = new MyConflictRefinementDeletion(solverProvider, rateMonotonic);
 		} else if (method == ConflictRefinementMethod.HIERARCHICAL) {
-			conflictRefinement = new MyConflictRefinementHierarchical(solverProvider);
+			conflictRefinement = new MyConflictRefinementHierarchical(solverProvider, rateMonotonic);
 		} else {
 			throw new IllegalArgumentException("unknown refinement method " + method);
 		}
 
-		Set<TimingElement> iis = conflictRefinement.find(originalTimingGraph, specification, rateMonotonic);
+		Set<TimingElement> iis = conflictRefinement.find(originalTimingGraph, specification);
 
 		System.out.println("IIS (size=" + iis.size() + "): " + iis);
 

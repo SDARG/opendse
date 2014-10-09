@@ -21,23 +21,25 @@ import edu.uci.ics.jung.graph.util.Pair;
 public class MyConflictRefinementDeletion implements MyConflictRefinement {
 	
 	protected final SolverProvider solverProvider;
+	protected final boolean rateMonotonic;
 
-	public MyConflictRefinementDeletion(SolverProvider solverProvider) {
+	public MyConflictRefinementDeletion(SolverProvider solverProvider, boolean rateMonotonic) {
 		super();
 		this.solverProvider = solverProvider;
+		this.rateMonotonic = rateMonotonic;
 	}
 
-	public Set<TimingElement> find(TimingGraph tg, Specification impl, boolean rateMonotonic) {
+	public Set<TimingElement> find(TimingGraph tg, Specification impl) {
 		Set<TimingElement> iis = new HashSet<TimingElement>();
 
 		for (TimingElement te : tg.getVertices()) {
 			iis.add(te);
 		}
 
-		return find(tg, impl, iis, rateMonotonic);
+		return find(tg, impl, iis);
 	}
 
-	public Set<TimingElement> find(TimingGraph tg, Specification impl, Set<TimingElement> predef, boolean rateMonotonic) {
+	public Set<TimingElement> find(TimingGraph tg, Specification impl, Set<TimingElement> predef) {
 
 		Set<TimingElement> iis = new HashSet<TimingElement>(predef);
 
