@@ -41,8 +41,8 @@ public class MyTimingPropertyAnnotater {
 
 			//node.setAttribute("jitter[in]" + postfix, jitter);
 			node.setAttribute(JITTER + postfix, jitterOut);
-			node.setAttribute(JITTER+"[in]" + postfix, jitterIn);
-			node.setAttribute(JITTER+"[out]" + postfix, jitterOut);
+			//node.setAttribute(JITTER+"[in]" + postfix, jitterIn);
+			//node.setAttribute(JITTER+"[out]" + postfix, jitterOut);
 			node.setAttribute(DELAY + postfix, delay);
 			node.setAttribute(RESPONSE + postfix, responseTime); 
 		}

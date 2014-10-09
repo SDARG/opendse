@@ -362,7 +362,7 @@ public class MyEncoder {
 
 		// System.out.println(problem);
 		
-		System.out.println("Problem with "+problem.getVariablesCount()+" variables and "+problem.getConstraintsCount()+" constraints.");
+		//System.out.println("Problem with "+problem.getVariablesCount()+" variables and "+problem.getConstraintsCount()+" constraints.");
 
 		return problem;
 	}

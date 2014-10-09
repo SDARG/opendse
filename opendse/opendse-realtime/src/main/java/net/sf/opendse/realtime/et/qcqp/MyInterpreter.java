@@ -79,7 +79,7 @@ public class MyInterpreter {
 			solver.add(problem);
 
 			result = solver.solve();
-			System.out.println(result);
+			//System.out.println(result);
 		}
 
 		for (TimingElement timingElement : tg.getVertices()) {
