@@ -3,6 +3,7 @@ import java.util.regex.*
 
 dependencies {	
 	compile project(':opendse-optimization')
+	compile project(':opendse-realtime')
 }
 
 task filterSources(type: Copy) {

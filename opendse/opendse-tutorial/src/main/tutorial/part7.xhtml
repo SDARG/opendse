@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<link href="tutstyle.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+<title>7. Real-time Scheduling (OpenDSE Tutorial)</title>
+</head>
+<body onload="prettyPrint()">
+
+	<h1>7. Real-time Scheduling (OpenDSE Tutorial)</h1>
+	<p>Version: @version@ - Date: @date@</p>
+	<p>(<a href="tutorial.xhtml">Tutorial Overview</a>)</p>
+	
+	<p>The real-time scheduling module uses a Quadratic Programming approach to determine priorities for event-triggered systems such that all deadlines are satisfied. 
+	The approach is based on this <a href="http://dl.acm.org/citation.cfm?id=2485524">article</a>, but it is not a complete re-implementation as it per default allows allows global cycles. 
+	Per default, the approach uses the <a href="http://www.gurobi.com/">Gurobi</a> solver which has to be installed and the gurobi.jar has the be on the classpath.</p>
+	
+	<p>In the following, an example is given how to use the scheduler from Java.</p>
+
+	<pre class="prettyprint">@file(Implementation7.xml)</pre>
+	
+	<pre class="prettyprint">@file(net/sf/opendse/tutorial/Part7.java)</pre>
+	
+	<p>The scheduling determines a feasible result (showing here the worst case delay of the tasks): </p>
+	
+	<img src="img/Implementation7.png" alt="Implementation"/>
+	
+
+</body>
+</html>
