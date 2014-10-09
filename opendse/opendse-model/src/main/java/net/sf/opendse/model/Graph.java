@@ -46,8 +46,8 @@ public class Graph<V extends Node, E extends Edge> extends SparseMultigraph<V, E
 	/**
 	 * Return the vertex.
 	 * 
-	 * @param the
-	 *            vertex
+	 * @param v
+	 *            the vertex
 	 * 
 	 * @return the vertex
 	 */
@@ -58,8 +58,8 @@ public class Graph<V extends Node, E extends Edge> extends SparseMultigraph<V, E
 	/**
 	 * Return the edge.
 	 * 
-	 * @param the
-	 *            edge
+	 * @param e
+	 *            the edge
 	 * 
 	 * @return the edge
 	 */
