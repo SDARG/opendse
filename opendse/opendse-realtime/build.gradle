@@ -1,8 +1,8 @@
 dependencies {	
 	compile 'net.sf.jmpi:jmpi-main:0.4'
+	compile 'net.sf.jmpi:jmpi-solver-gurobi:0.4'
 	compile project(':opendse-model')
 	compile project(':opendse-visualization')
 	
 	testCompile files('libs/gurobi.jar')
-	testCompile 'net.sf.jmpi:jmpi-solver-gurobi:0.4'
 }
