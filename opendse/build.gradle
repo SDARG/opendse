@@ -32,6 +32,9 @@ subprojects {
     apply plugin: 'signing'
 	
     version = parent.version
+
+    sourceCompatibility = 1.6 
+	targetCompatibility = 1.6
 	
 	task sourcesJar(type: Jar, dependsOn:classes) {
 		from sourceSets.main.allSource 
@@ -92,6 +95,16 @@ subprojects {
 	    }
 	}
 }
+
+/* for now ignore all javadoc errors in case of Java 8 */
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+		tasks.withType(Javadoc) {
+			options.addStringOption('Xdoclint:none', '-quiet')
+		}
+    }
+}
+
 
 ext {
 	dateISO = new Date().format("yyyy-MM-dd")
