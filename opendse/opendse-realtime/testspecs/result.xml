@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specification>
+  <architecture>
+    <resource id="can">
+      <attributes>
+        <attribute name="TYPE" type="STRING">CAN</attribute>
+        <attribute name="scheduler" type="STRING">FIXEDPRIORITY_NONPREEMPTIVE</attribute>
+      </attributes>
+    </resource>
+    <resource id="r3">
+      <attributes>
+        <attribute name="TYPE" type="STRING">ECU</attribute>
+        <attribute name="scheduler" type="STRING">FIXEDPRIORITY_PREEMPTIVE</attribute>
+      </attributes>
+    </resource>
+    <resource id="r1">
+      <attributes>
+        <attribute name="TYPE" type="STRING">ECU</attribute>
+        <attribute name="scheduler" type="STRING">FIXEDPRIORITY_PREEMPTIVE</attribute>
+      </attributes>
+    </resource>
+    <link id="l1" source="r1" destination="can" type="UNDIRECTED"/>
+    <link id="l3" source="r3" destination="can" type="UNDIRECTED"/>
+  </architecture>
+  <application>
+    <task id="t4">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">5.0</attribute>
+        <attribute name="e" type="DOUBLE">1.2</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+      </attributes>
+    </task>
+    <task id="t1">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.8</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+      </attributes>
+    </task>
+    <communication id="t2">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.26</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+      </attributes>
+    </communication>
+    <communication id="t3">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.26</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+      </attributes>
+    </communication>
+    <dependency id="d-2-4" source="t2" destination="t4" type="DIRECTED"/>
+    <dependency id="d-3-4" source="t3" destination="t4" type="DIRECTED"/>
+    <dependency id="d-1-3" source="t1" destination="t3" type="DIRECTED"/>
+    <dependency id="d-1-2" source="t1" destination="t2" type="DIRECTED"/>
+    <functions>
+      <function anchor="t4">
+        <attributes>
+          <attribute name="ID" type="STRING">func0</attribute>
+        </attributes>
+      </function>
+    </functions>
+  </application>
+  <mappings>
+    <mapping id="m1" source="t1" target="r3"/>
+    <mapping id="m4" source="t4" target="r1"/>
+  </mappings>
+  <routings>
+    <routing source="t2">
+      <resource id="can"/>
+      <resource id="r3"/>
+      <resource id="r1"/>
+      <link id="l1" source="can" destination="r1" type="DIRECTED"/>
+      <link id="l3" source="r3" destination="can" type="DIRECTED"/>
+    </routing>
+    <routing source="t3">
+      <resource id="can"/>
+      <resource id="r3"/>
+      <resource id="r1"/>
+      <link id="l1" source="can" destination="r1" type="DIRECTED"/>
+      <link id="l3" source="r3" destination="can" type="DIRECTED"/>
+    </routing>
+  </routings>
+  <attributes>
+    <attribute name="runtime" type="DOUBLE">0.06</attribute>
+  </attributes>
+</specification>

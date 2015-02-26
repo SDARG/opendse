@@ -27,15 +27,50 @@ import net.sf.opendse.optimization.constraints.SpecificationConstraints;
 import net.sf.opendse.optimization.constraints.SpecificationConstraintsMulti;
 import net.sf.opendse.optimization.constraints.SpecificationElementsConstraints;
 import net.sf.opendse.optimization.constraints.SpecificationRouterConstraints;
+import net.sf.opendse.optimization.encoding.Encoding.RoutingEncoding;
 
 import org.opt4j.core.config.annotations.Parent;
 import org.opt4j.core.problem.ProblemModule;
+import org.opt4j.core.start.Constant;
 import org.opt4j.viewer.VisualizationModule;
 
 import com.google.inject.multibindings.Multibinder;
 
 @Parent(DesignSpaceExplorationModule.class)
 public class OptimizationModule extends ProblemModule {
+
+	protected RoutingEncoding routingEncoding = RoutingEncoding.FLOW;
+	
+	@Constant(value = "preprocessing", namespace = SATConstraints.class)
+	protected boolean usePreprocessing = true;
+	
+	
+	@Constant(value = "variableorder", namespace = SATCreatorDecoder.class)
+	protected boolean useVariableOrder = true;
+	
+	public RoutingEncoding getRoutingEncoding() {
+		return routingEncoding;
+	}
+
+	public void setRoutingEncoding(RoutingEncoding routingEncoding) {
+		this.routingEncoding = routingEncoding;
+	}
+
+	public boolean isUsePreprocessing() {
+		return usePreprocessing;
+	}
+
+	public void setUsePreprocessing(boolean usePreprocessing) {
+		this.usePreprocessing = usePreprocessing;
+	}
+
+	public boolean isUseVariableOrder() {
+		return useVariableOrder;
+	}
+
+	public void setUseVariableOrder(boolean useVariableOrder) {
+		this.useVariableOrder = useVariableOrder;
+	}
 
 	@Override
 	protected void config() {
@@ -56,6 +91,8 @@ public class OptimizationModule extends ProblemModule {
 		Multibinder.newSetBinder(binder(), ImplementationEvaluator.class);
 
 		addOptimizerIterationListener(StagnationRestart.class);
+		
+		bind(RoutingEncoding.class).toInstance(routingEncoding);
 
 		//bind(SATManager.class).to(MyMixedSATManager.class);
 

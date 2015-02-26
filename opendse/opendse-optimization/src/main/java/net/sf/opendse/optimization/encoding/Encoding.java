@@ -70,6 +70,10 @@ public class Encoding {
 
 	public static List<Class<?>> order = Arrays.<Class<?>> asList(Resource.class, Link.class, Mapping.class, CR.class, CLRR.class);
 
+	public enum RoutingEncoding {
+		HOP, FLOW;
+	}
+	
 	public static class VariableComparator implements Comparator<Object>, Serializable {
 
 		private static final long serialVersionUID = 1L;
@@ -93,11 +97,13 @@ public class Encoding {
 	}
 
 	protected final SpecificationConstraints specificationConstraints;
+	protected final RoutingEncoding routingEncoding;
 
 	@Inject
-	public Encoding(SpecificationConstraints specificationConstraints) {
+	public Encoding(SpecificationConstraints specificationConstraints, RoutingEncoding routingEncoding) {
 		super();
 		this.specificationConstraints = specificationConstraints;
+		this.routingEncoding = routingEncoding;
 	}
 
 	protected void EQ1(List<Constraint> constraints, Specification specification) {
@@ -536,13 +542,13 @@ public class Encoding {
 		boolean isMulticast1 = true;
 		boolean isMulticast2 = false;
 
-		final int Tmax = 6;
+		final int Tmax = 10;
 
 		if (isUnicast) {
 			EQ16(constraints, specification);
 			EQ17(constraints, specification);
 		}
-		if (isMulticast1) {
+		if (routingEncoding.equals(RoutingEncoding.FLOW)) {
 			EQ18(constraints, specification);
 			EQ19(constraints, specification);
 			EQ20(constraints, specification);
@@ -551,7 +557,7 @@ public class Encoding {
 			EQ23(constraints, specification);
 		}
 
-		if (isMulticast2) {
+		if (routingEncoding.equals(RoutingEncoding.HOP)) {
 
 			// EQ24
 			for (Task c : filterCommunications(application)) {

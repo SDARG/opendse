@@ -33,6 +33,7 @@ import net.sf.opendse.optimization.encoding.Encoding;
 import net.sf.opendse.optimization.encoding.RoutingFilter;
 import net.sf.opendse.optimization.encoding.common.ConstraintPreprocessing;
 
+import org.opt4j.core.start.Constant;
 import org.opt4j.satdecoding.Constraint;
 import org.opt4j.satdecoding.Literal;
 import org.opt4j.satdecoding.Model;
@@ -54,20 +55,23 @@ public class SATConstraints {
 	protected final List<Constraint> constraints = new ArrayList<Constraint>();
 	protected final List<Object> variables = new ArrayList<Object>();
 	protected final ConstraintPreprocessing pp;
+	protected final boolean usePreprocessing;
 	protected boolean isInit = false;
 	protected Encoding encoding;
 
 	@Inject
-	public SATConstraints(SpecificationWrapper specificationWrapper, Encoding encoding) {
+	public SATConstraints(SpecificationWrapper specificationWrapper, Encoding encoding, @Constant(value = "preprocessing", namespace = SATConstraints.class) boolean usePreprocessing) {
 		this(specificationWrapper, encoding, new ConstraintPreprocessing(true, true,
-				new Encoding.VariableComparator(), null, true));
+				new Encoding.VariableComparator(), null, true), usePreprocessing);
+		
 	}
 
-	public SATConstraints(SpecificationWrapper specificationWrapper, Encoding encoding, ConstraintPreprocessing pp) {
+	public SATConstraints(SpecificationWrapper specificationWrapper, Encoding encoding, ConstraintPreprocessing pp, boolean usePreprocessing) {
 		super();
 		this.specificationWrapper = specificationWrapper;
 		this.encoding = encoding;
 		this.pp = pp;
+		this.usePreprocessing = usePreprocessing;
 	}
 
 	public synchronized List<Constraint> getConstraints() {
@@ -103,7 +107,12 @@ public class SATConstraints {
 			 * System.out.println(constraint); }
 			 */
 			// this.constraints.addAll(constraints);
-			this.constraints.addAll(pp.process(constraints));
+			
+			if(usePreprocessing){
+				this.constraints.addAll(pp.process(constraints));
+			} else {
+				this.constraints.addAll(constraints);
+			}
 
 			Set<Object> variables = new HashSet<Object>();
 			for (Constraint constraint : this.constraints) {
@@ -121,8 +130,12 @@ public class SATConstraints {
 		if (!isInit) {
 			init();
 		}
-		// return model;
-		return pp.decorate(model);
+		
+		if(usePreprocessing){
+			return pp.decorate(model);
+		} else {
+			return model;
+		}		
 	}
 
 	public ConstraintPreprocessing getPreprocessing() {

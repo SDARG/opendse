@@ -21,11 +21,16 @@
  *******************************************************************************/
 package net.sf.opendse.generator;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Random;
 
+import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
+import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Resource;
+import net.sf.opendse.model.Task;
 
 /**
  * The {@code ArchitectureGenerator} contains several methods to generate and
@@ -96,6 +101,24 @@ public class ArchitectureGenerator extends Generator {
 		}
 
 		return architecture;
+	}
+	
+	public Architecture<Resource,Link> merge(Collection<Architecture<Resource,Link>> architectures) {
+		Architecture<Resource,Link> architecture = new Architecture<Resource,Link>();
+		for (Architecture<Resource,Link> arch : architectures) {
+			for (Resource resource : arch.getVertices()) {
+				architecture.addVertex(resource);
+			}
+			for (Link link : arch.getEdges()) {
+				architecture.addEdge(link, arch.getEndpoints(link), arch.getEdgeType(link));
+			}
+		}
+		return architecture;
+	}
+
+	public Architecture<Resource,Link> merge(@SuppressWarnings("unchecked") Architecture<Resource,Link>... architectures) {
+		Collection<Architecture<Resource,Link>> archs = Arrays.asList(architectures);
+		return merge(archs);
 	}
 
 }

@@ -46,6 +46,20 @@ public class Parameters {
 		ParameterSelect parameter = new ParameterSelect(def, null, Arrays.asList(select));
 		return parameter;
 	}
+	
+	/**
+	 * Constructs a {@link ParameterSelect}.
+	 * 
+	 * @param def
+	 *            the default value
+	 * @param select
+	 *            the list of elements
+	 * @return the parameter object
+	 */
+	public static ParameterSelect selectList(Object def, List<Object> select) {
+		ParameterSelect parameter = new ParameterSelect(def, null, select);
+		return parameter;
+	}
 
 	/**
 	 * Constructs a {@link ParameterSelect}.
