@@ -225,7 +225,10 @@ public class MyEncoder {
 				for (TimingDependency td : tg.getInEdges(te)) {
 					if (td instanceof TimingDependencyPriority) {
 						TimingElement te2 = tg.getOpposite(te, td);
-						rhs.addTerm(e(te2), a(td), i(te2, te));
+						
+						double ete2 = (te2.getAttribute("IIS") != null)?0:e(te2);
+						
+						rhs.addTerm(ete2, a(td), i(te2, te));
 
 						problem.add(sum(i(te2, te)), ">=", sum(prod(1d / h(te2), r(te)), prod(1d / h(te2), jIn(te2))));
 					}
@@ -246,15 +249,27 @@ public class MyEncoder {
 				for (TimingDependency td : tg.getOutEdges(te)) {
 					if (td instanceof TimingDependencyPriority) {
 						TimingElement te2 = tg.getOpposite(te, td);
-						problem.add(sum(b(te)), ">=", sum(prod(e(te2), a(td))));
+						
+						double ete2 = (te2.getAttribute("IIS") != null)?0:e(te2);
+						
+						problem.add(sum(b(te)), ">=", sum(prod(ete2, a(td))));
 					}
 				}
 
 				for (TimingDependency td : tg.getInEdges(te)) {
 					if (td instanceof TimingDependencyPriority) {
 						TimingElement te2 = tg.getOpposite(te, td);
-						rhs.addTerm(e(te2), a(td), i(te2, te));
+						
 
+						double ete2;
+						
+						if(te2.getAttribute("ISS") != null){
+							ete2 = 0;
+						} else {
+							ete2 = e(te2);
+						}
+						
+						rhs.addTerm(ete2, a(td), i(te2, te));
 						problem.add(sum(i(te2, te)), ">=", sum(prod(1d / h(te2), r(te)), prod(1d / h(te2), jIn(te2)), -e(te) / h(te2)));
 					}
 				}

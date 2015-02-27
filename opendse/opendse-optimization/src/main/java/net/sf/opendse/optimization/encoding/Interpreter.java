@@ -42,11 +42,12 @@ import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Mappings;
 import net.sf.opendse.model.Models;
+import net.sf.opendse.model.Models.DirectedLink;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
-import net.sf.opendse.model.Models.DirectedLink;
+import net.sf.opendse.model.parameter.Parameter;
 import net.sf.opendse.model.parameter.ParameterReference;
 import net.sf.opendse.model.parameter.ParameterSelect;
 import net.sf.opendse.optimization.constraints.SpecificationConstraints;
@@ -82,8 +83,7 @@ public class Interpreter {
 	@SuppressWarnings("unchecked")
 	public <M extends Mapping<?, ?>> M copy(Mapping<?, ?> mapping) {
 		try {
-			Constructor<? extends Element> cstr = mapping.getClass().getConstructor(Element.class, Task.class,
-					Resource.class);
+			Constructor<? extends Element> cstr = mapping.getClass().getConstructor(Element.class, Task.class, Resource.class);
 			Element copy = cstr.newInstance(mapping, mapping.getSource(), mapping.getTarget());
 			return (M) copy;
 		} catch (Exception e) {
@@ -129,7 +129,7 @@ public class Interpreter {
 				iArchitecture.addEdge((Link) copy(l), source, dest, sArchitecture.getEdgeType(l));
 			}
 		}
-		
+
 		// copy application (including function attributes)
 		for (Task t : sApplication) {
 			iApplication.addVertex((Task) copy(t));
@@ -140,12 +140,12 @@ public class Interpreter {
 			Task dest = iApplication.getVertex(sApplication.getVertex(endpoints.getSecond()));
 			iApplication.addEdge((Dependency) copy(e), source, dest, sApplication.getEdgeType(e));
 		}
-		
-		for (Function<Task,Dependency> function: iApplication.getFunctions()){
+
+		for (Function<Task, Dependency> function : iApplication.getFunctions()) {
 			Task t = function.iterator().next();
-			setAttributes(function, sApplication.getFunction(t).getAttributes());			
+			setAttributes(function, sApplication.getFunction(t).getAttributes());
 		}
-		
+
 		for (Mapping<Task, Resource> m : sMappings) {
 			if (model.get(m)) {
 				Mapping<Task, Resource> copy = copy(m);
@@ -172,22 +172,23 @@ public class Interpreter {
 					Resource r1 = iRouting.getVertex(lrr.getDest());
 					iRouting.addEdge((Link) copy(l), r0, r1, DIRECTED);
 				}
-				//System.out.println(c+" "+lrr.getLink()+" "+lrr.getSource()+" "+lrr.getDest()+" "+model.get(var(c, lrr)));
+				// System.out.println(c+" "+lrr.getLink()+" "+lrr.getSource()+" "+lrr.getDest()+" "+model.get(var(c,
+				// lrr)));
 			}
-			
-			//System.out.println(sRouting+" "+iRouting);
+
+			// System.out.println(sRouting+" "+iRouting);
 
 			WeakComponentClusterer<Resource, Link> clusterer = new WeakComponentClusterer<Resource, Link>();
 			Set<Set<Resource>> cluster = clusterer.transform(iRouting);
 
 			Task sender = iApplication.getPredecessors(c).iterator().next();
-			
+
 			Set<Resource> targets = iMappings.getTargets(sender);
 
 			for (Set<Resource> set : cluster) {
 				boolean containsAny = false;
-				for(Resource target: targets){
-					if(set.contains(target)){
+				for (Resource target : targets) {
+					if (set.contains(target)) {
 						containsAny = true;
 						break;
 					}
@@ -221,7 +222,6 @@ public class Interpreter {
 					Boolean b = model.get(Variables.var(element, attribute, v, i));
 					if (b) {
 						element.setAttribute(attribute, v);
-						// System.out.println("set "+element+" attribute "+v);
 					}
 				}
 
@@ -234,11 +234,11 @@ public class Interpreter {
 
 		return impl;
 	}
-	
+
 	protected static void setAttributes(IAttributes e, Attributes attributes) {
 		for (String name : attributes.keySet()) {
 			e.setAttribute(name, attributes.get(name));
 		}
 	}
-	
+
 }

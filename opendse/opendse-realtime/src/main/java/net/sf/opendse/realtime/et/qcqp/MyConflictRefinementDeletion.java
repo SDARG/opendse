@@ -72,9 +72,10 @@ public class MyConflictRefinementDeletion implements MyConflictRefinement {
 		for (TimingElement te : teList) {
 			System.out.print("conflict refinement " + te);
 			lastE = te.getAttribute("e");
-			te.setAttribute("e", 0.0);
+			//te.setAttribute("e", 0.0);
+			te.setAttribute("IIS", 1);
 
-			for (TimingDependency td : tg.getIncidentEdges(te)) {
+			/*for (TimingDependency td : tg.getIncidentEdges(te)) {
 				if (td instanceof TimingDependencyPriority) {
 					removed.put((TimingDependencyPriority) td,
 							new Pair<TimingElement>(tg.getSource(td), tg.getDest(td)));
@@ -82,7 +83,7 @@ public class MyConflictRefinementDeletion implements MyConflictRefinement {
 			}
 			for (TimingDependency td : removed.keySet()) {
 				tg.removeEdge(td);
-			}
+			}*/
 
 			MyEncoder encoder = new MyEncoder();
 			MpProblem problem = encoder.encode(tg);
@@ -99,12 +100,13 @@ public class MyConflictRefinementDeletion implements MyConflictRefinement {
 
 			if (result != null) {
 				// this is part of the IIS, reset timing graph
-				te.setAttribute("e", lastE);
+				//te.setAttribute("e", lastE);
+				te.setAttribute("IIS", null);
 
-				for (TimingDependencyPriority td : removed.keySet()) {
+				/*for (TimingDependencyPriority td : removed.keySet()) {
 					Pair<TimingElement> endpoints = removed.get(td);
 					tg.addEdge(td, endpoints);
-				}
+				}*/
 
 			} else {
 				iis.remove(te);
