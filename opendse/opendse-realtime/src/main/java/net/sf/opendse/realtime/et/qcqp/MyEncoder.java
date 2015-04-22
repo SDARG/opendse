@@ -366,13 +366,14 @@ public class MyEncoder {
 				Double deadline = te.getAttribute(PriorityScheduler.DEADLINE);
 
 				if (deadline != null) {
-					objective.add(d(te));
+					objective.add(deadline);
+					objective.add(prod(-1,d(te)));
 				}
 
 				// objective.add(dd(te));
 				// objective.add(j(te));
 			}
-			problem.setObjective(objective, MpDirection.MIN);
+			problem.setObjective(objective, MpDirection.MAX);
 		} else if (objective == OptimizationObjective.DELAY_AND_JITTER_ALL) {
 			MpExpr objective = sum();
 			for (TimingElement te : tg.getVertices()) {
