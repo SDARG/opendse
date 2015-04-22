@@ -1,6 +1,6 @@
 dependencies {	
-	compile 'net.sf.jmpi:jmpi-main:0.4'
-	compile 'net.sf.jmpi:jmpi-solver-gurobi:0.4'
+	compile 'net.sf.jmpi:jmpi-main:0.6'
+	compile 'net.sf.jmpi:jmpi-solver-gurobi:0.6'
 	compile project(':opendse-model')
 	compile project(':opendse-visualization')
 	

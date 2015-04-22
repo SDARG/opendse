@@ -21,6 +21,10 @@
  *******************************************************************************/
 package net.sf.opendse.realtime.et;
 
+import gurobi.GRB.DoubleAttr;
+import gurobi.GRBException;
+import gurobi.GRBModel;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -37,19 +41,18 @@ import net.sf.opendse.model.Task;
 import net.sf.opendse.realtime.et.graph.ApplicationDependencyInterferencePredicate;
 import net.sf.opendse.realtime.et.graph.ApplicationPriorityCyclesPredicate;
 import net.sf.opendse.realtime.et.graph.DelaySchedulerEdgePredicate;
-import net.sf.opendse.realtime.et.graph.RateMonotonicEdgeFilterPredicate;
 import net.sf.opendse.realtime.et.graph.SourceTargetCommunicationPredicate;
 import net.sf.opendse.realtime.et.graph.TimingElement;
 import net.sf.opendse.realtime.et.graph.TimingGraph;
 import net.sf.opendse.realtime.et.graph.TimingGraphBuilder;
 import net.sf.opendse.realtime.et.graph.TimingGraphModifierFilterEdge;
 import net.sf.opendse.realtime.et.graph.TimingGraphModifierFilterVertex;
-import net.sf.opendse.realtime.et.qcqp.MyEncoder;
-import net.sf.opendse.realtime.et.qcqp.MyConflictRefinement.ConflictRefinementMethod;
-import net.sf.opendse.realtime.et.qcqp.MyEncoder.OptimizationObjective;
 import net.sf.opendse.realtime.et.qcqp.MyConflictRefinement;
+import net.sf.opendse.realtime.et.qcqp.MyConflictRefinement.ConflictRefinementMethod;
 import net.sf.opendse.realtime.et.qcqp.MyConflictRefinementDeletion;
 import net.sf.opendse.realtime.et.qcqp.MyConflictRefinementHierarchical;
+import net.sf.opendse.realtime.et.qcqp.MyEncoder;
+import net.sf.opendse.realtime.et.qcqp.MyEncoder.OptimizationObjective;
 import net.sf.opendse.realtime.et.qcqp.MyInterpreter;
 import net.sf.opendse.realtime.et.qcqp.MyTimingPropertyAnnotater;
 
@@ -80,6 +83,7 @@ public class PriorityScheduler {
 
 	protected Boolean solved = false;
 	protected Boolean isInfeasible = null;
+	protected double MIPGap = -1.0;
 	
 	public PriorityScheduler(Specification specification){
 		this(specification, new SolverProvider() {
@@ -111,6 +115,16 @@ public class PriorityScheduler {
 		MpSolver solver = solverProvider.get();
 		solver.add(problem);
 		MpResult result = solver.solve();
+		
+		if(solver instanceof SolverGurobi){
+			SolverGurobi solverGurobi = (SolverGurobi)solver;
+			GRBModel model = solverGurobi.getGRBModel();
+			try {
+				MIPGap = model.get(DoubleAttr.MIPGap);
+			} catch (GRBException e) {
+				System.err.println("Could not determine MIPGap");
+			}
+		}
 
 		solved = true;
 
@@ -134,6 +148,10 @@ public class PriorityScheduler {
 	
 	public TimingGraph getReducedTimingGraph() {
 		return resultingTimingGraph;
+	}
+	
+	public double getMIPGap() {
+		return MIPGap;
 	}
 
 	public Set<TimingElement> determineIIS(ConflictRefinementMethod method) {

@@ -68,7 +68,7 @@ public class MyEncoder {
 	protected OptimizationObjective objective = null;
 
 	public enum OptimizationObjective {
-		DELAY, DELAY_AND_JITTER_ALL, NONE;
+		DELAY, MINSLACK, DELAY_AND_JITTER_ALL, NONE;
 	}
 	
 	public enum CycleCounter {
@@ -241,7 +241,8 @@ public class MyEncoder {
 				MpExpr lhs = sum(r(te));
 				MpExpr rhs = sum(e(te), b(te));
 
-				problem.add(sum(b(te)), ">=", sum(e(te)));
+				// problem.add(sum(b(te)), ">=", sum(e(te))); // Davis
+				problem.add(sum(b(te)), ">=", 0); // Tindell
 
 				for (TimingDependency td : tg.getOutEdges(te)) {
 					if (td instanceof TimingDependencyPriority) {
@@ -260,7 +261,7 @@ public class MyEncoder {
 				}
 				
 				problem.add(sum(jOut(te)), "=", sum(jIn(te), r(te), prod(-1,e(te))));
-
+				
 				problem.add(lhs, "=", rhs);
 			} else if (FIXEDDELAY.equals(scheduler)) {
 
@@ -379,6 +380,17 @@ public class MyEncoder {
 				objective.add(jOut(te));
 			}
 			problem.setObjective(objective, MpDirection.MIN);
+		} else if(objective == OptimizationObjective.MINSLACK){
+			problem.addVar("minslack", Double.class);
+			
+			for (TimingElement te : tg.getVertices()) {
+				Double deadline = te.getAttribute(PriorityScheduler.DEADLINE);
+
+				if (deadline != null) {
+					problem.add(sum(deadline,prod(-1,d(te))), ">=", sum("minslack"));
+				}
+			}
+			problem.setObjective(sum("minslack"), MpDirection.MAX);
 		}
 
 		// System.out.println(problem);
