@@ -3,6 +3,7 @@ dependencies {
 	compile 'net.sf.jmpi:jmpi-solver-gurobi:0.6'
 	compile project(':opendse-model')
 	compile project(':opendse-visualization')
+	compile files('libs/gurobi.jar')
 	
 	testCompile files('libs/gurobi.jar')
 }
