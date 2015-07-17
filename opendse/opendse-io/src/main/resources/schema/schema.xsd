@@ -1,0 +1,256 @@
+<?xml version="1.0"?>
+<xs:schema xmlns="http://opendse.sourceforge.net" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://opendse.sourceforge.net" elementFormDefault="qualified">
+
+	<!-- definition of attributes -->
+	<xs:attribute name="id" type="xs:string" /> <!-- unique id of an object -->
+	<xs:attribute name="name" type="xs:string" />
+	<xs:attribute name="source" type="xs:string" />
+	<xs:attribute name="destination" type="xs:string" />
+	<xs:attribute name="target" type="xs:string" />
+	<xs:attribute name="orientation"> <!-- orientation of links and dependencies -->
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="DIRECTED" />
+				<xs:enumeration value="UNDIRECTED" />
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:attribute>
+	<xs:attribute name="anchor" type="xs:string" />
+	<xs:attribute name="type"> <!-- type of attributes -->
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="DOUBLE" />
+				<xs:enumeration value="INT" />
+				<xs:enumeration value="STRING" />
+				<xs:enumeration value="BOOL" />
+				<!-- more may be added -->
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:attribute>
+
+	<xs:element name="specification">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="architecture" />
+				<xs:element ref="application" />
+				<xs:element ref="mappings" />
+				<xs:element ref="routings" minOccurs="0" />
+				<xs:element ref="attributes" minOccurs="0" />
+			</xs:sequence>
+		</xs:complexType>
+		<xs:keyref name="mappingTotaskRef" refer="taskUniq"> <!-- mapping sources must be valid task IDs -->
+			<xs:selector xpath=".//mapping" />
+			<xs:field xpath="@source" />
+		</xs:keyref>
+		<!-- mapping targets must be valid resource IDs -->
+		<xs:keyref name="mappingToResourceRef" refer="resourceUniq">
+			<xs:selector xpath=".//mapping" />
+			<xs:field xpath="@target" />
+		</xs:keyref>
+		<xs:keyref name="routingToCommunicationRef" refer="communicationUniq"> <!-- routing sources must be valid communication IDs -->
+			<xs:selector xpath=".//routing" />
+			<xs:field xpath="@source" />
+		</xs:keyref>
+	</xs:element>
+
+	<!-- each object may have attributes, containing an arbitrary number of 
+		attribute elements -->
+	<xs:element name="attributes">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="attribute" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- an attribute has a name and a type, which defines how to parse its 
+		content -->
+	<xs:element name="attribute">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute ref="name" use="required" />
+					<xs:attribute ref="type" use="required" />
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- the architecture models the hardware topology -->
+	<xs:element name="architecture">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="resource" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element ref="link" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+		<!-- resource IDs are unique -->
+		<xs:key name="resourceUniq">
+			<xs:selector xpath="resource" />
+			<xs:field xpath="@id" />
+		</xs:key>
+		<xs:key name="linkUniq"> <!-- link IDs are unique -->
+			<xs:selector xpath="link" />
+			<xs:field xpath="@id" />
+		</xs:key>
+		<!-- link sources must be valid task IDs -->
+		<xs:keyref name="resourceToLinkRef" refer="resourceUniq"> 
+			<xs:selector xpath=".//link" />
+			<xs:field xpath="@source" />
+		</xs:keyref>
+		<!-- link destinations must be valid task IDs -->
+		<xs:keyref name="linkToResourceRef" refer="resourceUniq"> 
+			<xs:selector xpath=".//link" />
+			<xs:field xpath="@destination" />
+		</xs:keyref>
+	</xs:element>
+
+	<!-- the resource is a hardware entity -->
+	<xs:element name="resource">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="attributes" minOccurs="0" />
+			</xs:sequence>
+			<xs:attribute ref="id" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<!-- the link is a directed or undirected communication ability between 
+		two resources -->
+	<xs:element name="link">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="attributes" minOccurs="0" />
+			</xs:sequence>
+			<xs:attribute ref="id" use="required" />
+			<xs:attribute ref="source" use="required" />
+			<xs:attribute ref="destination" use="required" />
+			<xs:attribute ref="orientation" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<!-- the application models the logical functions of the system, the functions 
+		consist of tasks, communications and their dependencies -->
+	<xs:element name="application">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="task" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element ref="communication" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element ref="dependency" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element ref="functions" minOccurs="0" />
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="taskUniq"> <!-- task IDs are unique -->
+			<xs:selector xpath="task" />
+			<xs:field xpath="@id" />
+		</xs:key>
+		<xs:key name="communicationUniq"> <!-- communication IDs are unique -->
+			<xs:selector xpath="communication" />
+			<xs:field xpath="@id" />
+		</xs:key>
+		<xs:key name="dependencyUniq"> <!-- dependency IDs are unique -->
+			<xs:selector xpath="dependency" />
+			<xs:field xpath="@id" />
+		</xs:key>
+	</xs:element>
+
+	<!-- a task models the logical -->
+	<xs:element name="task">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="attributes" minOccurs="0" />
+			</xs:sequence>
+			<xs:attribute ref="id" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<!-- a communication models data which is sent by a sending task to one 
+		or more receiving tasks -->
+	<xs:element name="communication">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="attributes" minOccurs="0" />
+			</xs:sequence>
+			<xs:attribute ref="id" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<!-- a dependency is a directed logical connection between tasks and communications -->
+	<xs:element name="dependency">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="attributes" minOccurs="0" />
+			</xs:sequence>
+			<xs:attribute ref="id" use="required" />
+			<xs:attribute ref="source" use="required" />
+			<xs:attribute ref="destination" use="required" />
+			<xs:attribute ref="orientation" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<!-- the functions may contain a set of function elements -->
+	<xs:element name="functions">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="function" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- a function groups tasks and communications -->
+	<xs:element name="function">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="attributes" minOccurs="0" />
+			</xs:sequence>
+			<xs:attribute ref="anchor" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<!-- the mappings element contains at least one mapping for each task -->
+	<xs:element name="mappings">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="mapping" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="mappingUniq"> <!-- mapping IDs are unique -->
+			<xs:selector xpath="mapping" />
+			<xs:field xpath="@id" />
+		</xs:key>
+	</xs:element>
+
+	<!-- a mapping defines on which resource a task could be implemented -->
+	<xs:element name="mapping">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="attributes" minOccurs="0" />
+			</xs:sequence>
+			<xs:attribute ref="id" use="required" />
+			<xs:attribute ref="source" use="required" />
+			<xs:attribute ref="target" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<!-- if existent, the routings element may contain a routing for each communication -->
+	<xs:element name="routings">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="routing" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- the routing is given as a directed tree from the resource the sending 
+		task is mapped to to all resources, receiving tasks are mapped to -->
+	<xs:element name="routing">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="resource" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element ref="link" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element ref="attributes" minOccurs="0" />
+			</xs:sequence>
+			<xs:attribute ref="source" use="required" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
