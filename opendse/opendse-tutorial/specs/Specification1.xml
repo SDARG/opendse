@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<specification>
+<specification xmlns="http://opendse.sourceforge.net"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://opendse.sourceforge.net schema.xsd"  xmlns:test="http://opendse.sourceforge.net">
   <architecture>
     <resource id="r1">
       <attributes>
