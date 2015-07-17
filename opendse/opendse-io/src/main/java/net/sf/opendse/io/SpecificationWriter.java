@@ -182,7 +182,7 @@ public class SpecificationWriter {
 		for (Task task : routings.getTasks()) {
 			nu.xom.Element eRouting = toElement(routings.get(task), architecture);
 			eRouting.setLocalName("routing");
-			eRouting.addAttribute(new nu.xom.Attribute("dse:source", NS, task.getId()));
+			eRouting.addAttribute(new nu.xom.Attribute("source", task.getId()));
 			eRoutings.appendChild(eRouting);
 		}
 
@@ -258,7 +258,7 @@ public class SpecificationWriter {
 		nu.xom.Element eFunction = new nu.xom.Element("function", NS);
 
 		Task t = function.getVertices().iterator().next();
-		eFunction.addAttribute(new nu.xom.Attribute("dse:anchor", NS, t.getId()));
+		eFunction.addAttribute(new nu.xom.Attribute("anchor", t.getId()));
 
 		eFunction.appendChild(toElement(function.getAttributes()));
 		return eFunction;
@@ -275,12 +275,12 @@ public class SpecificationWriter {
 
 	protected nu.xom.Element toElement(Mapping<Task, Resource> mapping) {
 		nu.xom.Element eMapping = new nu.xom.Element("mapping", NS);
-		eMapping.addAttribute(new nu.xom.Attribute("dse:id", NS, mapping.getId()));
+		eMapping.addAttribute(new nu.xom.Attribute("id", mapping.getId()));
 		if (!getType(mapping.getClass()).equals("mapping")) {
 			eMapping.addAttribute(new nu.xom.Attribute("class", getType(mapping.getClass())));
 		}
-		eMapping.addAttribute(new nu.xom.Attribute("dse:source", NS, mapping.getSource().getId()));
-		eMapping.addAttribute(new nu.xom.Attribute("dse:target", NS, mapping.getTarget().getId()));
+		eMapping.addAttribute(new nu.xom.Attribute("source", mapping.getSource().getId()));
+		eMapping.addAttribute(new nu.xom.Attribute("target", mapping.getTarget().getId()));
 		nu.xom.Element eAttributes = toElement(mapping.getAttributes());
 		if (eAttributes.getChildCount() > 0) {
 			eMapping.appendChild(eAttributes);
@@ -290,7 +290,7 @@ public class SpecificationWriter {
 
 	protected nu.xom.Element toElement(Node node, String name, boolean local) {
 		nu.xom.Element eElem = new nu.xom.Element(name, NS);
-		eElem.addAttribute(new nu.xom.Attribute("dse:id", NS, node.getId()));
+		eElem.addAttribute(new nu.xom.Attribute("id", node.getId()));
 		if (!getType(node.getClass()).equals(name)) {
 			eElem.addAttribute(new nu.xom.Attribute("class", getType(node.getClass())));
 		}
@@ -303,13 +303,13 @@ public class SpecificationWriter {
 
 	protected nu.xom.Element toElement(Edge edge, String name, Node source, Node dest, EdgeType edgeType, boolean local) {
 		nu.xom.Element eElem = new nu.xom.Element(name, NS);
-		eElem.addAttribute(new nu.xom.Attribute("dse:id", NS, edge.getId()));
+		eElem.addAttribute(new nu.xom.Attribute("id", edge.getId()));
 		if (!getType(edge.getClass()).equals(name)) {
 			eElem.addAttribute(new nu.xom.Attribute("class", getType(edge.getClass())));
 		}
-		eElem.addAttribute(new nu.xom.Attribute("dse:source", NS, source.getId()));
-		eElem.addAttribute(new nu.xom.Attribute("dse:destination", NS, dest.getId()));
-		eElem.addAttribute(new nu.xom.Attribute("dse:orientation", NS, edgeType.toString()));
+		eElem.addAttribute(new nu.xom.Attribute("source", source.getId()));
+		eElem.addAttribute(new nu.xom.Attribute("destination", dest.getId()));
+		eElem.addAttribute(new nu.xom.Attribute("orientation", edgeType.toString()));
 		nu.xom.Element eAttributes = toElement(local ? edge.getLocalAttributes() : edge.getAttributes());
 		if (eAttributes.getChildCount() > 0) {
 			eElem.appendChild(eAttributes);
@@ -322,7 +322,7 @@ public class SpecificationWriter {
 
 		for (String attributeName : attributes.getAttributeNames()) {
 			nu.xom.Element eAttr = new nu.xom.Element("attribute", NS);
-			eAttr.addAttribute(new nu.xom.Attribute("dse:name", NS, attributeName));
+			eAttr.addAttribute(new nu.xom.Attribute("name", attributeName));
 
 			Object attribute = attributes.getAttribute(attributeName);
 			if (attribute != null) {
@@ -332,18 +332,18 @@ public class SpecificationWriter {
 
 					Parameter parameter = attributes.getAttributeParameter(attributeName);
 					eAttr.appendChild(parameter.toString());
-					eAttr.addAttribute(new nu.xom.Attribute("dse:type", NS, getType(cls)));
-					eAttr.addAttribute(new nu.xom.Attribute("dse:parameter", NS, getType(parameter.getClass())));
+					eAttr.addAttribute(new nu.xom.Attribute("type", getType(cls)));
+					eAttr.addAttribute(new nu.xom.Attribute("parameter", getType(parameter.getClass())));
 
 				} else if (Common.isPrimitive(cls) || cls.equals(String.class)) {
 
-					eAttr.addAttribute(new nu.xom.Attribute("dse:type", NS, getType(cls)));
+					eAttr.addAttribute(new nu.xom.Attribute("type", getType(cls)));
 					eAttr.appendChild(attributes.getAttribute(attributeName).toString());
 
 				} else if (attributes instanceof Serializable) {
 
 					Serializable s = (Serializable) attribute;
-					eAttr.addAttribute(new nu.xom.Attribute("dse:type", NS, Serializable.class.getName()));
+					eAttr.addAttribute(new nu.xom.Attribute("type", Serializable.class.getName()));
 					try {
 						eAttr.appendChild(Common.toString(s));
 					} catch (IOException e) {

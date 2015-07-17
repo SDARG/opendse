@@ -1,32 +1,6 @@
 <?xml version="1.0"?>
-<xs:schema xmlns="http://opendse.sourceforge.net" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://opendse.sourceforge.net" elementFormDefault="qualified">
-
-	<!-- definition of attributes -->
-	<xs:attribute name="id" type="xs:string" /> <!-- unique id of an object -->
-	<xs:attribute name="name" type="xs:string" />
-	<xs:attribute name="source" type="xs:string" />
-	<xs:attribute name="destination" type="xs:string" />
-	<xs:attribute name="target" type="xs:string" />
-	<xs:attribute name="orientation"> <!-- orientation of links and dependencies -->
-		<xs:simpleType>
-			<xs:restriction base="xs:string">
-				<xs:enumeration value="DIRECTED" />
-				<xs:enumeration value="UNDIRECTED" />
-			</xs:restriction>
-		</xs:simpleType>
-	</xs:attribute>
-	<xs:attribute name="anchor" type="xs:string" />
-	<xs:attribute name="type"> <!-- type of attributes -->
-		<xs:simpleType>
-			<xs:restriction base="xs:string">
-				<xs:enumeration value="DOUBLE" />
-				<xs:enumeration value="INT" />
-				<xs:enumeration value="STRING" />
-				<xs:enumeration value="BOOL" />
-				<!-- more may be added -->
-			</xs:restriction>
-		</xs:simpleType>
-	</xs:attribute>
+<xs:schema xmlns="http://opendse.sourceforge.net" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://opendse.sourceforge.net" elementFormDefault="qualified">
 
 	<xs:element name="specification">
 		<xs:complexType>
@@ -69,8 +43,18 @@
 		<xs:complexType>
 			<xs:simpleContent>
 				<xs:extension base="xs:string">
-					<xs:attribute ref="name" use="required" />
-					<xs:attribute ref="type" use="required" />
+					<xs:attribute name="name" type="xs:string" use="required" />
+					<xs:attribute name="type" use="required"> <!-- type of attributes -->
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="DOUBLE" />
+								<xs:enumeration value="INT" />
+								<xs:enumeration value="STRING" />
+								<xs:enumeration value="BOOL" />
+								<!-- more may be added -->
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
 				</xs:extension>
 			</xs:simpleContent>
 		</xs:complexType>
@@ -94,12 +78,12 @@
 			<xs:field xpath="@id" />
 		</xs:key>
 		<!-- link sources must be valid task IDs -->
-		<xs:keyref name="resourceToLinkRef" refer="resourceUniq"> 
+		<xs:keyref name="resourceToLinkRef" refer="resourceUniq">
 			<xs:selector xpath=".//link" />
 			<xs:field xpath="@source" />
 		</xs:keyref>
 		<!-- link destinations must be valid task IDs -->
-		<xs:keyref name="linkToResourceRef" refer="resourceUniq"> 
+		<xs:keyref name="linkToResourceRef" refer="resourceUniq">
 			<xs:selector xpath=".//link" />
 			<xs:field xpath="@destination" />
 		</xs:keyref>
@@ -111,7 +95,7 @@
 			<xs:sequence>
 				<xs:element ref="attributes" minOccurs="0" />
 			</xs:sequence>
-			<xs:attribute ref="id" use="required" />
+			<xs:attribute name="id" type="xs:string" use="required" />
 		</xs:complexType>
 	</xs:element>
 
@@ -122,10 +106,17 @@
 			<xs:sequence>
 				<xs:element ref="attributes" minOccurs="0" />
 			</xs:sequence>
-			<xs:attribute ref="id" use="required" />
-			<xs:attribute ref="source" use="required" />
-			<xs:attribute ref="destination" use="required" />
-			<xs:attribute ref="orientation" use="required" />
+			<xs:attribute name="id" type="xs:string" use="required" />
+			<xs:attribute name="source" type="xs:string" use="required" />
+			<xs:attribute name="destination" type="xs:string" use="required" />
+			<xs:attribute name="orientation" use="required"> <!-- orientation of links and dependencies -->
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="DIRECTED" />
+						<xs:enumeration value="UNDIRECTED" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
 
@@ -160,7 +151,7 @@
 			<xs:sequence>
 				<xs:element ref="attributes" minOccurs="0" />
 			</xs:sequence>
-			<xs:attribute ref="id" use="required" />
+			<xs:attribute name="id" type="xs:string" use="required" />
 		</xs:complexType>
 	</xs:element>
 
@@ -171,7 +162,7 @@
 			<xs:sequence>
 				<xs:element ref="attributes" minOccurs="0" />
 			</xs:sequence>
-			<xs:attribute ref="id" use="required" />
+			<xs:attribute name="id" type="xs:string" use="required" />
 		</xs:complexType>
 	</xs:element>
 
@@ -181,10 +172,17 @@
 			<xs:sequence>
 				<xs:element ref="attributes" minOccurs="0" />
 			</xs:sequence>
-			<xs:attribute ref="id" use="required" />
-			<xs:attribute ref="source" use="required" />
-			<xs:attribute ref="destination" use="required" />
-			<xs:attribute ref="orientation" use="required" />
+			<xs:attribute name="id" type="xs:string" use="required" />
+			<xs:attribute name="source" type="xs:string" use="required" />
+			<xs:attribute name="destination" type="xs:string" use="required" />
+			<xs:attribute name="orientation" use="required"> <!-- orientation of links and dependencies -->
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="DIRECTED" />
+						<xs:enumeration value="UNDIRECTED" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
 
@@ -203,7 +201,7 @@
 			<xs:sequence>
 				<xs:element ref="attributes" minOccurs="0" />
 			</xs:sequence>
-			<xs:attribute ref="anchor" use="required" />
+			<xs:attribute name="anchor" type="xs:string" use="required" />
 		</xs:complexType>
 	</xs:element>
 
@@ -226,9 +224,9 @@
 			<xs:sequence>
 				<xs:element ref="attributes" minOccurs="0" />
 			</xs:sequence>
-			<xs:attribute ref="id" use="required" />
-			<xs:attribute ref="source" use="required" />
-			<xs:attribute ref="target" use="required" />
+			<xs:attribute name="id" type="xs:string" use="required" />
+			<xs:attribute name="source" type="xs:string" use="required" />
+			<xs:attribute name="target" type="xs:string" use="required" />
 		</xs:complexType>
 	</xs:element>
 
@@ -250,7 +248,7 @@
 				<xs:element ref="link" minOccurs="0" maxOccurs="unbounded" />
 				<xs:element ref="attributes" minOccurs="0" />
 			</xs:sequence>
-			<xs:attribute ref="source" use="required" />
+			<xs:attribute name="source" type="xs:string" use="required" />
 		</xs:complexType>
 	</xs:element>
 </xs:schema>
