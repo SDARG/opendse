@@ -12,16 +12,19 @@
 				<xs:element ref="attributes" minOccurs="0" />
 			</xs:sequence>
 		</xs:complexType>
-		<xs:keyref name="mappingTotaskRef" refer="taskUniq"> <!-- mapping sources must be valid task IDs -->
+		<!-- rules for cross references using the IDs -->
+		<!-- the source of a mapping must be a valid task ID -->
+		<xs:keyref name="mappingTotaskRef" refer="taskUniq">
 			<xs:selector xpath=".//mapping" />
 			<xs:field xpath="@source" />
 		</xs:keyref>
-		<!-- mapping targets must be valid resource IDs -->
+		<!-- the target of a mapping must be a valid resource ID -->
 		<xs:keyref name="mappingToResourceRef" refer="resourceUniq">
 			<xs:selector xpath=".//mapping" />
 			<xs:field xpath="@target" />
 		</xs:keyref>
-		<xs:keyref name="routingToCommunicationRef" refer="communicationUniq"> <!-- routing sources must be valid communication IDs -->
+		<!-- the source of a routing must be a valid communication ID -->
+		<xs:keyref name="routingToCommunicationRef" refer="communicationUniq">
 			<xs:selector xpath=".//routing" />
 			<xs:field xpath="@source" />
 		</xs:keyref>
@@ -51,7 +54,7 @@
 								<xs:enumeration value="INT" />
 								<xs:enumeration value="STRING" />
 								<xs:enumeration value="BOOL" />
-								<!-- more may be added -->
+								<!-- more types may be added -->
 							</xs:restriction>
 						</xs:simpleType>
 					</xs:attribute>
@@ -73,16 +76,17 @@
 			<xs:selector xpath="resource" />
 			<xs:field xpath="@id" />
 		</xs:key>
-		<xs:key name="linkUniq"> <!-- link IDs are unique -->
+		<!-- link IDs are unique -->
+		<xs:key name="linkUniq">
 			<xs:selector xpath="link" />
 			<xs:field xpath="@id" />
 		</xs:key>
-		<!-- link sources must be valid task IDs -->
+		<!-- the source of a link must be a valid task ID -->
 		<xs:keyref name="resourceToLinkRef" refer="resourceUniq">
 			<xs:selector xpath=".//link" />
 			<xs:field xpath="@source" />
 		</xs:keyref>
-		<!-- link destinations must be valid task IDs -->
+		<!-- the destination of a link must be a valid task ID -->
 		<xs:keyref name="linkToResourceRef" refer="resourceUniq">
 			<xs:selector xpath=".//link" />
 			<xs:field xpath="@destination" />
