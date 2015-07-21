@@ -21,6 +21,7 @@
  *******************************************************************************/
 package net.sf.opendse.visualization;
 
+import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.Shape;
 
@@ -33,6 +34,14 @@ import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 import edu.uci.ics.jung.visualization.util.VertexShapeFactory;
 
 public abstract class AbstractGraphPanelFormat implements GraphPanelFormat {
+	protected ColorModel colorModel = null;
+
+	public AbstractGraphPanelFormat() {
+	}
+
+	public AbstractGraphPanelFormat(ColorModel colorModel) {
+		this.colorModel = colorModel;
+	}
 
 	@Override
 	public String getTooltip(Node node) {
@@ -54,6 +63,7 @@ public abstract class AbstractGraphPanelFormat implements GraphPanelFormat {
 				}
 
 			}, new Transformer<Node, Float>() {
+				@Override
 				public Float transform(Node arg0) {
 					return 1.0f;
 				}
@@ -97,6 +107,25 @@ public abstract class AbstractGraphPanelFormat implements GraphPanelFormat {
 	@Override
 	public boolean drawEdge(Edge edge) {
 		return true;
+	}
+
+	@Override
+	public Color getColor(Node node) {
+		if (colorModel != null) {
+			Color color = colorModel.get(node);
+			if (color != null) {
+				return color;
+			}
+		}
+		return Graphics.STEELBLUE;
+	}
+
+	public ColorModel getColorModel() {
+		return colorModel;
+	}
+
+	public void setColorModel(ColorModel colorModel) {
+		this.colorModel = colorModel;
 	}
 
 }
