@@ -22,7 +22,7 @@
 package net.sf.opendse.model.parameter;
 
 /**
- * The {@code ParameterRange} is a double-valued parameter wihtin a lower and an
+ * The {@code ParameterRange} is a double-valued parameter within a lower and an
  * upper bound.
  * 
  * @author Martin Lukasiewycz
@@ -119,8 +119,9 @@ public class ParameterRange implements Parameter {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
-		return value + " (" + lb + "," + ub + "," + granularity+")";
+		return value + " (" + lb + "," + ub + "," + granularity + ")";
 	}
 
 }
