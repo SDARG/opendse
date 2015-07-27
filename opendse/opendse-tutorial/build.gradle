@@ -36,7 +36,7 @@ task filterXML(type: Copy) {
 	into new File(project.buildDir,'tutorialsrc')
 }
 
-task tutorial(type: Copy, dependsOn: [filterSources, filterXML]) {
+task copyWebsite(type: Copy, dependsOn: [filterSources, filterXML]) {
 	def Pattern p = Pattern.compile(".*(@file\\(([\\w/\\.]+)\\)).*");
 	from('src/main/tutorial'){
 		include '**/*html'
@@ -58,5 +58,5 @@ task tutorial(type: Copy, dependsOn: [filterSources, filterXML]) {
 		exclude '**/*html'
 		exclude '**/*properties'
 	}
-	into 'build/tutorial'
+	into 'build/website/documentation/'+version
 }
