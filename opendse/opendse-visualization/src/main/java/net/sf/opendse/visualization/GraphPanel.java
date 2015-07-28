@@ -109,7 +109,7 @@ public class GraphPanel extends JPanel implements ElementSelectionListener {
 
 			final JCheckBox nodeLabels = new JCheckBox("Nodes", drawNodeLabel);
 			final JCheckBox edgeLabels = new JCheckBox("Edges", drawEdgeLabel);
-			final JComboBox labelBox = new JComboBox();
+			final JComboBox<String> labelBox = new JComboBox<String>();
 
 			List<String> list = new ArrayList<String>(new HashSet<String>(attributesBag));
 			Collections.sort(list, new Comparator<String>() {
@@ -164,7 +164,8 @@ public class GraphPanel extends JPanel implements ElementSelectionListener {
 		}
 
 		@Override
-		public <V> Component getVertexLabelRendererComponent(JComponent vv, Object value, Font font, boolean isSelected, V vertex) {
+		public <V> Component getVertexLabelRendererComponent(JComponent vv, Object value, Font font,
+				boolean isSelected, V vertex) {
 			Component comp = super.getVertexLabelRendererComponent(vv, value, font, isSelected, vertex);
 			comp.setBackground(new Color(0x77FFFFFF, true));
 
@@ -229,7 +230,8 @@ public class GraphPanel extends JPanel implements ElementSelectionListener {
 		}
 
 		@Override
-		public <E> Component getEdgeLabelRendererComponent(JComponent vv, Object value, Font font, boolean isSelected, E edge) {
+		public <E> Component getEdgeLabelRendererComponent(JComponent vv, Object value, Font font, boolean isSelected,
+				E edge) {
 			Component comp = super.getEdgeLabelRendererComponent(vv, value, font, isSelected, edge);
 			comp.setBackground(new Color(0x77FFFFFF, true));
 
@@ -269,14 +271,14 @@ public class GraphPanel extends JPanel implements ElementSelectionListener {
 				Pair<Node> endpoints = this.graph.getEndpoints(e);
 				Node n0 = endpoints.getFirst();
 				Node n1 = endpoints.getSecond();
-				if(n0.getId().compareTo(n1.getId())>0){
+				if (n0.getId().compareTo(n1.getId()) > 0) {
 					n0 = endpoints.getFirst();
 					n1 = endpoints.getSecond();
 				} else {
 					n0 = endpoints.getSecond();
 					n1 = endpoints.getFirst();
 				}
-				
+
 				LocalEdge e0 = new LocalEdge(e, n0, n1, UNDIRECTED);
 				LocalEdge e1 = new LocalEdge(e, n1, n0, UNDIRECTED);
 				localGraph.addEdge(e0, n0, n1);
@@ -463,9 +465,9 @@ public class GraphPanel extends JPanel implements ElementSelectionListener {
 		});
 
 		final EdgeIndexFunction<Node, LocalEdge> edgeIndexFunction = new EdgeIndexFunction<Node, LocalEdge>() {
-			
-			Map<LocalEdge,Integer> values = new HashMap<LocalEdge,Integer>();
-			
+
+			Map<LocalEdge, Integer> values = new HashMap<LocalEdge, Integer>();
+
 			@Override
 			public void reset(edu.uci.ics.jung.graph.Graph<Node, LocalEdge> g, LocalEdge edge) {
 				values.remove(edge);
@@ -478,10 +480,10 @@ public class GraphPanel extends JPanel implements ElementSelectionListener {
 
 			@Override
 			public int getIndex(edu.uci.ics.jung.graph.Graph<Node, LocalEdge> graph, LocalEdge e) {
-				if(values.containsKey(e)){
+				if (values.containsKey(e)) {
 					return values.get(e);
 				}
-				
+
 				Pair<Node> endpoints = graph.getEndpoints(e);
 				Set<Edge> allEdges = new HashSet<Edge>();
 				for (LocalEdge localEdge : graph.findEdgeSet(endpoints.getFirst(), endpoints.getSecond())) {
@@ -498,13 +500,15 @@ public class GraphPanel extends JPanel implements ElementSelectionListener {
 					}
 				});
 
-				return listEdges.indexOf(e.getEdge()) * (endpoints.getFirst().getId().compareTo(endpoints.getSecond().getId())>0?1:-1);
+				return listEdges.indexOf(e.getEdge())
+						* (endpoints.getFirst().getId().compareTo(endpoints.getSecond().getId()) > 0 ? 1 : -1);
 			}
 		};
 
 		EdgeShape.QuadCurve<Node, LocalEdge> curve = new EdgeShape.QuadCurve<Node, LocalEdge>() {
-			private QuadCurve2D instance = new QuadCurve2D.Float();
+			private final QuadCurve2D instance = new QuadCurve2D.Float();
 
+			@Override
 			public Shape transform(Context<edu.uci.ics.jung.graph.Graph<Node, LocalEdge>, LocalEdge> context) {
 				parallelEdgeIndexFunction = edgeIndexFunction;
 
@@ -524,9 +528,9 @@ public class GraphPanel extends JPanel implements ElementSelectionListener {
 				}
 
 				float controlY = control_offset_increment * index;
-				
+
 				instance.setCurve(0.0f, 0.0f, 0.5f, controlY, 1.0f, 0.0f);
-				return (Shape) instance;
+				return instance;
 			}
 		};
 		curve.setEdgeIndexFunction(edgeIndexFunction);
@@ -564,7 +568,8 @@ public class GraphPanel extends JPanel implements ElementSelectionListener {
 		vv.getRenderer().setVertexRenderer(new CustomVertexRenderer());
 		vv.getRenderer().setVertexLabelRenderer(new BasicVertexLabelRenderer<Node, LocalEdge>() {
 			@Override
-			public void labelVertex(RenderContext<Node, LocalEdge> arg0, Layout<Node, LocalEdge> arg1, Node arg2, String arg3) {
+			public void labelVertex(RenderContext<Node, LocalEdge> arg0, Layout<Node, LocalEdge> arg1, Node arg2,
+					String arg3) {
 				position = format.getLabelPosition(arg2);
 				super.labelVertex(arg0, arg1, arg2, arg3);
 			}
