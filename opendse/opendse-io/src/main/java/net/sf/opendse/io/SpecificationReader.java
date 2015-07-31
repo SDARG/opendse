@@ -262,7 +262,7 @@ public class SpecificationReader {
 
 			Task source = map.get(eDependency.getAttributeValue("source"));
 			Task destination = map.get(eDependency.getAttributeValue("destination"));
-			
+
 			assert source != null : "Invalid source: " + eDependency.toXML();
 			assert destination != null : "Invalid destination: " + eDependency.toXML();
 
@@ -432,7 +432,8 @@ public class SpecificationReader {
 		if (parameter != null) {
 
 			if (parameter.equals("RANGE")) {
-				Scanner scanner = new Scanner(value).useDelimiter("[\\s+,()]+");
+				Scanner scanner = new Scanner(value);
+				scanner.useDelimiter("[\\s+,()]+");
 				double v = new Double(scanner.next());
 				double lb = new Double(scanner.next());
 				double ub = new Double(scanner.next());
@@ -441,7 +442,8 @@ public class SpecificationReader {
 				return Parameters.range(v, lb, ub, gr);
 			} else if (parameter.equals("SELECT")) {
 				value = value.replace("[", "(").replace("]", ")");
-				Scanner scanner = new Scanner(value).useDelimiter("[()]+");
+				Scanner scanner = new Scanner(value);
+				scanner.useDelimiter("[()]+");
 
 				Class<?> clazz = getClass(type);
 
