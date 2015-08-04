@@ -59,6 +59,7 @@ import edu.uci.ics.jung.graph.util.Pair;
  * 
  */
 public class SpecificationWriter {
+	public static final String NS = "http://opendse.sourceforge.net";
 
 	/**
 	 * Write the specification to a file.
@@ -93,8 +94,6 @@ public class SpecificationWriter {
 
 	}
 
-	public static final String NS = "http://opendse.sourceforge.net";
-
 	/**
 	 * Write the specification to an output stream.
 	 * 
@@ -110,7 +109,7 @@ public class SpecificationWriter {
 		eSpec.addNamespaceDeclaration("xsi", "http://www.w3.org/2001/XMLSchema-instance");
 		eSpec.addNamespaceDeclaration("dse", "http://opendse.sourceforge.net");
 		eSpec.addAttribute(new nu.xom.Attribute("xsi:schemaLocation", "http://www.w3.org/2001/XMLSchema-instance",
-				"http://opendse.sourceforge.net schema.xsd"));
+				"http://opendse.sourceforge.net http://opendse.sourceforge.net/schema.xsd"));
 		nu.xom.Document doc = new nu.xom.Document(eSpec);
 
 		try {
