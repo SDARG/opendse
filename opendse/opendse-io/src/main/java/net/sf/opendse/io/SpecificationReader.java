@@ -56,6 +56,9 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
+import net.sf.opendse.model.parameter.ParameterRange;
+import net.sf.opendse.model.parameter.ParameterSelect;
+import net.sf.opendse.model.parameter.ParameterUniqueID;
 import net.sf.opendse.model.parameter.Parameters;
 import nu.xom.Elements;
 import edu.uci.ics.jung.graph.util.EdgeType;
@@ -432,45 +435,11 @@ public class SpecificationReader {
 		if (parameter != null) {
 
 			if (parameter.equals("RANGE")) {
-				Scanner scanner = new Scanner(value);
-				scanner.useDelimiter("[\\s+,()]+");
-				double v = new Double(scanner.next());
-				double lb = new Double(scanner.next());
-				double ub = new Double(scanner.next());
-				double gr = new Double(scanner.next());
-				scanner.close();
-				return Parameters.range(v, lb, ub, gr);
+				return getRange(value);
 			} else if (parameter.equals("SELECT")) {
-				value = value.replace("[", "(").replace("]", ")");
-				Scanner scanner = new Scanner(value);
-				scanner.useDelimiter("[()]+");
-
-				Class<?> clazz = getClass(type);
-
-				Object def = toInstance(scanner.next(), clazz);
-				List<Object> select = new ArrayList<Object>();
-				for (String part : scanner.next().split(",")) {
-					select.add(toInstance(part, clazz));
-				}
-				String reference = null;
-
-				if (scanner.hasNext()) {
-					String next = scanner.next().trim();
-					if (!next.equals("")) {
-						reference = next;
-					}
-				}
-				scanner.close();
-				return Parameters.selectRefList(reference, def, select);
+				return getSelectRefList(type, value);
 			} else if (parameter.equals("UID")) {
-				Scanner scanner = new Scanner(value);
-				scanner.findInLine("(\\w+) \\[UID:(\\w+)\\]");
-				MatchResult result = scanner.match();
-				int def = new Integer(result.group(1));
-				String identifier = result.group(2);
-				scanner.close();
-
-				return Parameters.uniqueID(def, identifier);
+				return getUniqueID(value);
 			} else {
 				throw new IllegalArgumentException("Unknown parameter type: " + parameter);
 			}
@@ -488,6 +457,82 @@ public class SpecificationReader {
 				return object;
 			}
 		}
+	}
+
+	/**
+	 * Parse the {@link ParameterRange}.
+	 * 
+	 * @param value
+	 *            the string to parse
+	 * @return the corresponding parameter
+	 */
+	protected ParameterRange getRange(String value) {
+		Scanner scanner = new Scanner(value);
+		scanner.useDelimiter("[\\s+,()]+");
+
+		double v = new Double(scanner.next());
+		double lb = new Double(scanner.next());
+		double ub = new Double(scanner.next());
+		double gr = new Double(scanner.next());
+
+		scanner.close();
+
+		return Parameters.range(v, lb, ub, gr);
+	}
+
+	/**
+	 * Parse the {@link ParameterSelect}.
+	 * 
+	 * @param value
+	 *            the string to parse
+	 * @return the corresponding parameter
+	 */
+	protected ParameterSelect getSelectRefList(String type, String value) throws ClassNotFoundException,
+			InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		value = value.replace("[", "(").replace("]", ")");
+
+		Scanner scanner = new Scanner(value);
+		scanner.useDelimiter("[()]+");
+
+		Class<?> clazz = getClass(type);
+
+		Object def = toInstance(scanner.next(), clazz);
+		List<Object> select = new ArrayList<Object>();
+		for (String part : scanner.next().split(",")) {
+			select.add(toInstance(part, clazz));
+		}
+
+		String reference = null;
+		if (scanner.hasNext()) {
+			String next = scanner.next().trim();
+			if (!next.equals("")) {
+				reference = next;
+			}
+		}
+
+		scanner.close();
+
+		return Parameters.selectRefList(reference, def, select);
+	}
+
+	/**
+	 * Parse the {@link ParameterUniqueID}.
+	 * 
+	 * @param value
+	 *            the string to parse
+	 * @return the corresponding parameter
+	 */
+	protected ParameterUniqueID getUniqueID(String value) {
+		Scanner scanner = new Scanner(value);
+		scanner.findInLine("(\\w+) \\[UID:(\\w+)\\]");
+
+		MatchResult result = scanner.match();
+		int def = new Integer(result.group(1));
+		String identifier = result.group(2);
+
+		scanner.close();
+
+		return Parameters.uniqueID(def, identifier);
 	}
 
 }
