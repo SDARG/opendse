@@ -58,6 +58,16 @@
 							</xs:restriction>
 						</xs:simpleType>
 					</xs:attribute>
+					<xs:attribute name="parameter"> <!-- optional type of parameter definition -->
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="SELECT" />
+								<xs:enumeration value="RANGE" />
+								<xs:enumeration value="UID" />
+								<!-- more parameter types may be added -->
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
 				</xs:extension>
 			</xs:simpleContent>
 		</xs:complexType>
