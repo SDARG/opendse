@@ -58,6 +58,7 @@ import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.parameter.Parameters;
 import nu.xom.Elements;
+import nu.xom.Serializer;
 import edu.uci.ics.jung.graph.util.EdgeType;
 
 /**
