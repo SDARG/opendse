@@ -47,7 +47,6 @@ import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.parameter.Parameter;
-import nu.xom.Serializer;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.graph.util.Pair;
 
@@ -107,7 +106,6 @@ public class SpecificationWriter {
 		nu.xom.Element eSpec = toElement(specification);
 
 		eSpec.addNamespaceDeclaration("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-		eSpec.addNamespaceDeclaration("dse", "http://opendse.sourceforge.net");
 		eSpec.addAttribute(new nu.xom.Attribute("xsi:schemaLocation", "http://www.w3.org/2001/XMLSchema-instance",
 				"http://opendse.sourceforge.net http://opendse.sourceforge.net/schema.xsd"));
 		nu.xom.Document doc = new nu.xom.Document(eSpec);
