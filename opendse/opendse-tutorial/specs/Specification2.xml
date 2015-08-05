@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <specification xmlns="http://opendse.sourceforge.net"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://opendse.sourceforge.net schema.xsd"  xmlns:test="http://opendse.sourceforge.net">
+	xsi:schemaLocation="http://opendse.sourceforge.net http://opendse.sourceforge.net/schema.xsd">
   <architecture>
     <resource id="bus">
       <attributes>
@@ -18,15 +18,15 @@
         <attribute name="costs" type="INT">50</attribute>
       </attributes>
     </resource>
-    <link id="l2" source="bus" destination="r2" type="UNDIRECTED"/>
-    <link id="l1" source="r1" destination="bus" type="UNDIRECTED"/>
+    <link id="l2" source="bus" destination="r2" orientation="UNDIRECTED"/>
+    <link id="l1" source="r1" destination="bus" orientation="UNDIRECTED"/>
   </architecture>
   <application>
     <task id="t2"/>
     <task id="t1"/>
     <communication id="c1"/>
-    <dependency id="d1" source="t1" destination="c1" type="DIRECTED"/>
-    <dependency id="d2" source="c1" destination="t2" type="DIRECTED"/>
+    <dependency id="d1" source="t1" destination="c1" orientation="DIRECTED"/>
+    <dependency id="d2" source="c1" destination="t2" orientation="DIRECTED"/>
     <functions>
       <function anchor="t2">
         <attributes>
@@ -44,8 +44,8 @@
       <resource id="bus"/>
       <resource id="r1"/>
       <resource id="r2"/>
-      <link id="l2" source="bus" destination="r2" type="UNDIRECTED"/>
-      <link id="l1" source="r1" destination="bus" type="UNDIRECTED"/>
+      <link id="l2" source="bus" destination="r2" orientation="UNDIRECTED"/>
+      <link id="l1" source="r1" destination="bus" orientation="UNDIRECTED"/>
     </routing>
   </routings>
 </specification>
