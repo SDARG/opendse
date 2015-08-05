@@ -15,18 +15,6 @@ public class ColorModelApplication implements ColorModel {
 
 	Map<String, Color> colors = new HashMap<String, Color>();
 
-	{
-		colors.put("ECU", Graphics.STEELBLUE);
-		colors.put("CAN", Graphics.LIGHTSALMON);
-		colors.put("CAN-FD", Graphics.DARKSALMON);
-		colors.put("LIN", Graphics.AQUAMARINE);
-		colors.put("FlexRay", Graphics.ROSYBROWN);
-		colors.put("Sensor", Graphics.DODGERBLUE);
-		colors.put("Actuator", Graphics.DODGERBLUE);
-		colors.put("Gateway", Graphics.SADDLEBROWN);
-		colors.put("Switch", Graphics.DARKGOLDENROD);
-	}
-
 	@Override
 	public Color get(Node node) {
 		if (node instanceof FunctionTask) {
