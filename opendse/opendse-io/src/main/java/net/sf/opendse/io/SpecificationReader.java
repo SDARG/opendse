@@ -231,6 +231,8 @@ public class SpecificationReader {
 
 			Task source = application.getVertex(sourceId);
 			Resource target = architecture.getVertex(targetId);
+			assert source != null : "Unknown task: " + sourceId;
+			assert target != null : "Unknown resource: " + targetId;
 
 			Mapping<Task, Resource> mapping = toMapping(eMap, source, target);
 			mappings.add(mapping);
