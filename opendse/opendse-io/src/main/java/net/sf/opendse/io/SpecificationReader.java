@@ -354,7 +354,7 @@ public class SpecificationReader {
 			node = type.getConstructor(Element.class).newInstance(parent);
 		}
 
-		nu.xom.Elements eAttributes = eNode.getChildElements("attributes");
+		nu.xom.Elements eAttributes = eNode.getChildElements("attributes", SpecificationWriter.NS);
 		if (eAttributes.size() > 0) {
 			Attributes attributes = toAttributes(eAttributes.get(0));
 			setAttributes(node, attributes);
@@ -378,7 +378,7 @@ public class SpecificationReader {
 			edge = type.getConstructor(Element.class).newInstance(parent);
 		}
 
-		nu.xom.Elements eAttributes = eEdge.getChildElements("attributes");
+		nu.xom.Elements eAttributes = eEdge.getChildElements("attributes", SpecificationWriter.NS);
 		if (eAttributes.size() > 0) {
 			Attributes attributes = toAttributes(eAttributes.get(0));
 			setAttributes(edge, attributes);
