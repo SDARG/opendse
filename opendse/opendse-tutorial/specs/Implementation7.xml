@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<specification>
+<specification xmlns="http://opendse.sourceforge.net"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://opendse.sourceforge.net schema.xsd">
   <architecture>
     <resource id="r2">
       <attributes>
@@ -25,9 +27,9 @@
         <attribute name="scheduler" type="STRING">FIXEDPRIORITY_PREEMPTIVE</attribute>
       </attributes>
     </resource>
-    <link id="l1" source="r1" destination="can" type="UNDIRECTED"/>
-    <link id="l2" source="r2" destination="can" type="UNDIRECTED"/>
-    <link id="l3" source="r3" destination="can" type="UNDIRECTED"/>
+    <link id="l1" source="r1" destination="can" orientation="UNDIRECTED"/>
+    <link id="l2" source="r2" destination="can" orientation="UNDIRECTED"/>
+    <link id="l3" source="r3" destination="can" orientation="UNDIRECTED"/>
   </architecture>
   <application>
     <task id="t4">
@@ -40,6 +42,38 @@
     <task id="t5">
       <attributes>
         <attribute name="e" type="DOUBLE">0.5</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+      </attributes>
+    </task>
+    <task id="t8">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.6</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+      </attributes>
+    </task>
+    <task id="t12">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">5.0</attribute>
+        <attribute name="e" type="DOUBLE">0.8</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+      </attributes>
+    </task>
+    <task id="t9">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.8</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+      </attributes>
+    </task>
+    <task id="t1">
+      <attributes>
+        <attribute name="e" type="DOUBLE">0.8</attribute>
+        <attribute name="h" type="DOUBLE">5.0</attribute>
+      </attributes>
+    </task>
+    <task id="t3">
+      <attributes>
+        <attribute name="deadline" type="DOUBLE">4.0</attribute>
+        <attribute name="e" type="DOUBLE">2.0</attribute>
         <attribute name="h" type="DOUBLE">5.0</attribute>
       </attributes>
     </task>
@@ -61,61 +95,29 @@
         <attribute name="h" type="DOUBLE">5.0</attribute>
       </attributes>
     </communication>
-    <task id="t8">
-      <attributes>
-        <attribute name="e" type="DOUBLE">0.6</attribute>
-        <attribute name="h" type="DOUBLE">5.0</attribute>
-      </attributes>
-    </task>
-    <task id="t12">
-      <attributes>
-        <attribute name="deadline" type="DOUBLE">5.0</attribute>
-        <attribute name="e" type="DOUBLE">0.8</attribute>
-        <attribute name="h" type="DOUBLE">5.0</attribute>
-      </attributes>
-    </task>
-    <task id="t9">
-      <attributes>
-        <attribute name="e" type="DOUBLE">0.8</attribute>
-        <attribute name="h" type="DOUBLE">5.0</attribute>
-      </attributes>
-    </task>
     <communication id="t11">
       <attributes>
         <attribute name="e" type="DOUBLE">0.146</attribute>
         <attribute name="h" type="DOUBLE">5.0</attribute>
       </attributes>
     </communication>
-    <task id="t1">
-      <attributes>
-        <attribute name="e" type="DOUBLE">0.8</attribute>
-        <attribute name="h" type="DOUBLE">5.0</attribute>
-      </attributes>
-    </task>
     <communication id="t2">
       <attributes>
         <attribute name="e" type="DOUBLE">0.26</attribute>
         <attribute name="h" type="DOUBLE">5.0</attribute>
       </attributes>
     </communication>
-    <task id="t3">
-      <attributes>
-        <attribute name="deadline" type="DOUBLE">4.0</attribute>
-        <attribute name="e" type="DOUBLE">2.0</attribute>
-        <attribute name="h" type="DOUBLE">5.0</attribute>
-      </attributes>
-    </task>
-    <dependency id="d-5-7" source="t5" destination="t7" type="DIRECTED"/>
-    <dependency id="d-5-6" source="t5" destination="t6" type="DIRECTED"/>
-    <dependency id="d-9-11" source="t9" destination="t11" type="DIRECTED"/>
-    <dependency id="d-10-12" source="t10" destination="t12" type="DIRECTED"/>
-    <dependency id="d-8-10" source="t8" destination="t10" type="DIRECTED"/>
-    <dependency id="d-2-4" source="t2" destination="t4" type="DIRECTED"/>
-    <dependency id="d-11-12" source="t11" destination="t12" type="DIRECTED"/>
-    <dependency id="d-2-3" source="t2" destination="t3" type="DIRECTED"/>
-    <dependency id="d-1-2" source="t1" destination="t2" type="DIRECTED"/>
-    <dependency id="d-7-9" source="t7" destination="t9" type="DIRECTED"/>
-    <dependency id="d-6-8" source="t6" destination="t8" type="DIRECTED"/>
+    <dependency id="d-5-7" source="t5" destination="t7" orientation="DIRECTED"/>
+    <dependency id="d-5-6" source="t5" destination="t6" orientation="DIRECTED"/>
+    <dependency id="d-9-11" source="t9" destination="t11" orientation="DIRECTED"/>
+    <dependency id="d-10-12" source="t10" destination="t12" orientation="DIRECTED"/>
+    <dependency id="d-8-10" source="t8" destination="t10" orientation="DIRECTED"/>
+    <dependency id="d-2-4" source="t2" destination="t4" orientation="DIRECTED"/>
+    <dependency id="d-11-12" source="t11" destination="t12" orientation="DIRECTED"/>
+    <dependency id="d-2-3" source="t2" destination="t3" orientation="DIRECTED"/>
+    <dependency id="d-1-2" source="t1" destination="t2" orientation="DIRECTED"/>
+    <dependency id="d-7-9" source="t7" destination="t9" orientation="DIRECTED"/>
+    <dependency id="d-6-8" source="t6" destination="t8" orientation="DIRECTED"/>
     <functions>
       <function anchor="t4">
         <attributes>
@@ -143,38 +145,38 @@
       <resource id="can"/>
       <resource id="r3"/>
       <resource id="r1"/>
-      <link id="l1" source="r1" destination="can" type="DIRECTED"/>
-      <link id="l3" source="can" destination="r3" type="DIRECTED"/>
+      <link id="l1" source="r1" destination="can" orientation="DIRECTED"/>
+      <link id="l3" source="can" destination="r3" orientation="DIRECTED"/>
     </routing>
     <routing source="t10">
       <resource id="r2"/>
       <resource id="can"/>
       <resource id="r3"/>
-      <link id="l2" source="can" destination="r2" type="DIRECTED"/>
-      <link id="l3" source="r3" destination="can" type="DIRECTED"/>
+      <link id="l2" source="can" destination="r2" orientation="DIRECTED"/>
+      <link id="l3" source="r3" destination="can" orientation="DIRECTED"/>
     </routing>
     <routing source="t7">
       <resource id="can"/>
       <resource id="r3"/>
       <resource id="r1"/>
-      <link id="l1" source="r1" destination="can" type="DIRECTED"/>
-      <link id="l3" source="can" destination="r3" type="DIRECTED"/>
+      <link id="l1" source="r1" destination="can" orientation="DIRECTED"/>
+      <link id="l3" source="can" destination="r3" orientation="DIRECTED"/>
     </routing>
     <routing source="t11">
       <resource id="r2"/>
       <resource id="can"/>
       <resource id="r3"/>
-      <link id="l2" source="can" destination="r2" type="DIRECTED"/>
-      <link id="l3" source="r3" destination="can" type="DIRECTED"/>
+      <link id="l2" source="can" destination="r2" orientation="DIRECTED"/>
+      <link id="l3" source="r3" destination="can" orientation="DIRECTED"/>
     </routing>
     <routing source="t2">
       <resource id="r2"/>
       <resource id="can"/>
       <resource id="r3"/>
       <resource id="r1"/>
-      <link id="l1" source="can" destination="r1" type="DIRECTED"/>
-      <link id="l2" source="can" destination="r2" type="DIRECTED"/>
-      <link id="l3" source="r3" destination="can" type="DIRECTED"/>
+      <link id="l1" source="can" destination="r1" orientation="DIRECTED"/>
+      <link id="l2" source="can" destination="r2" orientation="DIRECTED"/>
+      <link id="l3" source="r3" destination="can" orientation="DIRECTED"/>
     </routing>
   </routings>
 </specification>

@@ -61,6 +61,7 @@ import net.sf.opendse.model.parameter.ParameterSelect;
 import net.sf.opendse.model.parameter.ParameterUniqueID;
 import net.sf.opendse.model.parameter.Parameters;
 import nu.xom.Elements;
+import nu.xom.Serializer;
 import edu.uci.ics.jung.graph.util.EdgeType;
 
 /**
@@ -129,9 +130,10 @@ public class SpecificationReader {
 	 */
 	public Specification toSpecification(nu.xom.Element eSpecification) {
 		try {
-			nu.xom.Element eArchitecture = eSpecification.getChildElements("architecture").get(0);
-			nu.xom.Element eApplication = eSpecification.getChildElements("application").get(0);
-			nu.xom.Element eMappings = eSpecification.getChildElements("mappings").get(0);
+			nu.xom.Element eArchitecture = eSpecification.getChildElements("architecture", SpecificationWriter.NS).get(
+					0);
+			nu.xom.Element eApplication = eSpecification.getChildElements("application", SpecificationWriter.NS).get(0);
+			nu.xom.Element eMappings = eSpecification.getChildElements("mappings", SpecificationWriter.NS).get(0);
 
 			Architecture<Resource, Link> architecture = toArchitecture(eArchitecture);
 			Application<Task, Dependency> application = toApplication(eApplication);
@@ -139,7 +141,7 @@ public class SpecificationReader {
 
 			Specification specification = null;
 
-			Elements routingElements = eSpecification.getChildElements("routings");
+			Elements routingElements = eSpecification.getChildElements("routings", SpecificationWriter.NS);
 			if (routingElements != null && routingElements.size() > 0) {
 				nu.xom.Element eRoutings = routingElements.get(0);
 				Routings<Task, Resource, Link> routings = toRoutings(eRoutings, architecture, application);
@@ -148,7 +150,7 @@ public class SpecificationReader {
 				specification = new Specification(application, architecture, mappings);
 			}
 
-			Elements elements = eSpecification.getChildElements("attributes");
+			Elements elements = eSpecification.getChildElements("attributes", SpecificationWriter.NS);
 			if (elements.size() > 0) {
 				nu.xom.Element eAttributes = elements.get(0);
 				Attributes attributes = toAttributes(eAttributes);
@@ -167,7 +169,7 @@ public class SpecificationReader {
 			IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		Routings<Task, Resource, Link> routings = new Routings<Task, Resource, Link>();
 
-		nu.xom.Elements eRoutingList = eRoutings.getChildElements("routing");
+		nu.xom.Elements eRoutingList = eRoutings.getChildElements("routing", SpecificationWriter.NS);
 		for (nu.xom.Element eRouting : iterable(eRoutingList)) {
 			String sourceId = eRouting.getAttributeValue("source");
 			Task source = application.getVertex(sourceId);
@@ -188,7 +190,7 @@ public class SpecificationReader {
 		Map<String, Resource> map = new HashMap<String, Resource>();
 		Architecture<Resource, Link> routing = new Architecture<Resource, Link>();
 
-		nu.xom.Elements eResources = eRouting.getChildElements("resource");
+		nu.xom.Elements eResources = eRouting.getChildElements("resource", SpecificationWriter.NS);
 		for (nu.xom.Element eResource : iterable(eResources)) {
 			Resource parent = architecture.getVertex(eResource.getAttributeValue("id"));
 			Resource resource = toNode(eResource, parent);
@@ -197,12 +199,12 @@ public class SpecificationReader {
 			map.put(resource.getId(), resource);
 		}
 
-		nu.xom.Elements eLinks = eRouting.getChildElements("link");
+		nu.xom.Elements eLinks = eRouting.getChildElements("link", SpecificationWriter.NS);
 		for (nu.xom.Element eLink : iterable(eLinks)) {
 			Link parent = architecture.getEdge(eLink.getAttributeValue("id"));
 			Link link = toEdge(eLink, parent);
 
-			String type = eLink.getAttributeValue("type");
+			String type = eLink.getAttributeValue("orientation");
 			EdgeType edgeType = EdgeType.UNDIRECTED;
 			if (type != null) {
 				edgeType = EdgeType.valueOf(type);
@@ -224,7 +226,7 @@ public class SpecificationReader {
 			ClassNotFoundException {
 		Mappings<Task, Resource> mappings = new Mappings<Task, Resource>();
 
-		nu.xom.Elements eMaps = eMappings.getChildElements("mapping");
+		nu.xom.Elements eMaps = eMappings.getChildElements("mapping", SpecificationWriter.NS);
 		for (nu.xom.Element eMap : iterable(eMaps)) {
 			String sourceId = eMap.getAttributeValue("source");
 			String targetId = eMap.getAttributeValue("target");
@@ -248,20 +250,20 @@ public class SpecificationReader {
 
 		Map<String, Task> map = new HashMap<String, Task>();
 
-		nu.xom.Elements eTasks = eApplication.getChildElements("task");
+		nu.xom.Elements eTasks = eApplication.getChildElements("task", SpecificationWriter.NS);
 		for (nu.xom.Element eTask : iterable(eTasks)) {
 			Task task = toNode(eTask, null);
 			application.addVertex(task);
 			map.put(task.getId(), task);
 		}
-		nu.xom.Elements eCommunications = eApplication.getChildElements("communication");
+		nu.xom.Elements eCommunications = eApplication.getChildElements("communication", SpecificationWriter.NS);
 		for (nu.xom.Element eCommunication : iterable(eCommunications)) {
 			Communication communication = toNode(eCommunication, null);
 			application.addVertex(communication);
 			map.put(communication.getId(), communication);
 		}
 
-		nu.xom.Elements eDependencies = eApplication.getChildElements("dependency");
+		nu.xom.Elements eDependencies = eApplication.getChildElements("dependency", SpecificationWriter.NS);
 		for (nu.xom.Element eDependency : iterable(eDependencies)) {
 			Dependency dependency = toEdge(eDependency, null);
 
@@ -274,13 +276,13 @@ public class SpecificationReader {
 			application.addEdge(dependency, source, destination, EdgeType.DIRECTED);
 		}
 
-		nu.xom.Element eFunctions = eApplication.getFirstChildElement("functions");
+		nu.xom.Element eFunctions = eApplication.getFirstChildElement("functions", SpecificationWriter.NS);
 		if (eFunctions != null) {
-			nu.xom.Elements eFuncs = eFunctions.getChildElements("function");
+			nu.xom.Elements eFuncs = eFunctions.getChildElements("function", SpecificationWriter.NS);
 			for (nu.xom.Element eFunc : iterable(eFuncs)) {
 				Task task = map.get(eFunc.getAttributeValue("anchor"));
 				Function<Task, Dependency> function = application.getFunction(task);
-				Attributes attributes = toAttributes(eFunc.getFirstChildElement("attributes"));
+				Attributes attributes = toAttributes(eFunc.getFirstChildElement("attributes", SpecificationWriter.NS));
 				setAttributes(function, attributes);
 			}
 		}
@@ -295,18 +297,18 @@ public class SpecificationReader {
 
 		Map<String, Resource> map = new HashMap<String, Resource>();
 
-		nu.xom.Elements eResources = eArch.getChildElements("resource");
+		nu.xom.Elements eResources = eArch.getChildElements("resource", SpecificationWriter.NS);
 		for (nu.xom.Element eResource : iterable(eResources)) {
 			Resource resource = toNode(eResource, null);
 			architecture.addVertex(resource);
 			map.put(resource.getId(), resource);
 		}
 
-		nu.xom.Elements eLinks = eArch.getChildElements("link");
+		nu.xom.Elements eLinks = eArch.getChildElements("link", SpecificationWriter.NS);
 		for (nu.xom.Element eLink : iterable(eLinks)) {
 			Link link = toEdge(eLink, null);
 
-			String type = eLink.getAttributeValue("type");
+			String type = eLink.getAttributeValue("orientation");
 			EdgeType edgeType = EdgeType.UNDIRECTED;
 			if (type != null) {
 				edgeType = EdgeType.valueOf(type);
@@ -357,7 +359,7 @@ public class SpecificationReader {
 			node = type.getConstructor(Element.class).newInstance(parent);
 		}
 
-		nu.xom.Elements eAttributes = eNode.getChildElements("attributes");
+		nu.xom.Elements eAttributes = eNode.getChildElements("attributes", SpecificationWriter.NS);
 		if (eAttributes.size() > 0) {
 			Attributes attributes = toAttributes(eAttributes.get(0));
 			setAttributes(node, attributes);
@@ -381,7 +383,7 @@ public class SpecificationReader {
 			edge = type.getConstructor(Element.class).newInstance(parent);
 		}
 
-		nu.xom.Elements eAttributes = eEdge.getChildElements("attributes");
+		nu.xom.Elements eAttributes = eEdge.getChildElements("attributes", SpecificationWriter.NS);
 		if (eAttributes.size() > 0) {
 			Attributes attributes = toAttributes(eAttributes.get(0));
 			setAttributes(edge, attributes);
@@ -400,7 +402,7 @@ public class SpecificationReader {
 		String id = eMapping.getAttributeValue("id");
 		node = type.getConstructor(String.class, Task.class, Resource.class).newInstance(id, source, target);
 
-		nu.xom.Elements eAttributes = eMapping.getChildElements("attributes");
+		nu.xom.Elements eAttributes = eMapping.getChildElements("attributes", SpecificationWriter.NS);
 		if (eAttributes.size() > 0) {
 			Attributes attributes = toAttributes(eAttributes.get(0));
 			setAttributes(node, attributes);
@@ -415,7 +417,7 @@ public class SpecificationReader {
 			ClassNotFoundException {
 		Attributes attributes = new Attributes();
 
-		nu.xom.Elements eAttributeList = eAttributes.getChildElements("attribute");
+		nu.xom.Elements eAttributeList = eAttributes.getChildElements("attribute", SpecificationWriter.NS);
 
 		for (nu.xom.Element element : iterable(eAttributeList)) {
 			String name = element.getAttributeValue("name");
