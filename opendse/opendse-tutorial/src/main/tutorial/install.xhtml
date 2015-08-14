@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<link href="tutstyle.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+<title>1. Basic Specification (OpenDSE Tutorial)</title>
+</head>
+<body onload="prettyPrint()">
+
+	<h1>Installation of OpenDSE</h1>
+	<p>Version: @version@ - Date: @date@</p>
+	<p>(<a href="tutorial.xhtml">Tutorial Overview</a>)</p>
+
+	<h2>Gradle</h2>
+	
+	<p>OpenDSE relies on the build automation tool <a href="https://gradle.org/">Gradle</a>. Download Gradle from the website to use OpenDSE.</p>
+	
+	<p>To start OpenDSE, execute the following command in the opendse directory:</p>
+	
+	<pre class="prettyprint">opendse> gradle run</pre>
+	
+	<p>Gradle will download all neccessary dependencies from Maven. You can see additional build tasks with:</p>
+	
+	<pre class="prettyprint">opendse> gradle tasks</pre> 
+	
+	<h2>Eclipse Integration</h2>
+	
+	<p>To create Eclipse .project and .classpath files execute:</p>
+
+	<pre class="prettyprint">opendse> gradle eclipse</pre>
+	
+	<p>Then, you can import the subprojects in Eclipse.</p>
+	 
+</body>
+</html>
