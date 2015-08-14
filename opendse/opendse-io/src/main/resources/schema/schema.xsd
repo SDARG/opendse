@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xs:schema xmlns="http://opendse.sourceforge.net" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://opendse.sourceforge.net" elementFormDefault="qualified">
+	targetNamespace="http://opendse.sourceforge.net" elementFormDefault="qualified" version="1.0">
 
 	<xs:element name="specification">
 		<xs:complexType>
