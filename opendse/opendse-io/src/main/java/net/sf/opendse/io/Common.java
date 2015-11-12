@@ -28,9 +28,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import org.apache.commons.collections15.BidiMap;
+import org.apache.commons.collections15.bidimap.DualHashBidiMap;
 
 import net.sf.opendse.model.Attributes;
 import net.sf.opendse.model.Communication;
@@ -43,9 +47,6 @@ import net.sf.opendse.model.Task;
 import net.sf.opendse.model.parameter.ParameterRange;
 import net.sf.opendse.model.parameter.ParameterSelect;
 import net.sf.opendse.model.parameter.ParameterUniqueID;
-
-import org.apache.commons.collections15.BidiMap;
-import org.apache.commons.collections15.bidimap.DualHashBidiMap;
 
 /**
  * The {@code Common} class contains common methods for reading and writing a
@@ -72,9 +73,12 @@ public class Common {
 		classMap.put("communication", Communication.class);
 		classMap.put("dependency", Dependency.class);
 		classMap.put("mapping", Mapping.class);
+		classMap.put("SET", HashSet.class);
+		classMap.put("LIST", ArrayList.class);
 	}
 
 	protected static Set<Class<?>> primitives = new HashSet<Class<?>>();
+
 	static {
 		primitives.add(Boolean.class);
 		primitives.add(Byte.class);
