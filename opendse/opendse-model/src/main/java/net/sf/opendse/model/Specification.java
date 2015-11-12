@@ -58,17 +58,17 @@ public class Specification implements IAttributes {
 	protected static Routings<?, ?, ?> fill(Application<?, ?> application, Architecture<?, ?> architecture) {
 		Routings<Task, Resource, Link> routings = new Routings<Task, Resource, Link>();
 		@SuppressWarnings("unchecked")
-		Architecture<Resource, Link> arch = (Architecture<Resource, Link>)architecture;
+		Architecture<Resource, Link> arch = (Architecture<Resource, Link>) architecture;
 
 		for (Task task : application) {
 			if (task instanceof ICommunication) {
 				Architecture<Resource, Link> routing = new Architecture<Resource, Link>();
 
 				for (Resource resource : architecture.getVertices()) {
-					routing.addVertex(resource);
+					routing.addVertex(new Resource(resource));
 				}
 				for (Link link : architecture.getEdges()) {
-					routing.addEdge(link, arch.getEndpoints(link), arch.getEdgeType(link));
+					routing.addEdge(new Link(link), arch.getEndpoints(link), arch.getEdgeType(link));
 				}
 				routings.set(task, routing);
 			}
