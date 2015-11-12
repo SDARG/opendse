@@ -31,11 +31,14 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Collection;
 
+import edu.uci.ics.jung.graph.util.EdgeType;
+import edu.uci.ics.jung.graph.util.Pair;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Attributes;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Edge;
+import net.sf.opendse.model.Element;
 import net.sf.opendse.model.Function;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Mapping;
@@ -48,8 +51,6 @@ import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.parameter.Parameter;
 import nu.xom.Serializer;
-import edu.uci.ics.jung.graph.util.EdgeType;
-import edu.uci.ics.jung.graph.util.Pair;
 
 /**
  * The {@code SpecificationWriter} write a {@code Specification} to an
@@ -60,6 +61,30 @@ import edu.uci.ics.jung.graph.util.Pair;
  */
 public class SpecificationWriter {
 	public static final String NS = "http://opendse.sourceforge.net";
+
+	private boolean writeRoutings;
+
+	/**
+	 * Constructs a new SpecificationWriter instance that will always export
+	 * Routings.
+	 * 
+	 * @author Falko Höfte
+	 */
+	public SpecificationWriter() {
+		this(true);
+	}
+
+	/**
+	 * Constructs a new SpecificationWriter instance
+	 * 
+	 * @param writeRoutings
+	 *            whether the routings shall be exported or not
+	 * 
+	 * @author Falko Höfte
+	 */
+	public SpecificationWriter(boolean writeRoutings) {
+		this.writeRoutings = writeRoutings;
+	}
 
 	/**
 	 * Write the specification to a file.
@@ -164,7 +189,8 @@ public class SpecificationWriter {
 		eSpec.appendChild(toElement(specification.getArchitecture()));
 		eSpec.appendChild(toElement(specification.getApplication()));
 		eSpec.appendChild(toElement(specification.getMappings()));
-		eSpec.appendChild(toElement(specification.getRoutings(), specification.getArchitecture()));
+		if (specification.getRoutings() != null && this.writeRoutings)
+			eSpec.appendChild(toElement(specification.getRoutings(), specification.getArchitecture()));
 
 		if (specification.getAttributes().size() > 0) {
 			eSpec.appendChild(toElement(specification.getAttributes()));
@@ -187,7 +213,8 @@ public class SpecificationWriter {
 		return eRoutings;
 	}
 
-	protected nu.xom.Element toElement(Architecture<Resource, Link> routing, Architecture<Resource, Link> architecture) {
+	protected nu.xom.Element toElement(Architecture<Resource, Link> routing,
+			Architecture<Resource, Link> architecture) {
 		nu.xom.Element eArch = new nu.xom.Element("routing", NS);
 
 		for (Resource resource : routing) {
@@ -299,7 +326,8 @@ public class SpecificationWriter {
 		return eElem;
 	}
 
-	protected nu.xom.Element toElement(Edge edge, String name, Node source, Node dest, EdgeType edgeType, boolean local) {
+	protected nu.xom.Element toElement(Edge edge, String name, Node source, Node dest, EdgeType edgeType,
+			boolean local) {
 		nu.xom.Element eElem = new nu.xom.Element(name, NS);
 		eElem.addAttribute(new nu.xom.Attribute("id", edge.getId()));
 		if (!getType(edge.getClass()).equals(name)) {
@@ -319,44 +347,56 @@ public class SpecificationWriter {
 		nu.xom.Element eAttributes = new nu.xom.Element("attributes", NS);
 
 		for (String attributeName : attributes.getAttributeNames()) {
-			nu.xom.Element eAttr = new nu.xom.Element("attribute", NS);
-			eAttr.addAttribute(new nu.xom.Attribute("name", attributeName));
-
-			Object attribute = attributes.getAttribute(attributeName);
-			if (attribute != null) {
-				Class<?> cls = attribute.getClass();
-
-				if (attributes.isParameter(attributeName)) {
-
-					Parameter parameter = attributes.getAttributeParameter(attributeName);
-					eAttr.appendChild(parameter.toString());
-					eAttr.addAttribute(new nu.xom.Attribute("type", getType(cls)));
-					eAttr.addAttribute(new nu.xom.Attribute("parameter", getType(parameter.getClass())));
-
-				} else if (Common.isPrimitive(cls) || cls.equals(String.class)) {
-
-					eAttr.addAttribute(new nu.xom.Attribute("type", getType(cls)));
-					eAttr.appendChild(attributes.getAttribute(attributeName).toString());
-
-				} else if (attributes instanceof Serializable) {
-
-					Serializable s = (Serializable) attribute;
-					eAttr.addAttribute(new nu.xom.Attribute("type", Serializable.class.getName()));
-					try {
-						eAttr.appendChild(Common.toString(s));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-
-				} else {
-					System.err.println("Failed to write attribute " + attribute);
-				}
-
-				eAttributes.appendChild(eAttr);
-			}
+			nu.xom.Element eAttr = toElement(attributeName, attributes.getAttribute(attributeName));
+			eAttributes.appendChild(eAttr);
 		}
 
 		return eAttributes;
 	}
 
+	public nu.xom.Element toElement(String attributeName, Object attribute) {
+		nu.xom.Element eAttr = new nu.xom.Element("attribute", NS);
+		eAttr.addAttribute(new nu.xom.Attribute("name", attributeName));
+
+		if (attribute != null) {
+			Class<?> cls = attribute.getClass();
+
+			if (attribute instanceof Parameter) {
+				Parameter parameter = (Parameter) attribute;
+				eAttr.appendChild(parameter.toString());
+				eAttr.addAttribute(new nu.xom.Attribute("type", getType(cls)));
+				eAttr.addAttribute(new nu.xom.Attribute("parameter", getType(parameter.getClass())));
+
+			} else if (Common.isPrimitive(cls) || cls.equals(String.class)) {
+
+				eAttr.addAttribute(new nu.xom.Attribute("type", getType(cls)));
+				eAttr.appendChild(attribute.toString());
+
+			} else if (attribute instanceof Element) {
+				eAttr.addAttribute(new nu.xom.Attribute("type", getType(cls)));
+				eAttr.appendChild(((Element) attribute).getId());
+
+			} else if (Collection.class.isAssignableFrom(cls)) {
+
+				eAttr.addAttribute(new nu.xom.Attribute("type", getType(cls)));
+				for (Object o : (Collection) attribute) {
+					eAttr.appendChild(toElement("entry", o));
+				}
+
+			} else if (attribute instanceof Serializable) {
+
+				Serializable s = (Serializable) attribute;
+				eAttr.addAttribute(new nu.xom.Attribute("type", Serializable.class.getName()));
+				try {
+					eAttr.appendChild(Common.toString(s));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+			} else {
+				System.err.println("Failed to write attribute " + attribute);
+			}
+		}
+		return eAttr;
+	}
 }
