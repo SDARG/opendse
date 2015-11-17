@@ -194,7 +194,7 @@ public class SpecificationReader {
 		nu.xom.Elements eResources = eRouting.getChildElements("resource", SpecificationWriter.NS);
 		for (nu.xom.Element eResource : iterable(eResources)) {
 			Resource parent = architecture.getVertex(eResource.getAttributeValue("id"));
-			Resource resource = toNode(eResource, parent, Routings.class);
+			Resource resource = toNode(eResource, parent);
 			routing.addVertex(resource);
 			// System.err.println(resource);
 			map.put(resource.getId(), resource);
@@ -203,7 +203,7 @@ public class SpecificationReader {
 		nu.xom.Elements eLinks = eRouting.getChildElements("link", SpecificationWriter.NS);
 		for (nu.xom.Element eLink : iterable(eLinks)) {
 			Link parent = architecture.getEdge(eLink.getAttributeValue("id"));
-			Link link = toEdge(eLink, parent, Routings.class);
+			Link link = toEdge(eLink, parent);
 
 			String type = eLink.getAttributeValue("orientation");
 			EdgeType edgeType = EdgeType.UNDIRECTED;
@@ -255,20 +255,20 @@ public class SpecificationReader {
 
 		nu.xom.Elements eTasks = eApplication.getChildElements("task", SpecificationWriter.NS);
 		for (nu.xom.Element eTask : iterable(eTasks)) {
-			Task task = toNode(eTask, null, Application.class);
+			Task task = toNode(eTask, null);
 			application.addVertex(task);
 			map.put(task.getId(), task);
 		}
 		nu.xom.Elements eCommunications = eApplication.getChildElements("communication", SpecificationWriter.NS);
 		for (nu.xom.Element eCommunication : iterable(eCommunications)) {
-			Communication communication = toNode(eCommunication, null, Application.class);
+			Communication communication = toNode(eCommunication, null);
 			application.addVertex(communication);
 			map.put(communication.getId(), communication);
 		}
 
 		nu.xom.Elements eDependencies = eApplication.getChildElements("dependency", SpecificationWriter.NS);
 		for (nu.xom.Element eDependency : iterable(eDependencies)) {
-			Dependency dependency = toEdge(eDependency, null, Application.class);
+			Dependency dependency = toEdge(eDependency, null);
 
 			Task source = map.get(eDependency.getAttributeValue("source"));
 			Task destination = map.get(eDependency.getAttributeValue("destination"));
@@ -302,14 +302,14 @@ public class SpecificationReader {
 
 		nu.xom.Elements eResources = eArch.getChildElements("resource", SpecificationWriter.NS);
 		for (nu.xom.Element eResource : iterable(eResources)) {
-			Resource resource = toNode(eResource, null, Architecture.class);
+			Resource resource = toNode(eResource, null);
 			architecture.addVertex(resource);
 			map.put(resource.getId(), resource);
 		}
 
 		nu.xom.Elements eLinks = eArch.getChildElements("link", SpecificationWriter.NS);
 		for (nu.xom.Element eLink : iterable(eLinks)) {
-			Link link = toEdge(eLink, null, Architecture.class);
+			Link link = toEdge(eLink, null);
 
 			String type = eLink.getAttributeValue("orientation");
 			EdgeType edgeType = EdgeType.UNDIRECTED;
@@ -349,9 +349,9 @@ public class SpecificationReader {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected <N extends Node> N toNode(nu.xom.Element eNode, N parent, Class namespaceClass)
-			throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException,
-			InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
+	protected <N extends Node> N toNode(nu.xom.Element eNode, N parent) throws IllegalArgumentException,
+			SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException, ClassNotFoundException {
 		Class<N> type = getClass(eNode);
 
 		N node = null;
@@ -378,9 +378,9 @@ public class SpecificationReader {
 
 	}
 
-	protected <E extends Edge> E toEdge(nu.xom.Element eEdge, E parent, Class namespaceClass)
-			throws ClassNotFoundException, IllegalArgumentException, SecurityException, InstantiationException,
-			IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+	protected <E extends Edge> E toEdge(nu.xom.Element eEdge, E parent) throws ClassNotFoundException,
+			IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException,
+			InvocationTargetException, NoSuchMethodException {
 		Class<E> type = getClass(eEdge);
 
 		E edge = null;
