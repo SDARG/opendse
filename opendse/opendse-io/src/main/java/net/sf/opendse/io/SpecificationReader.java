@@ -456,7 +456,7 @@ public class SpecificationReader {
 		return attributes;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes" })
 	protected Object toAttribute(nu.xom.Element eAttribute, Class namespaceType)
 			throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException,
 			InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
@@ -478,35 +478,75 @@ public class SpecificationReader {
 		} else {
 			Class<?> clazz = getClass(type);
 			if (Collection.class.isAssignableFrom(clazz)) {
-				Collection collectionAttribute = (Collection) clazz.getConstructor().newInstance();
-				for (nu.xom.Element childElement : iterable(eAttribute.getChildElements())) {
-					Object actualEntry = toAttribute(childElement, namespaceType);
-					collectionAttribute.add(actualEntry);
-				}
-				return collectionAttribute;
-			} else if (clazz.equals(Serializable.class)) {
-				try {
-					return Common.fromString(value);
-				} catch (IOException e) {
-					e.printStackTrace();
-					return null;
-				}
+				return toAttributeCollection(eAttribute, namespaceType, clazz);
 			} else {
-				Object object = null;
-
-				if (globalAttributeMap.get(namespaceType).containsKey(value)) {
-					object = globalAttributeMap.get(namespaceType).get(value);
-				} else {
-					object = toInstance(value, clazz);
-					if (Element.class.isAssignableFrom(clazz)) {
-						globalAttributeMap.get(namespaceType).put(value, (Element) object);
-					}
-				}
-
-				assert object != null;
-				return object;
+				return toAttributeObject(namespaceType, value, clazz);
 			}
 		}
+	}
+
+	/**
+	 * Constructs an attribute collection that contains all passed elements and
+	 * their corresponding class.
+	 * 
+	 * @param eAttribute
+	 *            the attribute element to add the collection to
+	 * @param namespaceType
+	 *            the namespace of the attribute, see
+	 *            {@link SpecificationReader#initializeGlobalAttributeMap()}
+	 * @param clazz
+	 *            the class of the objects that are to create
+	 * @return the constructed collection
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	protected Object toAttributeCollection(nu.xom.Element eAttribute, Class namespaceType, Class<?> clazz)
+			throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException,
+			ClassNotFoundException {
+		Collection collectionAttribute = (Collection) clazz.getConstructor().newInstance();
+		for (nu.xom.Element childElement : iterable(eAttribute.getChildElements())) {
+			Object actualEntry = toAttribute(childElement, namespaceType);
+			collectionAttribute.add(actualEntry);
+		}
+		return collectionAttribute;
+	}
+
+	/**
+	 * Constructs an instance of the passed class that contains the passed
+	 * value.
+	 * 
+	 * @param namespaceType
+	 *            the attribute namespace, see
+	 *            {@link SpecificationReader#initializeGlobalAttributeMap()}
+	 * @param value
+	 *            the value of the object that is to create
+	 * @param clazz
+	 *            the class of the object that is to create
+	 * @return the constructed object
+	 */
+	@SuppressWarnings("rawtypes")
+	protected Object toAttributeObject(Class namespaceType, String value, Class<?> clazz) throws InstantiationException,
+			IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
+		Object object = null;
+
+		if (globalAttributeMap.get(namespaceType).containsKey(value)) {
+			object = globalAttributeMap.get(namespaceType).get(value);
+		} else {
+			object = toInstance(value, clazz);
+			if (Element.class.isAssignableFrom(clazz)) {
+				globalAttributeMap.get(namespaceType).put(value, (Element) object);
+			}
+		}
+
+		// "fallback procedure"
+		if (object == null && clazz.equals(Serializable.class)) {
+			try {
+				object = Common.fromString(value);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		return object;
 	}
 
 	/**

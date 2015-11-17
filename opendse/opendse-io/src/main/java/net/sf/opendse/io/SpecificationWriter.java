@@ -362,6 +362,7 @@ public class SpecificationWriter {
 			Class<?> cls = attribute.getClass();
 
 			if (attribute instanceof Parameter) {
+
 				Parameter parameter = (Parameter) attribute;
 				eAttr.appendChild(parameter.toString());
 				eAttr.addAttribute(new nu.xom.Attribute("type", getType(cls)));
@@ -373,6 +374,7 @@ public class SpecificationWriter {
 				eAttr.appendChild(attribute.toString());
 
 			} else if (attribute instanceof Element) {
+
 				eAttr.addAttribute(new nu.xom.Attribute("type", getType(cls)));
 				eAttr.appendChild(((Element) attribute).getId());
 
@@ -382,7 +384,9 @@ public class SpecificationWriter {
 				for (Object o : (Collection) attribute) {
 					eAttr.appendChild(toElement("entry", o));
 				}
-
+			} else if (cls.isEnum()) {
+				eAttr.addAttribute(new nu.xom.Attribute("type", getType(cls)));
+				eAttr.appendChild(((Enum) attribute).name());
 			} else if (attribute instanceof Serializable) {
 
 				Serializable s = (Serializable) attribute;

@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -140,7 +141,16 @@ public class Common {
 	protected static Object toInstance(String value, Class<?> clazz) throws IllegalArgumentException, SecurityException,
 			InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		if (!clazz.isEnum()) {
-			return clazz.getConstructor(String.class).newInstance(value.trim());
+			try {
+				Constructor constructor = clazz.getConstructor(String.class);
+				if (constructor != null) {
+					return constructor.newInstance(value.trim());
+				}
+
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
 			Class<? extends Enum> eclazz = clazz.asSubclass(Enum.class);
 			for (Enum e : eclazz.getEnumConstants()) {
@@ -148,8 +158,8 @@ public class Common {
 					return e;
 				}
 			}
-			return null;
 		}
+		return null;
 	}
 
 	protected static void setAttributes(IAttributes e, Attributes attributes) {
