@@ -175,8 +175,6 @@ public class SpecificationReader {
 			String sourceId = eRouting.getAttributeValue("source");
 			Task source = application.getVertex(sourceId);
 
-			// System.err.println(" routing "+sourceId );
-
 			Architecture<Resource, Link> routing = toRouting(eRouting, architecture, application);
 			routings.set(source, routing);
 		}
@@ -196,7 +194,6 @@ public class SpecificationReader {
 			Resource parent = architecture.getVertex(eResource.getAttributeValue("id"));
 			Resource resource = toNode(eResource, parent);
 			routing.addVertex(resource);
-			// System.err.println(resource);
 			map.put(resource.getId(), resource);
 		}
 
@@ -213,10 +210,7 @@ public class SpecificationReader {
 
 			Resource source = map.get(eLink.getAttributeValue("source"));
 			Resource destination = map.get(eLink.getAttributeValue("destination"));
-			// System.err.println(link+" "+eLink.getAttributeValue("source")+"
-			// "+source+" "+eLink.getAttributeValue("destination")+"
-			// "+destination
-			// );
+
 			routing.addEdge(link, source, destination, edgeType);
 		}
 
