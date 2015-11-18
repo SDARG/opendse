@@ -474,7 +474,7 @@ public class SpecificationReader {
 					object = knownElements.get(value);
 				} else {
 					object = toInstance(value, clazz);
-					if (Element.class.isAssignableFrom(clazz)) {
+					if (object instanceof Element) {
 						knownElements.put(value, (Element) object);
 					}
 				}
