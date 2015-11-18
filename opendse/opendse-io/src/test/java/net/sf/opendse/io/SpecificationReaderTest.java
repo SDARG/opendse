@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.sf.opendse.io.CommonTest.E1;
 import net.sf.opendse.model.Element;
 import net.sf.opendse.model.Resource;
 
@@ -13,10 +14,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class SpecificationReaderTest {
-	public enum E1 {
-		a, b;
-	}
-
 	@Test
 	public void attributeToEnum() throws IllegalArgumentException, SecurityException, InstantiationException,
 			IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
@@ -24,7 +21,7 @@ public class SpecificationReaderTest {
 		eAttr.addAttribute(new nu.xom.Attribute("name", "test"));
 
 		eAttr.addAttribute(new nu.xom.Attribute("type", getType(E1.class)));
-		eAttr.appendChild("a");
+		eAttr.appendChild(E1.a.name());
 		System.out.println(eAttr.toXML());
 
 		SpecificationReader reader = new SpecificationReader();
@@ -104,7 +101,7 @@ public class SpecificationReaderTest {
 		eAttr.addAttribute(new nu.xom.Attribute("type", getType(HashSet.class)));
 		eAttr.appendChild(eAttr1);
 		eAttr.appendChild(eAttr2);
-		System.out.println(eAttr);
+		System.out.println(eAttr.toXML());
 
 		SpecificationReader reader = new SpecificationReader();
 		Set<String> strings2 = (Set<String>) reader.toAttribute(eAttr);
@@ -137,7 +134,24 @@ public class SpecificationReaderTest {
 		eAttr.addAttribute(new nu.xom.Attribute("type", "SET"));
 		eAttr.appendChild(eAttr1);
 		eAttr.appendChild(eAttr2);
-		System.out.println(eAttr);
+		System.out.println(eAttr.toXML());
+
+		SpecificationReader reader = new SpecificationReader();
+		Set<String> strings2 = (Set<String>) reader.toAttribute(eAttr);
+		Assert.assertEquals(strings, strings2);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void attributeToEmptySet() throws IllegalArgumentException, SecurityException, InstantiationException,
+			IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
+		nu.xom.Element eAttr = new nu.xom.Element("attribute", SpecificationWriter.NS);
+		eAttr.addAttribute(new nu.xom.Attribute("name", "test"));
+
+		Set<String> strings = new HashSet<String>();
+
+		eAttr.addAttribute(new nu.xom.Attribute("type", "SET"));
+		System.out.println(eAttr.toXML());
 
 		SpecificationReader reader = new SpecificationReader();
 		Set<String> strings2 = (Set<String>) reader.toAttribute(eAttr);
