@@ -498,12 +498,11 @@ public class SpecificationReader {
 	 *            the class of the object that is to create
 	 * @return the constructed object
 	 */
-	@SuppressWarnings("rawtypes")
 	protected Object toAttributeObject(String value, Class<?> clazz) throws InstantiationException,
 			IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
 		Object object = null;
 
-		if (knownElements.containsKey(value)) {
+		if (Element.class.isAssignableFrom(clazz) && knownElements.containsKey(value)) {
 			object = knownElements.get(value);
 		} else {
 			object = toInstance(value, clazz);
