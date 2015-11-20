@@ -21,23 +21,46 @@
  *******************************************************************************/
 package net.sf.opendse.optimization.io;
 
+import java.util.Set;
+
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.optimization.SpecificationWrapper;
 import net.sf.opendse.optimization.encoding.RoutingFilter;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
+@Singleton
 public class SpecificationWrapperInstance implements SpecificationWrapper {
 
+	protected Set<SpecificationTransformer> transformers = null;
+
 	protected final Specification specification;
+	private boolean init = false;
 
 	public SpecificationWrapperInstance(Specification specification) {
-		super();
 		assert specification != null;
 		this.specification = specification;
-		RoutingFilter.filter(this.specification);
+	}
+
+	@Inject(optional = true)
+	public void setSpecificationTransformers(Set<SpecificationTransformer> transformers) {
+		this.transformers = transformers;
 	}
 
 	@Override
 	public Specification getSpecification() {
+		if (!init) {
+			init = true;
+			if (transformers != null) {
+				for (SpecificationTransformer specificationTransformer : transformers) {
+					System.out.println("Starting " + specificationTransformer);
+					specificationTransformer.transform(specification);
+				}
+			}
+			specification.fillRoutings();
+			RoutingFilter.filter(this.specification);
+		}
 		return specification;
 	}
 
