@@ -58,7 +58,6 @@ public class SpecificationWrapperInstance implements SpecificationWrapper {
 					specificationTransformer.transform(specification);
 				}
 			}
-			specification.fillRoutings();
 			RoutingFilter.filter(this.specification);
 		}
 		return specification;
