@@ -8,7 +8,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class CommonTest {
-	enum E1 {
+	public enum E1 {
 		a, b;
 	}
 
