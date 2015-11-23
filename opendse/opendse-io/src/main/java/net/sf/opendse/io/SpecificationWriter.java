@@ -349,6 +349,7 @@ public class SpecificationWriter {
 		return eAttributes;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public nu.xom.Element toElement(String attributeName, Object attribute) {
 		nu.xom.Element eAttr = new nu.xom.Element("attribute", NS);
 		eAttr.addAttribute(new nu.xom.Attribute("name", attributeName));
