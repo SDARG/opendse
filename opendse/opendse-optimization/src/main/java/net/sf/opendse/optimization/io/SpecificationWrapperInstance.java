@@ -21,7 +21,9 @@
  *******************************************************************************/
 package net.sf.opendse.optimization.io;
 
+import java.util.Comparator;
 import java.util.Set;
+import java.util.TreeSet;
 
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.optimization.SpecificationWrapper;
@@ -33,7 +35,13 @@ import com.google.inject.Singleton;
 @Singleton
 public class SpecificationWrapperInstance implements SpecificationWrapper {
 
-	protected Set<SpecificationTransformer> transformers = null;
+	protected Set<SpecificationTransformer> transformers = new TreeSet<SpecificationTransformer>(
+			new Comparator<SpecificationTransformer>() {
+				@Override
+				public int compare(SpecificationTransformer o1, SpecificationTransformer o2) {
+					return ((Integer) o1.getPriority()).compareTo(o2.getPriority());
+				}
+			});
 
 	protected final Specification specification;
 	private boolean init = false;
@@ -45,7 +53,7 @@ public class SpecificationWrapperInstance implements SpecificationWrapper {
 
 	@Inject(optional = true)
 	public void setSpecificationTransformers(Set<SpecificationTransformer> transformers) {
-		this.transformers = transformers;
+		this.transformers.addAll(transformers);
 	}
 
 	@Override

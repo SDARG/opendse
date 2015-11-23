@@ -141,16 +141,10 @@ public class Common {
 	protected static Object toInstance(String value, Class<?> clazz) throws IllegalArgumentException, SecurityException,
 			InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		if (!clazz.isEnum()) {
-			try {
 				Constructor constructor = clazz.getConstructor(String.class);
 				if (constructor != null) {
 					return constructor.newInstance(value.trim());
 				}
-
-			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		} else {
 			Class<? extends Enum> eclazz = clazz.asSubclass(Enum.class);
 			for (Enum e : eclazz.getEnumConstants()) {
