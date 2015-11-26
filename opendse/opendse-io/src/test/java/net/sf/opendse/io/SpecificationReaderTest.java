@@ -6,12 +6,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import net.sf.opendse.io.CommonTest.E1;
 import net.sf.opendse.model.Element;
 import net.sf.opendse.model.Resource;
-
-import org.junit.Assert;
-import org.junit.Test;
 
 public class SpecificationReaderTest {
 	@Test
@@ -20,7 +20,7 @@ public class SpecificationReaderTest {
 		nu.xom.Element eAttr = new nu.xom.Element("attribute", SpecificationWriter.NS);
 		eAttr.addAttribute(new nu.xom.Attribute("name", "test"));
 
-		eAttr.addAttribute(new nu.xom.Attribute("type", getType(E1.class)));
+		eAttr.addAttribute(new nu.xom.Attribute("type", E1.class.getName()));
 		eAttr.appendChild(E1.a.name());
 		System.out.println(eAttr.toXML());
 
