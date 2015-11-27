@@ -185,7 +185,7 @@ public class SpecificationWriter {
 		eSpec.appendChild(toElement(specification.getArchitecture()));
 		eSpec.appendChild(toElement(specification.getApplication()));
 		eSpec.appendChild(toElement(specification.getMappings()));
-		if (specification.getRoutings() != null && this.writeRoutings) {
+		if (specification.getRoutings() != null && writeRoutings) {
 			eSpec.appendChild(toElement(specification.getRoutings(), specification.getArchitecture()));
 		}
 
