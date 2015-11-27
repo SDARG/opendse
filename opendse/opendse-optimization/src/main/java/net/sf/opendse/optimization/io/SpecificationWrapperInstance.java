@@ -25,12 +25,12 @@ import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.optimization.SpecificationWrapper;
 import net.sf.opendse.optimization.encoding.RoutingFilter;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 @Singleton
 public class SpecificationWrapperInstance implements SpecificationWrapper {
@@ -53,7 +53,9 @@ public class SpecificationWrapperInstance implements SpecificationWrapper {
 
 	@Inject(optional = true)
 	public void setSpecificationTransformers(Set<SpecificationTransformer> transformers) {
-		this.transformers.addAll(transformers);
+		if (transformers != null) {
+			this.transformers.addAll(transformers);
+		}
 	}
 
 	@Override
