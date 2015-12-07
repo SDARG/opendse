@@ -32,7 +32,7 @@ import cern.colt.Arrays;
  * @author Martin Lukasiewycz
  * 
  */
-public class ParameterSelect implements Parameter {
+public class ParameterSelect implements Parameter<Object> {
 
 	protected final Object value;
 	protected final Object[] elements;
@@ -53,7 +53,7 @@ public class ParameterSelect implements Parameter {
 		this.value = value;
 		this.reference = reference;
 		this.elements = new Object[elements.size()];
-		for(int i=0; i<elements.size(); i++){
+		for (int i = 0; i < elements.size(); i++) {
 			this.elements[i] = elements.get(i);
 		}
 	}

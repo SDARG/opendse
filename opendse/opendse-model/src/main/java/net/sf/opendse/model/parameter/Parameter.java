@@ -27,13 +27,13 @@ package net.sf.opendse.model.parameter;
  * @author Martin Lukasiewycz
  * 
  */
-public interface Parameter {
+public interface Parameter<V> {
 
 	/**
 	 * Returns the current value of the parameter.
 	 * 
 	 * @return the parameter value
 	 */
-	public Object getValue();
+	public V getValue();
 
 }

@@ -22,18 +22,18 @@
 package net.sf.opendse.model.parameter;
 
 /**
- * The {@code ParameterRange} is a double-valued parameter within a lower and an
+ * The {@code ParameterRangeInt} is a int-valued parameter within a lower and an
  * upper bound.
  * 
- * @author Martin Lukasiewycz
+ * @author Falko Höfte
  * 
  */
-public class ParameterRange implements Parameter<Double> {
+public class ParameterRangeInt implements Parameter<Integer> {
 
-	protected final double value;
-	protected final double lb;
-	protected final double ub;
-	protected final double granularity;
+	protected final int value;
+	protected final int lb;
+	protected final int ub;
+	protected final int granularity;
 
 	/**
 	 * Constructs a {@code ParameterRange}.
@@ -45,7 +45,7 @@ public class ParameterRange implements Parameter<Double> {
 	 * @param ub
 	 *            the upper bound
 	 */
-	public ParameterRange(double value, double lb, double ub) {
+	public ParameterRangeInt(int value, int lb, int ub) {
 		this(value, lb, ub, 0);
 	}
 
@@ -61,7 +61,7 @@ public class ParameterRange implements Parameter<Double> {
 	 * @param granularity
 	 *            the granularity (step-size)
 	 */
-	public ParameterRange(double value, double lb, double ub, double granularity) {
+	public ParameterRangeInt(int value, int lb, int ub, int granularity) {
 		super();
 		this.value = value;
 		this.lb = lb;
@@ -74,7 +74,7 @@ public class ParameterRange implements Parameter<Double> {
 	 * 
 	 * @return the lower bound
 	 */
-	public double getLowerBound() {
+	public int getLowerBound() {
 		return lb;
 	}
 
@@ -83,7 +83,7 @@ public class ParameterRange implements Parameter<Double> {
 	 * 
 	 * @return the upper bound
 	 */
-	public double getUpperBound() {
+	public int getUpperBound() {
 		return ub;
 	}
 
@@ -93,25 +93,8 @@ public class ParameterRange implements Parameter<Double> {
 	 * @see net.sf.adse.model.parameter.Parameter#getValue()
 	 */
 	@Override
-	public Double getValue() {
+	public Integer getValue() {
 		return value;
-	}
-
-	/**
-	 * Normalizes the value.
-	 * 
-	 * @param value
-	 *            the value
-	 * @return the normalized value
-	 */
-	public double normalizeValue(double value) {
-		if (granularity > 0) {
-			double v = value / granularity;
-			v = Math.round(v) * granularity;
-			return v;
-		} else {
-			return value;
-		}
 	}
 
 	/*
@@ -121,7 +104,16 @@ public class ParameterRange implements Parameter<Double> {
 	 */
 	@Override
 	public String toString() {
-		return value + " (" + lb + "," + ub + "," + granularity + ")";
+		return value + " (" + lb + "," + ub + "," + getGranularity() + ")";
+	}
+
+	/**
+	 * Returns the granularity.
+	 * 
+	 * @return the granularity
+	 */
+	public int getGranularity() {
+		return granularity;
 	}
 
 }
