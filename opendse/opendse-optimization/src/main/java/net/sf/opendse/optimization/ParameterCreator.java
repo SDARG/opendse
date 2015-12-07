@@ -32,27 +32,30 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
-import net.sf.opendse.model.Element;
-import net.sf.opendse.model.Models;
-import net.sf.opendse.model.Specification;
-import net.sf.opendse.model.parameter.Parameter;
-import net.sf.opendse.model.parameter.ParameterRange;
-import net.sf.opendse.model.parameter.ParameterReference;
-import net.sf.opendse.model.parameter.ParameterSelect;
-import net.sf.opendse.model.parameter.ParameterUniqueID;
-import net.sf.opendse.optimization.constraints.SpecificationConstraints;
-
 import org.opt4j.core.Genotype;
 import org.opt4j.core.common.random.Rand;
 import org.opt4j.core.genotype.Bounds;
 import org.opt4j.core.genotype.CompositeGenotype;
 import org.opt4j.core.genotype.DoubleBounds;
 import org.opt4j.core.genotype.DoubleMapGenotype;
+import org.opt4j.core.genotype.IntegerBounds;
+import org.opt4j.core.genotype.IntegerMapGenotype;
 import org.opt4j.core.genotype.PermutationGenotype;
 import org.opt4j.core.genotype.SelectMapGenotype;
 import org.opt4j.core.problem.Creator;
 
 import com.google.inject.Inject;
+
+import net.sf.opendse.model.Element;
+import net.sf.opendse.model.Models;
+import net.sf.opendse.model.Specification;
+import net.sf.opendse.model.parameter.Parameter;
+import net.sf.opendse.model.parameter.ParameterRange;
+import net.sf.opendse.model.parameter.ParameterRangeInt;
+import net.sf.opendse.model.parameter.ParameterReference;
+import net.sf.opendse.model.parameter.ParameterSelect;
+import net.sf.opendse.model.parameter.ParameterUniqueID;
+import net.sf.opendse.optimization.constraints.SpecificationConstraints;
 
 public class ParameterCreator implements Creator<CompositeGenotype<String, Genotype>> {
 
@@ -66,6 +69,9 @@ public class ParameterCreator implements Creator<CompositeGenotype<String, Genot
 
 	protected final List<ParameterReference> rangeParameters = new ArrayList<ParameterReference>();
 	protected final Bounds<Double> rangeBounds;
+
+	protected final List<ParameterReference> rangeParametersInt = new ArrayList<ParameterReference>();
+	protected final Bounds<Integer> rangeBoundsInt;
 
 	protected final List<String> uniqueIDs = new ArrayList<String>();
 	protected final Map<String, List<ParameterReference>> uniqueIDMap = new HashMap<String, List<ParameterReference>>();
@@ -97,6 +103,9 @@ public class ParameterCreator implements Creator<CompositeGenotype<String, Genot
 		List<Double> rangeLb = new ArrayList<Double>();
 		List<Double> rangeUb = new ArrayList<Double>();
 
+		List<Integer> rangeLbInt = new ArrayList<Integer>();
+		List<Integer> rangeUbInt = new ArrayList<Integer>();
+
 		for (Entry<ParameterReference, Parameter> entry : parameters.entrySet()) {
 			ParameterReference ref = entry.getKey();
 			Parameter parameter = entry.getValue();
@@ -114,6 +123,11 @@ public class ParameterCreator implements Creator<CompositeGenotype<String, Genot
 					rangeParameters.add(ref);
 					rangeLb.add(parameterRange.getLowerBound());
 					rangeUb.add(parameterRange.getUpperBound());
+				} else if (parameter instanceof ParameterRangeInt) {
+					ParameterRangeInt parameterRange = (ParameterRangeInt) parameter;
+					rangeParametersInt.add(ref);
+					rangeLbInt.add(parameterRange.getLowerBound());
+					rangeUbInt.add(parameterRange.getUpperBound());
 				} else if (parameter instanceof ParameterUniqueID) {
 					ParameterUniqueID parameterUniqueID = (ParameterUniqueID) parameter;
 					String id = parameterUniqueID.getIdentifier();
@@ -129,6 +143,7 @@ public class ParameterCreator implements Creator<CompositeGenotype<String, Genot
 		}
 
 		rangeBounds = new DoubleBounds(rangeLb, rangeUb);
+		rangeBoundsInt = new IntegerBounds(rangeLbInt, rangeUbInt);
 	}
 
 	@Override
@@ -146,6 +161,12 @@ public class ParameterCreator implements Creator<CompositeGenotype<String, Genot
 					rangeBounds);
 			range.init(random);
 			genotype.put("RANGE", range);
+		}
+		if (!rangeParametersInt.isEmpty()) {
+			IntegerMapGenotype<ParameterReference> range = new IntegerMapGenotype<ParameterReference>(
+					rangeParametersInt, rangeBoundsInt);
+			range.init(random);
+			genotype.put("RANGEINT", range);
 		}
 		for (String uniqueID : uniqueIDs) {
 			PermutationGenotype<ParameterReference> permutation = new PermutationGenotype<ParameterReference>();

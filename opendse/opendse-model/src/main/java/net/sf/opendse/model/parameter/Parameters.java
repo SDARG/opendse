@@ -46,7 +46,7 @@ public class Parameters {
 		ParameterSelect parameter = new ParameterSelect(def, null, Arrays.asList(select));
 		return parameter;
 	}
-	
+
 	/**
 	 * Constructs a {@link ParameterSelect}.
 	 * 
@@ -106,6 +106,22 @@ public class Parameters {
 	 */
 	public static ParameterRange range(double def, double lb, double ub) {
 		return range(def, lb, ub, 0);
+	}
+
+	/**
+	 * Constructs a {@link ParameterRange}.
+	 * 
+	 * @param def
+	 *            the default value
+	 * @param lb
+	 *            the lower bound
+	 * @param ub
+	 *            the upper bound
+	 * @return the parameter object
+	 */
+	public static ParameterRangeInt range(int def, int lb, int ub) {
+		ParameterRangeInt range = new ParameterRangeInt(def, lb, ub);
+		return range;
 	}
 
 	/**

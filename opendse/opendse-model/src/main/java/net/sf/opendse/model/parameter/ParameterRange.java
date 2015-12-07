@@ -28,7 +28,7 @@ package net.sf.opendse.model.parameter;
  * @author Martin Lukasiewycz
  * 
  */
-public class ParameterRange implements Parameter {
+public class ParameterRange implements Parameter<Double> {
 
 	protected final double value;
 	protected final double lb;
@@ -93,7 +93,7 @@ public class ParameterRange implements Parameter {
 	 * @see net.sf.adse.model.parameter.Parameter#getValue()
 	 */
 	@Override
-	public Object getValue() {
+	public Double getValue() {
 		return value;
 	}
 
