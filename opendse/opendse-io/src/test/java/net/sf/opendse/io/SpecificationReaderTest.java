@@ -9,6 +9,7 @@ import java.util.Set;
 import net.sf.opendse.io.CommonTest.E1;
 import net.sf.opendse.model.Element;
 import net.sf.opendse.model.Resource;
+import net.sf.opendse.model.parameter.ParameterRangeInt;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -156,5 +157,32 @@ public class SpecificationReaderTest {
 		SpecificationReader reader = new SpecificationReader();
 		Set<String> strings2 = (Set<String>) reader.toAttribute(eAttr);
 		Assert.assertEquals(strings, strings2);
+	}
+
+	@Test
+	public void testGetRangeInt() {
+		SpecificationReader reader = new SpecificationReader();
+		String xmlValue = "5 (3, 9)";
+		ParameterRangeInt parameter = reader.getRangeInt(xmlValue);
+		Assert.assertEquals(3, parameter.getLowerBound());
+		Assert.assertEquals(9, parameter.getUpperBound());
+		Assert.assertEquals((Integer) 5, parameter.getValue());
+	}
+
+	@Test
+	public void ioParameterRangeInt() throws IllegalArgumentException, SecurityException, InstantiationException,
+			IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
+		ParameterRangeInt parameter = new ParameterRangeInt(4, 2, 9);
+
+		SpecificationWriter specificationWriter = new SpecificationWriter();
+		nu.xom.Element element = specificationWriter.toElement("test", parameter);
+		Assert.assertNotNull(element);
+
+		SpecificationReader specificationReader = new SpecificationReader();
+		ParameterRangeInt parameter2 = (ParameterRangeInt) specificationReader.toAttribute(element);
+
+		Assert.assertEquals(parameter.getLowerBound(), parameter2.getLowerBound());
+		Assert.assertEquals(parameter.getUpperBound(), parameter2.getUpperBound());
+		Assert.assertEquals(parameter.getValue(), parameter2.getValue());
 	}
 }

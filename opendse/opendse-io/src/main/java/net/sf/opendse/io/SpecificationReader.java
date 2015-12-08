@@ -58,6 +58,7 @@ import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.parameter.ParameterRange;
+import net.sf.opendse.model.parameter.ParameterRangeInt;
 import net.sf.opendse.model.parameter.ParameterSelect;
 import net.sf.opendse.model.parameter.ParameterUniqueID;
 import net.sf.opendse.model.parameter.Parameters;
@@ -443,6 +444,8 @@ public class SpecificationReader {
 
 			if (parameter.equals("RANGE")) {
 				return getRange(value);
+			} else if (parameter.equals("RANGEINT")) {
+				return getRangeInt(value);
 			} else if (parameter.equals("SELECT")) {
 				return getSelectRefList(type, value);
 			} else if (parameter.equals("UID")) {
@@ -542,6 +545,26 @@ public class SpecificationReader {
 		scanner.close();
 
 		return Parameters.range(v, lb, ub, gr);
+	}
+
+	/**
+	 * Parse the {@link ParameterRangeInt}.
+	 * 
+	 * @param value
+	 *            the string to parse
+	 * @return the corresponding parameter
+	 */
+	protected ParameterRangeInt getRangeInt(String value) {
+		Scanner scanner = new Scanner(value);
+		scanner.useDelimiter("[\\s+,()]+");
+
+		int v = new Integer(scanner.next());
+		int lb = new Integer(scanner.next());
+		int ub = new Integer(scanner.next());
+
+		scanner.close();
+
+		return Parameters.range(v, lb, ub);
 	}
 
 	/**

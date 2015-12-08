@@ -8,8 +8,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -28,7 +28,7 @@ package net.sf.opendse.model.parameter;
  * @author Martin Lukasiewycz
  * 
  */
-public class ParameterRange implements Parameter<Double> {
+public class ParameterRange implements Parameter {
 
 	protected final double value;
 	protected final double lb;
@@ -90,7 +90,7 @@ public class ParameterRange implements Parameter<Double> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see net.sf.adse.model.parameter.Parameter#getValue()
+	 * @see net.sf.opendse.model.parameter.Parameter#getValue()
 	 */
 	@Override
 	public Double getValue() {

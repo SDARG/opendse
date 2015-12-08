@@ -8,8 +8,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -34,9 +34,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.commons.collections15.BidiMap;
-import org.apache.commons.collections15.bidimap.DualHashBidiMap;
-
 import net.sf.opendse.model.Attributes;
 import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Dependency;
@@ -46,8 +43,12 @@ import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.parameter.ParameterRange;
+import net.sf.opendse.model.parameter.ParameterRangeInt;
 import net.sf.opendse.model.parameter.ParameterSelect;
 import net.sf.opendse.model.parameter.ParameterUniqueID;
+
+import org.apache.commons.collections15.BidiMap;
+import org.apache.commons.collections15.bidimap.DualHashBidiMap;
 
 /**
  * The {@code Common} class contains common methods for reading and writing a
@@ -66,6 +67,7 @@ public class Common {
 		classMap.put("STRING", String.class);
 		classMap.put("BOOL", Boolean.class);
 		classMap.put("RANGE", ParameterRange.class);
+		classMap.put("RANGEINT", ParameterRangeInt.class);
 		classMap.put("SELECT", ParameterSelect.class);
 		classMap.put("UID", ParameterUniqueID.class);
 		classMap.put("resource", Resource.class);
@@ -138,13 +140,14 @@ public class Common {
 	}
 
 	@SuppressWarnings("rawtypes")
-	protected static Object toInstance(String value, Class<?> clazz) throws IllegalArgumentException, SecurityException,
-			InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+	protected static Object toInstance(String value, Class<?> clazz) throws IllegalArgumentException,
+			SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException {
 		if (!clazz.isEnum()) {
-				Constructor constructor = clazz.getConstructor(String.class);
-				if (constructor != null) {
-					return constructor.newInstance(value.trim());
-				}
+			Constructor constructor = clazz.getConstructor(String.class);
+			if (constructor != null) {
+				return constructor.newInstance(value.trim());
+			}
 		} else {
 			Class<? extends Enum> eclazz = clazz.asSubclass(Enum.class);
 			for (Enum e : eclazz.getEnumConstants()) {

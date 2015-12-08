@@ -8,8 +8,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -22,18 +22,17 @@
 package net.sf.opendse.model.parameter;
 
 /**
- * The {@code ParameterRangeInt} is a int-valued parameter within a lower and an
- * upper bound.
+ * The {@code ParameterRangeInt} is a {@link Integer}-valued parameter within a
+ * lower and an upper bound.
  * 
  * @author Falko Höfte
  * 
  */
-public class ParameterRangeInt implements Parameter<Integer> {
+public class ParameterRangeInt implements Parameter {
 
 	protected final int value;
 	protected final int lb;
 	protected final int ub;
-	protected final int granularity;
 
 	/**
 	 * Constructs a {@code ParameterRange}.
@@ -46,27 +45,10 @@ public class ParameterRangeInt implements Parameter<Integer> {
 	 *            the upper bound
 	 */
 	public ParameterRangeInt(int value, int lb, int ub) {
-		this(value, lb, ub, 0);
-	}
-
-	/**
-	 * Constructs a {@code ParameterRange}.
-	 * 
-	 * @param value
-	 *            the default value
-	 * @param lb
-	 *            the lower bound
-	 * @param ub
-	 *            the upper bound
-	 * @param granularity
-	 *            the granularity (step-size)
-	 */
-	public ParameterRangeInt(int value, int lb, int ub, int granularity) {
 		super();
 		this.value = value;
 		this.lb = lb;
 		this.ub = ub;
-		this.granularity = granularity;
 	}
 
 	/**
@@ -104,16 +86,7 @@ public class ParameterRangeInt implements Parameter<Integer> {
 	 */
 	@Override
 	public String toString() {
-		return value + " (" + lb + "," + ub + "," + getGranularity() + ")";
-	}
-
-	/**
-	 * Returns the granularity.
-	 * 
-	 * @return the granularity
-	 */
-	public int getGranularity() {
-		return granularity;
+		return value + " (" + lb + "," + ub + ")";
 	}
 
 }
