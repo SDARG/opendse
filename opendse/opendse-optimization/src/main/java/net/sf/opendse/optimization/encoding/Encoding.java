@@ -8,8 +8,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -44,11 +44,11 @@ import net.sf.opendse.model.Edge;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Mappings;
+import net.sf.opendse.model.Models.DirectedLink;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
-import net.sf.opendse.model.Models.DirectedLink;
 import net.sf.opendse.optimization.constraints.SpecificationConstraints;
 import net.sf.opendse.optimization.encoding.variables.CLRR;
 import net.sf.opendse.optimization.encoding.variables.CR;
@@ -68,12 +68,13 @@ import edu.uci.ics.jung.graph.util.Pair;
  */
 public class Encoding {
 
-	public static List<Class<?>> order = Arrays.<Class<?>> asList(Resource.class, Link.class, Mapping.class, CR.class, CLRR.class);
+	public static List<Class<?>> order = Arrays.<Class<?>> asList(Resource.class, Link.class, Mapping.class, CR.class,
+			CLRR.class);
 
 	public enum RoutingEncoding {
 		HOP, FLOW;
 	}
-	
+
 	public static class VariableComparator implements Comparator<Object>, Serializable {
 
 		private static final long serialVersionUID = 1L;
@@ -519,7 +520,6 @@ public class Encoding {
 		List<Constraint> constraints = new ArrayList<Constraint>();
 
 		Application<Task, Dependency> application = specification.getApplication();
-		Architecture<Resource, Link> architecture = specification.getArchitecture();
 		Mappings<Task, Resource> mappings = specification.getMappings();
 		Routings<Task, Resource, Link> routings = specification.getRoutings();
 
@@ -539,8 +539,6 @@ public class Encoding {
 		EQ15(constraints, specification);
 
 		boolean isUnicast = false;
-		boolean isMulticast1 = true;
-		boolean isMulticast2 = false;
 
 		final int Tmax = 10;
 
@@ -658,7 +656,7 @@ public class Encoding {
 				}
 			}
 		}
-		
+
 		EQ30(constraints, specification);
 
 		specificationConstraints.doEncoding(constraints);
