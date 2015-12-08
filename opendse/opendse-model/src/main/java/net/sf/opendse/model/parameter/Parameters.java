@@ -8,8 +8,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -117,15 +117,17 @@ public class Parameters {
 	 *            the lower bound
 	 * @param ub
 	 *            the upper bound
+	 * @param granularity
+	 *            the granularity (step-size)
 	 * @return the parameter object
 	 */
-	public static ParameterRangeInt range(int def, int lb, int ub) {
-		ParameterRangeInt range = new ParameterRangeInt(def, lb, ub);
+	public static ParameterRange range(double def, double lb, double ub, double granularity) {
+		ParameterRange range = new ParameterRange(def, lb, ub, granularity);
 		return range;
 	}
 
 	/**
-	 * Constructs a {@link ParameterRange}.
+	 * Constructs a {@link ParameterRangeInt}.
 	 * 
 	 * @param def
 	 *            the default value
@@ -133,12 +135,10 @@ public class Parameters {
 	 *            the lower bound
 	 * @param ub
 	 *            the upper bound
-	 * @param granularity
-	 *            the granularity (step-size)
 	 * @return the parameter object
 	 */
-	public static ParameterRange range(double def, double lb, double ub, double granularity) {
-		ParameterRange range = new ParameterRange(def, lb, ub, granularity);
+	public static ParameterRangeInt range(int def, int lb, int ub) {
+		ParameterRangeInt range = new ParameterRangeInt(def, lb, ub);
 		return range;
 	}
 
