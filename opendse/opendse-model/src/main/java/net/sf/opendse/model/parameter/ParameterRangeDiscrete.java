@@ -22,13 +22,13 @@
 package net.sf.opendse.model.parameter;
 
 /**
- * The {@code ParameterRangeInt} is a {@link Integer}-valued parameter within a
- * lower and an upper bound.
+ * The {@code ParameterRangeDiscrete} is a {@link Integer}-valued parameter
+ * within a lower and an upper bound.
  * 
  * @author Falko Höfte
  * 
  */
-public class ParameterRangeInt implements Parameter {
+public class ParameterRangeDiscrete implements Parameter {
 
 	protected final int value;
 	protected final int lb;
@@ -44,8 +44,7 @@ public class ParameterRangeInt implements Parameter {
 	 * @param ub
 	 *            the upper bound
 	 */
-	public ParameterRangeInt(int value, int lb, int ub) {
-		super();
+	public ParameterRangeDiscrete(int value, int lb, int ub) {
 		this.value = value;
 		this.lb = lb;
 		this.ub = ub;

@@ -127,7 +127,7 @@ public class Parameters {
 	}
 
 	/**
-	 * Constructs a {@link ParameterRangeInt}.
+	 * Constructs a {@link ParameterRangeDiscrete}.
 	 * 
 	 * @param def
 	 *            the default value
@@ -137,8 +137,8 @@ public class Parameters {
 	 *            the upper bound
 	 * @return the parameter object
 	 */
-	public static ParameterRangeInt range(int def, int lb, int ub) {
-		ParameterRangeInt range = new ParameterRangeInt(def, lb, ub);
+	public static ParameterRangeDiscrete range(int def, int lb, int ub) {
+		ParameterRangeDiscrete range = new ParameterRangeDiscrete(def, lb, ub);
 		return range;
 	}
 

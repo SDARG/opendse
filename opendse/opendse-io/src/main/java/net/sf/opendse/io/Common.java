@@ -43,7 +43,7 @@ import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.parameter.ParameterRange;
-import net.sf.opendse.model.parameter.ParameterRangeInt;
+import net.sf.opendse.model.parameter.ParameterRangeDiscrete;
 import net.sf.opendse.model.parameter.ParameterSelect;
 import net.sf.opendse.model.parameter.ParameterUniqueID;
 
@@ -67,7 +67,7 @@ public class Common {
 		classMap.put("STRING", String.class);
 		classMap.put("BOOL", Boolean.class);
 		classMap.put("RANGE", ParameterRange.class);
-		classMap.put("RANGEINT", ParameterRangeInt.class);
+		classMap.put("DISCRETERANGE", ParameterRangeDiscrete.class);
 		classMap.put("SELECT", ParameterSelect.class);
 		classMap.put("UID", ParameterUniqueID.class);
 		classMap.put("resource", Resource.class);

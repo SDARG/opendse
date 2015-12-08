@@ -51,7 +51,7 @@ import net.sf.opendse.model.Models;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.parameter.Parameter;
 import net.sf.opendse.model.parameter.ParameterRange;
-import net.sf.opendse.model.parameter.ParameterRangeInt;
+import net.sf.opendse.model.parameter.ParameterRangeDiscrete;
 import net.sf.opendse.model.parameter.ParameterReference;
 import net.sf.opendse.model.parameter.ParameterSelect;
 import net.sf.opendse.model.parameter.ParameterUniqueID;
@@ -123,8 +123,8 @@ public class ParameterCreator implements Creator<CompositeGenotype<String, Genot
 					rangeParameters.add(ref);
 					rangeLb.add(parameterRange.getLowerBound());
 					rangeUb.add(parameterRange.getUpperBound());
-				} else if (parameter instanceof ParameterRangeInt) {
-					ParameterRangeInt parameterRange = (ParameterRangeInt) parameter;
+				} else if (parameter instanceof ParameterRangeDiscrete) {
+					ParameterRangeDiscrete parameterRange = (ParameterRangeDiscrete) parameter;
 					rangeParametersInt.add(ref);
 					rangeLbInt.add(parameterRange.getLowerBound());
 					rangeUbInt.add(parameterRange.getUpperBound());

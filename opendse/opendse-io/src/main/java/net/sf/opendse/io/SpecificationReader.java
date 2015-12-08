@@ -58,7 +58,7 @@ import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.parameter.ParameterRange;
-import net.sf.opendse.model.parameter.ParameterRangeInt;
+import net.sf.opendse.model.parameter.ParameterRangeDiscrete;
 import net.sf.opendse.model.parameter.ParameterSelect;
 import net.sf.opendse.model.parameter.ParameterUniqueID;
 import net.sf.opendse.model.parameter.Parameters;
@@ -444,7 +444,7 @@ public class SpecificationReader {
 
 			if (parameter.equals("RANGE")) {
 				return getRange(value);
-			} else if (parameter.equals("RANGEINT")) {
+			} else if (parameter.equals("DISCRETERANGE")) {
 				return getRangeInt(value);
 			} else if (parameter.equals("SELECT")) {
 				return getSelectRefList(type, value);
@@ -548,13 +548,13 @@ public class SpecificationReader {
 	}
 
 	/**
-	 * Parse the {@link ParameterRangeInt}.
+	 * Parse the {@link ParameterRangeDiscrete}.
 	 * 
 	 * @param value
 	 *            the string to parse
 	 * @return the corresponding parameter
 	 */
-	protected ParameterRangeInt getRangeInt(String value) {
+	protected ParameterRangeDiscrete getRangeInt(String value) {
 		Scanner scanner = new Scanner(value);
 		scanner.useDelimiter("[\\s+,()]+");
 
