@@ -8,8 +8,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -418,6 +418,7 @@ public class Models {
 			}
 		};
 	}
+
 	public static Specification copy(Specification specification) {
 		Architecture<Resource, Link> sArchitecture = specification.getArchitecture();
 		Application<Task, Dependency> sApplication = specification.getApplication();
@@ -490,7 +491,7 @@ public class Models {
 			Element copy = cstr.newInstance(element);
 			return (E) copy;
 		} catch (Exception e) {
-			throw new RuntimeException("could not copy element "+element, e);
+			throw new RuntimeException("could not copy element " + element, e);
 		}
 	}
 
@@ -513,41 +514,17 @@ public class Models {
 	}
 
 	public static Specification clone(Specification specification) {
-		Architecture<Resource, Link> sArchitecture = specification.getArchitecture();
-		Application<Task, Dependency> sApplication = specification.getApplication();
-		Mappings<Task, Resource> sMappings = specification.getMappings();
-		Routings<Task, Resource, Link> sRoutings = specification.getRoutings();
-
-		Architecture<Resource, Link> iArchitecture = new Architecture<Resource, Link>();
-		Application<Task, Dependency> iApplication = new Application<Task, Dependency>();
+		Application<Task, Dependency> iApplication = clone(specification.getApplication());
+		Architecture<Resource, Link> iArchitecture = clone(specification.getArchitecture());
 		Mappings<Task, Resource> iMappings = new Mappings<Task, Resource>();
 		Routings<Task, Resource, Link> iRoutings = new Routings<Task, Resource, Link>();
 
-		for (Resource r : sArchitecture) {
-			iArchitecture.addVertex(r);
-		}
-		for (Link l : sArchitecture.getEdges()) {
-			iArchitecture.addEdge(l, sArchitecture.getEndpoints(l), sArchitecture.getEdgeType(l));
-		}
-
-		// copy application (including function attributes)
-		for (Task t : sApplication) {
-			iApplication.addVertex(t);
-		}
-		for (Dependency e : sApplication.getEdges()) {
-			iApplication.addEdge(e, sApplication.getEndpoints(e), sApplication.getEdgeType(e));
-		}
-
-		for (Function<Task, Dependency> function : iApplication.getFunctions()) {
-			Task t = function.iterator().next();
-			setAttributes(function, sApplication.getFunction(t).getAttributes());
-		}
-
-		for (Mapping<Task, Resource> m : sMappings) {
+		for (Mapping<Task, Resource> m : specification.getMappings()) {
 			iMappings.add(m);
 		}
 
-		for (Task c : filterCommunications(sApplication)) {
+		Routings<Task, Resource, Link> sRoutings = specification.getRoutings();
+		for (Task c : filterCommunications(specification.getApplication())) {
 			Architecture<Resource, Link> sRouting = sRoutings.get(c);
 			iRoutings.set(c, sRouting);
 		}
@@ -555,48 +532,74 @@ public class Models {
 		Specification clone = new Specification(iApplication, iArchitecture, iMappings, iRoutings);
 		return clone;
 	}
-	
-	public static void filterByResources(Specification specification, Collection<Resource> resources){
-		
+
+	public static <T extends Task, D extends Dependency> Application<T, D> clone(Application<T, D> sApplication) {
+		Application<T, D> iApplication = new Application<T, D>();
+		// copy application (including function attributes)
+		for (T t : sApplication) {
+			iApplication.addVertex(t);
+		}
+		for (D e : sApplication.getEdges()) {
+			iApplication.addEdge(e, sApplication.getEndpoints(e), sApplication.getEdgeType(e));
+		}
+
+		for (Function<T, D> function : iApplication.getFunctions()) {
+			T t = function.iterator().next();
+			setAttributes(function, sApplication.getFunction(t).getAttributes());
+		}
+		return iApplication;
+	}
+
+	public static <R extends Resource, L extends Link> Architecture<R, L> clone(Architecture<R, L> sArchitecture) {
+		Architecture<R, L> iArchitecture = new Architecture<R, L>();
+		for (R r : sArchitecture) {
+			iArchitecture.addVertex(r);
+		}
+		for (L l : sArchitecture.getEdges()) {
+			iArchitecture.addEdge(l, sArchitecture.getEndpoints(l), sArchitecture.getEdgeType(l));
+		}
+		return iArchitecture;
+	}
+
+	public static void filterByResources(Specification specification, Collection<Resource> resources) {
+
 		Set<Resource> deleteResources = new HashSet<Resource>();
 		for (Resource rd : specification.getArchitecture()) {
 			if (!resources.contains(rd)) {
 				deleteResources.add(rd);
 			}
 		}
-		Set<Mapping<Task,Resource>> deleteMappings = new HashSet<Mapping<Task,Resource>>();
+		Set<Mapping<Task, Resource>> deleteMappings = new HashSet<Mapping<Task, Resource>>();
 		Set<Task> deleteTasks = new HashSet<Task>();
-		
-		
+
 		for (Task task : specification.getApplication()) {
-			if (Models.isCommunication(task)){
+			if (Models.isCommunication(task)) {
 				Set<Resource> deleteRoutingResources = new HashSet<Resource>();
-				
+
 				Architecture<Resource, Link> routing = specification.getRoutings().get(task);
-				for(Resource r: routing){
-					if(!resources.contains(r)){
+				for (Resource r : routing) {
+					if (!resources.contains(r)) {
 						deleteRoutingResources.add(r);
 					}
 				}
-				for(Resource r: deleteRoutingResources){
+				for (Resource r : deleteRoutingResources) {
 					routing.removeVertex(r);
 				}
 				deleteTasks.add(task); // remove all communications
-				/*if(routing.getVertexCount() == 0){
-					deleteTasks.add(task);
-				}*/
+				/*
+				 * if(routing.getVertexCount() == 0){ deleteTasks.add(task); }
+				 */
 
-				
-			} else if(Models.isProcess(task)){
+			} else if (Models.isProcess(task)) {
 				boolean keep = false;
-				for(Mapping<Task,Resource> mapping: specification.getMappings().get(task)){
-					if(resources.contains(mapping.getTarget())){
+				for (Mapping<Task, Resource> mapping : specification.getMappings().get(task)) {
+					if (resources.contains(mapping.getTarget())) {
 						keep = true;
 					} else {
 						deleteMappings.add(mapping);
 					}
 				}
-				if(!keep){
+				if (!keep) {
 					deleteTasks.add(task);
 				}
 			}
@@ -605,7 +608,7 @@ public class Models {
 		specification.getMappings().removeAll(deleteMappings);
 		specification.getApplication().removeVertices(deleteTasks);
 		specification.getArchitecture().removeVertices(deleteResources);
-		
+
 	}
 
 	public static void filter(Specification specification, Collection<Function<Task, Dependency>> functions) {
@@ -659,34 +662,34 @@ public class Models {
 		for (Resource resource : removeResources) {
 			specification.getArchitecture().removeVertex(resource);
 		}
-		
-		for(Architecture<Resource, Link> routing: specification.getRoutings().getRoutings()){
+
+		for (Architecture<Resource, Link> routing : specification.getRoutings().getRoutings()) {
 			List<Resource> remove = new ArrayList<Resource>();
-			
-			for(Resource resource: routing){
-				if(!specification.getArchitecture().containsVertex(resource)){
+
+			for (Resource resource : routing) {
+				if (!specification.getArchitecture().containsVertex(resource)) {
 					remove.add(resource);
 				}
 			}
-			
-			for(Resource resource: remove){
+
+			for (Resource resource : remove) {
 				routing.removeVertex(resource);
 			}
 		}
 
 	}
-	
-	public static void filterByFunctionName(Specification specification, Collection<String> functions){
-		Collection<Function<Task, Dependency>> funcs = new HashSet<Function<Task,Dependency>>();
-		for(String f: functions){
+
+	public static void filterByFunctionName(Specification specification, Collection<String> functions) {
+		Collection<Function<Task, Dependency>> funcs = new HashSet<Function<Task, Dependency>>();
+		for (String f : functions) {
 			funcs.add(specification.getApplication().getFunction(f));
 		}
 		filter(specification, funcs);
 	}
-	
-	public static void filterByFunctionName(Specification specification, String... functions){
+
+	public static void filterByFunctionName(Specification specification, String... functions) {
 		Collection<String> funcs = new HashSet<String>();
-		for(String s: functions){
+		for (String s : functions) {
 			funcs.add(s);
 		}
 		filterByFunctionName(specification, funcs);
