@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<specification>
+<specification xmlns="http://opendse.sourceforge.net"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://opendse.sourceforge.net http://opendse.sourceforge.net/schema.xsd">
   <architecture>
     <resource id="bus1">
       <attributes>
@@ -34,27 +36,27 @@
         <attribute name="memory:CAPACITY-MAX" type="INT">15</attribute>
       </attributes>
     </resource>
-    <link id="l4" source="r2" destination="bus2" type="UNDIRECTED">
+    <link id="l4" source="r2" destination="bus2" orientation="UNDIRECTED">
       <attributes>
         <attribute name="TYPE" type="STRING">cc</attribute>
       </attributes>
     </link>
-    <link id="l5" source="r3" destination="bus2" type="UNDIRECTED">
+    <link id="l5" source="r3" destination="bus2" orientation="UNDIRECTED">
       <attributes>
         <attribute name="TYPE" type="STRING">cc</attribute>
       </attributes>
     </link>
-    <link id="l2" source="r2" destination="bus1" type="UNDIRECTED">
+    <link id="l2" source="r2" destination="bus1" orientation="UNDIRECTED">
       <attributes>
         <attribute name="TYPE" type="STRING">cc</attribute>
       </attributes>
     </link>
-    <link id="l3" source="r1" destination="bus2" type="UNDIRECTED">
+    <link id="l3" source="r1" destination="bus2" orientation="UNDIRECTED">
       <attributes>
         <attribute name="TYPE" type="STRING">cc</attribute>
       </attributes>
     </link>
-    <link id="l1" source="r1" destination="bus1" type="UNDIRECTED">
+    <link id="l1" source="r1" destination="bus1" orientation="UNDIRECTED">
       <attributes>
         <attribute name="TYPE" type="STRING">cc</attribute>
       </attributes>
@@ -76,16 +78,6 @@
         <attribute name="memory" type="INT">5</attribute>
       </attributes>
     </task>
-    <communication id="c1">
-      <attributes>
-        <attribute name="utilization" type="INT">10</attribute>
-      </attributes>
-    </communication>
-    <communication id="c2">
-      <attributes>
-        <attribute name="utilization" type="INT">10</attribute>
-      </attributes>
-    </communication>
     <task id="t4">
       <attributes>
         <attribute name="memory" type="INT">5</attribute>
@@ -101,18 +93,28 @@
         <attribute name="memory" type="INT">5</attribute>
       </attributes>
     </task>
+    <communication id="c1">
+      <attributes>
+        <attribute name="utilization" type="INT">10</attribute>
+      </attributes>
+    </communication>
+    <communication id="c2">
+      <attributes>
+        <attribute name="utilization" type="INT">10</attribute>
+      </attributes>
+    </communication>
     <communication id="c3">
       <attributes>
         <attribute name="utilization" type="INT">10</attribute>
       </attributes>
     </communication>
-    <dependency id="d1" source="t1" destination="c1" type="DIRECTED"/>
-    <dependency id="d2" source="c1" destination="t2" type="DIRECTED"/>
-    <dependency id="d3" source="t3" destination="c2" type="DIRECTED"/>
-    <dependency id="d5" source="c2" destination="t5" type="DIRECTED"/>
-    <dependency id="d4" source="c2" destination="t4" type="DIRECTED"/>
-    <dependency id="d7" source="c3" destination="t6" type="DIRECTED"/>
-    <dependency id="d6" source="t5" destination="c3" type="DIRECTED"/>
+    <dependency id="d1" source="t1" destination="c1" orientation="DIRECTED"/>
+    <dependency id="d2" source="c1" destination="t2" orientation="DIRECTED"/>
+    <dependency id="d3" source="t3" destination="c2" orientation="DIRECTED"/>
+    <dependency id="d5" source="c2" destination="t5" orientation="DIRECTED"/>
+    <dependency id="d4" source="c2" destination="t4" orientation="DIRECTED"/>
+    <dependency id="d7" source="c3" destination="t6" orientation="DIRECTED"/>
+    <dependency id="d6" source="t5" destination="c3" orientation="DIRECTED"/>
     <functions>
       <function anchor="t2">
         <attributes>
@@ -147,27 +149,27 @@
       <resource id="r1"/>
       <resource id="r2"/>
       <resource id="r3"/>
-      <link id="l4" source="r2" destination="bus2" type="UNDIRECTED">
+      <link id="l4" source="r2" destination="bus2" orientation="UNDIRECTED">
         <attributes>
           <attribute name="TYPE" type="STRING">cc</attribute>
         </attributes>
       </link>
-      <link id="l5" source="r3" destination="bus2" type="UNDIRECTED">
+      <link id="l5" source="r3" destination="bus2" orientation="UNDIRECTED">
         <attributes>
           <attribute name="TYPE" type="STRING">cc</attribute>
         </attributes>
       </link>
-      <link id="l2" source="r2" destination="bus1" type="UNDIRECTED">
+      <link id="l2" source="r2" destination="bus1" orientation="UNDIRECTED">
         <attributes>
           <attribute name="TYPE" type="STRING">cc</attribute>
         </attributes>
       </link>
-      <link id="l3" source="r1" destination="bus2" type="UNDIRECTED">
+      <link id="l3" source="r1" destination="bus2" orientation="UNDIRECTED">
         <attributes>
           <attribute name="TYPE" type="STRING">cc</attribute>
         </attributes>
       </link>
-      <link id="l1" source="r1" destination="bus1" type="UNDIRECTED">
+      <link id="l1" source="r1" destination="bus1" orientation="UNDIRECTED">
         <attributes>
           <attribute name="TYPE" type="STRING">cc</attribute>
         </attributes>
@@ -179,27 +181,27 @@
       <resource id="r1"/>
       <resource id="r2"/>
       <resource id="r3"/>
-      <link id="l4" source="r2" destination="bus2" type="UNDIRECTED">
+      <link id="l4" source="r2" destination="bus2" orientation="UNDIRECTED">
         <attributes>
           <attribute name="TYPE" type="STRING">cc</attribute>
         </attributes>
       </link>
-      <link id="l5" source="r3" destination="bus2" type="UNDIRECTED">
+      <link id="l5" source="r3" destination="bus2" orientation="UNDIRECTED">
         <attributes>
           <attribute name="TYPE" type="STRING">cc</attribute>
         </attributes>
       </link>
-      <link id="l2" source="r2" destination="bus1" type="UNDIRECTED">
+      <link id="l2" source="r2" destination="bus1" orientation="UNDIRECTED">
         <attributes>
           <attribute name="TYPE" type="STRING">cc</attribute>
         </attributes>
       </link>
-      <link id="l3" source="r1" destination="bus2" type="UNDIRECTED">
+      <link id="l3" source="r1" destination="bus2" orientation="UNDIRECTED">
         <attributes>
           <attribute name="TYPE" type="STRING">cc</attribute>
         </attributes>
       </link>
-      <link id="l1" source="r1" destination="bus1" type="UNDIRECTED">
+      <link id="l1" source="r1" destination="bus1" orientation="UNDIRECTED">
         <attributes>
           <attribute name="TYPE" type="STRING">cc</attribute>
         </attributes>
@@ -211,27 +213,27 @@
       <resource id="r1"/>
       <resource id="r2"/>
       <resource id="r3"/>
-      <link id="l4" source="r2" destination="bus2" type="UNDIRECTED">
+      <link id="l4" source="r2" destination="bus2" orientation="UNDIRECTED">
         <attributes>
           <attribute name="TYPE" type="STRING">cc</attribute>
         </attributes>
       </link>
-      <link id="l5" source="r3" destination="bus2" type="UNDIRECTED">
+      <link id="l5" source="r3" destination="bus2" orientation="UNDIRECTED">
         <attributes>
           <attribute name="TYPE" type="STRING">cc</attribute>
         </attributes>
       </link>
-      <link id="l2" source="r2" destination="bus1" type="UNDIRECTED">
+      <link id="l2" source="r2" destination="bus1" orientation="UNDIRECTED">
         <attributes>
           <attribute name="TYPE" type="STRING">cc</attribute>
         </attributes>
       </link>
-      <link id="l3" source="r1" destination="bus2" type="UNDIRECTED">
+      <link id="l3" source="r1" destination="bus2" orientation="UNDIRECTED">
         <attributes>
           <attribute name="TYPE" type="STRING">cc</attribute>
         </attributes>
       </link>
-      <link id="l1" source="r1" destination="bus1" type="UNDIRECTED">
+      <link id="l1" source="r1" destination="bus1" orientation="UNDIRECTED">
         <attributes>
           <attribute name="TYPE" type="STRING">cc</attribute>
         </attributes>

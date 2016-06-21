@@ -51,13 +51,13 @@ import com.google.inject.Module;
  * 
  */
 public class SingleImplementation {
-	
+
 	protected final List<Module> modules = new ArrayList<Module>();
-	
-	public SingleImplementation(){
+
+	public SingleImplementation() {
 	}
-	
-	public SingleImplementation(Collection<Module> modules){
+
+	public SingleImplementation(Collection<Module> modules) {
 		this.modules.addAll(modules);
 	}
 
@@ -68,8 +68,8 @@ public class SingleImplementation {
 	public Specification get(final Specification spec, boolean generateRoutings) {
 		if (generateRoutings) {
 			RoutingGenerator routingsGenerator = new RoutingGenerator();
-			Routings<Task, Resource, Link> fullRoutings = routingsGenerator.fill(
-					spec.getApplication(), spec.getArchitecture());
+			Routings<Task, Resource, Link> fullRoutings = routingsGenerator.fill(spec.getApplication(),
+					spec.getArchitecture());
 
 			for (Task task : fullRoutings.getTasks()) {
 				spec.getRoutings().remove(task);
@@ -98,8 +98,8 @@ public class SingleImplementation {
 		modules.add(ea);
 		modules.add(opt);
 		modules.add(specModule);
-		
-		for(Module module: this.modules){
+
+		for (Module module : this.modules) {
 			modules.add(module);
 		}
 
@@ -111,8 +111,7 @@ public class SingleImplementation {
 			Archive archive = task.getInstance(Archive.class);
 
 			for (Individual individual : archive) {
-				Specification impl = ((ImplementationWrapper) individual.getPhenotype())
-						.getImplementation();
+				Specification impl = ((ImplementationWrapper) individual.getPhenotype()).getImplementation();
 				return impl;
 			}
 

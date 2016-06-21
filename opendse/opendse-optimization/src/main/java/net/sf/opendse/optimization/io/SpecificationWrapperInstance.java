@@ -8,8 +8,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -21,23 +21,55 @@
  *******************************************************************************/
 package net.sf.opendse.optimization.io;
 
+import java.util.Comparator;
+import java.util.Set;
+import java.util.TreeSet;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.optimization.SpecificationWrapper;
 import net.sf.opendse.optimization.encoding.RoutingFilter;
 
+@Singleton
 public class SpecificationWrapperInstance implements SpecificationWrapper {
 
+	protected Set<SpecificationTransformer> transformers = new TreeSet<SpecificationTransformer>(
+			new Comparator<SpecificationTransformer>() {
+				@Override
+				public int compare(SpecificationTransformer o1, SpecificationTransformer o2) {
+					return ((Integer) o1.getPriority()).compareTo(o2.getPriority());
+				}
+			});
+
 	protected final Specification specification;
-	
+	private boolean init = false;
+
 	public SpecificationWrapperInstance(Specification specification) {
-		super();
 		assert specification != null;
 		this.specification = specification;
-		RoutingFilter.filter(this.specification);
+	}
+
+	@Inject(optional = true)
+	public void setSpecificationTransformers(Set<SpecificationTransformer> transformers) {
+		if (transformers != null) {
+			this.transformers.addAll(transformers);
+		}
 	}
 
 	@Override
 	public Specification getSpecification() {
+		if (!init) {
+			init = true;
+			if (transformers != null) {
+				for (SpecificationTransformer specificationTransformer : transformers) {
+					System.out.println("Starting " + specificationTransformer);
+					specificationTransformer.transform(specification);
+				}
+			}
+			RoutingFilter.filter(this.specification);
+		}
 		return specification;
 	}
 

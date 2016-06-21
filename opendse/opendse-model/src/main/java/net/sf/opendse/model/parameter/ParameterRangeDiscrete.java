@@ -21,41 +21,51 @@
  *******************************************************************************/
 package net.sf.opendse.model.parameter;
 
-import java.util.List;
-
-import cern.colt.Arrays;
-
 /**
- * The {@code ParameterSelect} is a parameter that selects from a set of
- * elements.
+ * The {@code ParameterRangeDiscrete} is a {@link Integer}-valued parameter
+ * within a lower and an upper bound.
  * 
- * @author Martin Lukasiewycz
+ * @author Falko Höfte
  * 
  */
-public class ParameterSelect implements Parameter {
+public class ParameterRangeDiscrete implements Parameter {
 
-	protected final Object value;
-	protected final Object[] elements;
-	protected final String reference;
+	protected final int value;
+	protected final int lb;
+	protected final int ub;
 
 	/**
-	 * Constructs a {@code ParameterSelect}.
+	 * Constructs a {@code ParameterRange}.
 	 * 
 	 * @param value
 	 *            the default value
-	 * @param reference
-	 *            the reference parameter
-	 * @param elements
-	 *            the set of available elements
+	 * @param lb
+	 *            the lower bound
+	 * @param ub
+	 *            the upper bound
 	 */
-	public ParameterSelect(Object value, String reference, List<Object> elements) {
-		super();
+	public ParameterRangeDiscrete(int value, int lb, int ub) {
 		this.value = value;
-		this.reference = reference;
-		this.elements = new Object[elements.size()];
-		for (int i = 0; i < elements.size(); i++) {
-			this.elements[i] = elements.get(i);
-		}
+		this.lb = lb;
+		this.ub = ub;
+	}
+
+	/**
+	 * Returns the lower bound.
+	 * 
+	 * @return the lower bound
+	 */
+	public int getLowerBound() {
+		return lb;
+	}
+
+	/**
+	 * Returns the upper bound.
+	 * 
+	 * @return the upper bound
+	 */
+	public int getUpperBound() {
+		return ub;
 	}
 
 	/*
@@ -64,42 +74,8 @@ public class ParameterSelect implements Parameter {
 	 * @see net.sf.adse.model.parameter.Parameter#getValue()
 	 */
 	@Override
-	public Object getValue() {
+	public Integer getValue() {
 		return value;
-	}
-
-	/**
-	 * Returns the set of available elements.
-	 * 
-	 * @return the set of elements
-	 */
-	public Object[] getElements() {
-		return elements;
-	}
-
-	/**
-	 * Returns the reference of the parameter.
-	 * 
-	 * @return the reference
-	 */
-	public String getReference() {
-		return reference;
-	}
-
-	/**
-	 * Returns the first index of the object.
-	 * 
-	 * @param o
-	 *            the object
-	 * @return the index
-	 */
-	public int indexOf(Object o) {
-		for (int i = 0; i < elements.length; i++) {
-			if (o.equals(elements[i])) {
-				return i;
-			}
-		}
-		return -1;
 	}
 
 	/*
@@ -109,7 +85,7 @@ public class ParameterSelect implements Parameter {
 	 */
 	@Override
 	public String toString() {
-		return value + " " + Arrays.toString(elements) + ((reference != null) ? " " + reference : "");
+		return value + " (" + lb + "," + ub + ")";
 	}
 
 }

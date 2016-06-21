@@ -29,7 +29,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -38,6 +37,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
 
+import org.opt4j.core.config.Icons;
+
 import net.sf.opendse.io.SpecificationReader;
 import net.sf.opendse.io.SpecificationWriter;
 import net.sf.opendse.model.Mappings;
@@ -45,12 +46,10 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 
-import org.opt4j.core.config.Icons;
-
 public class SpecificationPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	protected JToolBar bar = null;
 
 	public SpecificationPanel(final Specification specification) {
@@ -67,8 +66,10 @@ public class SpecificationPanel extends JPanel {
 	protected void setSpecification(final Specification specification) {
 		this.removeAll();
 
-		//Application<Task, Dependency> application = specification.getApplication();
-		//Architecture<Resource, Link> architecture = specification.getArchitecture();
+		// Application<Task, Dependency> application =
+		// specification.getApplication();
+		// Architecture<Resource, Link> architecture =
+		// specification.getArchitecture();
 		Mappings<Task, Resource> mappings = specification.getMappings();
 
 		ElementSelection selection = new ElementSelection();
@@ -104,12 +105,8 @@ public class SpecificationPanel extends JPanel {
 
 					File file = fileChooser.getSelectedFile();
 					SpecificationWriter writer = new SpecificationWriter();
-					try {
-						writer.write(specification, new FileOutputStream(file));
-						System.out.println("Specification succesfully saved to " + file);
-					} catch (FileNotFoundException e1) {
-						e1.printStackTrace();
-					}
+					writer.write(specification, file);
+					System.out.println("Specification succesfully saved to " + file);
 				}
 
 			}

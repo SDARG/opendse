@@ -8,8 +8,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -27,7 +27,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -41,6 +43,7 @@ import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.parameter.ParameterRange;
+import net.sf.opendse.model.parameter.ParameterRangeDiscrete;
 import net.sf.opendse.model.parameter.ParameterSelect;
 import net.sf.opendse.model.parameter.ParameterUniqueID;
 
@@ -64,6 +67,7 @@ public class Common {
 		classMap.put("STRING", String.class);
 		classMap.put("BOOL", Boolean.class);
 		classMap.put("RANGE", ParameterRange.class);
+		classMap.put("DISCRETERANGE", ParameterRangeDiscrete.class);
 		classMap.put("SELECT", ParameterSelect.class);
 		classMap.put("UID", ParameterUniqueID.class);
 		classMap.put("resource", Resource.class);
@@ -72,9 +76,12 @@ public class Common {
 		classMap.put("communication", Communication.class);
 		classMap.put("dependency", Dependency.class);
 		classMap.put("mapping", Mapping.class);
+		classMap.put("SET", HashSet.class);
+		classMap.put("LIST", ArrayList.class);
 	}
 
 	protected static Set<Class<?>> primitives = new HashSet<Class<?>>();
+
 	static {
 		primitives.add(Boolean.class);
 		primitives.add(Byte.class);
@@ -133,10 +140,14 @@ public class Common {
 	}
 
 	@SuppressWarnings("rawtypes")
-	protected static Object toInstance(String value, Class<?> clazz) throws IllegalArgumentException, SecurityException,
-			InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+	protected static Object toInstance(String value, Class<?> clazz) throws IllegalArgumentException,
+			SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException {
 		if (!clazz.isEnum()) {
-			return clazz.getConstructor(String.class).newInstance(value.trim());
+			Constructor constructor = clazz.getConstructor(String.class);
+			if (constructor != null) {
+				return constructor.newInstance(value.trim());
+			}
 		} else {
 			Class<? extends Enum> eclazz = clazz.asSubclass(Enum.class);
 			for (Enum e : eclazz.getEnumConstants()) {
@@ -144,8 +155,8 @@ public class Common {
 					return e;
 				}
 			}
-			return null;
 		}
+		return null;
 	}
 
 	protected static void setAttributes(IAttributes e, Attributes attributes) {

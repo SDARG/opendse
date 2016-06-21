@@ -2,7 +2,7 @@ apply plugin: 'base'
 apply plugin: 'maven'
 apply plugin: 'application'
 
-version = '1.4'
+version = 'SNAPSHOT-' + new Date().format("yyyyMMdd")
 
 def stagingURL = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
 def snapshotURL = 'https://oss.sonatype.org/content/repositories/snapshots/'
@@ -30,6 +30,13 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
     apply plugin: 'signing'
+	apply plugin: 'eclipse'
+	
+	eclipse {
+		classpath {
+			containers 'org.springsource.ide.eclipse.gradle.classpathcontainer'
+		}
+	}
 	
     version = parent.version
 
@@ -164,13 +171,16 @@ task alldocs(type: Javadoc) {
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
-task copyWebsite(type: Copy){
+task copyWebsite(type: Copy, dependsOn: getTasksByName('copyWebsite', true)){
 	from('src/main/website/') {
 		include '**/*.html'
 		filter(ReplaceTokens, tokens: [version : project.version, date : project.dateISO])
 	}
 	from('src/main/website/') {
 		exclude '**/*.html'
+	}
+	subprojects.each { subproject ->
+		from new File(subproject.buildDir, 'website')
 	}
 	into 'build/website/'
 }
@@ -180,11 +190,6 @@ task copyJavadoc(type: Copy, dependsOn: alldocs){
 	into 'build/website/javadoc/'+version
 }
 
-task copyTutorial(type: Copy, dependsOn: ":opendse-tutorial:tutorial"){
-	from new File(project(':opendse-tutorial').buildDir,'tutorial')
-	into 'build/website/documentation/'+version
-}
-
-task website(dependsOn: [copyWebsite, copyJavadoc, copyTutorial]) {}
+task website(dependsOn: [copyWebsite, copyJavadoc]) {}
 
 task release(dependsOn: [fatjar,website] ){}
