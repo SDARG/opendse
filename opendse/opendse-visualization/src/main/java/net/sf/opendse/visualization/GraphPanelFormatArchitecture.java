@@ -67,7 +67,7 @@ public class GraphPanelFormatArchitecture extends AbstractGraphPanelFormat {
 	protected final ElementSelection selection;
 
 	public GraphPanelFormatArchitecture(Specification specification, ElementSelection selection) {
-		super();
+		super(new ColorModelArchitecture());
 		this.specification = specification;
 		this.architecture = specification.getArchitecture();
 		this.mappings = specification.getMappings();
@@ -75,6 +75,7 @@ public class GraphPanelFormatArchitecture extends AbstractGraphPanelFormat {
 		this.selection = selection;
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public Graph<Node, Edge> getGraph() {
 		Graph<?, ?> g = architecture;
@@ -101,27 +102,6 @@ public class GraphPanelFormatArchitecture extends AbstractGraphPanelFormat {
 		return layout;
 	}
 
-	Map<String, Color> colors = new HashMap<String, Color>();
-
-	{
-		colors.put("ECU", Graphics.STEELBLUE);
-		colors.put("CAN", Graphics.LIGHTSALMON);
-		colors.put("FlexRay", Graphics.ROSYBROWN);
-		colors.put("Sensor", Graphics.DODGERBLUE);
-		colors.put("Actuator", Graphics.DODGERBLUE);
-		colors.put("Gateway", Graphics.SADDLEBROWN);
-	}
-
-	@Override
-	public Color getColor(Node node) {
-		Color c = colors.get(node.getType());
-		if (c != null) {
-			return c;
-		} else {
-			return Graphics.STEELBLUE;
-		}
-	}
-
 	protected Map<FunctionTask, Set<Resource>> targets = new HashMap<FunctionTask, Set<Resource>>();
 
 	@Override
@@ -130,18 +110,18 @@ public class GraphPanelFormatArchitecture extends AbstractGraphPanelFormat {
 			return true;
 		} else if (selection.get() instanceof FunctionTask) {
 			if (targets.containsKey(selection.get())) {
-				return targets.get(selection.get()).contains((Resource) node);
+				return targets.get(selection.get()).contains(node);
 			} else {
 				Function<Task, Dependency> function = ((FunctionTask) selection.get()).getFunction();
 				Set<Resource> ts = new HashSet<Resource>();
 				for (Task t : Models.filterProcesses(function)) {
 					ts.addAll(mappings.getTargets(t));
 				}
-				for (Task t: Models.filterCommunications(function)){
+				for (Task t : Models.filterCommunications(function)) {
 					ts.addAll(routings.get(t).getVertices());
 				}
-				targets.put((FunctionTask)selection.get(), ts);
-				return ts.contains((Resource) node);
+				targets.put((FunctionTask) selection.get(), ts);
+				return ts.contains(node);
 			}
 		} else if (selection.get() instanceof Task) {
 			Task task = selection.get();
@@ -161,10 +141,8 @@ public class GraphPanelFormatArchitecture extends AbstractGraphPanelFormat {
 	public boolean isActive(Edge edge, Node n0, Node n1) {
 		if (!selection.isNull() && selection.get() instanceof ICommunication) {
 			Architecture<Resource, Link> routing = routings.get((Task) selection.get());
-			if(!routing.containsVertex((Resource)n0) || !routing.containsVertex((Resource)n1)){
-				return false;
-			}
-			return routing.findEdgeSet((Resource) n0, (Resource) n1).contains(edge);
+			return routing.containsVertex((Resource) n0) && routing.containsVertex((Resource) n1)
+					&& routing.findEdgeSet((Resource) n0, (Resource) n1).contains(edge);
 		} else {
 			Pair<Resource> endpoints = architecture.getEndpoints((Link) edge);
 			Resource r0 = endpoints.getFirst();
@@ -211,6 +189,7 @@ public class GraphPanelFormatArchitecture extends AbstractGraphPanelFormat {
 		return 20;
 	}
 
+	@Override
 	public Shape getSymbol(Node node) {
 		if ("Sensor".equals(node.getType())) {
 			return shapes.getInnerOut(node);

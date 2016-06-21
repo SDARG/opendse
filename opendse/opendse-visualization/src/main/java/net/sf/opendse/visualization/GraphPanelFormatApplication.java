@@ -60,7 +60,7 @@ public class GraphPanelFormatApplication extends AbstractGraphPanelFormat {
 	protected final ElementSelection selection;
 
 	public GraphPanelFormatApplication(Specification specification, ElementSelection selection) {
-		super();
+		super(new ColorModelApplication());
 		this.specification = specification;
 		this.application = convert(specification.getApplication());
 		this.mappings = specification.getMappings();
@@ -73,7 +73,7 @@ public class GraphPanelFormatApplication extends AbstractGraphPanelFormat {
 		protected final Function<Task, Dependency> function;
 
 		public FunctionTask(Function<Task, Dependency> function) {
-			super(function.<String>getAttribute("ID"));
+			super(function.<String> getAttribute("ID"));
 			this.attributes = function.getAttributes();
 			this.function = function;
 		}
@@ -85,7 +85,7 @@ public class GraphPanelFormatApplication extends AbstractGraphPanelFormat {
 		@SuppressWarnings("unchecked")
 		@Override
 		public <O> O getAttribute(String identifier) {
-			return (O)attributes.getAttribute(identifier);
+			return (O) attributes.getAttribute(identifier);
 		}
 
 		@Override
@@ -150,25 +150,16 @@ public class GraphPanelFormatApplication extends AbstractGraphPanelFormat {
 		return copy;
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public Graph<Node, Edge> getGraph() {
 		Graph<?, ?> g = application;
 		return (Graph<Node, Edge>) g;
 	}
 
+	@Override
 	public Layout<Node, LocalEdge> getLayout(DirectedGraph<Node, LocalEdge> graph) {
 		return new DistanceFlowLayout<Node, LocalEdge>(graph);
-	}
-
-	@Override
-	public Color getColor(Node node) {
-		if (node instanceof FunctionTask) {
-			return Graphics.GRAY;
-		} else if (node instanceof ICommunication) {
-			return Graphics.KHAKI;
-		} else {
-			return Graphics.TOMATO;
-		}
 	}
 
 	@Override
@@ -191,7 +182,7 @@ public class GraphPanelFormatApplication extends AbstractGraphPanelFormat {
 			return node.equals(m.getSource());
 		} else if (selection.get() instanceof FunctionTask) {
 			Function<Task, Dependency> function = ((FunctionTask) selection.get()).getFunction();
-			return function.containsVertex((Task)node);
+			return function.containsVertex((Task) node);
 		}
 		return false;
 	}
@@ -234,6 +225,7 @@ public class GraphPanelFormatApplication extends AbstractGraphPanelFormat {
 		}
 	}
 
+	@Override
 	public Shape getSymbol(Node node) {
 		if ("Sensor".equals(node.getType())) {
 			return shapes.getInnerOut(node);
