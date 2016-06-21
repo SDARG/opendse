@@ -16,10 +16,12 @@ public class ColorModelArchitecture implements ColorModel {
 	{
 		colors.put("ECU", Graphics.STEELBLUE);
 		colors.put("CAN", Graphics.LIGHTSALMON);
+		colors.put("CAN-FD", Graphics.DARKSALMON);
 		colors.put("FlexRay", Graphics.ROSYBROWN);
 		colors.put("Sensor", Graphics.DODGERBLUE);
 		colors.put("Actuator", Graphics.DODGERBLUE);
 		colors.put("Gateway", Graphics.SADDLEBROWN);
+		colors.put("Switch", Graphics.BISQUE);
 	}
 
 	@Override
