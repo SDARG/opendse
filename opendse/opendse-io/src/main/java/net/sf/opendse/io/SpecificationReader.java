@@ -440,6 +440,9 @@ public class SpecificationReader {
 		String type = eAttribute.getAttributeValue("type");
 		String value = eAttribute.getValue();
 
+		if (type == null) {
+			throw new IllegalArgumentException("no type given for attribute " + eAttribute);
+		}
 		if (parameter != null) {
 
 			if (parameter.equals("RANGE")) {

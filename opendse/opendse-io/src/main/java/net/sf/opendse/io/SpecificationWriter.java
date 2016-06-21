@@ -342,8 +342,11 @@ public class SpecificationWriter {
 		nu.xom.Element eAttributes = new nu.xom.Element("attributes", NS);
 
 		for (String attributeName : attributes.getAttributeNames()) {
-			nu.xom.Element eAttr = toElement(attributeName, attributes.getAttribute(attributeName));
-			eAttributes.appendChild(eAttr);
+			Object value = attributes.getAttribute(attributeName);
+			if (value != null) {
+				nu.xom.Element eAttr = toElement(attributeName, value);
+				eAttributes.appendChild(eAttr);
+			}
 		}
 
 		return eAttributes;
