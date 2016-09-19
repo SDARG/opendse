@@ -457,7 +457,13 @@ public class SpecificationReader {
 				throw new IllegalArgumentException("Unknown parameter type: " + parameter);
 			}
 		} else {
-			Class<?> clazz = getClass(type);
+			Class<?> clazz = null;
+			try {
+				clazz = getClass(type);
+			} catch (ClassNotFoundException e) {
+				System.err.println("Class " + type + " not found. Ignoring attribute value " + value);
+				return null;
+			}
 			if (Collection.class.isAssignableFrom(clazz)) {
 				return toAttributeCollection(eAttribute, clazz);
 			} else {
