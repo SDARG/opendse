@@ -8,8 +8,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.sf.opendse.model.Attributes;
 import net.sf.opendse.model.Element;
 import net.sf.opendse.model.Models;
 import net.sf.opendse.model.Specification;
@@ -41,21 +42,25 @@ import org.opt4j.satdecoding.ContradictionException;
 
 import com.google.inject.Inject;
 
-public class DesignSpaceExplorationDecoder implements Decoder<CompositeGenotype<String, Genotype>, ImplementationWrapper> {
+public class DesignSpaceExplorationDecoder implements
+		Decoder<CompositeGenotype<String, Genotype>, ImplementationWrapper> {
 
 	protected final SATCreatorDecoder satDecoder;
 	protected final ParameterDecoder parameterDecoder;
+	protected final Specification specification;
 
 	protected final Map<ParameterReference, ParameterReference> selectParameterRef = new HashMap<ParameterReference, ParameterReference>();
 	protected final Map<ParameterReference, List<Object>> selectParametersMap = new HashMap<ParameterReference, List<Object>>();
 
 	@Inject
-	public DesignSpaceExplorationDecoder(SATCreatorDecoder satDecoder, ParameterDecoder parameterDecoder, SpecificationWrapper specWrapper) {
+	public DesignSpaceExplorationDecoder(SATCreatorDecoder satDecoder, ParameterDecoder parameterDecoder,
+			SpecificationWrapper specWrapper) {
 		super();
 		this.satDecoder = satDecoder;
 		this.parameterDecoder = parameterDecoder;
+		this.specification = specWrapper.getSpecification();
 
-		for (Element element : Models.getElements(specWrapper.getSpecification())) {
+		for (Element element : Models.getElements(specification)) {
 			for (String name : element.getAttributeNames()) {
 				Parameter parameter = element.getAttributeParameter(name);
 				if (parameter != null && parameter instanceof ParameterSelect) {
@@ -87,46 +92,59 @@ public class DesignSpaceExplorationDecoder implements Decoder<CompositeGenotype<
 			System.err.println("Stopping");
 			throw e;
 		}
-		ParameterMap parameterMap = parameterDecoder.decode(parameterGenotype);
 
 		Specification implementation = wrapper.getImplementation();
 
 		if (implementation != null) {
-			Map<String, Element> elementMap = Models.getElementsMap(implementation);
+			decodeParameters(parameterGenotype, implementation);
+		}
 
-			if (!parameterMap.isEmpty()) {
-				for (Entry<ParameterReference, Object> entry : parameterMap.entrySet()) {
-					ParameterReference ref = entry.getKey();
-					String id = ref.getId();
-					String attribute = ref.getAttribute();
+		return wrapper;
+	}
 
-					if (elementMap.containsKey(id)) {
-						Element element = elementMap.get(id);
-						Object value = entry.getValue();
-						element.setAttribute(attribute, value);
-					}
-				}
-			}
+	/**
+	 * Decodes the {@link Parameter}s and sets the according {@link Attributes}.
+	 * 
+	 * @param parameterGenotype
+	 *            the parameter genotype
+	 * @param implementation
+	 *            the corresponding implementation to augment
+	 */
+	private void decodeParameters(CompositeGenotype<String, Genotype> parameterGenotype, Specification implementation) {
+		ParameterMap parameterMap = parameterDecoder.decode(parameterGenotype);
 
-			for (Entry<ParameterReference, ParameterReference> entry : selectParameterRef.entrySet()) {
+		Map<String, Element> elementMap = Models.getElementsMap(implementation);
+
+		if (!parameterMap.isEmpty()) {
+			for (Entry<ParameterReference, Object> entry : parameterMap.entrySet()) {
 				ParameterReference ref = entry.getKey();
-				ParameterReference refref = entry.getValue();
-
 				String id = ref.getId();
-				String refAttribute = ref.getAttribute();
-				String refrefAttribute = refref.getAttribute();
+				String attribute = ref.getAttribute();
 
-				Element element = elementMap.get(id);
-				if (element != null) {
-					Object o = element.getAttribute(refrefAttribute);
-					int index = ((ParameterSelect) (refref.getParameter())).indexOf(o);
-
-					Object o2 = selectParametersMap.get(ref).get(index);
-					element.setAttribute(refAttribute, o2);
+				if (elementMap.containsKey(id)) {
+					Element element = elementMap.get(id);
+					Object value = entry.getValue();
+					element.setAttribute(attribute, value);
 				}
 			}
 		}
 
-		return wrapper;
+		for (Entry<ParameterReference, ParameterReference> entry : selectParameterRef.entrySet()) {
+			ParameterReference ref = entry.getKey();
+			ParameterReference refref = entry.getValue();
+
+			String id = ref.getId();
+			String refAttribute = ref.getAttribute();
+			String refrefAttribute = refref.getAttribute();
+
+			Element element = elementMap.get(id);
+			if (element != null) {
+				Object o = element.getAttribute(refrefAttribute);
+				int index = ((ParameterSelect) (refref.getParameter())).indexOf(o);
+
+				Object o2 = selectParametersMap.get(ref).get(index);
+				element.setAttribute(refAttribute, o2);
+			}
+		}
 	}
 }
