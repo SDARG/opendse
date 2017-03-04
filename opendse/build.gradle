@@ -85,9 +85,9 @@ subprojects {
 	 
 	               licenses {
 	                   license {
-	                       name 'GNU Lesser General Public License'
-	                       url 'http://www.gnu.org/licenses/lgpl.txt'
-	                       distribution 'repo'
+				            name "The MIT License"
+				            url "http://www.opensource.org/licenses/MIT"
+				            distribution 'repo'
 	                   }
 	               }
 	 
