@@ -68,7 +68,7 @@ import edu.uci.ics.jung.graph.util.Pair;
  */
 public class Encoding {
 
-	public static List<Class<?>> order = Arrays.<Class<?>> asList(Resource.class, Link.class, Mapping.class, CR.class,
+	public static List<Class<?>> order = Arrays.<Class<?>>asList(Resource.class, Link.class, Mapping.class, CR.class,
 			CLRR.class);
 
 	public enum RoutingEncoding {
@@ -107,6 +107,13 @@ public class Encoding {
 		this.routingEncoding = routingEncoding;
 	}
 
+	/**
+	 * For each process task in the application graph, exactly one mapping edge
+	 * has to be activated in the implementation.
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ1(List<Constraint> constraints, Specification specification) {
 		for (Task task : filterProcesses(specification.getApplication())) {
 			Constraint constraint = new Constraint("=", 1);
@@ -117,6 +124,13 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * A resource which is the mapping target of an activated mapping edge also
+	 * has to be activated in a valid implementation.
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ2(List<Constraint> constraints, Specification specification) {
 		for (Mapping<Task, Resource> m : specification.getMappings()) {
 			Constraint constraint = new Constraint(">=", 0);
@@ -127,12 +141,20 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * This method addresses the case when there is a dependancy between two
+	 * process tasks.
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ3EQ4(List<Constraint> constraints, Specification specification) {
 		for (Dependency dependency : specification.getApplication().getEdges()) {
 			Task p0 = specification.getApplication().getSource(dependency);
 			Task p1 = specification.getApplication().getDest(dependency);
 
 			if (isProcess(p0) && isProcess(p1)) {
+				// both tasks are processes
 				for (Mapping<Task, Resource> m0 : specification.getMappings().get(p0)) {
 					for (Mapping<Task, Resource> m1 : specification.getMappings().get(p1)) {
 						Resource r0 = m0.getTarget();
@@ -141,12 +163,18 @@ public class Encoding {
 						Edge l = specification.getArchitecture().findEdge(r0, r1);
 
 						if (l != null) {
+							// case where there is a link connecting the mapping
+							// targets of both processes
 							Constraint constraint = new Constraint(">=", -1); // EQ3
 							constraint.add(p(l));
 							constraint.add(-1, p(m0));
 							constraint.add(-1, p(m1));
 							constraints.add(constraint);
 						} else if (!r0.equals(r1)) {
+							// the processes are mapped to two different
+							// resources that are not connected by a link => at
+							// most one of the considered mapping edges may be
+							// activated at the same time
 							Constraint constraint = new Constraint("<=", 1); // EQ4
 							constraint.add(p(m0));
 							constraint.add(p(m1));
@@ -158,6 +186,13 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * A link is only activated if both end points of the link are activated as
+	 * well.
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ5(List<Constraint> constraints, Specification specification) {
 		for (Link l : specification.getArchitecture().getEdges()) {
 			Pair<Resource> pair = specification.getArchitecture().getEndpoints(l);
@@ -172,6 +207,13 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * A resource is only active in the routing of a communication task if the
+	 * corresponding CR variable is active.
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ6(List<Constraint> constraints, Specification specification) {
 		for (Task c : filterCommunications(specification.getApplication())) {
 			Architecture<Resource, Link> routing = specification.getRoutings().get(c);
@@ -184,6 +226,13 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * If the routing variable of a directed link is activated, this link has to
+	 * be activated in the architecture.
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ7(List<Constraint> constraints, Specification specification) {
 		for (Task c : filterCommunications(specification.getApplication())) {
 			Architecture<Resource, Link> routing = specification.getRoutings().get(c);
@@ -196,6 +245,13 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * A directed link can only be activated in the architecture if both end
+	 * point-resources are activated as well.
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ8(List<Constraint> constraints, Specification specification) {
 		for (Task c : filterCommunications(specification.getApplication())) {
 			Architecture<Resource, Link> routing = specification.getRoutings().get(c);
@@ -212,6 +268,15 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * An architecture link may only be part of one directed link in the
+	 * routings (based on the link connected resource A to resource B, either
+	 * the link from A to B or the link fom B to A may be taken into the
+	 * routing, but not both)
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ9(List<Constraint> constraints, Specification specification) {
 		for (Task c : filterCommunications(specification.getApplication())) {
 			Architecture<Resource, Link> routing = specification.getRoutings().get(c);
@@ -231,18 +296,33 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * 
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ10EQ11(List<Constraint> constraints, Specification specification) {
+		// iterate over all communications
 		for (Task c : filterCommunications(specification.getApplication())) {
+			// iterate over all flows of the current communication
 			for (Task p : filterProcesses(specification.getApplication().getNeighbors(c))) {
+				// iterate over all possible mapping targets of the current
+				// communication flow
 				for (Mapping<Task, Resource> m : specification.getMappings().get(p)) {
 					Resource r = m.getTarget();
-
 					if (specification.getRoutings().get(c).containsVertex(r)) {
+						// case where the resource is part of the routing graph
+						// : if the mapping of the comm flow on the resource is
+						// activated, the communication has to be routed over
+						// the resource
 						Constraint constraint = new Constraint(">=", 0); // EQ10
 						constraint.add(p(var(c, r)));
 						constraint.add(-1, p(m));
 						constraints.add(constraint);
 					} else {
+						// case where the resource is not in the routing graph :
+						// the mapping must not be activated
 						Constraint constraint = new Constraint("=", 0); // EQ11
 						constraint.add(p(m));
 						constraints.add(constraint);
@@ -252,6 +332,14 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * If the predecessor of a communication is mapped to a resource, this
+	 * resource must not have any in-links in the routing graph of the
+	 * communication.
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ12(List<Constraint> constraints, Specification specification) {
 		for (Task c : filterCommunications(specification.getApplication())) {
 			for (Task p : filterProcesses(specification.getApplication().getPredecessors(c))) {
@@ -271,6 +359,12 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * Any resource in the routing graph has no more than one in-link.
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ13(List<Constraint> constraints, Specification specification) {
 		for (Task c : filterCommunications(specification.getApplication())) {
 			Architecture<Resource, Link> routing = specification.getRoutings().get(c);
@@ -285,6 +379,14 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * If a resource is activated in the routing of a communication, it must be
+	 * the mapping target of at least one of the successors of the communication
+	 * and/or have at least one activated out-link.
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ14(List<Constraint> constraints, Specification specification) {
 		for (Task c : filterCommunications(specification.getApplication())) {
 			Architecture<Resource, Link> routing = specification.getRoutings().get(c);
@@ -306,6 +408,14 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * If a resource is activated in the routing of a communication, it must be
+	 * the maping target of at least one of the predecessors of the
+	 * communication and/or have at least one activated in-link.
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ15(List<Constraint> constraints, Specification specification) {
 		for (Task c : filterCommunications(specification.getApplication())) {
 			Architecture<Resource, Link> routing = specification.getRoutings().get(c);
@@ -328,6 +438,14 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * ONLY USED FOR ENCODING OF UNICAST MESSAGES
+	 * 
+	 * Each resource must not have more than one out-link in the routign graph.
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ16(List<Constraint> constraints, Specification specification) {
 		for (Task c : filterCommunications(specification.getApplication())) {
 			Architecture<Resource, Link> routing = specification.getRoutings().get(c);
@@ -342,6 +460,18 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * ONLY USED FOR ENCODING OF UNICAST MESSAGES
+	 * 
+	 * A resource in the unicast routing is either a) the mapping target of the
+	 * communication predecessor and has one out-link, b) the mapping target of
+	 * the communication successor and has one in-link, c) a resource with one
+	 * in- and one out-link or d) the mapping target of both the pre- and the
+	 * successor of the communication.
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ17(List<Constraint> constraints, Specification specification) {
 		final Application<Task, Dependency> application = specification.getApplication();
 
@@ -374,6 +504,14 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * A resource in the routing graph of a communication must not have
+	 * activated in-links if it is the mapping target of the predecessor of the
+	 * communication.
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ18(List<Constraint> constraints, Specification specification) {
 		final Application<Task, Dependency> application = specification.getApplication();
 
@@ -396,6 +534,13 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * A resource in the routing graph of a communication flow must not have
+	 * more than one activated in-link.
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ19(List<Constraint> constraints, Specification specification) {
 		final Application<Task, Dependency> application = specification.getApplication();
 
@@ -414,6 +559,13 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * A resource in the routing graph of a communication flow must not have
+	 * more than one activated out-link.
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ20(List<Constraint> constraints, Specification specification) {
 		final Application<Task, Dependency> application = specification.getApplication();
 
@@ -433,6 +585,16 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * A resource in the routing graph of a communication flow is either a) the
+	 * mapping target of the communication predecessor of the communication and
+	 * has one out-link, b) has one in- and one out-link, c) has one in-link and
+	 * is the mapping target of the communication successor or d) is the mapping
+	 * target of both the communication pre- and the communication successor
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ21(List<Constraint> constraints, Specification specification) {
 		final Application<Task, Dependency> application = specification.getApplication();
 
@@ -463,6 +625,13 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * A resource is only activated in the routing graph of a communication if
+	 * at least one communication flow is routed over this resource.
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ22(List<Constraint> constraints, Specification specification) {
 		final Application<Task, Dependency> application = specification.getApplication();
 		for (Task c : filterCommunications(application)) {
@@ -478,6 +647,13 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * A resource may only be used for the routing of a communication flow if it
+	 * is also activated in the routing of the communication.
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ23(List<Constraint> constraints, Specification specification) {
 		final Application<Task, Dependency> application = specification.getApplication();
 		for (Task c : filterCommunications(application)) {
@@ -493,6 +669,13 @@ public class Encoding {
 		}
 	}
 
+	/**
+	 * A resource may only be activated in the routing graph of a communication
+	 * if it is activated in the architecture graph.
+	 * 
+	 * @param constraints
+	 * @param specification
+	 */
 	protected void EQ30(List<Constraint> constraints, Specification specification) {
 		final Application<Task, Dependency> application = specification.getApplication();
 		final Architecture<Resource, Link> architecture = specification.getArchitecture();
