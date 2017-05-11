@@ -94,7 +94,9 @@ public class OptimizationModule extends ProblemModule {
 		
 		bind(RoutingEncoding.class).toInstance(routingEncoding);
 
-		//bind(SATManager.class).to(MyMixedSATManager.class);
+		if (useVariableOrder){
+			bind(VariableClassOrder.class).to(RoutingVariableClassOrder.class);
+		}
 
 	}
 

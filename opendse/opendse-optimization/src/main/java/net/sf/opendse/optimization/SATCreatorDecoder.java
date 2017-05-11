@@ -53,7 +53,6 @@ public class SATCreatorDecoder extends AbstractSATDecoder<Genotype, Implementati
 	protected final SpecificationWrapper specificationWrapper;
 	protected final Interpreter interpreter;
 	protected final Control control;
-	protected final boolean useVariableOrder;
 
 	@Inject
 	public SATCreatorDecoder(VariableClassOrder order, SATManager manager, Rand random, SATConstraints constraints, SpecificationWrapper specificationWrapper,
@@ -65,7 +64,6 @@ public class SATCreatorDecoder extends AbstractSATDecoder<Genotype, Implementati
 		this.specificationWrapper = specificationWrapper;
 		this.interpreter = interpreter;
 		this.control = control;
-		this.useVariableOrder = useVariableOrder;
 	}
 
 	@Override
