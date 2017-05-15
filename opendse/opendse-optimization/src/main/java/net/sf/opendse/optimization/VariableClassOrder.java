@@ -1,18 +1,19 @@
 package net.sf.opendse.optimization;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import com.google.inject.ImplementedBy;
 
-@ImplementedBy(DefaultVariableClassOrder.class)
 /**
- * Parent class of the classes specifying the order in which the different
+ * The {@link VariableClassOrder} specifies the order in which the different
  * variable types are set by the SAT-solver during the constraint solving.
  * 
  * @author Fedor Smirnov, Felix Reimann
  *
  */
-public abstract class VariableClassOrder extends ArrayList<Class<?>> {
+@ImplementedBy(DefaultVariableClassOrder.class)
+public abstract class VariableClassOrder extends ArrayList<Class<?>> implements Comparator<Object> {
 
 	/**
 	 * 
@@ -39,7 +40,8 @@ public abstract class VariableClassOrder extends ArrayList<Class<?>> {
 	 * @param variableClass
 	 *            The variable class that is added to the variable order
 	 * @param beforeVariableClasses
-	 *            (optional) The variable classes that should be set after the added variableClass
+	 *            (optional) The variable classes that should be set after the
+	 *            added variableClass
 	 */
 	protected void addVariableClass(Class<?> variableClass, Class<?>... beforeVariableClasses) {
 		if (beforeVariableClasses.length == 0) {
@@ -50,13 +52,21 @@ public abstract class VariableClassOrder extends ArrayList<Class<?>> {
 			// find the minimal index of the variable classes that are to be
 			// decided after the given variable
 			int minimalIndex = this.size();
-			for (Class<?> beforeVariableClass : beforeVariableClasses){
+			for (Class<?> beforeVariableClass : beforeVariableClasses) {
 				int index = indexOf(beforeVariableClass);
-				if (index != -1){
+				if (index != -1) {
 					minimalIndex = Math.min(minimalIndex, index);
 				}
 			}
 			this.add(minimalIndex, variableClass);
 		}
+	}
+
+	@Override
+	public int compare(Object first, Object second) {
+		int firstInd = (indexOf(first) == -1) ? Integer.MAX_VALUE : indexOf(first);
+		int secondInd = (indexOf(second) == -1) ? Integer.MAX_VALUE : indexOf(second);
+		int result = (firstInd < secondInd) ? -1 : ((firstInd == secondInd) ? 0 : 1);
+		return result;
 	}
 }
