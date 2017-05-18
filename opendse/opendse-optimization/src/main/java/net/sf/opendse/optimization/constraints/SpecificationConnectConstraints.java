@@ -51,7 +51,6 @@ public class SpecificationConnectConstraints extends AbstractSpecificationConstr
 		super();
 		this.specification = specification.getSpecification();
 		this.connectConstraints.addAll(getConnectConstraints(this.specification));
-		
 		initConstraints();
 	}
 
