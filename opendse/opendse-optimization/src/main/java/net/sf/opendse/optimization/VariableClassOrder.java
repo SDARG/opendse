@@ -48,9 +48,12 @@ public class VariableClassOrder {
 	}
 
 	/**
-	 * Returns the index of the class of the given object in the order list.
-	 * Returns -1 if the class is not in the order list.
+	 * Returns the lowest index of a class from which the given object is
+	 * assignable. Returns a -1 if the given object is not assignable from any
+	 * of the classes that can be found in the order list.
 	 * 
+	 * @param object
+	 * @return
 	 */
 	public int indexOf(Object object) {
 		for (int i = 0; i < this.order.size(); i++) {
@@ -77,7 +80,7 @@ public class VariableClassOrder {
 	 *            variableClass
 	 */
 	public void add(Class<?> variableClass, Class<?>... beforeVariableClasses) {
-		// remove the Object.class if necessary
+		// remove the Object.class if it is in the list
 		if (order.contains(Object.class)) {
 			order.remove(Object.class);
 		}
