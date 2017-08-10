@@ -140,11 +140,11 @@ task fatjar(dependsOn: subprojects.jar, type: Jar) {
 }
 
 dependencies {
-	runtime project(':opendse-model')
-	runtime project(':opendse-io')
-	runtime project(':opendse-visualization')
-	runtime project(':opendse-optimization')
-	runtime project(':opendse-realtime')
+	runtime project('opendse-model')
+	runtime project('opendse-io')
+	runtime project('opendse-visualization')
+	runtime project('opendse-optimization')
+	runtime project('opendse-realtime')
 }
 
 jar {

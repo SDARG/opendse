@@ -1,10 +1,10 @@
 dependencies {	
 	compile 'net.sf.jmpi:jmpi-main:0.6'
 	compile 'net.sf.jmpi:jmpi-solver-gurobi:0.6'
-	compile project(':opendse-model')
-	compile project(':opendse-visualization')
+	compile parent.project('opendse-model')
+	compile parent.project('opendse-visualization')
 	compile files('libs/gurobi.jar')
 	
-	testCompile project(':opendse-generator')
-	testCompile project(':opendse-optimization')
+	testCompile parent.project('opendse-generator')
+	testCompile parent.project('opendse-optimization')
 }

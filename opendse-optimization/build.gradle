@@ -1,7 +1,7 @@
 dependencies {	
-	compile project(':opendse-model')
-	compile project(':opendse-io')
-	compile project(':opendse-visualization')
+	compile parent.project('opendse-model')
+	compile parent.project('opendse-io')
+	compile parent.project('opendse-visualization')
 	
 	compile group: 'org.opt4j',	name: 'opt4j-core', 		version: '3.1.4'
 	compile group: 'org.opt4j',	name: 'opt4j-satdecoding', 	version: '3.1.4'

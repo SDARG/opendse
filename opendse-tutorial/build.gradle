@@ -2,8 +2,8 @@ import org.apache.tools.ant.filters.*
 import java.util.regex.*
 
 dependencies {	
-	compile project(':opendse-optimization')
-	compile project(':opendse-realtime')
+	compile parent.project('opendse-optimization')
+	compile parent.project('opendse-realtime')
 }
 
 task filterSources(type: Copy) {

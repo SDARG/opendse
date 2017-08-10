@@ -1,6 +1,6 @@
 dependencies {	
-	compile project(':opendse-model')
-	compile project(':opendse-io')
+	compile parent.project('opendse-model')
+	compile parent.project('opendse-io')
 	
 	compile group: 'net.sf.jung',	name: 'jung-visualization', 	version: '2.0.1'
 
