@@ -3,10 +3,17 @@ dependencies {
 	compile parent.project('opendse-io')
 	compile parent.project('opendse-visualization')
 	
-	compile group: 'org.opt4j',	name: 'opt4j-core', 		version: '3.1.4'
-	compile group: 'org.opt4j',	name: 'opt4j-satdecoding', 	version: '3.1.4'
-	compile group: 'org.opt4j',	name: 'opt4j-optimizers', 	version: '3.1.4'
-	compile group: 'org.opt4j',	name: 'opt4j-viewer', 		version: '3.1.4'
+	if ((rootProject.subprojects.findAll { it.name == "opt4j" }).isEmpty()) {
+		compile group: 'org.opt4j',	name: 'opt4j-core', 		version: '3.1.4'
+		compile group: 'org.opt4j',	name: 'opt4j-satdecoding', 	version: '3.1.4'
+		compile group: 'org.opt4j',	name: 'opt4j-optimizers', 	version: '3.1.4'
+		compile group: 'org.opt4j',	name: 'opt4j-viewer', 		version: '3.1.4'
+	} else {	
+		compile project(':opt4j:opt4j-core')
+		compile project(':opt4j:opt4j-satdecoding')
+		compile project(':opt4j:opt4j-optimizers')
+		compile project(':opt4j:opt4j-viewer')
+	}
 
 	testCompile 'junit:junit:4.12'
 }
