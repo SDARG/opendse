@@ -21,22 +21,15 @@
  *******************************************************************************/
 package net.sf.opendse.optimization;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sf.opendse.model.Link;
-import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.optimization.encoding.Interpreter;
-import net.sf.opendse.optimization.encoding.variables.CR;
-import net.sf.opendse.optimization.encoding.variables.EAVI;
-
 import org.opt4j.core.Genotype;
 import org.opt4j.core.common.random.Rand;
 import org.opt4j.core.optimizer.Control;
@@ -52,45 +45,25 @@ import com.google.inject.Singleton;
 @Singleton
 public class SATCreatorDecoder extends AbstractSATDecoder<Genotype, ImplementationWrapper> {
 
-	List<Class<?>> order = new ArrayList<Class<?>>();
+	final VariableClassOrder order;
 	Map<Class<?>, Double> lb = new HashMap<Class<?>, Double>();
 	Map<Class<?>, Double> ub = new HashMap<Class<?>, Double>();
-
-	int indexOf(Object object) {
-		for (int i = 0; i < order.size(); i++) {
-			if (order.get(i).isAssignableFrom(object.getClass())) {
-				return i;
-			}
-		}
-		return -1;
-	}
 
 	protected final SATConstraints constraints;
 	protected final SpecificationWrapper specificationWrapper;
 	protected final Interpreter interpreter;
 	protected final Control control;
-	protected final boolean useVariableOrder;
 
 	@Inject
-	public SATCreatorDecoder(SATManager manager, Rand random, SATConstraints constraints, SpecificationWrapper specificationWrapper,
+	public SATCreatorDecoder(VariableClassOrder order, SATManager manager, Rand random, SATConstraints constraints, SpecificationWrapper specificationWrapper,
 			Interpreter interpreter, Control control,
 			@Constant(value = "variableorder", namespace = SATCreatorDecoder.class) boolean useVariableOrder) {
 		super(manager, random);
+		this.order = order;
 		this.constraints = constraints;
 		this.specificationWrapper = specificationWrapper;
 		this.interpreter = interpreter;
 		this.control = control;
-		this.useVariableOrder = useVariableOrder;
-
-		if (useVariableOrder) {
-			order.add(Resource.class);
-			order.add(Link.class);
-			order.add(EAVI.class);
-			order.add(Mapping.class);
-			order.add(CR.class);
-		} else {
-			order.add(Object.class);
-		}
 	}
 
 	@Override
@@ -127,14 +100,10 @@ public class SATCreatorDecoder extends AbstractSATDecoder<Genotype, Implementati
 			} else {
 				phases.put(variable, random.nextDouble() < 0.5);
 			}
-
 			Class<?> clazz = variable.getClass();
-
-			double lbv = ((double) indexOf(clazz)) / order.size();
-			double ubv = ((double) (1 + indexOf(clazz))) / order.size();
-
+			double lbv = ((double) order.indexOf(clazz)) / order.getOrderSize();
+			double ubv = ((double) (1 + order.indexOf(clazz))) / order.getOrderSize();
 			double prio = lbv + random.nextDouble() * (ubv - lbv);
-
 			// System.out.println(variable+" "+prio);
 			priorities.put(variable, prio);
 		}
@@ -145,7 +114,7 @@ public class SATCreatorDecoder extends AbstractSATDecoder<Genotype, Implementati
 	public Set<Object> ignoreVariables(Set<Object> variables) {
 		Set<Object> ignore = super.ignoreVariables(variables);
 		for (Object object : variables) {
-			int index = indexOf(object);
+			int index = order.indexOf(object);
 
 			if (index == -1) {
 				ignore.add(object);
