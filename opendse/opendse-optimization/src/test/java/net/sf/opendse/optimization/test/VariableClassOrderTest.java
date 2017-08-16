@@ -1,6 +1,7 @@
 package net.sf.opendse.optimization.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -56,5 +57,12 @@ public class VariableClassOrderTest {
 		assertTrue(firstRelationCorrect);
 		assertTrue(secondRelationCorrect);
 		assertTrue(addingToTheEndCorrect);
+	}
+
+	@Test
+	public void testGetSize() {
+		VariableClassOrder order = new VariableClassOrder();
+		order.add(Resource.class);
+		assertEquals(1, order.getOrderSize());
 	}
 }
