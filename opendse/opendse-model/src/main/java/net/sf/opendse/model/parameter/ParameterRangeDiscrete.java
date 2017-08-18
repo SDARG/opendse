@@ -24,9 +24,9 @@ package net.sf.opendse.model.parameter;
 /**
  * The {@code ParameterRangeDiscrete} is a {@link Integer}-valued parameter
  * within a lower and an upper bound.
- * 
- * @author Falko Höfte
- * 
+ *
+ * @author Falko HÃ¶fte
+ *
  */
 public class ParameterRangeDiscrete implements Parameter {
 
@@ -36,7 +36,7 @@ public class ParameterRangeDiscrete implements Parameter {
 
 	/**
 	 * Constructs a {@code ParameterRange}.
-	 * 
+	 *
 	 * @param value
 	 *            the default value
 	 * @param lb
@@ -52,7 +52,7 @@ public class ParameterRangeDiscrete implements Parameter {
 
 	/**
 	 * Returns the lower bound.
-	 * 
+	 *
 	 * @return the lower bound
 	 */
 	public int getLowerBound() {
@@ -61,7 +61,7 @@ public class ParameterRangeDiscrete implements Parameter {
 
 	/**
 	 * Returns the upper bound.
-	 * 
+	 *
 	 * @return the upper bound
 	 */
 	public int getUpperBound() {
@@ -70,7 +70,7 @@ public class ParameterRangeDiscrete implements Parameter {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.sf.adse.model.parameter.Parameter#getValue()
 	 */
 	@Override
@@ -80,7 +80,7 @@ public class ParameterRangeDiscrete implements Parameter {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

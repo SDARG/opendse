@@ -55,9 +55,9 @@ import edu.uci.ics.jung.graph.util.Pair;
 /**
  * The {@code SpecificationWriter} write a {@code Specification} to an
  * {@code OutputStream} or {@code File}.
- * 
- * @author Martin Lukasiewycz, Falko Höfte
- * 
+ *
+ * @author Martin Lukasiewycz, Falko HÃ¶fte
+ *
  */
 public class SpecificationWriter {
 	public static final String NS = "http://opendse.sourceforge.net";
@@ -74,7 +74,7 @@ public class SpecificationWriter {
 
 	/**
 	 * Constructs a new {@link SpecificationWriter} instance.
-	 * 
+	 *
 	 * @param writeRoutings
 	 *            true if the routings shall be exported
 	 */
@@ -84,7 +84,7 @@ public class SpecificationWriter {
 
 	/**
 	 * Write the specification to a file.
-	 * 
+	 *
 	 * @param specification
 	 *            the specification
 	 * @param filename
@@ -96,7 +96,7 @@ public class SpecificationWriter {
 
 	/**
 	 * Write the specification to a file.
-	 * 
+	 *
 	 * @param specification
 	 *            the specification
 	 * @param file
@@ -117,7 +117,7 @@ public class SpecificationWriter {
 
 	/**
 	 * Write the specification to an output stream.
-	 * 
+	 *
 	 * @param specification
 	 *            the specification
 	 * @param out
@@ -145,7 +145,7 @@ public class SpecificationWriter {
 
 	/**
 	 * Write a collection of specifications to an output stream.
-	 * 
+	 *
 	 * @param specifications
 	 *            the specifications
 	 * @param out
@@ -175,7 +175,7 @@ public class SpecificationWriter {
 
 	/**
 	 * Transform a specification to an XML element.
-	 * 
+	 *
 	 * @param specification
 	 *            the specification
 	 * @return the XML element
