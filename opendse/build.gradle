@@ -1,6 +1,7 @@
 apply plugin: 'base'
 apply plugin: 'maven'
 apply plugin: 'application'
+apply plugin: 'eclipse'
 
 version = 'SNAPSHOT-' + new Date().format("yyyyMMdd")
 
@@ -22,7 +23,7 @@ allprojects {
 	apply plugin: 'jacoco'
     
 	repositories {
-    		mavenCentral()
+    	mavenCentral()
 		mavenLocal()
 	}
 }
@@ -196,7 +197,8 @@ task website(dependsOn: [copyWebsite, copyJavadoc]) {}
 task release(dependsOn: [fatjar,website] ){}
 
 task codeCoverageReport(type: JacocoReport) {
-
+	dependsOn subprojects*.test
+	
     // Gather execution data from all subprojects
     // (change this if you e.g. want to calculate unit test/integration test coverage separately)
     executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
@@ -214,8 +216,4 @@ task codeCoverageReport(type: JacocoReport) {
     }
 }
 
-// always run the tests before generating the report
-codeCoverageReport.dependsOn {
-    subprojects*.test
-}
 
