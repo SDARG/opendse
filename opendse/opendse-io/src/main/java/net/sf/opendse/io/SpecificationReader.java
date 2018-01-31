@@ -1,23 +1,18 @@
 /*******************************************************************************
  * Copyright (c) 2015 OpenDSE
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+ * Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *******************************************************************************/
 package net.sf.opendse.io;
 
@@ -41,6 +36,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.MatchResult;
 
+import edu.uci.ics.jung.graph.util.EdgeType;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Attributes;
@@ -63,11 +59,9 @@ import net.sf.opendse.model.parameter.ParameterSelect;
 import net.sf.opendse.model.parameter.ParameterUniqueID;
 import net.sf.opendse.model.parameter.Parameters;
 import nu.xom.Elements;
-import edu.uci.ics.jung.graph.util.EdgeType;
 
 /**
- * The {@code SpecificationReader} reads a {@code Specification} from an
- * {@code InputStream} or file.
+ * The {@code SpecificationReader} reads a {@code Specification} from an {@code InputStream} or file.
  * 
  * @author Martin Lukasiewycz
  * 
@@ -132,8 +126,8 @@ public class SpecificationReader {
 	 */
 	public Specification toSpecification(nu.xom.Element eSpecification) {
 		try {
-			nu.xom.Element eArchitecture = eSpecification.getChildElements("architecture", SpecificationWriter.NS).get(
-					0);
+			nu.xom.Element eArchitecture = eSpecification.getChildElements("architecture", SpecificationWriter.NS)
+					.get(0);
 			nu.xom.Element eApplication = eSpecification.getChildElements("application", SpecificationWriter.NS).get(0);
 			nu.xom.Element eMappings = eSpecification.getChildElements("mappings", SpecificationWriter.NS).get(0);
 
@@ -183,8 +177,8 @@ public class SpecificationReader {
 		return routings;
 	}
 
-	protected Architecture<Resource, Link> toRouting(nu.xom.Element eRouting,
-			Architecture<Resource, Link> architecture, Application<Task, Dependency> application)
+	protected Architecture<Resource, Link> toRouting(nu.xom.Element eRouting, Architecture<Resource, Link> architecture,
+			Application<Task, Dependency> application)
 			throws IllegalArgumentException, SecurityException, ClassNotFoundException, InstantiationException,
 			IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		Map<String, Resource> map = new HashMap<String, Resource>();
@@ -219,9 +213,9 @@ public class SpecificationReader {
 	}
 
 	protected Mappings<Task, Resource> toMappings(nu.xom.Element eMappings, Architecture<Resource, Link> architecture,
-			Application<Task, Dependency> application) throws IllegalArgumentException, SecurityException,
-			InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException,
-			ClassNotFoundException {
+			Application<Task, Dependency> application)
+			throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException,
+			InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
 		Mappings<Task, Resource> mappings = new Mappings<Task, Resource>();
 
 		nu.xom.Elements eMaps = eMappings.getChildElements("mapping", SpecificationWriter.NS);
@@ -241,44 +235,32 @@ public class SpecificationReader {
 		return mappings;
 	}
 
-	protected Application<Task, Dependency> toApplication(nu.xom.Element eApplication) throws IllegalArgumentException,
-			SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException,
-			NoSuchMethodException, ClassNotFoundException {
+	protected Application<Task, Dependency> toApplication(nu.xom.Element eApplication)
+			throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException,
+			InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
 		Application<Task, Dependency> application = new Application<Task, Dependency>();
-
-		Map<String, Task> map = new HashMap<String, Task>();
 
 		nu.xom.Elements eTasks = eApplication.getChildElements("task", SpecificationWriter.NS);
 		for (nu.xom.Element eTask : iterable(eTasks)) {
 			Task task = toNode(eTask, null);
 			application.addVertex(task);
-			map.put(task.getId(), task);
 		}
 		nu.xom.Elements eCommunications = eApplication.getChildElements("communication", SpecificationWriter.NS);
 		for (nu.xom.Element eCommunication : iterable(eCommunications)) {
 			Communication communication = toNode(eCommunication, null);
 			application.addVertex(communication);
-			map.put(communication.getId(), communication);
 		}
 
 		nu.xom.Elements eDependencies = eApplication.getChildElements("dependency", SpecificationWriter.NS);
 		for (nu.xom.Element eDependency : iterable(eDependencies)) {
-			Dependency dependency = toEdge(eDependency, null);
-
-			Task source = map.get(eDependency.getAttributeValue("source"));
-			Task destination = map.get(eDependency.getAttributeValue("destination"));
-
-			assert source != null : "Invalid source: " + eDependency.toXML();
-			assert destination != null : "Invalid destination: " + eDependency.toXML();
-
-			application.addEdge(dependency, source, destination, EdgeType.DIRECTED);
+			parseDependency(eDependency, application);
 		}
 
 		nu.xom.Element eFunctions = eApplication.getFirstChildElement("functions", SpecificationWriter.NS);
 		if (eFunctions != null) {
 			nu.xom.Elements eFuncs = eFunctions.getChildElements("function", SpecificationWriter.NS);
 			for (nu.xom.Element eFunc : iterable(eFuncs)) {
-				Task task = map.get(eFunc.getAttributeValue("anchor"));
+				Task task = application.getVertex(eFunc.getAttributeValue("anchor"));
 				Function<Task, Dependency> function = application.getFunction(task);
 				Attributes attributes = toAttributes(eFunc.getFirstChildElement("attributes", SpecificationWriter.NS));
 				setAttributes(function, attributes);
@@ -288,37 +270,69 @@ public class SpecificationReader {
 		return application;
 	}
 
-	protected Architecture<Resource, Link> toArchitecture(nu.xom.Element eArch) throws IllegalArgumentException,
-			SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException,
-			NoSuchMethodException, ClassNotFoundException {
-		Architecture<Resource, Link> architecture = new Architecture<Resource, Link>();
+	protected void parseDependency(nu.xom.Element eDependency, Application<Task, Dependency> application)
+			throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException {
+		Dependency dependency = toEdge(eDependency, null);
 
-		Map<String, Resource> map = new HashMap<String, Resource>();
+		String srcName = eDependency.getAttributeValue("source");
+		Task source = application.getVertex(srcName);
+		if (source == null) {
+			throw new IllegalArgumentException("Source of dependency " + srcName + " not found: " + srcName);
+		}
+
+		String dstName = eDependency.getAttributeValue("destination");
+		Task destination = application.getVertex(dstName);
+		if (destination == null) {
+			throw new IllegalArgumentException("Destination of dependency " + dependency + " not found: " + dstName);
+		}
+
+		application.addEdge(dependency, source, destination, EdgeType.DIRECTED);
+	}
+
+	protected Architecture<Resource, Link> toArchitecture(nu.xom.Element eArch)
+			throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException,
+			InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
+		Architecture<Resource, Link> architecture = new Architecture<Resource, Link>();
 
 		nu.xom.Elements eResources = eArch.getChildElements("resource", SpecificationWriter.NS);
 		for (nu.xom.Element eResource : iterable(eResources)) {
 			Resource resource = toNode(eResource, null);
 			architecture.addVertex(resource);
-			map.put(resource.getId(), resource);
 		}
 
 		nu.xom.Elements eLinks = eArch.getChildElements("link", SpecificationWriter.NS);
 		for (nu.xom.Element eLink : iterable(eLinks)) {
-			Link link = toEdge(eLink, null);
-
-			String type = eLink.getAttributeValue("orientation");
-			EdgeType edgeType = EdgeType.UNDIRECTED;
-			if (type != null) {
-				edgeType = EdgeType.valueOf(type);
-			}
-
-			Resource source = map.get(eLink.getAttributeValue("source"));
-			Resource destination = map.get(eLink.getAttributeValue("destination"));
-
-			architecture.addEdge(link, source, destination, edgeType);
+			parseLink(eLink, architecture);
 		}
 
 		return architecture;
+	}
+
+	protected void parseLink(nu.xom.Element eLink, Architecture<Resource, Link> architecture)
+			throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException {
+		Link link = toEdge(eLink, null);
+
+		String type = eLink.getAttributeValue("orientation");
+		EdgeType edgeType = EdgeType.UNDIRECTED;
+		if (type != null) {
+			edgeType = EdgeType.valueOf(type);
+		}
+
+		String srcName = eLink.getAttributeValue("source");
+		Resource source = architecture.getVertex(srcName);
+		if (source == null) {
+			throw new IllegalArgumentException("Source of link " + link + " not found: " + srcName);
+		}
+
+		String dstName = eLink.getAttributeValue("destination");
+		Resource destination = architecture.getVertex(dstName);
+		if (destination == null) {
+			throw new IllegalArgumentException("Destination of link " + link + " not found: " + dstName);
+		}
+
+		architecture.addEdge(link, source, destination, edgeType);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -344,9 +358,9 @@ public class SpecificationReader {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected <N extends Node> N toNode(nu.xom.Element eNode, N parent) throws IllegalArgumentException,
-			SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException,
-			NoSuchMethodException, ClassNotFoundException {
+	protected <N extends Node> N toNode(nu.xom.Element eNode, N parent)
+			throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException,
+			InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
 		Class<N> type = getClass(eNode);
 
 		N node = null;
@@ -373,9 +387,9 @@ public class SpecificationReader {
 
 	}
 
-	protected <E extends Edge> E toEdge(nu.xom.Element eEdge, E parent) throws ClassNotFoundException,
-			IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException,
-			InvocationTargetException, NoSuchMethodException {
+	protected <E extends Edge> E toEdge(nu.xom.Element eEdge, E parent)
+			throws ClassNotFoundException, IllegalArgumentException, SecurityException, InstantiationException,
+			IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		Class<E> type = getClass(eEdge);
 
 		E edge = null;
@@ -416,9 +430,9 @@ public class SpecificationReader {
 
 	}
 
-	protected Attributes toAttributes(nu.xom.Element eAttributes) throws IllegalArgumentException, SecurityException,
-			InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException,
-			ClassNotFoundException {
+	protected Attributes toAttributes(nu.xom.Element eAttributes)
+			throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException,
+			InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
 		Attributes attributes = new Attributes();
 
 		nu.xom.Elements eAttributeList = eAttributes.getChildElements("attribute", SpecificationWriter.NS);
@@ -433,9 +447,9 @@ public class SpecificationReader {
 		return attributes;
 	}
 
-	protected Object toAttribute(nu.xom.Element eAttribute) throws IllegalArgumentException, SecurityException,
-			InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException,
-			ClassNotFoundException {
+	protected Object toAttribute(nu.xom.Element eAttribute)
+			throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException,
+			InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
 		String parameter = eAttribute.getAttributeValue("parameter");
 		String type = eAttribute.getAttributeValue("type");
 		String value = eAttribute.getValue();
@@ -473,14 +487,12 @@ public class SpecificationReader {
 	}
 
 	/**
-	 * Constructs an attribute collection that contains all passed elements and
-	 * their corresponding class.
+	 * Constructs an attribute collection that contains all passed elements and their corresponding class.
 	 * 
 	 * @param eAttribute
 	 *            the attribute element to add the collection to
 	 * @param namespaceType
-	 *            the namespace of the attribute, see
-	 *            {@link SpecificationReader#initializeGlobalAttributeMap()}
+	 *            the namespace of the attribute, see {@link SpecificationReader#initializeGlobalAttributeMap()}
 	 * @param clazz
 	 *            the class of the objects that are to create
 	 * @return the constructed collection
@@ -497,12 +509,10 @@ public class SpecificationReader {
 	}
 
 	/**
-	 * Constructs an instance of the passed class that contains the passed
-	 * value.
+	 * Constructs an instance of the passed class that contains the passed value.
 	 * 
 	 * @param namespaceType
-	 *            the attribute namespace, see
-	 *            {@link SpecificationReader#initializeGlobalAttributeMap()}
+	 *            the attribute namespace, see {@link SpecificationReader#initializeGlobalAttributeMap()}
 	 * @param value
 	 *            the value of the object that is to create
 	 * @param clazz
