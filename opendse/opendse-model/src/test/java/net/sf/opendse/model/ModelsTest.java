@@ -133,4 +133,25 @@ public class ModelsTest {
 		Assert.assertTrue(spec2.getArchitecture().isNeighbor(resource1, resource2));
 
 	}
+
+	@Test
+	public void cloneApplication() {
+		Application<Task, Dependency> app = new Application<Task, Dependency>();
+		Task task1 = new Task("t1");
+		Task task2 = new Task("t2");
+		Dependency dependency = new Dependency("d");
+		app.addVertex(task1);
+		app.addVertex(task2);
+		app.addEdge(dependency, task1, task2);
+
+		Application<Task, Dependency> app2 = Models.clone(app);
+		Assert.assertEquals(2, app2.getVertexCount());
+		Assert.assertTrue(app2.containsVertex(task1));
+		Assert.assertTrue(app2.getVertex(task1) == task1);
+		Assert.assertTrue(app2.containsVertex(task2));
+		Assert.assertTrue(app2.isNeighbor(task1, task2));
+		Assert.assertTrue(app2.getSuccessors(task1).iterator().hasNext());
+		Assert.assertTrue(app2.getOutEdges(task1).iterator().hasNext());
+		Assert.assertTrue(app2.getOutEdges(task1).iterator().next() == dependency);
+	}
 }

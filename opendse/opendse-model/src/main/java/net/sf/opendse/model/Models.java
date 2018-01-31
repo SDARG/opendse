@@ -417,43 +417,18 @@ public class Models {
 		Mappings<Task, Resource> sMappings = specification.getMappings();
 		Routings<Task, Resource, Link> sRoutings = specification.getRoutings();
 
-		Architecture<Resource, Link> iArchitecture = new Architecture<Resource, Link>();
-		Application<Task, Dependency> iApplication = new Application<Task, Dependency>();
-		Mappings<Task, Resource> iMappings = new Mappings<Task, Resource>();
+		Architecture<Resource, Link> iArchitecture = copy(sArchitecture);
+		Application<Task, Dependency> iApplication = copy(sApplication);
+		Mappings<Task, Resource> iMappings = copyMappings(sMappings, iArchitecture, iApplication);
+		Routings<Task, Resource, Link> iRoutings = copyRoutings(sApplication, sRoutings, iApplication, iArchitecture);
+
+		return new Specification(iApplication, iArchitecture, iMappings, iRoutings);
+	}
+
+	public static Routings<Task, Resource, Link> copyRoutings(Application<Task, Dependency> sApplication,
+			Routings<Task, Resource, Link> sRoutings, Application<Task, Dependency> iApplication,
+			Architecture<Resource, Link> iArchitecture) {
 		Routings<Task, Resource, Link> iRoutings = new Routings<Task, Resource, Link>();
-
-		for (Resource r : sArchitecture) {
-			iArchitecture.addVertex((Resource) copy(r));
-		}
-		for (Link l : sArchitecture.getEdges()) {
-			Pair<Resource> endpoints = sArchitecture.getEndpoints(l);
-			Resource source = iArchitecture.getVertex(endpoints.getFirst());
-			Resource dest = iArchitecture.getVertex(endpoints.getSecond());
-			iArchitecture.addEdge((Link) copy(l), source, dest, sArchitecture.getEdgeType(l));
-		}
-
-		// copy application (including function attributes)
-		for (Task t : sApplication) {
-			iApplication.addVertex((Task) copy(t));
-		}
-		for (Dependency e : sApplication.getEdges()) {
-			Pair<Task> endpoints = sApplication.getEndpoints(e);
-			Task source = iApplication.getVertex(endpoints.getFirst());
-			Task dest = iApplication.getVertex(sApplication.getVertex(endpoints.getSecond()));
-			iApplication.addEdge((Dependency) copy(e), source, dest, sApplication.getEdgeType(e));
-		}
-
-		for (Function<Task, Dependency> function : iApplication.getFunctions()) {
-			Task t = function.iterator().next();
-			setAttributes(function, sApplication.getFunction(t).getAttributes());
-		}
-
-		for (Mapping<Task, Resource> m : sMappings) {
-			Mapping<Task, Resource> copy = copy(m);
-			copy.setSource(iApplication.getVertex(m.getSource()));
-			copy.setTarget(iArchitecture.getVertex(m.getTarget()));
-			iMappings.add(copy);
-		}
 
 		for (Task c : filterCommunications(sApplication)) {
 			Architecture<Resource, Link> sRouting = sRoutings.get(c);
@@ -472,8 +447,55 @@ public class Models {
 
 			iRoutings.set(iApplication.getVertex(c), iRouting);
 		}
+		return iRoutings;
+	}
 
-		return new Specification(iApplication, iArchitecture, iMappings, iRoutings);
+	public static Mappings<Task, Resource> copyMappings(Mappings<Task, Resource> sMappings,
+			Architecture<Resource, Link> iArchitecture, Application<Task, Dependency> iApplication) {
+		Mappings<Task, Resource> iMappings = new Mappings<Task, Resource>();
+
+		for (Mapping<Task, Resource> m : sMappings) {
+			Mapping<Task, Resource> copy = copy(m);
+			copy.setSource(iApplication.getVertex(m.getSource()));
+			copy.setTarget(iArchitecture.getVertex(m.getTarget()));
+			iMappings.add(copy);
+		}
+		return iMappings;
+	}
+
+	public static Application<Task, Dependency> copy(Application<Task, Dependency> sApplication) {
+		Application<Task, Dependency> iApplication = new Application<Task, Dependency>();
+
+		// copy application (including function attributes)
+		for (Task t : sApplication) {
+			iApplication.addVertex((Task) copy(t));
+		}
+		for (Dependency e : sApplication.getEdges()) {
+			Pair<Task> endpoints = sApplication.getEndpoints(e);
+			Task source = iApplication.getVertex(endpoints.getFirst());
+			Task dest = iApplication.getVertex(sApplication.getVertex(endpoints.getSecond()));
+			iApplication.addEdge((Dependency) copy(e), source, dest, sApplication.getEdgeType(e));
+		}
+
+		for (Function<Task, Dependency> function : iApplication.getFunctions()) {
+			Task t = function.iterator().next();
+			setAttributes(function, sApplication.getFunction(t).getAttributes());
+		}
+		return iApplication;
+	}
+
+	public static Architecture<Resource, Link> copy(Architecture<Resource, Link> sArchitecture) {
+		Architecture<Resource, Link> iArchitecture = new Architecture<Resource, Link>();
+		for (Resource r : sArchitecture) {
+			iArchitecture.addVertex((Resource) copy(r));
+		}
+		for (Link l : sArchitecture.getEdges()) {
+			Pair<Resource> endpoints = sArchitecture.getEndpoints(l);
+			Resource source = iArchitecture.getVertex(endpoints.getFirst());
+			Resource dest = iArchitecture.getVertex(endpoints.getSecond());
+			iArchitecture.addEdge((Link) copy(l), source, dest, sArchitecture.getEdgeType(l));
+		}
+		return iArchitecture;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -505,6 +527,13 @@ public class Models {
 		}
 	}
 
+	/**
+	 * Creates a clone of the {@link Specification}, i.e., with identical {@link Element}s ({@code ==}).
+	 * 
+	 * @param specification
+	 *            the specification to be clone
+	 * @return a clone of that specification
+	 */
 	public static Specification clone(Specification specification) {
 		Application<Task, Dependency> iApplication = clone(specification.getApplication());
 		Architecture<Resource, Link> iArchitecture = clone(specification.getArchitecture());
@@ -525,6 +554,13 @@ public class Models {
 		return clone;
 	}
 
+	/**
+	 * Creates a clone of the {@link Application}, i.e., with identical {@link Element}s ({@code ==}).
+	 * 
+	 * @param specification
+	 *            the specification to be clone
+	 * @return a clone of that specification
+	 */
 	public static <T extends Task, D extends Dependency> Application<T, D> clone(Application<T, D> sApplication) {
 		Application<T, D> iApplication = new Application<T, D>();
 		// copy application (including function attributes)
