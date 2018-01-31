@@ -1,23 +1,18 @@
 /*******************************************************************************
  * Copyright (c) 2015 OpenDSE
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+ * Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *******************************************************************************/
 package net.sf.opendse.model;
 
@@ -66,8 +61,7 @@ public class Element implements IAttributes {
 	}
 
 	/**
-	 * Constructs a new {@code Element} from a parent, i.e., a copy with local
-	 * attributes.
+	 * Constructs a new {@code Element} from a parent, i.e., a copy with local attributes.
 	 * 
 	 * @param parent
 	 *            the parent
@@ -96,8 +90,9 @@ public class Element implements IAttributes {
 	}
 
 	/**
-	 * Sets the parent element. This is only feasible, if the parent is not set
-	 * yet. Changing a parent is not permitted.
+	 * Sets the parent element. This is only feasible, if the parent is not set yet. Changing a parent is not permitted.
+	 * 
+	 * TODO: parent and element might have different IDs. Is this feasible?
 	 * 
 	 * @param element
 	 *            the parent
@@ -178,8 +173,7 @@ public class Element implements IAttributes {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see net.sf.adse.model.IAttributes#setAttribute(java.lang.String,
-	 * java.lang.Object)
+	 * @see net.sf.adse.model.IAttributes#setAttribute(java.lang.String, java.lang.Object)
 	 */
 	@Override
 	public void setAttribute(String identifier, Object object) {
@@ -229,8 +223,7 @@ public class Element implements IAttributes {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * net.sf.adse.model.IAttributes#getAttributeParameter(java.lang.String)
+	 * @see net.sf.adse.model.IAttributes#getAttributeParameter(java.lang.String)
 	 */
 	@Override
 	public Parameter getAttributeParameter(String identifier) {
