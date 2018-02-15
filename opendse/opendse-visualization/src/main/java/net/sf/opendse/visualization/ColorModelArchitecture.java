@@ -14,7 +14,7 @@ public class ColorModelArchitecture implements ColorModel {
 	Map<String, Color> colors = new HashMap<String, Color>();
 
 	{
-		colors.put("ECU", Graphics.CHOCOLATE);
+		colors.put("ECU", Graphics.SEAGREEN);
 		colors.put("CAN", Graphics.LIGHTSALMON);
 		colors.put("CAN-FD", Graphics.DARKSALMON);
 		colors.put("FlexRay", Graphics.ROSYBROWN);
