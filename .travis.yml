@@ -1,0 +1,7 @@
+language: java
+install: true
+
+dist: trusty
+
+after_success:
+- ./gradlew coveralls

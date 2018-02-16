@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/felixreimann/opendse.svg?branch=master)](https://travis-ci.org/felixreimann/opendse)
+[![Coverage Status](https://coveralls.io/repos/github/felixreimann/opendse/badge.svg?branch=master)](https://coveralls.io/github/felixreimann/opendse?branch=master)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.sf.opendse/opendse-model/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.sf.opendse/opendse-model)
+[![Javadocs](https://javadoc.io/badge/net.sf.opendse/opendse-model.svg)](https://javadoc.io/doc/net.sf.opendse/opendse-model)
+
 # OpenDSE - Open Design Space Exploration Framework
 	
 _OpenDSE_ is a design space exploration framework for embedded systems, written in Java. 
