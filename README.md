@@ -30,3 +30,6 @@ Brought to you by
 This project uses
 * [opt4j](https://github.com/felixreimann/opt4j) for metaheuristic optimization
 * [google/guice](https://github.com/google/guice) for dependency injection
+* [jrtom/jung](https://github.com/jrtom/jung) as graph library for the model
+* [elharo/xom](https://github.com/elharo/xom) for XML processing
+* [jmpi](https://sourceforge.net/projects/jmpi) for solving the realtime analysis
