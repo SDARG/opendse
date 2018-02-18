@@ -62,6 +62,10 @@ public class StagnationRestartTest {
 		restart.archive.add(indi1);
 		restart.archive.add(indi2);
 		assertEquals(0, restart.lastUpdate);
+		restart.iterationComplete(5);
+		assertEquals(0, restart.lastUpdate);
+		assertFalse(population.isEmpty());
+		assertFalse(restart.archive.isEmpty());
 		restart.iterationComplete(21);
 		assertEquals(21, restart.lastUpdate);
 		assertTrue(population.isEmpty());
