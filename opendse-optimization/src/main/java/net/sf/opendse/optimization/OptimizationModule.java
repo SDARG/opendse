@@ -30,6 +30,7 @@ import net.sf.opendse.optimization.constraints.SpecificationRouterConstraints;
 import net.sf.opendse.optimization.encoding.Encoding.RoutingEncoding;
 
 import org.opt4j.core.config.annotations.Parent;
+import org.opt4j.core.config.annotations.Required;
 import org.opt4j.core.problem.ProblemModule;
 import org.opt4j.core.start.Constant;
 import org.opt4j.viewer.VisualizationModule;
@@ -40,14 +41,19 @@ import com.google.inject.multibindings.Multibinder;
 public class OptimizationModule extends ProblemModule {
 
 	protected RoutingEncoding routingEncoding = RoutingEncoding.FLOW;
-	
+
 	@Constant(value = "preprocessing", namespace = SATConstraints.class)
 	protected boolean usePreprocessing = true;
+
+	protected boolean stagnationRestartEnabled = true;
 	
-	
+	@Required(property = "stagnationRestartEnabled", elements = { "TRUE" })
+	@Constant(value = "maximalNumberStagnatingGenerations", namespace = StagnationRestart.class)
+	protected int maximalNumberStagnatingGenerations = 20;
+
 	@Constant(value = "variableorder", namespace = SATCreatorDecoder.class)
 	protected boolean useVariableOrder = true;
-	
+
 	public RoutingEncoding getRoutingEncoding() {
 		return routingEncoding;
 	}
@@ -72,6 +78,22 @@ public class OptimizationModule extends ProblemModule {
 		this.useVariableOrder = useVariableOrder;
 	}
 
+	public boolean isStagnationRestartEnabled() {
+		return stagnationRestartEnabled;
+	}
+
+	public void setStagnationRestartEnabled(boolean stagnationRestartEnabled) {
+		this.stagnationRestartEnabled = stagnationRestartEnabled;
+	}
+
+	public int getMaximalNumberStagnatingGenerations() {
+		return maximalNumberStagnatingGenerations;
+	}
+
+	public void setMaximalNumberStagnatingGenerations(int maximalNumberStagnatingGenerations) {
+		this.maximalNumberStagnatingGenerations = maximalNumberStagnatingGenerations;
+	}
+
 	@Override
 	protected void config() {
 		bindProblem(DesignSpaceExplorationCreator.class, DesignSpaceExplorationDecoder.class,
@@ -90,11 +112,13 @@ public class OptimizationModule extends ProblemModule {
 
 		Multibinder.newSetBinder(binder(), ImplementationEvaluator.class);
 
-		addOptimizerIterationListener(StagnationRestart.class);
-		
+		if (stagnationRestartEnabled) {
+			addOptimizerIterationListener(StagnationRestart.class);
+		}
+
 		bind(RoutingEncoding.class).toInstance(routingEncoding);
 
-		if (useVariableOrder){
+		if (useVariableOrder) {
 			bind(RoutingVariableClassOrder.class).asEagerSingleton();
 		}
 	}
