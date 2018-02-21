@@ -491,8 +491,6 @@ public class SpecificationReader {
 	 * 
 	 * @param eAttribute
 	 *            the attribute element to add the collection to
-	 * @param namespaceType
-	 *            the namespace of the attribute, see {@link SpecificationReader#initializeGlobalAttributeMap()}
 	 * @param clazz
 	 *            the class of the objects that are to create
 	 * @return the constructed collection
@@ -510,9 +508,7 @@ public class SpecificationReader {
 
 	/**
 	 * Constructs an instance of the passed class that contains the passed value.
-	 * 
-	 * @param namespaceType
-	 *            the attribute namespace, see {@link SpecificationReader#initializeGlobalAttributeMap()}
+	 *
 	 * @param value
 	 *            the value of the object that is to create
 	 * @param clazz

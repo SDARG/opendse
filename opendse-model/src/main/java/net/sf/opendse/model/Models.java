@@ -531,7 +531,7 @@ public class Models {
 	 * Creates a clone of the {@link Specification}, i.e., with identical {@link Element}s ({@code ==}).
 	 * 
 	 * @param specification
-	 *            the specification to be clone
+	 *            the specification to be cloned
 	 * @return a clone of that specification
 	 */
 	public static Specification clone(Specification specification) {
@@ -557,9 +557,9 @@ public class Models {
 	/**
 	 * Creates a clone of the {@link Application}, i.e., with identical {@link Element}s ({@code ==}).
 	 * 
-	 * @param specification
-	 *            the specification to be clone
-	 * @return a clone of that specification
+	 * @param sApplication
+	 *            the application to be cloned
+	 * @return a clone of that application
 	 */
 	public static <T extends Task, D extends Dependency> Application<T, D> clone(Application<T, D> sApplication) {
 		Application<T, D> iApplication = new Application<T, D>();
@@ -578,6 +578,13 @@ public class Models {
 		return iApplication;
 	}
 
+	/**
+	 * Creates a clone of the {@link Architecture}, i.e., with identical {@link Element}s ({@code ==}).
+	 * 
+	 * @param sArchitecture
+	 *            the architecture to be cloned
+	 * @return a clone of that architecture
+	 */
 	public static <R extends Resource, L extends Link> Architecture<R, L> clone(Architecture<R, L> sArchitecture) {
 		Architecture<R, L> iArchitecture = new Architecture<R, L>();
 		for (R r : sArchitecture) {
