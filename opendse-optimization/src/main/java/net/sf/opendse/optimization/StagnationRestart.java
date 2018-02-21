@@ -28,9 +28,21 @@ import org.opt4j.core.common.archive.CrowdingArchive;
 import org.opt4j.core.optimizer.Archive;
 import org.opt4j.core.optimizer.OptimizerIterationListener;
 import org.opt4j.core.optimizer.Population;
+import org.opt4j.core.start.Constant;
 
 import com.google.inject.Inject;
 
+/**
+ * A class that clears the population if no new individuals (individuals that
+ * are either dominated or dominate other population members) came into the
+ * population for a defined number of iterations. This state, where no new
+ * individuals are generated for a defined period of time is considered as a
+ * stagnation. The population is then cleared and new individuals are created
+ * from scratch to prevent being stuck in a local optimum.
+ * 
+ * @author lukasiewycz
+ *
+ */
 public class StagnationRestart implements IndividualSetListener, OptimizerIterationListener {
 
 	protected final Archive archive = new CrowdingArchive(100);
@@ -38,11 +50,13 @@ public class StagnationRestart implements IndividualSetListener, OptimizerIterat
 
 	protected int iteration = 0;
 	protected int lastUpdate = 0;
-	protected final int diff = 20;
+	protected final int diff;
 
 	@Inject
-	public StagnationRestart(Population population) {
+	public StagnationRestart(Population population,
+			@Constant(value = "maximalNumberStagnatingGenerations", namespace = StagnationRestart.class) int diff) {
 		this.population = population;
+		this.diff = diff;
 	}
 
 	@Override
@@ -52,6 +66,7 @@ public class StagnationRestart implements IndividualSetListener, OptimizerIterat
 		for (Individual in0 : population) {
 			for (Individual in1 : archive) {
 				if (in0.getObjectives().dominates(in1.getObjectives())) {
+					// new individuals are found
 					lastUpdate = iteration;
 				}
 			}
@@ -59,9 +74,9 @@ public class StagnationRestart implements IndividualSetListener, OptimizerIterat
 
 		archive.update(population);
 
-		// System.out.println(iteration-lastUpdate);
-
 		if (iteration - lastUpdate > diff) {
+			// the case where no individuals were found for the last diff
+			// generations
 			lastUpdate = iteration;
 			archive.clear();
 			population.clear();
@@ -69,15 +84,14 @@ public class StagnationRestart implements IndividualSetListener, OptimizerIterat
 
 	}
 
-
 	@Override
 	public void individualAdded(IndividualSet collection, Individual individual) {
-		// TODO Auto-generated method stub
+		// No reaction needed
 	}
 
 	@Override
 	public void individualRemoved(IndividualSet collection, Individual individual) {
-		// TODO Auto-generated method stub	
+		// No reaction needed
 	}
 
 }
