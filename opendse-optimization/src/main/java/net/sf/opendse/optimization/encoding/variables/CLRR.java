@@ -26,7 +26,7 @@ import net.sf.opendse.model.ICommunication;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 
-public class CLRR extends Variable implements CommunicationVariable {
+public class CLRR extends Variable implements CommunicationVariable, RoutingVariable {
 
 	public CLRR(Task t, Edge l, Resource r0, Resource r1) {
 		super(t,l,r0,r1);
