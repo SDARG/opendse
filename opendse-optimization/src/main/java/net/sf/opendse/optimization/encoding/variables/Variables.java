@@ -68,6 +68,10 @@ public class Variables {
 		}
 	}
 	
+	public static DM var(Dependency dep, Mapping<Task, Resource> mapping) {
+		return new DM(dep, mapping);
+	}
+	
 	public static R var(Resource resource) {
 		return new R(resource);
 	}

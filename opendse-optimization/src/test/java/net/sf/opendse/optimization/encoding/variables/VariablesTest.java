@@ -14,12 +14,23 @@ import net.sf.opendse.model.Task;
 public class VariablesTest {
 
 	@Test
-	public void testCR(){
+	public void testCR() {
 		Task comm = new Communication("comm");
 		Resource res = new Resource("res");
-		
+
 		CR first = Variables.var(comm, res);
 		CR second = Variables.var(comm, res);
+		assertEquals(first, second);
+	}
+
+	@Test
+	public void testDM() {
+		Dependency dep = new Dependency("dep");
+		Task t = new Task("t");
+		Resource res = new Resource("res");
+		Mapping<Task, Resource> m = new Mapping<Task, Resource>("m", t, res);
+		DM first = Variables.var(dep, m);
+		DM second = Variables.var(dep, m);
 		assertEquals(first, second);
 	}
 
@@ -92,9 +103,9 @@ public class VariablesTest {
 		M var2 = Variables.var(m);
 		assertEquals(var1, var2);
 	}
-	
+
 	@Test
-	public void testApplicationAlternativeActivation(){
+	public void testApplicationAlternativeActivation() {
 		String alternativeName = "alternative";
 		String alternativeId = "1";
 		ApplicationAlternativeActivation aaa1 = Variables.var(alternativeName, alternativeId);
