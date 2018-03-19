@@ -5,4 +5,4 @@
  * @author Fedor Smirnov
  *
  */
-package variables;
+package net.sf.opendse.encoding.variables;
