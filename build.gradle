@@ -18,7 +18,8 @@ def descriptions = [
 	'opendse-visualization' : 'The visualization module of OpenDSE',
 	'opendse-optimization' : 'The optimization module of OpenDSE',
 	'opendse-tutorial' : 'The tutorial module of OpenDSE',
-	'opendse-realtime' : 'The real-time module of OpenDSE'
+	'opendse-realtime' : 'The real-time module of OpenDSE',
+	'opendse-encoding' : 'The implementation encoding module of OpenDSE'
 ]
 
 allprojects {
@@ -146,6 +147,7 @@ dependencies {
 	runtime project(':opendse-visualization')
 	runtime project(':opendse-optimization')
 	runtime project(':opendse-realtime')
+	runtime project(':opendse-encoding')
 }
 
 jar {
