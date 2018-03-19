@@ -28,7 +28,7 @@ public interface AllocationEncoding {
 	 * @param routingVariables
 	 * @param architecture
 	 * @param constraints
-	 * @return
+	 * @return set of variables describing the encoded allocation
 	 */
 	public Set<AllocationVariable> toConstraints(Set<MappingVariable> mappingVariables,
 			Set<RoutingVariable> routingVariables, Architecture<Resource, Link> architecture,

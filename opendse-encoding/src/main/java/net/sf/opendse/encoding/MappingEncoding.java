@@ -26,7 +26,7 @@ public interface MappingEncoding {
 	 * @param mappings
 	 * @param applicationVariables
 	 * @param constraints
-	 * @return
+	 * @return set of variables describing the mapping decisions
 	 */
 	public Set<MappingVariable> toConstraints(Mappings<Task, Resource> mappings,
 			Set<ApplicationVariable> applicationVariables, Set<Constraint> constraints);

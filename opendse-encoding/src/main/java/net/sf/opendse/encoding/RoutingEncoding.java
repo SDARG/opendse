@@ -29,7 +29,7 @@ public interface RoutingEncoding {
 	 * @param mappingVariables
 	 * @param routings
 	 * @param constraints
-	 * @return
+	 * @return set of variables describing the routing decisions
 	 */
 	public Set<RoutingVariable> toConstraints(Set<ApplicationVariable> applicationVariables,
 			Set<MappingVariable> mappingVariables, Routings<Task, Resource, Link> routings,

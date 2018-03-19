@@ -3,4 +3,5 @@ dependencies {
 	compile 'com.github.felixreimann:opt4j:master-SNAPSHOT'
 	testCompile 'junit:junit:4.12'
 	testCompile 'com.github.FedorSmirnov89:constraintTester:6422466f3c'
+	testCompile group: 'org.mockito',     name: 'mockito-all',     version: '1.9.5'
 }
