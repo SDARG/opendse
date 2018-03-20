@@ -16,11 +16,11 @@ import net.sf.opendse.model.Task;
  */
 public class Variables {
 
-	private Variables() {
-	}
-	
 	protected static final Map<Variable, Literal> pCache = new HashMap<Variable, Literal>();
 	protected static final Map<Variable, Literal> nCache = new HashMap<Variable, Literal>();
+	
+	private Variables() {
+	}
 	
 	public static DTT var(Dependency dependency, Task sourceTask, Task destinationTask) {
 		return new DTT(dependency, sourceTask, destinationTask);

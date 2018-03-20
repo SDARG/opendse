@@ -24,7 +24,8 @@ public class DependencyPropertyService extends AbstractPropertyService {
 	}
 
 	public enum ActivationModes {
-		STATIC(TaskPropertyService.ActivationModes.STATIC.xmlName);
+		STATIC(TaskPropertyService.ActivationModes.STATIC.xmlName), ALTERNATIVE(
+				TaskPropertyService.ActivationModes.ALTERNATIVE.xmlName);
 		protected String xmlName;
 
 		private ActivationModes(String xmlName) {
@@ -53,6 +54,8 @@ public class DependencyPropertyService extends AbstractPropertyService {
 			String attrString = dependency.getAttribute(DependencyAttributes.ACTIVATION_MODE.xmlName);
 			if (attrString.equals(ActivationModes.STATIC.xmlName)) {
 				return ActivationModes.STATIC;
+			} else if (attrString.equals(ActivationModes.ALTERNATIVE.xmlName)) {
+				return ActivationModes.ALTERNATIVE;
 			} else {
 				throw new IllegalArgumentException("Unknown activation mode for dependency " + dependency.getId());
 			}

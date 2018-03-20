@@ -20,4 +20,13 @@ public class DTTTest {
 		assertEquals(destinationTask, dttVar.getDestinationTask());
 		assertEquals(dttVar, new DTT(dependency, sourceTask, destinationTask));
 	}
+	
+	@Test
+	public void testToString() {
+		Dependency dependency = new Dependency("dependency");
+		Task sourceTask = new Task("source");
+		Task destinationTask = new Task("destination");
+		DTT dttVar = new DTT(dependency, sourceTask, destinationTask);
+		assertEquals("DTT[dependency,source,destination]", dttVar.toString());
+	}
 }

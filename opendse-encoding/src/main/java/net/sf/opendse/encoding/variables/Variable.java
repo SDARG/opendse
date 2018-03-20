@@ -74,16 +74,14 @@ public abstract class Variable {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		String s = "";
-		s += this.getClass().getSimpleName();
-		s += "[";
+		StringBuilder builder = new StringBuilder();
+		builder.append(this.getClass().getSimpleName());
+		builder.append("[");
 		for(int i=1; i<objects.length; i++){
-			s += objects[i] + ",";
+			builder.append(objects[i] + ",");
 		}
-		s = s.substring(0, s.length() - 1);
-		s += "]";
-		return s;
+		builder.deleteCharAt(builder.length()-1);
+		builder.append("]");
+		return builder.toString();
 	}
-
-
 }

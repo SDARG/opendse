@@ -25,7 +25,7 @@ public class TaskPropertyService extends AbstractPropertyService {
 	}
 
 	public enum ActivationModes {
-		STATIC("static");
+		STATIC("static"), ALTERNATIVE("alternative");
 		protected String xmlName;
 
 		private ActivationModes(String xmlName) {
@@ -54,6 +54,8 @@ public class TaskPropertyService extends AbstractPropertyService {
 			String attrString = task.getAttribute(TaskAttributes.ACTIVATION_MODE.xmlName);
 			if (attrString.equals(ActivationModes.STATIC.xmlName)) {
 				return ActivationModes.STATIC;
+			} else if (attrString.equals(ActivationModes.ALTERNATIVE.xmlName)) {
+				return ActivationModes.ALTERNATIVE;
 			} else {
 				throw new IllegalArgumentException("Unknown activation mode for task " + task.getId());
 			}
