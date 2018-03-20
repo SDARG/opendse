@@ -1,5 +1,7 @@
 package net.sf.opendse.encoding.application;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,6 +36,7 @@ public class DependencyEndpointConstraintGenerator {
 		applVars.add(tVar2);
 		applVars.add(tVar1);
 		generator.toConstraints(applVars, input);
+		assertEquals(2, input.size());
 		ConstraintVerifier bothInactive = new ConstraintVerifier(new HashSet<Object>(), deactivated, input);
 		bothInactive.verifyVariableDeactivated(dttVar);
 		deactivated.remove(tVar1);

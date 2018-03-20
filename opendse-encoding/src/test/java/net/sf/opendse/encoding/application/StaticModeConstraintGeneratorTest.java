@@ -1,5 +1,8 @@
 package net.sf.opendse.encoding.application;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,7 +33,9 @@ public class StaticModeConstraintGeneratorTest {
 		applVars.add(dttVar);
 		Set<Constraint> constraints = new HashSet<Constraint>();
 		StaticModeConstraintGenerator generator = new StaticModeConstraintGenerator();
-		generator.toConstraints(applVars, constraints);
+		Set<ApplicationVariable> resultVariables = generator.toConstraints(applVars, constraints);
+		assertEquals(3, resultVariables.size());
+		assertTrue(resultVariables.containsAll(applVars));
 		ConstraintVerifier verifier = new ConstraintVerifier(new HashSet<Object>(), new HashSet<Object>(), constraints);
 		verifier.verifyVariableActivated(tVar1);
 		verifier.verifyVariableActivated(tVar2);
