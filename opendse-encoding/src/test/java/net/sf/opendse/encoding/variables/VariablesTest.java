@@ -8,9 +8,21 @@ import org.junit.Test;
 import org.opt4j.satdecoding.Literal;
 
 import net.sf.opendse.model.Dependency;
+import net.sf.opendse.model.Mapping;
+import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 
 public class VariablesTest {
+
+	@Test
+	public void testMvar() {
+		Task task = new Task("task");
+		Resource res = new Resource("resource");
+		Mapping<Task, Resource> mapping = new Mapping<Task, Resource>("mapping", task, res);
+		M mVar = Variables.var(mapping);
+		assertEquals(mapping, mVar.getMapping());
+		assertEquals(mVar, Variables.var(mapping));
+	}
 
 	@Test
 	public void testDTTvar() {
@@ -20,7 +32,7 @@ public class VariablesTest {
 		DTT dttVar = Variables.var(dependency, sourceTask, destinationTask);
 		assertEquals(dttVar, Variables.var(dependency, sourceTask, destinationTask));
 	}
-	
+
 	@Test
 	public void testTvar() {
 		Task task = new Task("task");
@@ -37,7 +49,7 @@ public class VariablesTest {
 		assertEquals(mockVar, pLiteral.variable());
 		assertEquals(pLiteral, Variables.p(mockVar));
 	}
-	
+
 	@Test
 	public void testN() {
 		Variable mockVar = mock(Variable.class);
@@ -46,5 +58,4 @@ public class VariablesTest {
 		assertEquals(mockVar, nLiteral.variable());
 		assertEquals(nLiteral, Variables.n(mockVar));
 	}
-	
 }

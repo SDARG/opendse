@@ -36,7 +36,7 @@ public class TaskPropertyService extends AbstractPropertyService {
 			return this.xmlName;
 		}
 	}
-
+	
 	private TaskPropertyService() {
 	}
 
