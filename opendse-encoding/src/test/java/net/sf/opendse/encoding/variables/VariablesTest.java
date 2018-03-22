@@ -7,13 +7,33 @@ import static org.mockito.Mockito.*;
 import org.junit.Test;
 import org.opt4j.satdecoding.Literal;
 
+import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Dependency;
+import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 
 public class VariablesTest {
 
+	@Test
+	public void testCLRRvar() {
+		Communication comm = new Communication("comm");
+		Link link = new Link("link");
+		Resource source = new Resource("source");
+		Resource destination = new Resource("destination");
+		CLRR clrrVar = Variables.var(comm, link, source, destination);
+		assertEquals(clrrVar, Variables.var(comm, link, source, destination));
+	}
+	
+	@Test
+	public void testCRvar() {
+		Communication task = new Communication("comm");
+		Resource res = new Resource("resource");
+		CR crVar = Variables.var(task, res);
+		assertEquals(crVar, Variables.var(task, res));
+	}
+	
 	@Test
 	public void testMvar() {
 		Task task = new Task("task");
@@ -28,7 +48,7 @@ public class VariablesTest {
 	public void testDTTvar() {
 		Dependency dependency = new Dependency("dependency");
 		Task sourceTask = new Task("source");
-		Task destinationTask = new Task("destination");
+		Communication destinationTask = new Communication("destination");
 		DTT dttVar = Variables.var(dependency, sourceTask, destinationTask);
 		assertEquals(dttVar, Variables.var(dependency, sourceTask, destinationTask));
 	}

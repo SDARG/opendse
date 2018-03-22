@@ -12,6 +12,7 @@ import net.sf.opendse.encoding.variables.ApplicationVariable;
 import net.sf.opendse.encoding.variables.DTT;
 import net.sf.opendse.encoding.variables.T;
 import net.sf.opendse.encoding.variables.Variables;
+import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Task;
 import verification.ConstraintVerifier;
@@ -21,7 +22,7 @@ public class DependencyEndpointConstraintGenerator {
 	@Test
 	public void test() {
 		Task t1 = new Task("t1");
-		Task t2 = new Task("t2");
+		Task t2 = new Communication("t2");
 		Dependency dep = new Dependency("dep");
 		T tVar1 = Variables.var(t1);
 		T tVar2 = Variables.var(t2);

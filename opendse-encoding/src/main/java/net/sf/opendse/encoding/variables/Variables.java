@@ -6,6 +6,7 @@ import java.util.Map;
 import org.opt4j.satdecoding.Literal;
 
 import net.sf.opendse.model.Dependency;
+import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
@@ -22,6 +23,14 @@ public class Variables {
 	protected static final Map<Variable, Literal> nCache = new HashMap<Variable, Literal>();
 	
 	private Variables() {
+	}
+	
+	public static CLRR var(Task communication, Link link, Resource source, Resource destination) {
+		return new CLRR(communication, link, source, destination);
+	}
+	
+	public static CR var(Task communication, Resource resource) {
+		return new CR(communication, resource);
 	}
 	
 	public static M var(Mapping<Task, Resource> mapping) {

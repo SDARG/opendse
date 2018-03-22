@@ -9,6 +9,7 @@ import edu.uci.ics.jung.graph.util.EdgeType;
 import net.sf.opendse.encoding.variables.ApplicationVariable;
 import net.sf.opendse.encoding.variables.Variables;
 import net.sf.opendse.model.Application;
+import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.DependencyPropertyService;
@@ -53,9 +54,9 @@ public class DefaultApplicationEncodingTest {
 		DefaultApplicationEncoding encoding = new DefaultApplicationEncoding(dependencyTaskConstraintGenerator,
 				generatorManager);
 		Task t1 = new Task("t1");
-		Task t2 = new Task("t2");
+		Task t2 = new Communication("t2");
 		Task t3 = new Task("t3");
-		Task t4 = new Task("t4");
+		Task t4 = new Communication("t4");
 		TaskPropertyService.setActivationMode(t1, ActivationModes.ALTERNATIVE);
 		TaskPropertyService.setActivationMode(t2, ActivationModes.ALTERNATIVE);
 		Dependency d1 = new Dependency("d1");
