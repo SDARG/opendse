@@ -42,7 +42,7 @@ public class DefaultRoutingEncodingTest {
 		applVars.add(dtt1);
 		applVars.add(dtt2);
 		applVars.add(dtt3);
-		DefaultRoutingEncoding encoding = new DefaultRoutingEncoding();
+		CommunicationFlowRoutingEncoding encoding = new CommunicationFlowRoutingEncoding();
 		Map<T, Set<CommunicationFlow>> map = encoding.findCommunicationFlows(applVars);
 		assertEquals(1, map.keySet().size());
 		assertTrue(map.keySet().contains(tVarComm));

@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 import org.junit.Test;
 import org.opt4j.satdecoding.Literal;
 
+import net.sf.opendse.encoding.routing.CommunicationFlow;
 import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Link;
@@ -14,7 +15,25 @@ import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 
+import static org.mockito.Mockito.mock;
+
 public class VariablesTest {
+
+	public void testDDLRRvar() {
+		CommunicationFlow mockFlow = mock(CommunicationFlow.class);
+		Link link = new Link("link");
+		Resource src = new Resource("src");
+		Resource dest = new Resource("dest");
+		DDLRR var = Variables.var(mockFlow, link, src, dest);
+		assertEquals(var, Variables.var(mockFlow, link, src, dest));
+	}
+
+	public void testDDRvar() {
+		CommunicationFlow mockFlow = mock(CommunicationFlow.class);
+		Resource resource = new Resource("resource");
+		DDR var = Variables.var(mockFlow, resource);
+		assertEquals(var, Variables.var(mockFlow, resource));
+	}
 
 	@Test
 	public void testCLRRvar() {
@@ -25,7 +44,7 @@ public class VariablesTest {
 		CLRR clrrVar = Variables.var(comm, link, source, destination);
 		assertEquals(clrrVar, Variables.var(comm, link, source, destination));
 	}
-	
+
 	@Test
 	public void testCRvar() {
 		Communication task = new Communication("comm");
@@ -33,7 +52,7 @@ public class VariablesTest {
 		CR crVar = Variables.var(task, res);
 		assertEquals(crVar, Variables.var(task, res));
 	}
-	
+
 	@Test
 	public void testMvar() {
 		Task task = new Task("task");

@@ -19,7 +19,7 @@ import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.TaskPropertyService;
 
-public class DefaultRoutingEncoding implements RoutingEncoding {
+public class CommunicationFlowRoutingEncoding implements RoutingEncoding {
 
 	@Override
 	public Set<Constraint> toConstraints(Set<ApplicationVariable> applicationVariables,
