@@ -11,7 +11,6 @@ import net.sf.opendse.encoding.RoutingEncoding;
 import net.sf.opendse.encoding.variables.ApplicationVariable;
 import net.sf.opendse.encoding.variables.DTT;
 import net.sf.opendse.encoding.variables.MappingVariable;
-import net.sf.opendse.encoding.variables.RoutingVariable;
 import net.sf.opendse.encoding.variables.T;
 import net.sf.opendse.encoding.variables.Variables;
 import net.sf.opendse.model.Link;
@@ -23,9 +22,8 @@ import net.sf.opendse.model.properties.TaskPropertyService;
 public class DefaultRoutingEncoding implements RoutingEncoding {
 
 	@Override
-	public Set<RoutingVariable> toConstraints(Set<ApplicationVariable> applicationVariables,
-			Set<MappingVariable> mappingVariables, Routings<Task, Resource, Link> routings,
-			Set<Constraint> constraints) {
+	public Set<Constraint> toConstraints(Set<ApplicationVariable> applicationVariables,
+			Set<MappingVariable> mappingVariables, Routings<Task, Resource, Link> routings) {
 
 		Map<T, Set<CommunicationFlow>> communicationFlowMap = findCommunicationFlows(applicationVariables);
 

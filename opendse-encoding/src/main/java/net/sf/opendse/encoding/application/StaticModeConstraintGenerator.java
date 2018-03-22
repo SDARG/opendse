@@ -1,5 +1,6 @@
 package net.sf.opendse.encoding.application;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.opt4j.satdecoding.Constraint;
@@ -11,8 +12,9 @@ import net.sf.opendse.encoding.variables.T;
 import net.sf.opendse.encoding.variables.Variables;
 
 /**
- * Formulates the constraints for the static application parts. These parts are
- * always included into the implementation application.
+ * The {@link StaticModeConstraintGenerator} formulates the constraints for the
+ * static application parts. These parts are always included into the
+ * implementation application.
  * 
  * @author Fedor Smirnov
  *
@@ -20,18 +22,18 @@ import net.sf.opendse.encoding.variables.Variables;
 public class StaticModeConstraintGenerator implements ApplicationModeConstraintGenerator {
 
 	@Override
-	public Set<ApplicationVariable> toConstraints(Set<ApplicationVariable> applicationVariables,
-			Set<Constraint> constraints) {
+	public Set<Constraint> toConstraints(Set<ApplicationVariable> applicationVariables) {
+		Set<Constraint> staticApplicationConstraints = new HashSet<Constraint>();
 		for (ApplicationVariable applVar : applicationVariables) {
 			if (applVar instanceof T) {
 				T tVar = (T) applVar;
-				constraints.add(includeTask(tVar));
+				staticApplicationConstraints.add(includeTask(tVar));
 			} else {
 				DTT dttVar = (DTT) applVar;
-				constraints.add(includeDependency(dttVar));
+				staticApplicationConstraints.add(includeDependency(dttVar));
 			}
 		}
-		return applicationVariables;
+		return staticApplicationConstraints;
 	}
 
 	/**

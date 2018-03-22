@@ -15,6 +15,7 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
+import net.sf.opendse.encoding.application.DependencyEndPointConstraintGenerator;
 import net.sf.opendse.encoding.variables.AllocationVariable;
 import net.sf.opendse.encoding.variables.ApplicationVariable;
 import net.sf.opendse.encoding.variables.InterfaceVariable;
@@ -76,12 +77,13 @@ public abstract class AbstractImplementationEncoding implements ImplementationEn
 				architecture);
 		allocationVariables.addAll(
 				(Set<AllocationVariable>) (Set<?>) extractVariables(allocationConstraints, AllocationVariable.class));
-		
+
 		Set<Constraint> result = new HashSet<Constraint>();
 		result.addAll(applicationConstraints);
 		result.addAll(mappingConstraints);
 		result.addAll(routingConstraints);
 		result.addAll(formulateAdditionalConstraints());
+		result.addAll(formulateGlobalConstraints());
 		encodingFinished = true;
 		return result;
 	}
@@ -96,6 +98,20 @@ public abstract class AbstractImplementationEncoding implements ImplementationEn
 		result.addAll(mappingVariables);
 		result.addAll(routingVariables);
 		result.addAll(allocationVariables);
+		return result;
+	}
+
+	/**
+	 * Formulates the constraints that enforce global characteristics of valid implementations.
+	 * 
+	 * @return the set of constraints that enforce global characteristics of valid implementations
+	 */
+	protected Set<Constraint> formulateGlobalConstraints() {
+		Set<Constraint> result = new HashSet<Constraint>();
+		DependencyEndPointConstraintGenerator dependencyConstraintGenerator = new DependencyEndPointConstraintGenerator();
+		
+		// Dependencies are inactive if one of their end point tasks is inactive
+		result.addAll(dependencyConstraintGenerator.toConstraints(applicationVariables));
 		return result;
 	}
 

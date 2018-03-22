@@ -19,22 +19,26 @@ import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.DependencyPropertyService;
 import net.sf.opendse.model.properties.TaskPropertyService;
 
-public class DefaultApplicationEncoding implements ApplicationEncoding {
+/**
+ * The {@link ApplicationModeEncoding} is an {@link ApplicationEncoding} that
+ * enables the usage of different {@link ApplicationModeConstraintGenerator} to
+ * process different parts of the application.
+ * 
+ * @author Fedor Smirnov
+ *
+ */
+public class ApplicationModeEncoding implements ApplicationEncoding {
 
-	protected final DependencyConstraintGenerator dependencyTaskConstraintGenerator;
 	protected final ApplicationConstraintGeneratorManager generatorManager;
 
 	@Inject
-	public DefaultApplicationEncoding(DependencyConstraintGenerator dependencyTaskConstraintGenerator,
-			ApplicationConstraintGeneratorManager generatorManager) {
-		this.dependencyTaskConstraintGenerator = dependencyTaskConstraintGenerator;
+	public ApplicationModeEncoding(ApplicationConstraintGeneratorManager generatorManager) {
 		this.generatorManager = generatorManager;
 	}
 
 	@Override
-	public Set<ApplicationVariable> toConstraints(Application<Task, Dependency> application,
-			Set<Constraint> constraints) {
-		Set<ApplicationVariable> applicationVariables = new HashSet<ApplicationVariable>();
+	public Set<Constraint> toConstraints(Application<Task, Dependency> application) {
+		Set<Constraint> applicationConstraints = new HashSet<Constraint>();
 		Map<String, Set<ApplicationVariable>> applicationModeMap = filterApplicationModes(application);
 		// generate the constraints for each mode
 		for (Entry<String, Set<ApplicationVariable>> entry : applicationModeMap.entrySet()) {
@@ -42,16 +46,16 @@ public class DefaultApplicationEncoding implements ApplicationEncoding {
 			Set<ApplicationVariable> variables = entry.getValue();
 			ApplicationModeConstraintGenerator constraintGenerator = generatorManager
 					.getConstraintGenerator(modeString);
-			applicationVariables.addAll(constraintGenerator.toConstraints(variables, constraints));
+			applicationConstraints.addAll(constraintGenerator.toConstraints(variables));
 		}
-		dependencyTaskConstraintGenerator.toConstraints(applicationVariables, constraints);
-		return applicationVariables;
+		return applicationConstraints;
 	}
 
 	/**
-	 * filters the tasks and dependencies according to their activation modes
+	 * Filters the tasks and dependencies according to their activation modes.
 	 * 
 	 * @param application
+	 *            the application graph
 	 * @return map where the activation modes are mapped onto the sets of their
 	 *         application variables
 	 */

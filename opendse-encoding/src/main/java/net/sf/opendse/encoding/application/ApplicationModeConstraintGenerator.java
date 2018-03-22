@@ -5,10 +5,11 @@ import java.util.Set;
 import org.opt4j.satdecoding.Constraint;
 
 import net.sf.opendse.encoding.variables.ApplicationVariable;
+import net.sf.opendse.model.properties.DependencyPropertyService.ActivationModes;
 
 /**
- * Generates the constraints for application elements with a certain application
- * mode. Returns the encoded application variables.
+ * An {@link ApplicationModeConstraintGenerator} generates the constraints for
+ * {@link ApplicationVariable}s with a certain application mode.
  * 
  * @author Fedor Smirnov
  *
@@ -16,16 +17,11 @@ import net.sf.opendse.encoding.variables.ApplicationVariable;
 public interface ApplicationModeConstraintGenerator {
 
 	/**
-	 * Generates the constraints for application elements with a certain application
-	 * mode. Returns the encoded application variables.
+	 * Generates the constraints enforcing a valid activation of the given {@link ApplicationVariable}s.
 	 * 
-	 * @param applicationVariables
-	 *            application variables sharing the same mode
-	 * @param constraints
-	 *            the constraints formulated hitherto
-	 * @return the encoded variables that may be relevant to other encoding modules
+	 * @param applicationVariables set of {@link ApplicationVariable}s sharing the same {@link ActivationModes}
+	 * @return a set of constraints enforcing a valid activation of {@link ApplicationVariable}s
 	 */
-	public Set<ApplicationVariable> toConstraints(Set<ApplicationVariable> applicationVariables,
-			Set<Constraint> constraints);
+	public Set<Constraint> toConstraints(Set<ApplicationVariable> applicationVariables);
 
 }

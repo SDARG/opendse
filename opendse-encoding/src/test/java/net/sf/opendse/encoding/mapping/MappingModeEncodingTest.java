@@ -7,7 +7,6 @@ import org.opt4j.satdecoding.Constraint;
 
 import net.sf.opendse.encoding.variables.ApplicationVariable;
 import net.sf.opendse.encoding.variables.DTT;
-import net.sf.opendse.encoding.variables.MappingVariable;
 import net.sf.opendse.encoding.variables.T;
 import net.sf.opendse.encoding.variables.Variables;
 import net.sf.opendse.model.Communication;
@@ -24,7 +23,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class DefaultMappingEncodingTest {
+public class MappingModeEncodingTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
@@ -51,14 +50,13 @@ public class DefaultMappingEncodingTest {
 		MappingConstraintGeneratorManager generatorManager = mock(MappingConstraintGeneratorManager.class);
 		MappingConstraintGenerator constraintGenerator = mock(MappingConstraintGenerator.class);
 		when(generatorManager.getMappingConstraintGenerator(MappingModes.DESIGNER)).thenReturn(constraintGenerator);
-		when(constraintGenerator.toConstraints(anySet(), any(Mappings.class), anySet()))
-				.thenReturn(new HashSet<MappingVariable>());
-		DefaultMappingEncoding encoding = new DefaultMappingEncoding(generatorManager);
-		Set<MappingVariable> mappingVars = encoding.toConstraints(new Mappings<Task, Resource>(), applVars,
-				new HashSet<Constraint>());
-		assertTrue(mappingVars.isEmpty());
+		when(constraintGenerator.toConstraints(anySet(), any(Mappings.class)))
+				.thenReturn(new HashSet<Constraint>());
+		MappingModeEncoding encoding = new MappingModeEncoding(generatorManager);
+		Set<Constraint> mappingConstraints = encoding.toConstraints(new Mappings<Task, Resource>(), applVars);
+		assertTrue(mappingConstraints.isEmpty());
 		verify(generatorManager).getMappingConstraintGenerator(MappingModes.DESIGNER);
-		verify(constraintGenerator).toConstraints(anySet(), any(Mappings.class), anySet());
+		verify(constraintGenerator).toConstraints(anySet(), any(Mappings.class));
 	}
 
 	@Test
@@ -75,7 +73,7 @@ public class DefaultMappingEncodingTest {
 		processVars.add(tVar3);
 		ProcessPropertyService.setMappingMode(t3, MappingModes.TYPE);
 		MappingConstraintGeneratorManager generatorManager = mock(MappingConstraintGeneratorManager.class);
-		DefaultMappingEncoding encoding = new DefaultMappingEncoding(generatorManager);
+		MappingModeEncoding encoding = new MappingModeEncoding(generatorManager);
 		Map<MappingModes, Set<T>> result = encoding.filterProcessVariables(processVars);
 		assertTrue(result.containsKey(MappingModes.DESIGNER));
 		assertTrue(result.containsKey(MappingModes.TYPE));

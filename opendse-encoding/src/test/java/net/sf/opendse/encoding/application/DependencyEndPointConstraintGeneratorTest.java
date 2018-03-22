@@ -17,7 +17,7 @@ import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Task;
 import verification.ConstraintVerifier;
 
-public class DependencyEndpointConstraintGenerator {
+public class DependencyEndPointConstraintGeneratorTest {
 
 	@Test
 	public void test() {
@@ -31,22 +31,20 @@ public class DependencyEndpointConstraintGenerator {
 		deactivated.add(tVar2);
 		deactivated.add(tVar1);
 		DependencyEndPointConstraintGenerator generator = new DependencyEndPointConstraintGenerator();
-		Set<Constraint> input = new HashSet<Constraint>();
 		Set<ApplicationVariable> applVars = new HashSet<ApplicationVariable>();
 		applVars.add(dttVar);
 		applVars.add(tVar2);
 		applVars.add(tVar1);
-		generator.toConstraints(applVars, input);
-		assertEquals(2, input.size());
-		ConstraintVerifier bothInactive = new ConstraintVerifier(new HashSet<Object>(), deactivated, input);
+		Set<Constraint> constraints = generator.toConstraints(applVars);
+		assertEquals(2, constraints.size());
+		ConstraintVerifier bothInactive = new ConstraintVerifier(new HashSet<Object>(), deactivated, constraints);
 		bothInactive.verifyVariableDeactivated(dttVar);
 		deactivated.remove(tVar1);
-		ConstraintVerifier oneInactive1 = new ConstraintVerifier(new HashSet<Object>(), deactivated, input);
+		ConstraintVerifier oneInactive1 = new ConstraintVerifier(new HashSet<Object>(), deactivated, constraints);
 		oneInactive1.verifyVariableDeactivated(dttVar);
 		deactivated.remove(tVar2);
 		deactivated.add(tVar1);
-		ConstraintVerifier oneInactive2 = new ConstraintVerifier(new HashSet<Object>(), deactivated, input);
+		ConstraintVerifier oneInactive2 = new ConstraintVerifier(new HashSet<Object>(), deactivated, constraints);
 		oneInactive2.verifyVariableDeactivated(dttVar);
 	}
-
 }

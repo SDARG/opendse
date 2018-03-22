@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.opt4j.satdecoding.Constraint;
 
 import net.sf.opendse.encoding.variables.M;
-import net.sf.opendse.encoding.variables.MappingVariable;
 import net.sf.opendse.encoding.variables.T;
 import net.sf.opendse.encoding.variables.Variables;
 import net.sf.opendse.model.Mapping;
@@ -27,7 +26,7 @@ public class DesignerMappingsConstraintGeneratorTest {
 		Set<T> processVars = new HashSet<T>();
 		processVars.add(tVar);
 		DesignerMappingsConstraintGenerator generator = new DesignerMappingsConstraintGenerator();
-		generator.toConstraints(processVars, new Mappings<Task, Resource>(), new HashSet<Constraint>());
+		generator.toConstraints(processVars, new Mappings<Task, Resource>());
 	}
 
 	@Test
@@ -45,12 +44,8 @@ public class DesignerMappingsConstraintGeneratorTest {
 		M mVar2 = Variables.var(m2);
 		Set<T> applVars = new HashSet<T>();
 		applVars.add(tVar);
-		Set<Constraint> constraints = new HashSet<Constraint>();
 		DesignerMappingsConstraintGenerator generator = new DesignerMappingsConstraintGenerator();
-		Set<MappingVariable> mVars = generator.toConstraints(applVars, mappings, constraints);
-		assertEquals(2, mVars.size());
-		assertTrue(mVars.contains(mVar1));
-		assertTrue(mVars.contains(mVar2));
+		Set<Constraint> constraints = generator.toConstraints(applVars, mappings);
 		assertEquals(1, constraints.size());
 
 		Set<Object> taskActivated = new HashSet<Object>();

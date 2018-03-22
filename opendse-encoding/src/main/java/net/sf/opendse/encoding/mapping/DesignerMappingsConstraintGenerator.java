@@ -26,40 +26,42 @@ import net.sf.opendse.model.Task;
 public class DesignerMappingsConstraintGenerator implements MappingConstraintGenerator {
 
 	@Override
-	public Set<MappingVariable> toConstraints(Set<T> processVariables, Mappings<Task, Resource> mappings,
-			Set<Constraint> constraints) {
-		Set<MappingVariable> result = new HashSet<MappingVariable>();
+	public Set<Constraint> toConstraints(Set<T> processVariables, Mappings<Task, Resource> mappings) {
+		Set<Constraint> designerMappingConstraints = new HashSet<Constraint>();
 		// iterate the processes
 		for (T processVariable : processVariables) {
 			Task task = processVariable.getTask();
-			if (mappings.get(task).isEmpty()) {
+			Set<Mapping<Task, Resource>> taskMappings = mappings.get(task);
+			if (taskMappings.isEmpty()) {
 				throw new IllegalArgumentException("No mappings provided for the process " + task.getId());
 			}
-			result.addAll(formulateMappingConstraint(processVariable, mappings.get(task), constraints));
+			designerMappingConstraints.add(formulateMappingConstraint(processVariable, taskMappings));
 		}
-		return result;
+		return designerMappingConstraints;
 	}
 
 	/**
-	 * Formulates the constraint stating that exactly one of the provided mappings has to be active in the cases where the process is active.
+	 * Formulates the constraint stating that exactly one of the provided mappings
+	 * has to be active in the cases where the process is active.
 	 * 
 	 * not(T) + sum(M) = 1
 	 * 
 	 * @param processVariable
+	 *            the {@link T} variable encoding the process activation
 	 * @param mappings
-	 * @param constraints
-	 * @return the mapping variables created during the constraint formulation
+	 *            the {@link Mappings} provided by the designer
+	 * @return the constraint stating that exactly one of the provided mappings has
+	 *         to be active in the cases where the process is active
 	 */
-	protected Set<MappingVariable> formulateMappingConstraint(T processVariable, Set<Mapping<Task, Resource>> mappings, Set<Constraint> constraints) {
+	protected Constraint formulateMappingConstraint(T processVariable, Set<Mapping<Task, Resource>> mappings) {
 		Constraint constraint = new Constraint(Operator.EQ, 1);
 		constraint.add(Variables.n(processVariable));
 		Set<MappingVariable> result = new HashSet<MappingVariable>();
 		for (Mapping<Task, Resource> mapping : mappings) {
-			M mVar = Variables.var(mapping); 
+			M mVar = Variables.var(mapping);
 			result.add(mVar);
 			constraint.add(Variables.p(mVar));
 		}
-		constraints.add(constraint);
-		return result;
+		return constraint;
 	}
 }

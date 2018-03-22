@@ -22,12 +22,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class DefaultApplicationEncodingTest {
+public class ApplicationModeEncodingTest {
 
 	@Test
 	public void testToConstraints() {
-		DependencyConstraintGenerator dependencyTaskConstraintGenerator = mock(
-				DependencyConstraintGenerator.class);
 		ApplicationConstraintGeneratorManager generatorManager = mock(ApplicationConstraintGeneratorManager.class);
 		Task task = new Task("task");
 		Application<Task, Dependency> appl = new Application<Task, Dependency>();
@@ -36,23 +34,17 @@ public class DefaultApplicationEncodingTest {
 		when(generatorManager.getConstraintGenerator(ActivationModes.STATIC.getXmlName())).thenReturn(generator);
 		Set<ApplicationVariable> vars = new HashSet<ApplicationVariable>();
 		vars.add(Variables.var(task));
-		when(generator.toConstraints(vars, new HashSet<Constraint>())).thenReturn(new HashSet<ApplicationVariable>());
-		DefaultApplicationEncoding encoding = new DefaultApplicationEncoding(dependencyTaskConstraintGenerator,
-				generatorManager);
-		encoding.toConstraints(appl, new HashSet<Constraint>());
-		verify(generator).toConstraints(vars, new HashSet<Constraint>());
+		when(generator.toConstraints(vars)).thenReturn(new HashSet<Constraint>());
+		ApplicationModeEncoding encoding = new ApplicationModeEncoding(generatorManager);
+		encoding.toConstraints(appl);
+		verify(generator).toConstraints(vars);
 		verify(generatorManager).getConstraintGenerator(ActivationModes.STATIC.getXmlName());
-		verify(dependencyTaskConstraintGenerator).toConstraints(new HashSet<ApplicationVariable>(),
-				new HashSet<Constraint>());
 	}
 
 	@Test
 	public void testFilterApplicationModes() {
-		DependencyConstraintGenerator dependencyTaskConstraintGenerator = mock(
-				DependencyConstraintGenerator.class);
 		ApplicationConstraintGeneratorManager generatorManager = mock(ApplicationConstraintGeneratorManager.class);
-		DefaultApplicationEncoding encoding = new DefaultApplicationEncoding(dependencyTaskConstraintGenerator,
-				generatorManager);
+		ApplicationModeEncoding encoding = new ApplicationModeEncoding(generatorManager);
 		Task t1 = new Task("t1");
 		Task t2 = new Communication("t2");
 		Task t3 = new Task("t3");
