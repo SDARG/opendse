@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.opt4j.satdecoding.Constraint;
+import org.opt4j.satdecoding.Literal;
 
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
@@ -53,21 +54,34 @@ public abstract class AbstractImplementationEncoding implements ImplementationEn
 		this.allocationVariables = new HashSet<AllocationVariable>();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Set<Constraint> toConstraints(Specification specification) {
+	public final Set<Constraint> toConstraints(Specification specification) {
 		Application<Task, Dependency> application = specification.getApplication();
 		Mappings<Task, Resource> mappings = specification.getMappings();
 		Routings<Task, Resource, Link> routings = specification.getRoutings();
 		Architecture<Resource, Link> architecture = specification.getArchitecture();
 
-		Set<Constraint> result = new HashSet<Constraint>();
-		applicationVariables.addAll(applicationEncoding.toConstraints(application, result));
-		mappingVariables.addAll(mappingEncoding.toConstraints(mappings, applicationVariables, result));
+		Set<Constraint> applicationConstraints = applicationEncoding.toConstraints(application);
+		applicationVariables.addAll((Set<ApplicationVariable>) (Set<?>) extractVariables(applicationConstraints,
+				ApplicationVariable.class));
+		Set<Constraint> mappingConstraints = mappingEncoding.toConstraints(mappings, applicationVariables);
+		mappingVariables
+				.addAll((Set<MappingVariable>) (Set<?>) extractVariables(mappingConstraints, MappingVariable.class));
+		Set<Constraint> routingConstraints = routingEncoding.toConstraints(applicationVariables, mappingVariables,
+				routings);
 		routingVariables
-				.addAll(routingEncoding.toConstraints(applicationVariables, mappingVariables, routings, result));
-		allocationVariables
-				.addAll(allocationEncoding.toConstraints(mappingVariables, routingVariables, architecture, result));
-		formulateAdditionalConstraints(result);
+				.addAll((Set<RoutingVariable>) (Set<?>) extractVariables(routingConstraints, RoutingVariable.class));
+		Set<Constraint> allocationConstraints = allocationEncoding.toConstraints(mappingVariables, routingVariables,
+				architecture);
+		allocationVariables.addAll(
+				(Set<AllocationVariable>) (Set<?>) extractVariables(allocationConstraints, AllocationVariable.class));
+		
+		Set<Constraint> result = new HashSet<Constraint>();
+		result.addAll(applicationConstraints);
+		result.addAll(mappingConstraints);
+		result.addAll(routingConstraints);
+		result.addAll(formulateAdditionalConstraints());
 		encodingFinished = true;
 		return result;
 	}
@@ -91,9 +105,31 @@ public abstract class AbstractImplementationEncoding implements ImplementationEn
 	protected abstract void preprocessSpecification();
 
 	/**
-	 * add additional constraints
+	 * Adds additional constraints.
+	 *
+	 * @return the set of additional constraints
+	 */
+	protected abstract Set<Constraint> formulateAdditionalConstraints();
+
+	/**
+	 * Extracts the {@code InterfaceVariable}s of a certain type from the given
+	 * constraint set.
 	 * 
 	 * @param constraints
+	 *            the set of constraints encoding the variables
+	 * @param variableClass
+	 *            the class of the variables that are to be extracted
+	 * @return the set of interface variables extracted from the constraints
 	 */
-	protected abstract void formulateAdditionalConstraints(Set<Constraint> constraints);
+	protected Set<InterfaceVariable> extractVariables(Set<Constraint> constraints, Class<?> variableClass) {
+		Set<InterfaceVariable> result = new HashSet<InterfaceVariable>();
+		for (Constraint constraint : constraints) {
+			for (Literal literal : constraint.getLiterals()) {
+				if (variableClass.isAssignableFrom(literal.variable().getClass())) {
+					result.add((InterfaceVariable) literal.variable());
+				}
+			}
+		}
+		return result;
+	}
 }

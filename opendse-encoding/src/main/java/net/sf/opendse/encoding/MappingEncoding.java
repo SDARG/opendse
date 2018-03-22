@@ -11,11 +11,12 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.encoding.mapping.DefaultMappingEncoding;
 import net.sf.opendse.encoding.variables.ApplicationVariable;
-import net.sf.opendse.encoding.variables.MappingVariable;
+import net.sf.opendse.encoding.variables.M;
 
 /**
- * encodes valid mappings and returns the variables containing the mapping
- * information
+ * The {@link MappingEncoding} encodes a valid mapping. An encoder implementing
+ * this interface has to encode an {@link M} variable for each mapping that can
+ * possibly be active in an implementation.
  * 
  * @author Fedor Smirnov
  *
@@ -24,14 +25,20 @@ import net.sf.opendse.encoding.variables.MappingVariable;
 public interface MappingEncoding {
 
 	/**
-	 * Formulates the mapping constraints and adds them to the input constraint set.
-	 * Returns the set of variables describing the implementation mapping.
+	 * 
+	 * Formulates and returns a set of constraints describing all valid bindings of
+	 * the tasks encoded by the {@link ApplicationVariable}s provided as input.
+	 * Specifically, the formulated constraints encode the {@link M} variables that
+	 * then contain the information about the binding decisions in an
+	 * implementation.
 	 * 
 	 * @param mappings
+	 *            the mappings provided by the designer
 	 * @param applicationVariables
-	 * @param constraints
-	 * @return set of variables describing the mapping decisions
+	 *            the variables encoding the possible applications
+	 * @return the set of mapping constraints enforcing a valid assignment of the
+	 *         {@link M} variables
 	 */
-	public Set<MappingVariable> toConstraints(Mappings<Task, Resource> mappings,
-			Set<ApplicationVariable> applicationVariables, Set<Constraint> constraints);
+	public Set<Constraint> toConstraints(Mappings<Task, Resource> mappings,
+			Set<ApplicationVariable> applicationVariables);
 }
