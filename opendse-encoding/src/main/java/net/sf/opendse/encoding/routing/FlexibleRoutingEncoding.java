@@ -81,10 +81,8 @@ public class FlexibleRoutingEncoding implements RoutingEncoding {
 		for (ApplicationVariable applVar : applicationVariables) {
 			if (applVar instanceof T) {
 				T tVar = (T) applVar;
-				if (TaskPropertyService.isCommunication(tVar.getTask())) {
-					if (!dependencyMap.containsKey(tVar)) {
-						dependencyMap.put(tVar, new HashSet<DTT>());
-					}
+				if (TaskPropertyService.isCommunication(tVar.getTask()) && !dependencyMap.containsKey(tVar)) {
+					dependencyMap.put(tVar, new HashSet<DTT>());
 				}
 			} else if (applVar instanceof DTT) {
 				DTT dttVar = (DTT) applVar;
