@@ -22,7 +22,7 @@ public class DesignerMappingsConstraintGeneratorTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testMissingMapping() {
 		Task task = new Task("task");
-		T tVar = Variables.var(task);
+		T tVar = Variables.varT(task);
 		Set<T> processVars = new HashSet<T>();
 		processVars.add(tVar);
 		DesignerMappingsConstraintGenerator generator = new DesignerMappingsConstraintGenerator();
@@ -39,9 +39,9 @@ public class DesignerMappingsConstraintGeneratorTest {
 		Mappings<Task, Resource> mappings = new Mappings<Task, Resource>();
 		mappings.add(m1);
 		mappings.add(m2);
-		T tVar = Variables.var(task);
-		M mVar1 = Variables.var(m1);
-		M mVar2 = Variables.var(m2);
+		T tVar = Variables.varT(task);
+		M mVar1 = Variables.varM(m1);
+		M mVar2 = Variables.varM(m2);
 		Set<T> applVars = new HashSet<T>();
 		applVars.add(tVar);
 		DesignerMappingsConstraintGenerator generator = new DesignerMappingsConstraintGenerator();

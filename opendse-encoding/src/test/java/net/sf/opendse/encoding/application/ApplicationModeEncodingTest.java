@@ -33,7 +33,7 @@ public class ApplicationModeEncodingTest {
 		ApplicationModeConstraintGenerator generator = mock(ApplicationModeConstraintGenerator.class);
 		when(generatorManager.getConstraintGenerator(ActivationModes.STATIC.getXmlName())).thenReturn(generator);
 		Set<ApplicationVariable> vars = new HashSet<ApplicationVariable>();
-		vars.add(Variables.var(task));
+		vars.add(Variables.varT(task));
 		when(generator.toConstraints(vars)).thenReturn(new HashSet<Constraint>());
 		ApplicationModeEncoding encoding = new ApplicationModeEncoding(generatorManager);
 		encoding.toConstraints(appl);
@@ -63,13 +63,13 @@ public class ApplicationModeEncodingTest {
 		assertTrue(modeMap.keySet().contains(ActivationModes.ALTERNATIVE.getXmlName()));
 		assertTrue(modeMap.keySet().contains(ActivationModes.STATIC.getXmlName()));
 		assertEquals(3, modeMap.get(ActivationModes.STATIC.getXmlName()).size());
-		assertTrue(modeMap.get(ActivationModes.STATIC.getXmlName()).contains(Variables.var(t3)));
-		assertTrue(modeMap.get(ActivationModes.STATIC.getXmlName()).contains(Variables.var(t4)));
-		assertTrue(modeMap.get(ActivationModes.STATIC.getXmlName()).contains(Variables.var(d2, t3, t4)));
+		assertTrue(modeMap.get(ActivationModes.STATIC.getXmlName()).contains(Variables.varT(t3)));
+		assertTrue(modeMap.get(ActivationModes.STATIC.getXmlName()).contains(Variables.varT(t4)));
+		assertTrue(modeMap.get(ActivationModes.STATIC.getXmlName()).contains(Variables.varDTT(d2, t3, t4)));
 		assertEquals(3, modeMap.get(ActivationModes.ALTERNATIVE.getXmlName()).size());
-		assertTrue(modeMap.get(ActivationModes.ALTERNATIVE.getXmlName()).contains(Variables.var(t1)));
-		assertTrue(modeMap.get(ActivationModes.ALTERNATIVE.getXmlName()).contains(Variables.var(t2)));
-		assertTrue(modeMap.get(ActivationModes.ALTERNATIVE.getXmlName()).contains(Variables.var(d1, t1, t2)));
+		assertTrue(modeMap.get(ActivationModes.ALTERNATIVE.getXmlName()).contains(Variables.varT(t1)));
+		assertTrue(modeMap.get(ActivationModes.ALTERNATIVE.getXmlName()).contains(Variables.varT(t2)));
+		assertTrue(modeMap.get(ActivationModes.ALTERNATIVE.getXmlName()).contains(Variables.varDTT(d1, t1, t2)));
 	}
 
 }

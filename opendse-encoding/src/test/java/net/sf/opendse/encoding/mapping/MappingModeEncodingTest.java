@@ -33,11 +33,11 @@ public class MappingModeEncodingTest {
 		Task t2 = new Task("t2");
 		Dependency d1 = new Dependency("d1");
 		Dependency d2 = new Dependency("d2");
-		T tvar1 = Variables.var(t1);
-		T tvar2 = Variables.var(t2);
-		T tVarComm = Variables.var(comm);
-		DTT dttVar1 = Variables.var(d1, t1, comm);
-		DTT dttVar2 = Variables.var(d2, comm, t2);
+		T tvar1 = Variables.varT(t1);
+		T tvar2 = Variables.varT(t2);
+		T tVarComm = Variables.varT(comm);
+		DTT dttVar1 = Variables.varDTT(d1, t1, comm);
+		DTT dttVar2 = Variables.varDTT(d2, comm, t2);
 		Set<ApplicationVariable> applVars = new HashSet<ApplicationVariable>();
 		applVars.add(tvar1);
 		applVars.add(tvar2);
@@ -62,11 +62,11 @@ public class MappingModeEncodingTest {
 	@Test
 	public void testFilterProcessVariables() {
 		Task t1 = new Task("t1");
-		T tVar1 = Variables.var(t1);
+		T tVar1 = Variables.varT(t1);
 		Task t2 = new Task("t2");
-		T tVar2 = Variables.var(t2);
+		T tVar2 = Variables.varT(t2);
 		Task t3 = new Task("t3");
-		T tVar3 = Variables.var(t3);
+		T tVar3 = Variables.varT(t3);
 		Set<T> processVars = new HashSet<T>();
 		processVars.add(tVar1);
 		processVars.add(tVar2);

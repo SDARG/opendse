@@ -19,20 +19,38 @@ import static org.mockito.Mockito.mock;
 
 public class VariablesTest {
 
+	@Test
+	public void testDDsRvar() {
+		CommunicationFlow mockFlow = mock(CommunicationFlow.class);
+		Resource resource = new Resource("resource");
+		DDsR var = Variables.varDDsR(mockFlow, resource);
+		assertEquals(var, Variables.varDDsR(mockFlow, resource));
+	}
+
+	@Test
+	public void testDDdRvar() {
+		CommunicationFlow mockFlow = mock(CommunicationFlow.class);
+		Resource resource = new Resource("resource");
+		DDdR var = Variables.varDDdR(mockFlow, resource);
+		assertEquals(var, Variables.varDDdR(mockFlow, resource));
+	}
+
+	@Test
 	public void testDDLRRvar() {
 		CommunicationFlow mockFlow = mock(CommunicationFlow.class);
 		Link link = new Link("link");
 		Resource src = new Resource("src");
 		Resource dest = new Resource("dest");
-		DDLRR var = Variables.var(mockFlow, link, src, dest);
-		assertEquals(var, Variables.var(mockFlow, link, src, dest));
+		DDLRR var = Variables.varDDLRR(mockFlow, link, src, dest);
+		assertEquals(var, Variables.varDDLRR(mockFlow, link, src, dest));
 	}
 
+	@Test
 	public void testDDRvar() {
 		CommunicationFlow mockFlow = mock(CommunicationFlow.class);
 		Resource resource = new Resource("resource");
-		DDR var = Variables.var(mockFlow, resource);
-		assertEquals(var, Variables.var(mockFlow, resource));
+		DDR var = Variables.varDDR(mockFlow, resource);
+		assertEquals(var, Variables.varDDR(mockFlow, resource));
 	}
 
 	@Test
@@ -41,16 +59,16 @@ public class VariablesTest {
 		Link link = new Link("link");
 		Resource source = new Resource("source");
 		Resource destination = new Resource("destination");
-		CLRR clrrVar = Variables.var(comm, link, source, destination);
-		assertEquals(clrrVar, Variables.var(comm, link, source, destination));
+		CLRR clrrVar = Variables.varCLRR(comm, link, source, destination);
+		assertEquals(clrrVar, Variables.varCLRR(comm, link, source, destination));
 	}
 
 	@Test
 	public void testCRvar() {
 		Communication task = new Communication("comm");
 		Resource res = new Resource("resource");
-		CR crVar = Variables.var(task, res);
-		assertEquals(crVar, Variables.var(task, res));
+		CR crVar = Variables.varCR(task, res);
+		assertEquals(crVar, Variables.varCR(task, res));
 	}
 
 	@Test
@@ -58,9 +76,9 @@ public class VariablesTest {
 		Task task = new Task("task");
 		Resource res = new Resource("resource");
 		Mapping<Task, Resource> mapping = new Mapping<Task, Resource>("mapping", task, res);
-		M mVar = Variables.var(mapping);
+		M mVar = Variables.varM(mapping);
 		assertEquals(mapping, mVar.getMapping());
-		assertEquals(mVar, Variables.var(mapping));
+		assertEquals(mVar, Variables.varM(mapping));
 	}
 
 	@Test
@@ -68,16 +86,16 @@ public class VariablesTest {
 		Dependency dependency = new Dependency("dependency");
 		Task sourceTask = new Task("source");
 		Communication destinationTask = new Communication("destination");
-		DTT dttVar = Variables.var(dependency, sourceTask, destinationTask);
-		assertEquals(dttVar, Variables.var(dependency, sourceTask, destinationTask));
+		DTT dttVar = Variables.varDTT(dependency, sourceTask, destinationTask);
+		assertEquals(dttVar, Variables.varDTT(dependency, sourceTask, destinationTask));
 	}
 
 	@Test
 	public void testTvar() {
 		Task task = new Task("task");
-		T tVar = Variables.var(task);
+		T tVar = Variables.varT(task);
 		assertEquals(task, tVar.getTask());
-		assertEquals(tVar, Variables.var(task));
+		assertEquals(tVar, Variables.varT(task));
 	}
 
 	@Test

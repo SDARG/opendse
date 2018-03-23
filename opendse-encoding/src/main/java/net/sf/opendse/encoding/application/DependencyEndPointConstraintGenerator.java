@@ -58,7 +58,7 @@ public class DependencyEndPointConstraintGenerator {
 	protected Constraint formulateDeactivationConstraint(DTT dttVar, Task task) {
 		Constraint result = new Constraint(Operator.LE, 0);
 		result.add(Variables.p(dttVar));
-		result.add(-1, Variables.p(Variables.var(task)));
+		result.add(-1, Variables.p(Variables.varT(task)));
 		return result;
 	}
 }

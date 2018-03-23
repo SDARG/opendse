@@ -67,7 +67,7 @@ public class ApplicationModeEncoding implements ApplicationEncoding {
 			if (!result.containsKey(modeString)) {
 				result.put(modeString, new HashSet<ApplicationVariable>());
 			}
-			result.get(modeString).add(Variables.var(task));
+			result.get(modeString).add(Variables.varT(task));
 		}
 		// process the dependencies
 		for (Dependency dependency : application.getEdges()) {
@@ -77,7 +77,7 @@ public class ApplicationModeEncoding implements ApplicationEncoding {
 			}
 			Task source = application.getSource(dependency);
 			Task destination = application.getDest(dependency);
-			result.get(modeString).add(Variables.var(dependency, source, destination));
+			result.get(modeString).add(Variables.varDTT(dependency, source, destination));
 		}
 		return result;
 	}

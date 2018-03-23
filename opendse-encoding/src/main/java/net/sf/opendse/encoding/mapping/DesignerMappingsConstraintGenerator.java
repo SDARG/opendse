@@ -58,7 +58,7 @@ public class DesignerMappingsConstraintGenerator implements MappingConstraintGen
 		constraint.add(Variables.n(processVariable));
 		Set<MappingVariable> result = new HashSet<MappingVariable>();
 		for (Mapping<Task, Resource> mapping : mappings) {
-			M mVar = Variables.var(mapping);
+			M mVar = Variables.varM(mapping);
 			result.add(mVar);
 			constraint.add(Variables.p(mVar));
 		}

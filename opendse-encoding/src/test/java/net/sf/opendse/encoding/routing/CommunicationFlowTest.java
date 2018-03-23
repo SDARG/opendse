@@ -19,8 +19,8 @@ public class CommunicationFlowTest {
 		Task t2 = new Task("t2");
 		Dependency d1 = new Dependency("d1");
 		Dependency d2 = new Dependency("d2");
-		DTT dtt1 = Variables.var(d1, t1, comm);
-		DTT dtt2 = Variables.var(d2, t2, comm);
+		DTT dtt1 = Variables.varDTT(d1, t1, comm);
+		DTT dtt2 = Variables.varDTT(d2, t2, comm);
 		new CommunicationFlow(dtt1, dtt2);
 	}
 	
@@ -31,8 +31,8 @@ public class CommunicationFlowTest {
 		Task t2 = new Task("t2");
 		Dependency d1 = new Dependency("d1");
 		Dependency d2 = new Dependency("d2");
-		DTT dtt1 = Variables.var(d1, t1, comm);
-		DTT dtt2 = Variables.var(d2, comm, t2);
+		DTT dtt1 = Variables.varDTT(d1, t1, comm);
+		DTT dtt2 = Variables.varDTT(d2, comm, t2);
 		CommunicationFlow flow = new CommunicationFlow(dtt1, dtt2);
 		assertEquals(dtt1, flow.getSourceDTT());
 		assertEquals(dtt2, flow.getDestinationDTT());
@@ -42,7 +42,7 @@ public class CommunicationFlowTest {
 		assertNotEquals(flow, t1);
 		Task t3 = new Task("t3");
 		Dependency d3 = new Dependency("d3");
-		DTT dtt3 = Variables.var(d3, comm, t3);
+		DTT dtt3 = Variables.varDTT(d3, comm, t3);
 		assertNotEquals(flow, new CommunicationFlow(dtt1, dtt3));
 	}
 }

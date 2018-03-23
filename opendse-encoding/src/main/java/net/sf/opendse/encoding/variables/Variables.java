@@ -29,32 +29,40 @@ public class Variables {
 	private Variables() {
 	}
 
-	public static DDLRR var(CommunicationFlow communicationFlow, Link link, Resource sourceResource,
+	public static DDdR varDDdR(CommunicationFlow communicationFlow, Resource resource) {
+		return new DDdR(communicationFlow, resource);
+	}
+
+	public static DDsR varDDsR(CommunicationFlow communicationFlow, Resource resource) {
+		return new DDsR(communicationFlow, resource);
+	}
+
+	public static DDLRR varDDLRR(CommunicationFlow communicationFlow, Link link, Resource sourceResource,
 			Resource destResource) {
 		return new DDLRR(communicationFlow, link, sourceResource, destResource);
 	}
 
-	public static DDR var(CommunicationFlow communicationFlow, Resource resource) {
+	public static DDR varDDR(CommunicationFlow communicationFlow, Resource resource) {
 		return new DDR(communicationFlow, resource);
 	}
 
-	public static CLRR var(Task communication, Link link, Resource source, Resource destination) {
+	public static CLRR varCLRR(Task communication, Link link, Resource source, Resource destination) {
 		return new CLRR(communication, link, source, destination);
 	}
 
-	public static CR var(Task communication, Resource resource) {
+	public static CR varCR(Task communication, Resource resource) {
 		return new CR(communication, resource);
 	}
 
-	public static M var(Mapping<Task, Resource> mapping) {
+	public static M varM(Mapping<Task, Resource> mapping) {
 		return new M(mapping);
 	}
 
-	public static DTT var(Dependency dependency, Task sourceTask, Task destinationTask) {
+	public static DTT varDTT(Dependency dependency, Task sourceTask, Task destinationTask) {
 		return new DTT(dependency, sourceTask, destinationTask);
 	}
 
-	public static T var(Task task) {
+	public static T varT(Task task) {
 		return new T(task);
 	}
 

@@ -24,9 +24,9 @@ public class DependencyEndPointConstraintGeneratorTest {
 		Task t1 = new Task("t1");
 		Task t2 = new Communication("t2");
 		Dependency dep = new Dependency("dep");
-		T tVar1 = Variables.var(t1);
-		T tVar2 = Variables.var(t2);
-		DTT dttVar = Variables.var(dep, t1, t2);
+		T tVar1 = Variables.varT(t1);
+		T tVar2 = Variables.varT(t2);
+		DTT dttVar = Variables.varDTT(dep, t1, t2);
 		Set<Object> deactivated = new HashSet<Object>();
 		deactivated.add(tVar2);
 		deactivated.add(tVar1);
