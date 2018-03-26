@@ -34,18 +34,18 @@ import net.sf.opendse.model.properties.TaskPropertyService;
  */
 public class FlexibleRoutingEncoding implements RoutingEncoding {
 
-	protected final CommunicationRoutingEncoderManager routingEncoderManager;
+	protected final CommunicationRoutingManager routingEncoderManager;
 
 	/**
 	 * Basic constructor
 	 * 
 	 * @param routingEncoderManager
-	 *            the {@link CommunicationRoutingEncoderManager} that provides the
+	 *            the {@link CommunicationRoutingManager} that provides the
 	 *            {@link CommunicationRoutingEncoder}s for encoding the routing
 	 *            {@link Constraint}s for the communication tasks
 	 */
 	@Inject
-	public FlexibleRoutingEncoding(CommunicationRoutingEncoderManager routingEncoderManager) {
+	public FlexibleRoutingEncoding(CommunicationRoutingManager routingEncoderManager) {
 		this.routingEncoderManager = routingEncoderManager;
 	}
 
@@ -55,14 +55,45 @@ public class FlexibleRoutingEncoding implements RoutingEncoding {
 		Set<Constraint> routingConstraints = new HashSet<Constraint>();
 		Map<T, Set<DTT>> dependencyMap = makeDependencyMap(applicationVariables);
 		for (Entry<T, Set<DTT>> entry : dependencyMap.entrySet()) {
+			// Gathers the dependencies to communication flows and formulates the routing
+			// constraints for the current message.
 			T communicationVariable = entry.getKey();
 			Set<DTT> dependencyVariables = entry.getValue();
+			Set<CommunicationFlow> communicationFlows = findCommunicationFlows(dependencyVariables);
 			CommunicationRoutingEncoder encoder = routingEncoderManager.getRoutingEncoder(communicationVariable,
-					dependencyVariables);
-			routingConstraints.addAll(encoder.toConstraints(communicationVariable, dependencyVariables,
+					communicationFlows);
+			routingConstraints.addAll(encoder.toConstraints(communicationVariable, communicationFlows,
 					routings.get(communicationVariable.getTask()), mappingVariables));
 		}
 		return routingConstraints;
+	}
+
+	/**
+	 * Takes the set of the {@link DTT} variables encoding the incident
+	 * {@link Dependency}s of the communication that is being routed and sorts them
+	 * into a set of {@link CommunicationFlow}s.
+	 * 
+	 * @param dependendencyVariables
+	 *            the set of the {@link DTT} variables encoding the incident
+	 *            {@link Dependency}s of the communication that is being routed
+	 * @return the set of {@link CommunicationFlow}s of the communication that is
+	 *         being routed
+	 */
+	protected Set<CommunicationFlow> findCommunicationFlows(Set<DTT> dependendencyVariables) {
+		Set<DTT> sourceDependencies = new HashSet<DTT>();
+		Set<DTT> destDependencies = new HashSet<DTT>();
+		for (DTT dependencyVar : dependendencyVariables) {
+			Set<DTT> properSet = TaskPropertyService.isCommunication(dependencyVar.getSourceTask()) ? destDependencies
+					: sourceDependencies;
+			properSet.add(dependencyVar);
+		}
+		Set<CommunicationFlow> result = new HashSet<CommunicationFlow>();
+		for (DTT sourceDependency : sourceDependencies) {
+			for (DTT destDependency : destDependencies) {
+				result.add(new CommunicationFlow(sourceDependency, destDependency));
+			}
+		}
+		return result;
 	}
 
 	/**

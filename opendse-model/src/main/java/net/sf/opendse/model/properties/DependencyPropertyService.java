@@ -3,7 +3,8 @@ package net.sf.opendse.model.properties;
 import net.sf.opendse.model.Dependency;
 
 /**
- * offers convenience methods to access the properties of dependency elements
+ * The {@link DependencyPropertyService} offers convenience methods to access
+ * the attributes of the {@link Dependency}s.
  * 
  * @author Fedor Smirnov
  *
@@ -11,29 +12,20 @@ import net.sf.opendse.model.Dependency;
 public class DependencyPropertyService extends AbstractPropertyService {
 
 	public enum DependencyAttributes {
-		ACTIVATION_MODE(TaskPropertyService.TaskAttributes.ACTIVATION_MODE.xmlName);
+		ROUTING_MODE("routing mode");
 		protected String xmlName;
 
 		private DependencyAttributes(String xmlName) {
 			this.xmlName = xmlName;
 		}
-
-		public String getXmlName() {
-			return this.xmlName;
-		}
 	}
 
-	public enum ActivationModes {
-		STATIC(TaskPropertyService.ActivationModes.STATIC.xmlName), ALTERNATIVE(
-				TaskPropertyService.ActivationModes.ALTERNATIVE.xmlName);
+	public enum RoutingModes {
+		DEFAULT("default"), REDUNDANT("redundant");
 		protected String xmlName;
 
-		private ActivationModes(String xmlName) {
+		private RoutingModes(String xmlName) {
 			this.xmlName = xmlName;
-		}
-
-		public String getXmlName() {
-			return this.xmlName;
 		}
 	}
 
@@ -41,28 +33,31 @@ public class DependencyPropertyService extends AbstractPropertyService {
 	}
 
 	/**
-	 * Returns the activation mode of the given dependency. Returns the STATIC
-	 * activation mode if the activation mode attribute is not set.
+	 * Returns the {@link RoutingModes} of the given {@link Dependency}. Returns the
+	 * DEFAULT mode if the corresponding attribute is not set.
 	 * 
 	 * @param dependency
-	 * @return the activation mode of the given dependency
+	 *            the given {@link Dependency}
+	 * @return the {@link RoutingModes} of the given {@link Dependency}
 	 */
-	public static ActivationModes getActivationMode(Dependency dependency) {
-		if (!isAttributeSet(dependency, DependencyAttributes.ACTIVATION_MODE.xmlName)) {
-			return ActivationModes.STATIC;
+	public static RoutingModes getRoutingMode(Dependency dependency) {
+		if (!isAttributeSet(dependency, DependencyAttributes.ROUTING_MODE.xmlName)) {
+			return RoutingModes.DEFAULT;
 		} else {
-			String attrString = dependency.getAttribute(DependencyAttributes.ACTIVATION_MODE.xmlName);
-			if (attrString.equals(ActivationModes.STATIC.xmlName)) {
-				return ActivationModes.STATIC;
-			} else if (attrString.equals(ActivationModes.ALTERNATIVE.xmlName)) {
-				return ActivationModes.ALTERNATIVE;
+			String modeString = (String) getAttribute(dependency, DependencyAttributes.ROUTING_MODE.xmlName);
+			if (modeString.equals(RoutingModes.DEFAULT.xmlName)) {
+				return RoutingModes.DEFAULT;
+			} else if (modeString.equals(RoutingModes.REDUNDANT.xmlName)) {
+				return RoutingModes.REDUNDANT;
 			} else {
-				throw new IllegalArgumentException("Unknown activation mode for dependency " + dependency.getId());
+				throw new IllegalArgumentException(
+						"Unknown routing mode for dependency " + dependency.getId() + " : " + modeString);
 			}
 		}
 	}
 
-	public static void setActivationMode(Dependency dependency, ActivationModes activationMode) {
-		dependency.setAttribute(DependencyAttributes.ACTIVATION_MODE.xmlName, activationMode.xmlName);
+	public static void setRoutingMode(Dependency dependency, RoutingModes routingMode) {
+		dependency.setAttribute(DependencyAttributes.ROUTING_MODE.xmlName, routingMode.xmlName);
 	}
+
 }

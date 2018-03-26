@@ -12,10 +12,8 @@ import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Task;
-import net.sf.opendse.model.properties.DependencyPropertyService;
-import net.sf.opendse.model.properties.TaskPropertyService;
-import net.sf.opendse.model.properties.TaskPropertyService.ActivationModes;
-
+import net.sf.opendse.model.properties.ApplicationElementPropertyService;
+import net.sf.opendse.model.properties.ApplicationElementPropertyService.ActivationModes;
 import static org.mockito.Mockito.*;
 
 import java.util.HashSet;
@@ -31,14 +29,14 @@ public class ApplicationModeEncodingTest {
 		Application<Task, Dependency> appl = new Application<Task, Dependency>();
 		appl.addVertex(task);
 		ApplicationModeConstraintGenerator generator = mock(ApplicationModeConstraintGenerator.class);
-		when(generatorManager.getConstraintGenerator(ActivationModes.STATIC.getXmlName())).thenReturn(generator);
+		when(generatorManager.getConstraintGenerator(ActivationModes.STATIC)).thenReturn(generator);
 		Set<ApplicationVariable> vars = new HashSet<ApplicationVariable>();
 		vars.add(Variables.varT(task));
 		when(generator.toConstraints(vars)).thenReturn(new HashSet<Constraint>());
 		ApplicationModeEncoding encoding = new ApplicationModeEncoding(generatorManager);
 		encoding.toConstraints(appl);
 		verify(generator).toConstraints(vars);
-		verify(generatorManager).getConstraintGenerator(ActivationModes.STATIC.getXmlName());
+		verify(generatorManager).getConstraintGenerator(ActivationModes.STATIC);
 	}
 
 	@Test
@@ -49,27 +47,25 @@ public class ApplicationModeEncodingTest {
 		Task t2 = new Communication("t2");
 		Task t3 = new Task("t3");
 		Task t4 = new Communication("t4");
-		TaskPropertyService.setActivationMode(t1, ActivationModes.ALTERNATIVE);
-		TaskPropertyService.setActivationMode(t2, ActivationModes.ALTERNATIVE);
+		ApplicationElementPropertyService.setActivationMode(t1, ActivationModes.ALTERNATIVE);
+		ApplicationElementPropertyService.setActivationMode(t2, ActivationModes.ALTERNATIVE);
 		Dependency d1 = new Dependency("d1");
 		Dependency d2 = new Dependency("d2");
-		DependencyPropertyService.setActivationMode(d1,
-				net.sf.opendse.model.properties.DependencyPropertyService.ActivationModes.ALTERNATIVE);
+		ApplicationElementPropertyService.setActivationMode(d1, ActivationModes.ALTERNATIVE);
 		Application<Task, Dependency> appl = new Application<Task, Dependency>();
 		appl.addEdge(d1, t1, t2, EdgeType.DIRECTED);
 		appl.addEdge(d2, t3, t4, EdgeType.DIRECTED);
-		Map<String, Set<ApplicationVariable>> modeMap = encoding.filterApplicationModes(appl);
+		Map<ActivationModes, Set<ApplicationVariable>> modeMap = encoding.filterApplicationModes(appl);
 		assertEquals(2, modeMap.keySet().size());
-		assertTrue(modeMap.keySet().contains(ActivationModes.ALTERNATIVE.getXmlName()));
-		assertTrue(modeMap.keySet().contains(ActivationModes.STATIC.getXmlName()));
-		assertEquals(3, modeMap.get(ActivationModes.STATIC.getXmlName()).size());
-		assertTrue(modeMap.get(ActivationModes.STATIC.getXmlName()).contains(Variables.varT(t3)));
-		assertTrue(modeMap.get(ActivationModes.STATIC.getXmlName()).contains(Variables.varT(t4)));
-		assertTrue(modeMap.get(ActivationModes.STATIC.getXmlName()).contains(Variables.varDTT(d2, t3, t4)));
-		assertEquals(3, modeMap.get(ActivationModes.ALTERNATIVE.getXmlName()).size());
-		assertTrue(modeMap.get(ActivationModes.ALTERNATIVE.getXmlName()).contains(Variables.varT(t1)));
-		assertTrue(modeMap.get(ActivationModes.ALTERNATIVE.getXmlName()).contains(Variables.varT(t2)));
-		assertTrue(modeMap.get(ActivationModes.ALTERNATIVE.getXmlName()).contains(Variables.varDTT(d1, t1, t2)));
+		assertTrue(modeMap.keySet().contains(ActivationModes.ALTERNATIVE));
+		assertTrue(modeMap.keySet().contains(ActivationModes.STATIC));
+		assertEquals(3, modeMap.get(ActivationModes.STATIC).size());
+		assertTrue(modeMap.get(ActivationModes.STATIC).contains(Variables.varT(t3)));
+		assertTrue(modeMap.get(ActivationModes.STATIC).contains(Variables.varT(t4)));
+		assertTrue(modeMap.get(ActivationModes.STATIC).contains(Variables.varDTT(d2, t3, t4)));
+		assertEquals(3, modeMap.get(ActivationModes.ALTERNATIVE).size());
+		assertTrue(modeMap.get(ActivationModes.ALTERNATIVE).contains(Variables.varT(t1)));
+		assertTrue(modeMap.get(ActivationModes.ALTERNATIVE).contains(Variables.varT(t2)));
+		assertTrue(modeMap.get(ActivationModes.ALTERNATIVE).contains(Variables.varDTT(d1, t1, t2)));
 	}
-
 }

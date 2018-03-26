@@ -5,7 +5,7 @@ import java.util.Set;
 import org.opt4j.satdecoding.Constraint;
 
 import net.sf.opendse.encoding.variables.ApplicationVariable;
-import net.sf.opendse.model.properties.DependencyPropertyService.ActivationModes;
+import net.sf.opendse.model.properties.ApplicationElementPropertyService.ActivationModes;
 
 /**
  * An {@link ApplicationModeConstraintGenerator} generates the constraints for

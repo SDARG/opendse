@@ -18,10 +18,6 @@ public class ProcessPropertyService extends AbstractPropertyService {
 		private ProcessAttributes(String xmlName) {
 			this.xmlName = xmlName;
 		}
-
-		public String getXmlName() {
-			return this.xmlName;
-		}
 	}
 	
 	public enum MappingModes {
@@ -30,10 +26,6 @@ public class ProcessPropertyService extends AbstractPropertyService {
 
 		private MappingModes(String xmlName) {
 			this.xmlName = xmlName;
-		}
-
-		public String getXmlName() {
-			return this.xmlName;
 		}
 	}
 	
@@ -48,13 +40,13 @@ public class ProcessPropertyService extends AbstractPropertyService {
 	 */
 	public static MappingModes getMappingMode(Task task) {
 		checkTask(task);
-		if (!isAttributeSet(task, ProcessAttributes.MAPPING_MODE.getXmlName())) {
+		if (!isAttributeSet(task, ProcessAttributes.MAPPING_MODE.xmlName)) {
 			return MappingModes.DESIGNER;
 		} else {
-			String attrString = task.getAttribute(ProcessAttributes.MAPPING_MODE.getXmlName());
-			if (attrString.equals(MappingModes.DESIGNER.getXmlName())) {
+			String attrString = task.getAttribute(ProcessAttributes.MAPPING_MODE.xmlName);
+			if (attrString.equals(MappingModes.DESIGNER.xmlName)) {
 				return MappingModes.DESIGNER;
-			} else if (attrString.equals(MappingModes.TYPE.getXmlName())) {
+			} else if (attrString.equals(MappingModes.TYPE.xmlName)) {
 				return MappingModes.TYPE;
 			} else {
 				throw new IllegalArgumentException("Unknown mapping mode for process " + task.getId());
@@ -64,7 +56,7 @@ public class ProcessPropertyService extends AbstractPropertyService {
 	
 	public static void setMappingMode(Task task, MappingModes mappingMode) {
 		checkTask(task);
-		task.setAttribute(ProcessAttributes.MAPPING_MODE.getXmlName(), mappingMode.getXmlName());
+		task.setAttribute(ProcessAttributes.MAPPING_MODE.xmlName, mappingMode.xmlName);
 	}
 	
 	protected static void checkTask(Task task) {

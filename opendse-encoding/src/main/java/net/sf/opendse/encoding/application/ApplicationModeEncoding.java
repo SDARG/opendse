@@ -16,8 +16,8 @@ import net.sf.opendse.encoding.variables.Variables;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Task;
-import net.sf.opendse.model.properties.DependencyPropertyService;
-import net.sf.opendse.model.properties.TaskPropertyService;
+import net.sf.opendse.model.properties.ApplicationElementPropertyService;
+import net.sf.opendse.model.properties.ApplicationElementPropertyService.ActivationModes;
 
 /**
  * The {@link ApplicationModeEncoding} is an {@link ApplicationEncoding} that
@@ -39,13 +39,13 @@ public class ApplicationModeEncoding implements ApplicationEncoding {
 	@Override
 	public Set<Constraint> toConstraints(Application<Task, Dependency> application) {
 		Set<Constraint> applicationConstraints = new HashSet<Constraint>();
-		Map<String, Set<ApplicationVariable>> applicationModeMap = filterApplicationModes(application);
+		Map<ActivationModes, Set<ApplicationVariable>> applicationModeMap = filterApplicationModes(application);
 		// generate the constraints for each mode
-		for (Entry<String, Set<ApplicationVariable>> entry : applicationModeMap.entrySet()) {
-			String modeString = entry.getKey();
+		for (Entry<ActivationModes, Set<ApplicationVariable>> entry : applicationModeMap.entrySet()) {
+			ActivationModes activationMode = entry.getKey();
 			Set<ApplicationVariable> variables = entry.getValue();
 			ApplicationModeConstraintGenerator constraintGenerator = generatorManager
-					.getConstraintGenerator(modeString);
+					.getConstraintGenerator(activationMode);
 			applicationConstraints.addAll(constraintGenerator.toConstraints(variables));
 		}
 		return applicationConstraints;
@@ -59,25 +59,26 @@ public class ApplicationModeEncoding implements ApplicationEncoding {
 	 * @return map where the activation modes are mapped onto the sets of their
 	 *         application variables
 	 */
-	protected Map<String, Set<ApplicationVariable>> filterApplicationModes(Application<Task, Dependency> application) {
-		Map<String, Set<ApplicationVariable>> result = new HashMap<String, Set<ApplicationVariable>>();
+	protected Map<ActivationModes, Set<ApplicationVariable>> filterApplicationModes(
+			Application<Task, Dependency> application) {
+		Map<ActivationModes, Set<ApplicationVariable>> result = new HashMap<ActivationModes, Set<ApplicationVariable>>();
 		// process the tasks
 		for (Task task : application) {
-			String modeString = TaskPropertyService.getActivationMode(task).getXmlName();
-			if (!result.containsKey(modeString)) {
-				result.put(modeString, new HashSet<ApplicationVariable>());
+			ActivationModes activationMode = ApplicationElementPropertyService.getActivationMode(task);
+			if (!result.containsKey(activationMode)) {
+				result.put(activationMode, new HashSet<ApplicationVariable>());
 			}
-			result.get(modeString).add(Variables.varT(task));
+			result.get(activationMode).add(Variables.varT(task));
 		}
 		// process the dependencies
 		for (Dependency dependency : application.getEdges()) {
-			String modeString = DependencyPropertyService.getActivationMode(dependency).getXmlName();
-			if (!result.containsKey(modeString)) {
-				result.put(modeString, new HashSet<ApplicationVariable>());
+			ActivationModes activationMode = ApplicationElementPropertyService.getActivationMode(dependency);
+			if (!result.containsKey(activationMode)) {
+				result.put(activationMode, new HashSet<ApplicationVariable>());
 			}
 			Task source = application.getSource(dependency);
 			Task destination = application.getDest(dependency);
-			result.get(modeString).add(Variables.varDTT(dependency, source, destination));
+			result.get(activationMode).add(Variables.varDTT(dependency, source, destination));
 		}
 		return result;
 	}

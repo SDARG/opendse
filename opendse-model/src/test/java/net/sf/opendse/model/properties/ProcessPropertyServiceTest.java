@@ -20,7 +20,7 @@ public class ProcessPropertyServiceTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void testUnknownMappingMode() {
 		Task process = new Task("t");
-		process.setAttribute(ProcessAttributes.MAPPING_MODE.getXmlName(), "invalid");
+		process.setAttribute(ProcessAttributes.MAPPING_MODE.xmlName, "invalid");
 		ProcessPropertyService.getMappingMode(process);
 	}
 	

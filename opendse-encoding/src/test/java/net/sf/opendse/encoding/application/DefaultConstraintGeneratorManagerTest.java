@@ -4,21 +4,15 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import net.sf.opendse.model.properties.TaskPropertyService;
+import net.sf.opendse.model.properties.ApplicationElementPropertyService.ActivationModes;
 
 public class DefaultConstraintGeneratorManagerTest {
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testUnknownActivationMode() {
-		DefaultConstraintGeneratorManager manager = new DefaultConstraintGeneratorManager();
-		manager.getConstraintGenerator("invalid");
-	}
 
 	@Test
 	public void test() {
 		DefaultConstraintGeneratorManager manager = new DefaultConstraintGeneratorManager();
 		assertTrue(manager.getConstraintGenerator(
-				TaskPropertyService.ActivationModes.STATIC.getXmlName()) instanceof StaticModeConstraintGenerator);
+				ActivationModes.STATIC) instanceof StaticModeConstraintGenerator);
 	}
 
 }
