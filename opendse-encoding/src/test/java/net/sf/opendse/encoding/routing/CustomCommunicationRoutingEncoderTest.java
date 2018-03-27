@@ -26,7 +26,9 @@ public class CustomCommunicationRoutingEncoderTest {
 		CommunicationHierarchyEncoder hierarchyEncoder = mock(CommunicationHierarchyEncoder.class);
 		CommunicationFlowRoutingManager manager = mock(CommunicationFlowRoutingManager.class);
 		AdditionalRoutingConstraintsEncoder additional = mock(AdditionalRoutingConstraintsEncoder.class);
-		CustomCommunicationRoutingEncoder encoder = new CustomCommunicationRoutingEncoder(cycleBreak, hierarchyEncoder, manager, additional);
+		OneDirectionEncoder oneDirectionEncoder = mock(OneDirectionEncoder.class);
+		CustomCommunicationRoutingEncoder encoder = new CustomCommunicationRoutingEncoder(oneDirectionEncoder,
+				cycleBreak, hierarchyEncoder, manager, additional);
 		T mockT = mock(T.class);
 		CommunicationFlow commFlow = mock(CommunicationFlow.class);
 		Set<CommunicationFlow> commFlows = new HashSet<CommunicationFlow>();
@@ -35,6 +37,7 @@ public class CustomCommunicationRoutingEncoderTest {
 		Architecture<Resource, Link> routing = mock(Architecture.class);
 		@SuppressWarnings("unchecked")
 		Set<MappingVariable> mappings = mock(Set.class);
+		when(oneDirectionEncoder.toConstraints(mockT, routing)).thenReturn(new HashSet<Constraint>());
 		when(cycleBreak.toConstraints(mockT, routing)).thenReturn(new HashSet<Constraint>());
 		when(hierarchyEncoder.toConstraints(mockT, commFlows, routing)).thenReturn(new HashSet<Constraint>());
 		when(additional.toConstraints(mockT, commFlows, routing)).thenReturn(new HashSet<Constraint>());
@@ -43,6 +46,7 @@ public class CustomCommunicationRoutingEncoderTest {
 		when(manager.getEncoder(commFlow)).thenReturn(mockEncoder);
 		Set<Constraint> cs = encoder.toConstraints(mockT, commFlows, routing, mappings);
 		assertTrue(cs.isEmpty());
+		verify(oneDirectionEncoder).toConstraints(mockT, routing);
 		verify(cycleBreak).toConstraints(mockT, routing);
 		verify(hierarchyEncoder).toConstraints(mockT, commFlows, routing);
 		verify(additional).toConstraints(mockT, commFlows, routing);

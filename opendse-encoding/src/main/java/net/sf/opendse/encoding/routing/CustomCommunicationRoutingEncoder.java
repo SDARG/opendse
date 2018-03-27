@@ -10,11 +10,12 @@ package net.sf.opendse.encoding.routing;
  */
 public class CustomCommunicationRoutingEncoder extends AbstractCommunicationRoutingEncoder {
 
-	public CustomCommunicationRoutingEncoder(CycleBreakEncoder cycleBreakEncoder,
-			CommunicationHierarchyEncoder hierarchyEncoder,
+	public CustomCommunicationRoutingEncoder(OneDirectionEncoder oneDirectionEncoder,
+			CycleBreakEncoder cycleBreakEncoder, CommunicationHierarchyEncoder hierarchyEncoder,
 			CommunicationFlowRoutingManager communicationFlowRoutingManager,
 			AdditionalRoutingConstraintsEncoder additionalConstraintsEncoder) {
-		super(cycleBreakEncoder, hierarchyEncoder, communicationFlowRoutingManager, additionalConstraintsEncoder);
+		super(oneDirectionEncoder, cycleBreakEncoder, hierarchyEncoder, communicationFlowRoutingManager,
+				additionalConstraintsEncoder);
 	}
 
 }
