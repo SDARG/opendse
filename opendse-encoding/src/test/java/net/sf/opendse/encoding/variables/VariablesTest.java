@@ -21,6 +21,20 @@ import static org.mockito.Mockito.mock;
 public class VariablesTest {
 
 	@Test
+	public void testLvar() {
+		Link link = new Link("link");
+		L lVar = Variables.varL(link);
+		assertEquals(lVar, Variables.varL(link));
+	}
+
+	@Test
+	public void testRvar() {
+		Resource res = new Resource("res");
+		R rVar = Variables.varR(res);
+		assertEquals(rVar, Variables.varR(res));
+	}
+
+	@Test
 	public void testDDsRvar() {
 		CommunicationFlow mockFlow = mock(CommunicationFlow.class);
 		Resource resource = new Resource("resource");

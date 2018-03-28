@@ -30,6 +30,14 @@ public class Variables {
 	private Variables() {
 	}
 
+	public static L varL(Link link) {
+		return new L(link);
+	}
+	
+	public static R varR(Resource resource) {
+		return new R(resource);
+	}
+	
 	public static DDdR varDDdR(CommunicationFlow communicationFlow, Resource resource) {
 		return new DDdR(communicationFlow, resource);
 	}
