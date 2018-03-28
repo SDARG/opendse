@@ -36,7 +36,10 @@ public class DefaultActivationEncoder implements ActivationEncoder {
 	 * 
 	 * @param commFlow
 	 * @param directedLink
-	 * @return
+	 * @return the {@link Constraint} stating that the {@link DDLRR} variable
+	 *         describing the usage of a {@link DirectedLink} is automatically
+	 *         deactivated if one of the {@link DTT} variables of the corresponding
+	 *         {@link CommunicationFlow} is deactivated
 	 */
 	protected Constraint makeDeactivationConstraint(CommunicationFlow commFlow, DirectedLink directedLink) {
 		Constraint result = new Constraint(Operator.LE, 0);

@@ -14,6 +14,7 @@ import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
+import net.sf.opendse.model.Models.DirectedLink;
 
 import static org.mockito.Mockito.mock;
 
@@ -42,7 +43,8 @@ public class VariablesTest {
 		Resource src = new Resource("src");
 		Resource dest = new Resource("dest");
 		DDLRR var = Variables.varDDLRR(mockFlow, link, src, dest);
-		assertEquals(var, Variables.varDDLRR(mockFlow, link, src, dest));
+		DirectedLink dLink = new DirectedLink(link, src, dest);
+		assertEquals(var, Variables.varDDLRR(mockFlow, dLink));
 	}
 
 	@Test

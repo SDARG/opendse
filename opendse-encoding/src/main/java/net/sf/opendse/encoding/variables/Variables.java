@@ -10,6 +10,7 @@ import net.sf.opendse.encoding.routing.CommunicationFlow;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Mapping;
+import net.sf.opendse.model.Models.DirectedLink;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 
@@ -35,6 +36,10 @@ public class Variables {
 
 	public static DDsR varDDsR(CommunicationFlow communicationFlow, Resource resource) {
 		return new DDsR(communicationFlow, resource);
+	}
+
+	public static DDLRR varDDLRR(CommunicationFlow communicationFlow, DirectedLink directedLink) {
+		return varDDLRR(communicationFlow, directedLink.getLink(), directedLink.getSource(), directedLink.getDest());
 	}
 
 	public static DDLRR varDDLRR(CommunicationFlow communicationFlow, Link link, Resource sourceResource,
