@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Test;
 import org.opt4j.satdecoding.Constraint;
 
 import edu.uci.ics.jung.graph.util.EdgeType;
