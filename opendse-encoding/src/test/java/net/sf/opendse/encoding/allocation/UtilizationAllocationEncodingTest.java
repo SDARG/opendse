@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.Test;
 import org.opt4j.satdecoding.Constraint;
 
 import edu.uci.ics.jung.graph.util.EdgeType;
@@ -24,6 +25,7 @@ import verification.ConstraintVerifier;
 
 public class UtilizationAllocationEncodingTest {
 
+	@Test
 	public void test() {
 		Resource r0 = new Resource("r0");
 		Resource r1 = new Resource("r1");
@@ -59,7 +61,7 @@ public class UtilizationAllocationEncodingTest {
 		routingVariables.add(cr1);
 		routingVariables.add(cr2);
 		Set<Constraint> cs = encoder.toConstraints(mappingVariables, routingVariables, arch);
-		assertEquals(10, cs.size());
+		assertEquals(22, cs.size());
 		Set<Object> activated = new HashSet<Object>();
 		activated.add(mVar0);
 		activated.add(cl0_f);
@@ -76,6 +78,6 @@ public class UtilizationAllocationEncodingTest {
 		verifyAllocation.verifyVariableActivated(Variables.varR(r0));
 		verifyAllocation.verifyVariableDeactivated(Variables.varR(r2));
 		verifyAllocation.verifyVariableActivated(Variables.varL(l0));
-		verifyAllocation.verifyVariableDeactivated(Variables.varL(l0));
+		verifyAllocation.verifyVariableDeactivated(Variables.varL(l1));
 	}
 }
