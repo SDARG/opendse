@@ -1,6 +1,3 @@
-plugins {
-	id 'com.github.kt3k.coveralls' version '2.6.3'
-}
 apply plugin: 'base'
 apply plugin: 'maven'
 apply plugin: 'application'
@@ -232,16 +229,3 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
         })
     }
 }
-
-coveralls {
-	sourceDirs = subprojects.sourceSets.main.allSource.srcDirs.flatten()
-	jacocoReportPath = "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
-}
-tasks.coveralls {
-  group = 'Documentation'
-  description = 'Uploads the aggregated coverage report to Coveralls'
-
-  dependsOn jacocoRootReport
-  onlyIf { System.env.'CI' && !JavaVersion.current().isJava9Compatible() }
-}
-
