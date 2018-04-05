@@ -12,7 +12,7 @@ import net.sf.opendse.optimization.encoding.variables.Variable;
  * @author Fedor Smirnov
  *
  */
-public class M extends Variable implements MappingVariable{
+public class M extends Variable{
 
 	protected M(Mapping<Task, Resource> mapping) {
 		super(mapping);

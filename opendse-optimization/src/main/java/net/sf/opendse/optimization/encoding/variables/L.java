@@ -10,7 +10,7 @@ import net.sf.opendse.optimization.encoding.variables.Variable;
  * @author Fedor Smirnov
  *
  */
-public class L extends Variable implements AllocationVariable {
+public class L extends Variable{
 
 	protected L(Link l) {
 		super(l);

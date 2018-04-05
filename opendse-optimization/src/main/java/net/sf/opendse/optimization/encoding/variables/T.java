@@ -11,7 +11,7 @@ import net.sf.opendse.optimization.encoding.variables.Variable;
  * @author Fedor Smirnov
  *
  */
-public class T extends Variable implements ApplicationVariable{
+public class T extends Variable{
 
 	protected T(Task t) {
 		super(t);

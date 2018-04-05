@@ -10,7 +10,7 @@ import net.sf.opendse.optimization.encoding.variables.Variable;
  * @author Fedor Smirnov
  *
  */
-public class R extends Variable implements AllocationVariable {
+public class R extends Variable{
 
 	protected R(Resource resource) {
 		super(resource);

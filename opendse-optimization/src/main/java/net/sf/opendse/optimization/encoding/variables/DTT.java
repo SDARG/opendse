@@ -11,7 +11,7 @@ import net.sf.opendse.optimization.encoding.variables.Variable;
  * @author Fedor Smirnov
  *
  */
-public class DTT extends Variable implements ApplicationVariable{
+public class DTT extends Variable{
 
 	protected DTT(Dependency d, Task src, Task dest) {
 		super(d, src, dest);

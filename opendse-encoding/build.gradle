@@ -1,5 +1,6 @@
 dependencies {	
 	compile project(':opendse-model')	
+	compile project(':opendse-optimization')	
 	compile 'com.github.felixreimann:opt4j:master-SNAPSHOT'
 	testCompile 'junit:junit:4.12'
 	testCompile 'com.github.FedorSmirnov89:constraintTester:-SNAPSHOT'

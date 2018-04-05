@@ -25,7 +25,7 @@ import net.sf.opendse.model.ICommunication;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 
-public class CR extends Variable implements CommunicationVariable, RoutingVariable {
+public class CR extends Variable implements CommunicationVariable{
 
 	protected CR(Task c, Resource r) {
 		super(c,r);
