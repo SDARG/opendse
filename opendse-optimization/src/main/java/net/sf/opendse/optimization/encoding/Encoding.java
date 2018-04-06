@@ -49,6 +49,7 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
+import net.sf.opendse.optimization.SpecificationWrapper;
 import net.sf.opendse.optimization.constraints.SpecificationConstraints;
 import net.sf.opendse.optimization.encoding.variables.CLRR;
 import net.sf.opendse.optimization.encoding.variables.CR;
@@ -66,7 +67,7 @@ import edu.uci.ics.jung.graph.util.Pair;
  * @author Martin Lukasiewycz
  * 
  */
-public class Encoding {
+public class Encoding implements ImplementationEncoding{
 
 	public static List<Class<?>> order = Arrays.<Class<?>>asList(Resource.class, Link.class, Mapping.class, CR.class,
 			CLRR.class);
@@ -99,12 +100,13 @@ public class Encoding {
 
 	protected final SpecificationConstraints specificationConstraints;
 	protected final RoutingEncoding routingEncoding;
+	protected final Specification specification;
 
 	@Inject
-	public Encoding(SpecificationConstraints specificationConstraints, RoutingEncoding routingEncoding) {
-		super();
+	public Encoding(SpecificationConstraints specificationConstraints, RoutingEncoding routingEncoding, SpecificationWrapper specificationWrapper) {
 		this.specificationConstraints = specificationConstraints;
 		this.routingEncoding = routingEncoding;
+		this.specification = specificationWrapper.getSpecification();
 	}
 
 	/**
@@ -699,7 +701,8 @@ public class Encoding {
 		}
 	}
 
-	public List<Constraint> toConstraints(Specification specification) {
+	@Override
+	public List<Constraint> toConstraints() {
 		List<Constraint> constraints = new ArrayList<Constraint>();
 
 		Application<Task, Dependency> application = specification.getApplication();

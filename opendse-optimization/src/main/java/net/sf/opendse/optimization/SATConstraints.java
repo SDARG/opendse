@@ -30,6 +30,7 @@ import java.util.Set;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.optimization.encoding.CommunicationLearn;
 import net.sf.opendse.optimization.encoding.Encoding;
+import net.sf.opendse.optimization.encoding.ImplementationEncoding;
 import net.sf.opendse.optimization.encoding.RoutingFilter;
 import net.sf.opendse.optimization.encoding.common.ConstraintPreprocessing;
 
@@ -57,16 +58,16 @@ public class SATConstraints {
 	protected final ConstraintPreprocessing pp;
 	protected final boolean usePreprocessing;
 	protected boolean isInit = false;
-	protected Encoding encoding;
+	protected ImplementationEncoding encoding;
 
 	@Inject
-	public SATConstraints(SpecificationWrapper specificationWrapper, Encoding encoding, @Constant(value = "preprocessing", namespace = SATConstraints.class) boolean usePreprocessing) {
+	public SATConstraints(SpecificationWrapper specificationWrapper, ImplementationEncoding encoding, @Constant(value = "preprocessing", namespace = SATConstraints.class) boolean usePreprocessing) {
 		this(specificationWrapper, encoding, new ConstraintPreprocessing(true, true,
 				new Encoding.VariableComparator(), null, true), usePreprocessing);
 		
 	}
 
-	public SATConstraints(SpecificationWrapper specificationWrapper, Encoding encoding, ConstraintPreprocessing pp, boolean usePreprocessing) {
+	public SATConstraints(SpecificationWrapper specificationWrapper, ImplementationEncoding encoding, ConstraintPreprocessing pp, boolean usePreprocessing) {
 		super();
 		this.specificationWrapper = specificationWrapper;
 		this.encoding = encoding;
@@ -90,10 +91,11 @@ public class SATConstraints {
 
 	public synchronized void init() {
 		if (!isInit) {
+			// TODO rewrite this
 			Specification specification = specificationWrapper.getSpecification();
 			RoutingFilter.filter(specification);
 
-			Collection<Constraint> constraints = encoding.toConstraints(specification);
+			Collection<Constraint> constraints = encoding.toConstraints();
 
 			CommunicationLearn clearn = new CommunicationLearn();
 			Set<Literal> learned = clearn.learn(constraints);

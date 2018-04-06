@@ -27,7 +27,11 @@ import net.sf.opendse.optimization.constraints.SpecificationConstraints;
 import net.sf.opendse.optimization.constraints.SpecificationConstraintsMulti;
 import net.sf.opendse.optimization.constraints.SpecificationElementsConstraints;
 import net.sf.opendse.optimization.constraints.SpecificationRouterConstraints;
+import net.sf.opendse.optimization.encoding.Encoding;
 import net.sf.opendse.optimization.encoding.Encoding.RoutingEncoding;
+import net.sf.opendse.optimization.encoding.ImplementationEncoding;
+import net.sf.opendse.optimization.encoding.Interpreter;
+import net.sf.opendse.optimization.encoding.InterpreterSpecification;
 
 import org.opt4j.core.config.annotations.Parent;
 import org.opt4j.core.config.annotations.Required;
@@ -46,7 +50,7 @@ public class OptimizationModule extends ProblemModule {
 	protected boolean usePreprocessing = true;
 
 	protected boolean stagnationRestartEnabled = true;
-	
+
 	@Required(property = "stagnationRestartEnabled", elements = { "TRUE" })
 	@Constant(value = "maximalNumberStagnatingGenerations", namespace = StagnationRestart.class)
 	protected int maximalNumberStagnatingGenerations = 20;
@@ -115,11 +119,11 @@ public class OptimizationModule extends ProblemModule {
 		if (stagnationRestartEnabled) {
 			addOptimizerIterationListener(StagnationRestart.class);
 		}
-
 		bind(RoutingEncoding.class).toInstance(routingEncoding);
-
 		if (useVariableOrder) {
 			bind(RoutingVariableClassOrder.class).asEagerSingleton();
 		}
+		bind(Interpreter.class).to(InterpreterSpecification.class);
+		bind(ImplementationEncoding.class).to(Encoding.class);
 	}
 }
