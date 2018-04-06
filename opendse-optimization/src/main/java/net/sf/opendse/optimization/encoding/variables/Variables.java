@@ -24,8 +24,11 @@ package net.sf.opendse.optimization.encoding.variables;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Edge;
 import net.sf.opendse.model.Element;
+import net.sf.opendse.model.Link;
+import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.Models.DirectedLink;
@@ -41,6 +44,9 @@ import org.opt4j.satdecoding.Literal;
 public class Variables {
 
 	static Map<Literal, Literal> cache = new HashMap<Literal, Literal>();
+
+	private Variables() {
+	}
 
 	public static Literal p(Object obj) {
 		Literal literal = new Literal(obj, true);
@@ -60,6 +66,43 @@ public class Variables {
 			cache.put(literal, literal);
 			return literal;
 		}
+	}
+	
+	public static DM var(Dependency dep, Mapping<Task, Resource> mapping) {
+		return new DM(dep, mapping);
+	}
+	
+	public static R var(Resource resource) {
+		return new R(resource);
+	}
+
+	public static L var(Link link) {
+		return new L(link);
+	}
+
+	public static DDM var(Dependency srcDependency, Dependency destDependency, Mapping<Task, Resource> mapping) {
+		return new DDM(srcDependency, destDependency, mapping);
+	}
+
+	public static DTT var(Dependency d, Task src, Task dest) {
+		return new DTT(d, src, dest);
+	}
+
+	public static T var(Task t) {
+		return new T(t);
+	}
+
+	public static M var(Mapping<Task, Resource> m) {
+		return new M(m);
+	}
+
+	public static DDLRR var(Dependency sourceDependency, Dependency destinationDependency, Link link, Resource srcRes,
+			Resource destRes) {
+		return new DDLRR(sourceDependency, destinationDependency, link, srcRes, destRes);
+	}
+
+	public static ApplicationAlternativeActivation var(String alternativeName, String alternativeId) {
+		return new ApplicationAlternativeActivation(alternativeName, alternativeId);
 	}
 
 	public static CR var(Task c, Resource r) {

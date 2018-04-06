@@ -2,6 +2,8 @@
 bin
 build
 
+*~
+
 # Eclipse files are created with `gradlew eclipse`
 .classpath
 .project

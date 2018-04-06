@@ -1,6 +1,3 @@
-plugins {
-	id 'com.github.kt3k.coveralls' version '2.6.3'
-}
 apply plugin: 'base'
 apply plugin: 'maven'
 apply plugin: 'application'
@@ -18,7 +15,8 @@ def descriptions = [
 	'opendse-visualization' : 'The visualization module of OpenDSE',
 	'opendse-optimization' : 'The optimization module of OpenDSE',
 	'opendse-tutorial' : 'The tutorial module of OpenDSE',
-	'opendse-realtime' : 'The real-time module of OpenDSE'
+	'opendse-realtime' : 'The real-time module of OpenDSE',
+	'opendse-encoding' : 'The implementation encoding module of OpenDSE'
 ]
 
 allprojects {
@@ -27,6 +25,7 @@ allprojects {
 	repositories {
     	mavenCentral()
 		mavenLocal()
+	maven { url 'https://jitpack.io' }
 	}
 }
 
@@ -107,6 +106,17 @@ subprojects {
 	        }
 	    }
 	}
+	
+	jacocoTestReport {
+		additionalSourceDirs = files(sourceSets.main.allSource.srcDirs)
+		sourceDirectories = files(sourceSets.main.allSource.srcDirs)
+		classDirectories =  files(sourceSets.main.output)
+		reports {
+		    html.enabled = true
+		    xml.enabled = true
+		    csv.enabled = false
+		}
+	}
 }
 
 /* for now ignore all javadoc errors in case of Java 8 */
@@ -145,6 +155,7 @@ dependencies {
 	runtime project(':opendse-visualization')
 	runtime project(':opendse-optimization')
 	runtime project(':opendse-realtime')
+	runtime project(':opendse-encoding')
 }
 
 jar {
@@ -229,16 +240,3 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
         })
     }
 }
-
-coveralls {
-	sourceDirs = subprojects.sourceSets.main.allSource.srcDirs.flatten()
-	jacocoReportPath = "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
-}
-tasks.coveralls {
-  group = 'Documentation'
-  description = 'Uploads the aggregated coverage report to Coveralls'
-
-  dependsOn jacocoRootReport
-  onlyIf { System.env.'CI' && !JavaVersion.current().isJava9Compatible() }
-}
-
