@@ -51,22 +51,12 @@ public class OptimizationModule extends ProblemModule {
 
 	protected boolean stagnationRestartEnabled = true;
 
-	protected boolean useModularEncoding = false;
-
 	@Required(property = "stagnationRestartEnabled", elements = { "TRUE" })
 	@Constant(value = "maximalNumberStagnatingGenerations", namespace = StagnationRestart.class)
 	protected int maximalNumberStagnatingGenerations = 20;
 
 	@Constant(value = "variableorder", namespace = SATCreatorDecoder.class)
 	protected boolean useVariableOrder = true;
-
-	public boolean isUseModularEncoding() {
-		return useModularEncoding;
-	}
-
-	public void setUseModularEncoding(boolean useModularEncoding) {
-		this.useModularEncoding = useModularEncoding;
-	}
 
 	public RoutingEncoding getRoutingEncoding() {
 		return routingEncoding;
@@ -129,16 +119,11 @@ public class OptimizationModule extends ProblemModule {
 		if (stagnationRestartEnabled) {
 			addOptimizerIterationListener(StagnationRestart.class);
 		}
-
-		if (!useModularEncoding) {
-			bind(RoutingEncoding.class).toInstance(routingEncoding);
-			if (useVariableOrder) {
-				bind(RoutingVariableClassOrder.class).asEagerSingleton();
-			}
-			bind(Interpreter.class).to(InterpreterSpecification.class);
-			bind(ImplementationEncoding.class).to(Encoding.class);
-		} else {
-
+		bind(RoutingEncoding.class).toInstance(routingEncoding);
+		if (useVariableOrder) {
+			bind(RoutingVariableClassOrder.class).asEagerSingleton();
 		}
+		bind(Interpreter.class).to(InterpreterSpecification.class);
+		bind(ImplementationEncoding.class).to(Encoding.class);
 	}
 }
