@@ -39,7 +39,7 @@ public class Constraints {
 	 *         the {@link Variable}s provided as arguments and the variable provided
 	 *         as result
 	 */
-	public static Set<Constraint> generateOrConstraints(Set<Variable> arguments, Variable result) {
+	public static <V extends Variable> Set<Constraint> generateOrConstraints(Set<V> arguments, Variable result) {
 		Set<Constraint> orConstraints = new HashSet<Constraint>();
 		for (Variable argument : arguments) {
 			orConstraints.add(generatePositiveImplication(argument, result));
@@ -63,7 +63,7 @@ public class Constraints {
 	 *         only be active if at least one of the condition {@link Variable}s is
 	 *         active
 	 */
-	public static Constraint generateMinimalRequirementConstraint(Set<Variable> conditions, Variable result) {
+	public static <V extends Variable> Constraint generateMinimalRequirementConstraint(Set<V> conditions, Variable result) {
 		Constraint minimalRequirementConstraint = new Constraint(Operator.LE, 0);
 		minimalRequirementConstraint.add(Variables.p(result));
 		for (Variable condition : conditions) {

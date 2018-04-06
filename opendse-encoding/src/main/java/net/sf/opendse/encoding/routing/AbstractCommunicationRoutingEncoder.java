@@ -35,7 +35,7 @@ public abstract class AbstractCommunicationRoutingEncoder implements Communicati
 			Architecture<Resource, Link> routing, Set<MappingVariable> mappingVariables) {
 		Set<Constraint> routingConstraints = new HashSet<Constraint>();
 		// Ensures that links are used in one direction only.
-		oneDirectionEncoder.toConstraints(communicationVariable, routing);
+		routingConstraints.addAll(oneDirectionEncoder.toConstraints(communicationVariable, routing));
 		// Ensures cycle freedom.
 		routingConstraints.addAll(cycleBreakEncoder.toConstraints(communicationVariable, routing));
 		// Encodes the variable hierarchy.

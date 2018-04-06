@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.opt4j.satdecoding.Constraint;
+import org.opt4j.satdecoding.Constraint.Operator;
 
 import net.sf.opendse.encoding.variables.MappingVariable;
 import net.sf.opendse.encoding.variables.T;
@@ -37,15 +38,30 @@ public class CustomCommunicationRoutingEncoderTest {
 		Architecture<Resource, Link> routing = mock(Architecture.class);
 		@SuppressWarnings("unchecked")
 		Set<MappingVariable> mappings = mock(Set.class);
-		when(oneDirectionEncoder.toConstraints(mockT, routing)).thenReturn(new HashSet<Constraint>());
-		when(cycleBreak.toConstraints(mockT, routing)).thenReturn(new HashSet<Constraint>());
-		when(hierarchyEncoder.toConstraints(mockT, commFlows, routing)).thenReturn(new HashSet<Constraint>());
-		when(additional.toConstraints(mockT, commFlows, routing)).thenReturn(new HashSet<Constraint>());
+		Constraint oneDirection = new Constraint(Operator.EQ, 1);
+		Set<Constraint> oneDirectionCs = new HashSet<Constraint>();
+		oneDirectionCs.add(oneDirection);
+		Constraint cycleBreakC = new Constraint(Operator.EQ, 2);
+		Set<Constraint> cycleBreakCs = new HashSet<Constraint>();
+		cycleBreakCs.add(cycleBreakC);
+		Constraint hierarchyC = new Constraint(Operator.EQ, 3);
+		Set<Constraint> hierarchyCs = new HashSet<Constraint>();
+		hierarchyCs.add(hierarchyC);
+		Constraint additionalC = new Constraint(Operator.EQ, 4);
+		Set<Constraint> additionalCs = new HashSet<Constraint>();
+		additionalCs.add(additionalC);
+		Constraint flowC = new Constraint(Operator.EQ, 5);
+		Set<Constraint> flowCs = new HashSet<Constraint>();
+		flowCs.add(flowC);
+		when(oneDirectionEncoder.toConstraints(mockT, routing)).thenReturn(oneDirectionCs);
+		when(cycleBreak.toConstraints(mockT, routing)).thenReturn(cycleBreakCs);
+		when(hierarchyEncoder.toConstraints(mockT, commFlows, routing)).thenReturn(hierarchyCs);
+		when(additional.toConstraints(mockT, commFlows, routing)).thenReturn(additionalCs);
 		CommunicationFlowRoutingEncoder mockEncoder = mock(CommunicationFlowRoutingEncoder.class);
-		when(mockEncoder.toConstraints(commFlow, routing, mappings)).thenReturn(new HashSet<Constraint>());
+		when(mockEncoder.toConstraints(commFlow, routing, mappings)).thenReturn(flowCs);
 		when(manager.getEncoder(commFlow)).thenReturn(mockEncoder);
 		Set<Constraint> cs = encoder.toConstraints(mockT, commFlows, routing, mappings);
-		assertTrue(cs.isEmpty());
+		assertEquals(5, cs.size());
 		verify(oneDirectionEncoder).toConstraints(mockT, routing);
 		verify(cycleBreak).toConstraints(mockT, routing);
 		verify(hierarchyEncoder).toConstraints(mockT, commFlows, routing);

@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.opt4j.satdecoding.Model;
 
 import edu.uci.ics.jung.graph.util.EdgeType;
-import net.sf.opendse.encoding.ImplementationEncoding;
+import net.sf.opendse.encoding.ImplementationEncodingModular;
 import net.sf.opendse.encoding.variables.AllocationVariable;
 import net.sf.opendse.encoding.variables.ApplicationVariable;
 import net.sf.opendse.encoding.variables.CLRR;
@@ -45,22 +45,21 @@ import static org.mockito.Mockito.verify;
 
 public class InterpreterTest {
 
-	public static Interpreter getInterpreter() {
-		ImplementationEncoding mockEncoding = mock(ImplementationEncoding.class);
-		SpecificationWrapper mockWrapper = mock(SpecificationWrapper.class);
-		return new Interpreter(mockEncoding, mockWrapper);
+	public static InterpreterVariable getInterpreter() {
+		ImplementationEncodingModular mockEncoding = mock(ImplementationEncodingModular.class);
+		return new InterpreterVariable(mockEncoding);
 	}
 	
 	@Test
 	public void testToImplementation() {
-		ImplementationEncoding encoding = mock(ImplementationEncoding.class);
+		ImplementationEncodingModular encoding = mock(ImplementationEncodingModular.class);
 		SpecificationWrapper wrapper = mock(SpecificationWrapper.class);
 		when(encoding.getInterfaceVariables()).thenReturn(new HashSet<InterfaceVariable>());
 		Specification s = new Specification(new Application<Task, Dependency>(), new Architecture<Resource, Link>(), new Mappings<Task, Resource>());
 		when(wrapper.getSpecification()).thenReturn(s);
-		Interpreter inter = new Interpreter(encoding, wrapper);
+		InterpreterVariable inter = new InterpreterVariable(encoding);
 		Model m = new Model();
-		Specification spec = inter.toImplementation(m);
+		Specification spec = inter.toImplementation(mock(Specification.class), m);
 		assertEquals(0, spec.getApplication().getVertexCount());
 		assertEquals(0, spec.getArchitecture().getVertexCount());
 		assertEquals(0, spec.getMappings().size());
@@ -72,7 +71,7 @@ public class InterpreterTest {
 		RoutingVariable mockVar = mock(RoutingVariable.class);
 		Set<RoutingVariable> routingVars = new HashSet<RoutingVariable>();
 		routingVars.add(mockVar);
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		inter.decodeRoutings(routingVars, new Model(), new Application<Task, Dependency>(), new Architecture<Resource, Link>());
 	}
 	
@@ -111,7 +110,7 @@ public class InterpreterTest {
 		m.set(cr3, false);
 		m.set(clrr1, true);
 		m.set(clrr2, false);
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		Routings<Task, Resource, Link> decodedRoutings = inter.decodeRoutings(routingVars, m, appl, arch);
 		Architecture<Resource, Link> routing = decodedRoutings.get(comm);
 		assertTrue(routing.getVertex(r1) != null);
@@ -124,7 +123,7 @@ public class InterpreterTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void testMissingElementExc() {
 		Element e = new Element("e");
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		inter.missingElementException(e);
 	}
 
@@ -151,7 +150,7 @@ public class InterpreterTest {
 		Model m = new Model();
 		m.set(mVar1, true);
 		m.set(mVar2, false);
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		Mappings<Task, Resource> implMappings = inter.decodeMappings(mappingVars, m, mappings, arch, appl);
 		assertEquals(1, implMappings.get(r).size());
 		assertEquals(m1, implMappings.get(r).iterator().next());
@@ -159,7 +158,7 @@ public class InterpreterTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testDecodeMappingsExc() {
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		MappingVariable mockVar = mock(MappingVariable.class);
 		Set<MappingVariable> mappingVars = new HashSet<MappingVariable>();
 		mappingVars.add(mockVar);
@@ -177,7 +176,7 @@ public class InterpreterTest {
 		Mappings<Task, Resource> mappings = new Mappings<Task, Resource>();
 		Architecture<Resource, Link> arch = new Architecture<Resource, Link>();
 		arch.addVertex(r);
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		inter.getImplementationMapping(m, mappings, arch, new Application<Task, Dependency>());
 	}
 
@@ -189,7 +188,7 @@ public class InterpreterTest {
 		Mappings<Task, Resource> mappings = new Mappings<Task, Resource>();
 		Application<Task, Dependency> appl = new Application<Task, Dependency>();
 		appl.addVertex(t);
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		inter.getImplementationMapping(m, mappings, new Architecture<Resource, Link>(), appl);
 	}
 
@@ -203,7 +202,7 @@ public class InterpreterTest {
 		arch.addVertex(r);
 		Application<Task, Dependency> appl = new Application<Task, Dependency>();
 		appl.addVertex(t);
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		Mapping<Task, Resource> newM = inter.getImplementationMapping(m, mappings, arch, appl);
 		mappings.add(m);
 		Mapping<Task, Resource> childM = inter.getImplementationMapping(m, mappings, arch, appl);
@@ -220,7 +219,7 @@ public class InterpreterTest {
 		AllocationVariable mockVar = mock(AllocationVariable.class);
 		Set<AllocationVariable> allocVars = new HashSet<AllocationVariable>();
 		allocVars.add(mockVar);
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		Model m = new Model();
 		m.set(mockVar, true);
 		inter.decodeAllocation(allocVars, m, new Architecture<Resource, Link>());
@@ -253,7 +252,7 @@ public class InterpreterTest {
 		allocationVars.add(rVar3);
 		allocationVars.add(lVar1);
 		allocationVars.add(lVar2);
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		Architecture<Resource, Link> implArch = inter.decodeAllocation(allocationVars, m, arch);
 		assertTrue(implArch.getVertex(r1) != null);
 		assertTrue(implArch.getVertex(r2) != null);
@@ -269,7 +268,7 @@ public class InterpreterTest {
 		Resource r2 = new Resource("r2");
 		Architecture<Resource, Link> arch = new Architecture<Resource, Link>();
 		arch.addEdge(l, r1, r2, EdgeType.UNDIRECTED);
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		Architecture<Resource, Link> implArch = new Architecture<Resource, Link>();
 		inter.addImplementationLink(l, implArch, arch);
 		assertEquals(l, implArch.getEdge(l));
@@ -280,7 +279,7 @@ public class InterpreterTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetImplementationLinkExc() {
 		Link l = new Link("l");
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		inter.getImplementationLink(l, new Architecture<Resource, Link>());
 	}
 
@@ -291,7 +290,7 @@ public class InterpreterTest {
 		Resource r2 = new Resource("r2");
 		Architecture<Resource, Link> arch = new Architecture<Resource, Link>();
 		arch.addEdge(l, r1, r2, EdgeType.UNDIRECTED);
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		Link child = inter.getImplementationLink(l, arch);
 		assertEquals(l, child);
 		assertEquals(l, child.getParent());
@@ -300,7 +299,7 @@ public class InterpreterTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetImplementationResourceExc() {
 		Resource res = new Resource("res");
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		inter.getImplementationResource(res, new Architecture<Resource, Link>());
 	}
 
@@ -309,7 +308,7 @@ public class InterpreterTest {
 		Architecture<Resource, Link> arch = new Architecture<Resource, Link>();
 		Resource res = new Resource("res");
 		arch.addVertex(res);
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		Resource child = inter.getImplementationResource(res, arch);
 		assertEquals(res, child);
 		assertEquals(res, child.getParent());
@@ -331,7 +330,7 @@ public class InterpreterTest {
 		m.set(tVar1, true);
 		m.set(tVar2, false);
 		m.set(dtt1, true);
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		inter.decodeApplication(applicationVariables, m, new Application<Task, Dependency>());
 	}
 
@@ -363,7 +362,7 @@ public class InterpreterTest {
 		m.set(tVar4, false);
 		m.set(dtt1, true);
 		m.set(dtt2, false);
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		Application<Task, Dependency> result = inter.decodeApplication(applicationVariables, m,
 				new Application<Task, Dependency>());
 		assertTrue(result.getVertex(t1) != null);
@@ -379,13 +378,13 @@ public class InterpreterTest {
 		ApplicationVariable mockVar = mock(ApplicationVariable.class);
 		Set<ApplicationVariable> applVars = new HashSet<ApplicationVariable>();
 		applVars.add(mockVar);
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		inter.decodeApplication(applVars, new Model(), new Application<Task, Dependency>());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void checkVariableSettingExc() {
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		Model model = new Model();
 		InterfaceVariable mockVar = mock(InterfaceVariable.class);
 		inter.checkVariableSetting(model, mockVar);
@@ -393,7 +392,7 @@ public class InterpreterTest {
 
 	@Test
 	public void checkVariableSetting() {
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		Model model = new Model();
 		InterfaceVariable mockVar = mock(InterfaceVariable.class);
 		model.set(mockVar, false);
@@ -403,7 +402,7 @@ public class InterpreterTest {
 
 	@Test
 	public void createImplDependencyTest() {
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		Application<Task, Dependency> appl = new Application<Task, Dependency>();
 		Task t1 = new Task("t1");
 		Task t2 = new Task("t2");
@@ -420,7 +419,7 @@ public class InterpreterTest {
 
 	@Test
 	public void createImplTaskTest() {
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		Application<Task, Dependency> appl = new Application<Task, Dependency>();
 		Task contained = new Task("t1");
 		Task notContained = new Task("t2");
@@ -435,19 +434,18 @@ public class InterpreterTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testInitUnknownVar() {
-		ImplementationEncoding mockEncoding = mock(ImplementationEncoding.class);
+		ImplementationEncodingModular mockEncoding = mock(ImplementationEncodingModular.class);
 		InterfaceVariable interMock = mock(InterfaceVariable.class);
 		Set<InterfaceVariable> vars = new HashSet<InterfaceVariable>();
 		vars.add(interMock);
 		when(mockEncoding.getInterfaceVariables()).thenReturn(vars);
-		SpecificationWrapper mockWrapper = mock(SpecificationWrapper.class);
-		Interpreter inter = new Interpreter(mockEncoding, mockWrapper);
+		InterpreterVariable inter = new InterpreterVariable(mockEncoding);
 		inter.initializeInterfaceVariables();
 	}
 
 	@Test
 	public void testInitVariables() {
-		ImplementationEncoding mockEncoding = mock(ImplementationEncoding.class);
+		ImplementationEncodingModular mockEncoding = mock(ImplementationEncodingModular.class);
 		ApplicationVariable applMock = mock(ApplicationVariable.class);
 		MappingVariable mapMock = mock(MappingVariable.class);
 		RoutingVariable routingMock = mock(RoutingVariable.class);
@@ -458,8 +456,7 @@ public class InterpreterTest {
 		vars.add(mapMock);
 		vars.add(allocationMock);
 		when(mockEncoding.getInterfaceVariables()).thenReturn(vars);
-		SpecificationWrapper mockWrapper = mock(SpecificationWrapper.class);
-		Interpreter inter = new Interpreter(mockEncoding, mockWrapper);
+		InterpreterVariable inter = new InterpreterVariable(mockEncoding);
 		assertFalse(inter.variablesInitialized);
 		inter.initializeInterfaceVariables();
 		verify(mockEncoding).getInterfaceVariables();
@@ -479,13 +476,13 @@ public class InterpreterTest {
 		Task t = new Task("t");
 		Resource res = new Resource("r");
 		Mapping<Task, Resource> m = new Mapping<Task, Resource>("m", t, res);
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		inter.copy(m);
 	}
 
 	@Test
 	public void testCopy() {
-		Interpreter inter = getInterpreter();
+		InterpreterVariable inter = getInterpreter();
 		Element element = new Element("parent");
 		Element child = inter.copy(element);
 		Element secondChild = inter.copy(element);
@@ -499,9 +496,8 @@ public class InterpreterTest {
 	public void testGetNotEncodedMessage() {
 		InterfaceVariable mockVar = mock(InterfaceVariable.class);
 		when(mockVar.toString()).thenReturn("mockVar");
-		ImplementationEncoding mockEncoding = mock(ImplementationEncoding.class);
-		SpecificationWrapper mockWrapper = mock(SpecificationWrapper.class);
-		Interpreter inter = new Interpreter(mockEncoding, mockWrapper);
+		ImplementationEncodingModular mockEncoding = mock(ImplementationEncodingModular.class);
+		InterpreterVariable inter = new InterpreterVariable(mockEncoding);
 		String expected = "The variable mockVar is not encoded";
 		assertEquals(expected, inter.getNotEncodedMessage(mockVar));
 	}

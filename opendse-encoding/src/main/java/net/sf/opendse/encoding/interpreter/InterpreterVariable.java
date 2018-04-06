@@ -12,7 +12,7 @@ import com.google.inject.Inject;
 
 import edu.uci.ics.jung.graph.util.EdgeType;
 import net.sf.opendse.encoding.AllocationEncoding;
-import net.sf.opendse.encoding.ImplementationEncoding;
+import net.sf.opendse.encoding.ImplementationEncodingModular;
 import net.sf.opendse.encoding.MappingEncoding;
 import net.sf.opendse.encoding.RoutingEncoding;
 import net.sf.opendse.encoding.variables.AllocationVariable;
@@ -40,21 +40,20 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
-import net.sf.opendse.optimization.SpecificationWrapper;
+import net.sf.opendse.optimization.encoding.Interpreter;
 
 /**
- * The {@link Interpreter} gets the set of {@link InterfaceVariable}s created by
- * the {@link ImplementationEncoding} together with a {@link Model} satisfying
- * the constraints and uses them to create the implementation
+ * The {@link InterpreterVariable} gets the set of {@link InterfaceVariable}s created by
+ * the {@link ImplementationEncodingModular} together with a {@link Model} satisfying
+ * the constraints and uses them to create the implementation.
  * {@link Specification}.
  * 
  * @author Fedor Smirnov
  *
  */
-public class Interpreter {
+public class InterpreterVariable implements Interpreter{
 
-	protected final Specification specification;
-	protected final ImplementationEncoding implementationEncoding;
+	protected final ImplementationEncodingModular implementationEncoding;
 	protected boolean variablesInitialized = false;
 	protected Set<ApplicationVariable> applicationVariables = new HashSet<ApplicationVariable>();
 	protected Set<MappingVariable> mappingVariables = new HashSet<MappingVariable>();
@@ -62,9 +61,8 @@ public class Interpreter {
 	protected Set<AllocationVariable> allocationVariables = new HashSet<AllocationVariable>();
 
 	@Inject
-	public Interpreter(ImplementationEncoding implementationEncoding, SpecificationWrapper specificationWrapper) {
+	public InterpreterVariable(ImplementationEncodingModular implementationEncoding) {
 		this.implementationEncoding = implementationEncoding;
-		this.specification = specificationWrapper.getSpecification();
 	}
 
 	/**
@@ -77,7 +75,7 @@ public class Interpreter {
 	 * @return the {@link Specification} where the {@link Constraint}s are solved by
 	 *         the given {@link Model}
 	 */
-	public Specification toImplementation(Model model) {
+	public Specification toImplementation(Specification specification, Model model) {
 		if (!variablesInitialized) {
 			initializeInterfaceVariables();
 		}
@@ -169,6 +167,9 @@ public class Interpreter {
 			Resource routingSrc = copy(implementationAllocation.getVertex(src));
 			Resource routingDest = copy(implementationAllocation.getVertex(dest));
 			Link routingLink = copy(implementationAllocation.getEdge(link));
+			if (implementationRoutings.get(comm).getEdge(routingLink) != null) {
+				throw new IllegalArgumentException("Link already in routing!");
+			}
 			implementationRoutings.get(comm).addEdge(routingLink, routingSrc, routingDest, EdgeType.DIRECTED);
 		}
 	}
@@ -235,7 +236,7 @@ public class Interpreter {
 	 * @param model
 	 *            the {@link Model} containing a {@link Variable} assignment that
 	 *            solves the {@link Constraint}s encoded by the
-	 *            {@link ImplementationEncoding}
+	 *            {@link ImplementationEncodingModular}
 	 * @param specificationMappings
 	 *            the {@link Mappings} provided by the user as part of the
 	 *            {@link Specification} describing the overall problem
@@ -307,7 +308,7 @@ public class Interpreter {
 	 * @param model
 	 *            the {@link Model} containing a {@link Variable} assignment that
 	 *            solves the {@link Constraint}s encoded by the
-	 *            {@link ImplementationEncoding}
+	 *            {@link ImplementationEncodingModular}
 	 * @param specificationArchitecture
 	 *            the {@link Architecture} from the {@link Specification} describing
 	 *            the overall problem
@@ -516,7 +517,7 @@ public class Interpreter {
 	}
 
 	/**
-	 * Reads the {@link InterfaceVariable}s from the {@link ImplementationEncoding}.
+	 * Reads the {@link InterfaceVariable}s from the {@link ImplementationEncodingModular}.
 	 */
 	protected void initializeInterfaceVariables() {
 		for (InterfaceVariable interfaceVariable : implementationEncoding.getInterfaceVariables()) {

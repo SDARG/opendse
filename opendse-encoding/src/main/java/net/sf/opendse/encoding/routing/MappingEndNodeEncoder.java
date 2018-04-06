@@ -4,9 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.opt4j.satdecoding.Constraint;
-import org.opt4j.satdecoding.Constraint.Operator;
-import net.sf.opendse.encoding.variables.DDdR;
-import net.sf.opendse.encoding.variables.DDsR;
+import net.sf.opendse.encoding.constraints.Constraints;
 import net.sf.opendse.encoding.variables.M;
 import net.sf.opendse.encoding.variables.MappingVariable;
 import net.sf.opendse.encoding.variables.Variable;
@@ -80,61 +78,7 @@ public class MappingEndNodeEncoder implements EndNodeEncoder {
 			boolean source) {
 		Set<Constraint> result = new HashSet<Constraint>();
 		Variable endNodeVariable = source ? Variables.varDDsR(commFlow, res) : Variables.varDDdR(commFlow, res);
-		result.add(formulateEndNodeDeactivation(endNodeVariable, mappingVars));
-		for (M mVar : mappingVars) {
-			result.add(formulateEndNodeActivation(endNodeVariable, mVar));
-		}
+		result.addAll(Constraints.generateOrConstraints(mappingVars, endNodeVariable));
 		return result;
 	}
-
-	/**
-	 * Formulates the {@link Constraint} stating that the end node variable
-	 * {@link DDsR} or {@link DDdR} is not active if all corresponding mapping
-	 * variables are not active. Example for the source case:
-	 * 
-	 * DDsR - sum(M) <= 0
-	 * 
-	 * @param endNodeVariable
-	 *            the variable encoding whether the considered resource is an end
-	 *            node of the considered {@link CommunicationFlow}
-	 * @param mappingVariables
-	 *            the {@link M} variables encoding the activation of the process
-	 *            {@link Task}
-	 * @return the {@link Constraint} stating that the end node variable
-	 *         {@link DDsR} or {@link DDdR} is not active if all corresponding
-	 *         mapping variables are not active
-	 */
-	protected Constraint formulateEndNodeDeactivation(Variable endNodeVariable, Set<M> mappingVariables) {
-		Constraint result = new Constraint(Operator.LE, 0);
-		result.add(Variables.p(endNodeVariable));
-		for (M mVar : mappingVariables) {
-			result.add(-1, Variables.p(mVar));
-		}
-		return result;
-	}
-
-	/**
-	 * Formulates the {@link Constraint} stating that the end node variable
-	 * {@link DDsR} or {@link DDdR} is active if the corresponding mapping variable
-	 * is active. Example for the source case:
-	 * 
-	 * M - DDsR <= 0
-	 * 
-	 * @param endNodeVariable
-	 *            the variable encoding whether the considered resource is an end
-	 *            node of the considered {@link CommunicationFlow}
-	 * @param mappingVariable
-	 *            the {@link M} variable encoding the activation of the process
-	 *            {@link Task}
-	 * @return the {@link Constraint} stating that the end node variable
-	 *         {@link DDsR} or {@link DDdR} is active if the corresponding mapping
-	 *         variable is active
-	 */
-	protected Constraint formulateEndNodeActivation(Variable endNodeVariable, M mappingVariable) {
-		Constraint result = new Constraint(Operator.LE, 0);
-		result.add(Variables.p(mappingVariable));
-		result.add(-1, Variables.p(endNodeVariable));
-		return result;
-	}
-
 }

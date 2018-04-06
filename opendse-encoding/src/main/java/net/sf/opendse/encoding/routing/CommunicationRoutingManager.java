@@ -2,6 +2,8 @@ package net.sf.opendse.encoding.routing;
 
 import java.util.Set;
 
+import com.google.inject.ImplementedBy;
+
 import net.sf.opendse.encoding.variables.T;
 import net.sf.opendse.model.Task;
 
@@ -13,6 +15,7 @@ import net.sf.opendse.model.Task;
  * @author Fedor Smirnov
  *
  */
+@ImplementedBy(DefaultCommunicationRoutingManager.class)
 public interface CommunicationRoutingManager {
 
 	/**

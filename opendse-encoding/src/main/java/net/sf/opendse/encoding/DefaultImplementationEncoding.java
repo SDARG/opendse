@@ -7,6 +7,8 @@ import org.opt4j.satdecoding.Constraint;
 
 import com.google.inject.Inject;
 
+import net.sf.opendse.optimization.SpecificationWrapper;
+
 /**
  * The {@link DefaultImplementationEncoding} performs the basic encoding without
  * any preprocessing or additional constraints.
@@ -18,8 +20,8 @@ public class DefaultImplementationEncoding extends AbstractImplementationEncodin
 
 	@Inject
 	public DefaultImplementationEncoding(ApplicationEncoding applicationEncoding, MappingEncoding mappingEncoding,
-			RoutingEncoding routingEncoding, AllocationEncoding allocationEncoding) {
-		super(applicationEncoding, mappingEncoding, routingEncoding, allocationEncoding);
+			RoutingEncoding routingEncoding, AllocationEncoding allocationEncoding, SpecificationWrapper specificationWrapper) {
+		super(applicationEncoding, mappingEncoding, routingEncoding, allocationEncoding, specificationWrapper);
 	}
 
 	@Override

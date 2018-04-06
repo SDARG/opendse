@@ -15,6 +15,7 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
+import net.sf.opendse.optimization.SpecificationWrapper;
 import net.sf.opendse.encoding.application.DependencyEndPointConstraintGenerator;
 import net.sf.opendse.encoding.variables.AllocationVariable;
 import net.sf.opendse.encoding.variables.ApplicationVariable;
@@ -29,7 +30,7 @@ import net.sf.opendse.encoding.variables.RoutingVariable;
  * @author Fedor Smirnov
  *
  */
-public abstract class AbstractImplementationEncoding implements ImplementationEncoding {
+public abstract class AbstractImplementationEncoding implements ImplementationEncodingModular {
 	protected final ApplicationEncoding applicationEncoding;
 	protected final MappingEncoding mappingEncoding;
 	protected final RoutingEncoding routingEncoding;
@@ -39,10 +40,10 @@ public abstract class AbstractImplementationEncoding implements ImplementationEn
 	protected final Set<MappingVariable> mappingVariables;
 	protected final Set<RoutingVariable> routingVariables;
 	protected final Set<AllocationVariable> allocationVariables;
-	protected boolean encodingFinished = false;
+	protected final Set<Constraint> constraints;
 
 	public AbstractImplementationEncoding(ApplicationEncoding applicationEncoding, MappingEncoding mappingEncoding,
-			RoutingEncoding routingEncoding, AllocationEncoding allocationEncoding) {
+			RoutingEncoding routingEncoding, AllocationEncoding allocationEncoding, SpecificationWrapper specificationWrapper) {
 
 		this.applicationEncoding = applicationEncoding;
 		this.mappingEncoding = mappingEncoding;
@@ -53,11 +54,16 @@ public abstract class AbstractImplementationEncoding implements ImplementationEn
 		this.mappingVariables = new HashSet<MappingVariable>();
 		this.routingVariables = new HashSet<RoutingVariable>();
 		this.allocationVariables = new HashSet<AllocationVariable>();
+		this.constraints = generateTheConstraints(specificationWrapper.getSpecification());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public final Set<Constraint> toConstraints(Specification specification) {
+	public final Set<Constraint> toConstraints() {
+		return this.constraints;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Set<Constraint> generateTheConstraints(Specification specification){
 		Application<Task, Dependency> application = specification.getApplication();
 		Mappings<Task, Resource> mappings = specification.getMappings();
 		Routings<Task, Resource, Link> routings = specification.getRoutings();
@@ -82,17 +88,14 @@ public abstract class AbstractImplementationEncoding implements ImplementationEn
 		result.addAll(applicationConstraints);
 		result.addAll(mappingConstraints);
 		result.addAll(routingConstraints);
+		result.addAll(allocationConstraints);
 		result.addAll(formulateAdditionalConstraints());
 		result.addAll(formulateGlobalConstraints());
-		encodingFinished = true;
 		return result;
 	}
 
 	@Override
 	public Set<InterfaceVariable> getInterfaceVariables() {
-		if (!encodingFinished) {
-			throw new IllegalArgumentException("The interface variables are not yet encoded.");
-		}
 		Set<InterfaceVariable> result = new HashSet<InterfaceVariable>();
 		result.addAll(applicationVariables);
 		result.addAll(mappingVariables);

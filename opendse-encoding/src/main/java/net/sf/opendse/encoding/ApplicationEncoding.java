@@ -4,9 +4,12 @@ import java.util.Set;
 
 import org.opt4j.satdecoding.Constraint;
 
+import com.google.inject.ImplementedBy;
+
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Task;
+import net.sf.opendse.encoding.application.ApplicationModeEncoding;
 import net.sf.opendse.encoding.variables.DTT;
 import net.sf.opendse.encoding.variables.T;
 
@@ -19,6 +22,7 @@ import net.sf.opendse.encoding.variables.T;
  * @author Fedor Smirnov
  *
  */
+@ImplementedBy(ApplicationModeEncoding.class)
 public interface ApplicationEncoding {
 
 	/**
