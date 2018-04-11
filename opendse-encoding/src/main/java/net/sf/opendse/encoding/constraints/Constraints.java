@@ -23,6 +23,25 @@ public class Constraints {
 	}
 
 	/**
+	 * Generates the {@link Constraint} stating that exactly n of the given argument
+	 * {@link Variable}s have to be active, while the rest is deactivated.
+	 * 
+	 * @param arguments
+	 *            the {@link Variable}s that can be active or not
+	 * @param n
+	 *            the exact number of {@link Variable}s that have to be active
+	 * @return the {@link Constraint} stating that exactly n of the given argument
+	 *         {@link Variable}s have to be active, while the rest is deactivated
+	 */
+	public static <V extends Variable> Constraint generatePickExactlyNConstraint(Set<V> arguments, int n) {
+		Constraint result = new Constraint(Operator.EQ, n);
+		for (V arg : arguments) {
+			result.add(net.sf.opendse.optimization.encoding.variables.Variables.p(arg));
+		}
+		return result;
+	}
+	
+	/**
 	 * Generates a set of {@link Constraint}s that encode an OR relationship between
 	 * the {@link Variable}s provided as arguments and the variable provided as
 	 * result. Example: arguments = (A, B, C); result = D; The generated constraints
@@ -63,7 +82,8 @@ public class Constraints {
 	 *         only be active if at least one of the condition {@link Variable}s is
 	 *         active
 	 */
-	public static <V extends Variable> Constraint generateMinimalRequirementConstraint(Set<V> conditions, Variable result) {
+	public static <V extends Variable> Constraint generateMinimalRequirementConstraint(Set<V> conditions,
+			Variable result) {
 		Constraint minimalRequirementConstraint = new Constraint(Operator.LE, 0);
 		minimalRequirementConstraint.add(Variables.p(result));
 		for (Variable condition : conditions) {
@@ -72,6 +92,20 @@ public class Constraints {
 		return minimalRequirementConstraint;
 	}
 
+	/**
+	 * Generates the {@link Constraint} expressing that the two given {@link Variable}s have to be equal.
+	 * 
+	 * @param first the first {@link Variable}
+	 * @param second the second {@link Variable}
+	 * @return the {@link Constraint} expressing that the two given {@link Variable}s have to be equal
+	 */
+	public static Constraint generateEqualityConstraint(Variable first, Variable second) {
+		Constraint result = new Constraint(Operator.EQ, 0);
+		result.add(Variables.p(first));
+		result.add(-1, Variables.p(second));
+		return result;
+	}
+	
 	/**
 	 * Generates the {@link Constraint} stating that the
 	 * implication-{@link Variable} is always active if the

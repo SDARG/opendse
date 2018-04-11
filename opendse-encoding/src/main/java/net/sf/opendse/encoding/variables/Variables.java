@@ -29,6 +29,10 @@ public class Variables {
 
 	private Variables() {
 	}
+	
+	public static ApplicationAlternative varApplicationAlternative(String functionName, String functionId) {
+		return new ApplicationAlternative(functionName, functionId);
+	}
 
 	public static L varL(Link link) {
 		return new L(link);

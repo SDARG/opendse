@@ -21,6 +21,13 @@ import static org.mockito.Mockito.mock;
 public class VariablesTest {
 
 	@Test
+	public void testApplicationAlternativeVar() {
+		ApplicationAlternative alt = Variables.varApplicationAlternative("function", "a");
+		assertEquals(alt, Variables.varApplicationAlternative("function", "a"));
+		assertNotEquals(alt, Variables.varApplicationAlternative("function", "b"));
+	}
+
+	@Test
 	public void testLvar() {
 		Link link = new Link("link");
 		L lVar = Variables.varL(link);
