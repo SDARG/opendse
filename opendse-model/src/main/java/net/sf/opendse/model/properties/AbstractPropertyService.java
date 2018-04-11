@@ -26,7 +26,7 @@ public abstract class AbstractPropertyService {
 	 * @param element
 	 * @param attributeName
 	 */
-	private static final void checkAttribute(Element element, String attributeName) {
+	protected static final void checkAttribute(Element element, String attributeName) {
 		if (!isAttributeSet(element, attributeName)) {
 			String message = "Attribute " + attributeName + " not set for the element " + element;
 			throw new IllegalArgumentException(message);
