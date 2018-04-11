@@ -20,19 +20,19 @@ import net.sf.opendse.model.properties.ApplicationElementPropertyService;
 import net.sf.opendse.model.properties.ApplicationElementPropertyService.ActivationModes;
 
 /**
- * The {@link ApplicationModeEncoding} is an {@link ApplicationEncoding} that
- * enables the usage of different {@link ApplicationModeConstraintGenerator} to
+ * The {@link ApplicationEncodingMode} is an {@link ApplicationEncoding} that
+ * enables the usage of different {@link ApplicationConstraintGenerator} to
  * process different parts of the application.
  * 
  * @author Fedor Smirnov
  *
  */
-public class ApplicationModeEncoding implements ApplicationEncoding {
+public class ApplicationEncodingMode implements ApplicationEncoding {
 
-	protected final ApplicationConstraintGeneratorManager generatorManager;
+	protected final ApplicationConstraintManager generatorManager;
 
 	@Inject
-	public ApplicationModeEncoding(ApplicationConstraintGeneratorManager generatorManager) {
+	public ApplicationEncodingMode(ApplicationConstraintManager generatorManager) {
 		this.generatorManager = generatorManager;
 	}
 
@@ -44,7 +44,7 @@ public class ApplicationModeEncoding implements ApplicationEncoding {
 		for (Entry<ActivationModes, Set<ApplicationVariable>> entry : applicationModeMap.entrySet()) {
 			ActivationModes activationMode = entry.getKey();
 			Set<ApplicationVariable> variables = entry.getValue();
-			ApplicationModeConstraintGenerator constraintGenerator = generatorManager
+			ApplicationConstraintGenerator constraintGenerator = generatorManager
 					.getConstraintGenerator(activationMode);
 			applicationConstraints.addAll(constraintGenerator.toConstraints(variables));
 		}

@@ -6,13 +6,13 @@ import org.junit.Test;
 
 import net.sf.opendse.model.properties.ApplicationElementPropertyService.ActivationModes;
 
-public class DefaultConstraintGeneratorManagerTest {
+public class ApplicationConstraintManagerDefaultTest {
 
 	@Test
 	public void test() {
-		DefaultConstraintGeneratorManager manager = new DefaultConstraintGeneratorManager();
+		ApplicationConstraintManagerDefault manager = new ApplicationConstraintManagerDefault();
 		assertTrue(manager.getConstraintGenerator(
-				ActivationModes.STATIC) instanceof StaticModeConstraintGenerator);
+				ActivationModes.STATIC) instanceof ApplicationConstraintGeneratorStatic);
 	}
 
 }
