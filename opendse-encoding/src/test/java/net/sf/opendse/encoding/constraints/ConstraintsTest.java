@@ -22,6 +22,7 @@ public class ConstraintsTest {
 		Set<Constraint> cs = new HashSet<Constraint>();
 		cs.add(Constraints.generateEqualityConstraint(var1, var2));
 		Set<Object> active = new HashSet<Object>();
+		assertEquals(2, cs.iterator().next().size());
 		active.add(var1);
 		ConstraintVerifier verifyActive1 = new ConstraintVerifier(active, new HashSet<Object>(), cs);
 		verifyActive1.verifyVariableActivated(var2);

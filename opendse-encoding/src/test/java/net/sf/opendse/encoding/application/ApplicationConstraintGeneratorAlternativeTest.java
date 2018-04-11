@@ -26,27 +26,27 @@ import verification.ConstraintVerifier;
 public class ApplicationConstraintGeneratorAlternativeTest {
 
 	protected class AlternativeApplication {
-		Task t0 = new Task("t0");
-		Task t1 = new Task("t1");
-		Communication c0 = new Communication("c0");
-		Communication c1 = new Communication("c1");
-		Dependency d0 = new Dependency("d0");
-		Dependency d1 = new Dependency("d1");
-		Dependency d2 = new Dependency("d2");
-		Dependency d3 = new Dependency("d3");
-		Application<Task, Dependency> appl = new Application<Task, Dependency>();
-		Set<Object> variables = new HashSet<Object>();
-		Set<ApplicationVariable> applVars = new HashSet<ApplicationVariable>();
-		Set<ApplicationVariable> func1 = new HashSet<ApplicationVariable>();
-		Set<ApplicationVariable> func2 = new HashSet<ApplicationVariable>();
-		T tVar0 = Variables.varT(t0);
-		T tVar1 = Variables.varT(t1);
-		T cVar0 = Variables.varT(c0);
-		T cVar1 = Variables.varT(c1);
-		DTT dttVar0 = Variables.varDTT(d0, t0, c1);
-		DTT dttVar1 = Variables.varDTT(d1, t0, c0);
-		DTT dttVar2 = Variables.varDTT(d2, c0, t1);
-		DTT dttVar3 = Variables.varDTT(d3, t1, c1);
+		protected Task t0 = new Task("t0");
+		protected Task t1 = new Task("t1");
+		protected Communication c0 = new Communication("c0");
+		protected Communication c1 = new Communication("c1");
+		protected Dependency d0 = new Dependency("d0");
+		protected Dependency d1 = new Dependency("d1");
+		protected Dependency d2 = new Dependency("d2");
+		protected Dependency d3 = new Dependency("d3");
+		protected Application<Task, Dependency> appl = new Application<Task, Dependency>();
+		protected Set<Object> variables = new HashSet<Object>();
+		protected Set<ApplicationVariable> applVars = new HashSet<ApplicationVariable>();
+		protected Set<ApplicationVariable> func1 = new HashSet<ApplicationVariable>();
+		protected Set<ApplicationVariable> func2 = new HashSet<ApplicationVariable>();
+		protected T tVar0 = Variables.varT(t0);
+		protected T tVar1 = Variables.varT(t1);
+		protected T cVar0 = Variables.varT(c0);
+		protected T cVar1 = Variables.varT(c1);
+		protected DTT dttVar0 = Variables.varDTT(d0, t0, c1);
+		protected DTT dttVar1 = Variables.varDTT(d1, t0, c0);
+		protected DTT dttVar2 = Variables.varDTT(d2, c0, t1);
+		protected DTT dttVar3 = Variables.varDTT(d3, t1, c1);
 
 		protected AlternativeApplication() {
 			variables.add(tVar1);
