@@ -8,13 +8,13 @@ import net.sf.opendse.encoding.variables.ApplicationVariable;
 import net.sf.opendse.model.properties.ApplicationElementPropertyService.ActivationModes;
 
 /**
- * An {@link ApplicationModeConstraintGenerator} generates the constraints for
+ * An {@link ApplicationConstraintGenerator} generates the constraints for
  * {@link ApplicationVariable}s with a certain application mode.
  * 
  * @author Fedor Smirnov
  *
  */
-public interface ApplicationModeConstraintGenerator {
+public interface ApplicationConstraintGenerator {
 
 	/**
 	 * Generates the constraints enforcing a valid activation of the given {@link ApplicationVariable}s.

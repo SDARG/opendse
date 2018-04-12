@@ -20,20 +20,20 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class ApplicationModeEncodingTest {
+public class ApplicationEncodingModeTest {
 
 	@Test
 	public void testToConstraints() {
-		ApplicationConstraintGeneratorManager generatorManager = mock(ApplicationConstraintGeneratorManager.class);
+		ApplicationConstraintManager generatorManager = mock(ApplicationConstraintManager.class);
 		Task task = new Task("task");
 		Application<Task, Dependency> appl = new Application<Task, Dependency>();
 		appl.addVertex(task);
-		ApplicationModeConstraintGenerator generator = mock(ApplicationModeConstraintGenerator.class);
+		ApplicationConstraintGenerator generator = mock(ApplicationConstraintGenerator.class);
 		when(generatorManager.getConstraintGenerator(ActivationModes.STATIC)).thenReturn(generator);
 		Set<ApplicationVariable> vars = new HashSet<ApplicationVariable>();
 		vars.add(Variables.varT(task));
 		when(generator.toConstraints(vars)).thenReturn(new HashSet<Constraint>());
-		ApplicationModeEncoding encoding = new ApplicationModeEncoding(generatorManager);
+		ApplicationEncodingMode encoding = new ApplicationEncodingMode(generatorManager);
 		encoding.toConstraints(appl);
 		verify(generator).toConstraints(vars);
 		verify(generatorManager).getConstraintGenerator(ActivationModes.STATIC);
@@ -41,8 +41,8 @@ public class ApplicationModeEncodingTest {
 
 	@Test
 	public void testFilterApplicationModes() {
-		ApplicationConstraintGeneratorManager generatorManager = mock(ApplicationConstraintGeneratorManager.class);
-		ApplicationModeEncoding encoding = new ApplicationModeEncoding(generatorManager);
+		ApplicationConstraintManager generatorManager = mock(ApplicationConstraintManager.class);
+		ApplicationEncodingMode encoding = new ApplicationEncodingMode(generatorManager);
 		Task t1 = new Task("t1");
 		Task t2 = new Communication("t2");
 		Task t3 = new Task("t3");

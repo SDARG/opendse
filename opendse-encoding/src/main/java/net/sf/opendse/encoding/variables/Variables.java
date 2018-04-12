@@ -29,6 +29,10 @@ public class Variables {
 
 	private Variables() {
 	}
+	
+	public static ApplicationAlternative varApplicationAlternative(String functionName, String functionId) {
+		return new ApplicationAlternative(functionName, functionId);
+	}
 
 	public static CRR varCRR(Task communication, Resource first, Resource second) {
 		return new CRR(communication, first, second);

@@ -12,14 +12,14 @@ import net.sf.opendse.encoding.variables.T;
 import net.sf.opendse.encoding.variables.Variables;
 
 /**
- * The {@link StaticModeConstraintGenerator} formulates the constraints for the
+ * The {@link ApplicationConstraintGeneratorStatic} formulates the constraints for the
  * static application parts. These parts are always included into the
  * implementation application.
  * 
  * @author Fedor Smirnov
  *
  */
-public class StaticModeConstraintGenerator implements ApplicationModeConstraintGenerator {
+public class ApplicationConstraintGeneratorStatic implements ApplicationConstraintGenerator {
 
 	@Override
 	public Set<Constraint> toConstraints(Set<ApplicationVariable> applicationVariables) {

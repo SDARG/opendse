@@ -16,7 +16,7 @@ import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Task;
 import verification.ConstraintVerifier;
 
-public class StaticModeConstraintGeneratorTest {
+public class ApplicationConstraintGeneratorStaticTest {
 
 	@Test
 	public void test() {
@@ -30,7 +30,7 @@ public class StaticModeConstraintGeneratorTest {
 		applVars.add(tVar1);
 		applVars.add(tVar2);
 		applVars.add(dttVar);
-		StaticModeConstraintGenerator generator = new StaticModeConstraintGenerator();
+		ApplicationConstraintGeneratorStatic generator = new ApplicationConstraintGeneratorStatic();
 		Set<Constraint> constraints = generator.toConstraints(applVars);
 		assertEquals(3, constraints.size());
 		ConstraintVerifier verifier = new ConstraintVerifier(new HashSet<Object>(), new HashSet<Object>(), constraints);

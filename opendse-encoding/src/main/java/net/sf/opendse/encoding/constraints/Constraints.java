@@ -23,10 +23,10 @@ public class Constraints {
 	}
 
 	/**
-	 * Generates a set of {@link Constraint}s that encode an AND relationship
-	 * between the {@link Variable}s provided as arguments and the variable provided
-	 * as result. Example: arguments = (A, B, C); result = D; The generated
-	 * constraints then encode the relation A and B and C = D.
+	 * Generates a set of {@link Constraint}s that encode an AND
+	 * relationship between the {@link Variable}s provided as arguments and the
+	 * variable provided as result. Example: arguments = (A, B, C); result = D; The
+	 * generated constraints then encode the relation A and B and C = D.
 	 * 
 	 * @param arguments
 	 *            the set of {@link Variable}s that shall affect the activation of
@@ -91,6 +91,25 @@ public class Constraints {
 	}
 
 	/**
+	 * Generates the {@link Constraint} stating that exactly n of the given argument
+	 * {@link Variable}s have to be active, while the rest is deactivated.
+	 * 
+	 * @param arguments
+	 *            the {@link Variable}s that can be active or not
+	 * @param n
+	 *            the exact number of {@link Variable}s that have to be active
+	 * @return the {@link Constraint} stating that exactly n of the given argument
+	 *         {@link Variable}s have to be active, while the rest is deactivated
+	 */
+	public static <V extends Variable> Constraint generatePickExactlyNConstraint(Set<V> arguments, int n) {
+		Constraint result = new Constraint(Operator.EQ, n);
+		for (V arg : arguments) {
+			result.add(net.sf.opendse.optimization.encoding.variables.Variables.p(arg));
+		}
+		return result;
+	}
+
+	/**
 	 * Generates a set of {@link Constraint}s that encode an OR relationship between
 	 * the {@link Variable}s provided as arguments and the variable provided as
 	 * result. Example: arguments = (A, B, C); result = D; The generated constraints
@@ -139,6 +158,24 @@ public class Constraints {
 			minimalRequirementConstraint.add(-1, Variables.p(condition));
 		}
 		return minimalRequirementConstraint;
+	}
+
+	/**
+	 * Generates the {@link Constraint} expressing that the two given
+	 * {@link Variable}s have to be equal.
+	 * 
+	 * @param first
+	 *            the first {@link Variable}
+	 * @param second
+	 *            the second {@link Variable}
+	 * @return the {@link Constraint} expressing that the two given
+	 *         {@link Variable}s have to be equal
+	 */
+	public static Constraint generateEqualityConstraint(Variable first, Variable second) {
+		Constraint result = new Constraint(Operator.EQ, 0);
+		result.add(Variables.p(first));
+		result.add(-1, Variables.p(second));
+		return result;
 	}
 
 	/**
