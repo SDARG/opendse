@@ -30,6 +30,10 @@ public class Variables {
 	private Variables() {
 	}
 
+	public static CRR varCRR(Task communication, Resource first, Resource second) {
+		return new CRR(communication, first, second);
+	}
+	
 	public static L varL(Link link) {
 		return new L(link);
 	}

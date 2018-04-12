@@ -21,6 +21,16 @@ import static org.mockito.Mockito.mock;
 public class VariablesTest {
 
 	@Test
+	public void testCRRvar() {
+		Task comm = new Task("comm");
+		Resource first = new Resource("first");
+		Resource second = new Resource("second");
+		CRR crr = Variables.varCRR(comm, first, second);
+		assertEquals(crr, Variables.varCRR(comm, first, second));
+		assertNotEquals(crr, Variables.varCRR(comm, second, first));
+	}
+
+	@Test
 	public void testLvar() {
 		Link link = new Link("link");
 		L lVar = Variables.varL(link);
