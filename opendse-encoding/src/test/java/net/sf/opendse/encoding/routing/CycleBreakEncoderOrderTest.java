@@ -49,7 +49,7 @@ public class CycleBreakEncoderOrderTest {
 		T commVar = Variables.varT(comm);
 		CycleBreakEncoderOrder cycleBreaker = new CycleBreakEncoderOrder();
 		Set<Constraint> cs = cycleBreaker.toConstraints(commVar, routing);
-		assertEquals(7, cs.size());
+		assertEquals(331, cs.size());
 		Set<Object> activated = new HashSet<Object>();
 		activated.add(Variables.varCLRR(comm, l0, r0, r1));
 		activated.add(Variables.varCLRR(comm, l2, r1, r2));
@@ -60,6 +60,12 @@ public class CycleBreakEncoderOrderTest {
 		activated.add(Variables.varCLRR(comm, l6, r4, r6));
 		activated.add(Variables.varCLRR(comm, l7, r6, r5));
 		// the constraints should not be solvable
+		boolean assertionError = false;
+		try {
 		new ConstraintVerifier(activated, new HashSet<Object>(), cs);
+		}catch(AssertionError error) {
+			assertionError = true;
+		}
+		assertTrue(assertionError);
 	}
 }

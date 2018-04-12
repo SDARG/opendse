@@ -10,7 +10,7 @@ public class CommunicationRoutingManagerDefault implements CommunicationRoutingM
 	public CommunicationRoutingEncoder getRoutingEncoder(T communicationTaskVariable,
 			Set<CommunicationFlow> communicationFlows) {
 		OneDirectionEncoder oneDirectionEncoder = new OneDirectionEncoderDefault();
-		CycleBreakEncoder cycleBreakEncoder = new CycleBreakEncoderNonRedundant();
+		CycleBreakEncoder cycleBreakEncoder = new CycleBreakEncoderOrder();
 		CommunicationHierarchyEncoder hierarchyEncoder = new CommunicationHierarchyEncoderDefault();
 		CommunicationFlowRoutingManager manager = new CommunicationFlowRoutingManagerDefault();
 		AdditionalRoutingConstraintsEncoder additionalConstraintsEncoder = new AdditionalRoutingConstraintsEncoderNone();

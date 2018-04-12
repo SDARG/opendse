@@ -11,9 +11,9 @@ import org.opt4j.satdecoding.Constraint;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import net.sf.opendse.encoding.variables.Variables;
 import net.sf.opendse.model.Architecture;
+import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Resource;
-import net.sf.opendse.model.Task;
 import verification.ConstraintVerifier;
 
 public class ResourceOrderEncoderTest {
@@ -32,19 +32,23 @@ public class ResourceOrderEncoderTest {
 		routing.addEdge(l1, r1, r2, EdgeType.UNDIRECTED);
 		routing.addEdge(l2, r1, r3, EdgeType.UNDIRECTED);
 		
-		Task comm = new Task("comm");
+		Communication comm = new Communication("comm");
 		ResourceOrderEncoder encoder = new ResourceOrderEncoder();
 		Set<Constraint> cs = encoder.generateResourceOrderConstraints(Variables.varT(comm), routing);
-		assertEquals(5, cs.size());
+		assertEquals(60, cs.size());
 		Set<Object> active = new HashSet<Object>();
 		active.add(Variables.varCLRR(comm, l0, r0, r1));
 		active.add(Variables.varCLRR(comm, l1, r1, r2));
+		active.add(Variables.varCR(comm, r0));
+		active.add(Variables.varCR(comm, r1));
+		active.add(Variables.varCR(comm, r2));
 		Set<Object> unactive = new HashSet<Object>();
 		unactive.add(Variables.varCLRR(comm, l2, r1, r3));
 		unactive.add(Variables.varCLRR(comm, l2, r3, r1));
 		unactive.add(Variables.varCLRR(comm, l0, r1, r0));
 		unactive.add(Variables.varCLRR(comm, l1, r2, r1));
-		ConstraintVerifier verifyOrder = new ConstraintVerifier(active, new HashSet<Object>(), cs);
+		unactive.add(Variables.varCR(comm, r3));
+		ConstraintVerifier verifyOrder = new ConstraintVerifier(active, unactive, cs);
 		
 		verifyOrder.verifyVariableActivated(Variables.varCRR(comm, r0, r1));
 		verifyOrder.verifyVariableActivated(Variables.varCRR(comm, r0, r2));

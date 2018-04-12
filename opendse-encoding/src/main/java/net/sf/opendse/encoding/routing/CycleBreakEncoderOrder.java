@@ -23,8 +23,8 @@ public class CycleBreakEncoderOrder implements CycleBreakEncoder{
 
 	@Override
 	public Set<Constraint> toConstraints(T communicationVariable, Architecture<Resource, Link> routing) {
-		// TODO Auto-generated method stub
-		return null;
+		ResourceOrderEncoder orderEncoder = new ResourceOrderEncoder();
+		return orderEncoder.generateResourceOrderConstraints(communicationVariable, routing);
 	}
 
 }
