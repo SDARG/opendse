@@ -18,7 +18,7 @@ import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Resource;
 import verification.ConstraintVerifier;
 
-public class NonRedundantCycleBreakEncoderTest {
+public class CycleBreakEncoderNonRedundantTest {
 	@Test
 	public void test() {
 		Resource r0 = new Resource("r0");

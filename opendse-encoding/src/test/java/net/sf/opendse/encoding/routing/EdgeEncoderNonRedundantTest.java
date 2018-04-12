@@ -18,7 +18,7 @@ import verification.ConstraintVerifier;
 import java.util.HashSet;
 import java.util.Set;
 
-public class NonRedundantEdgeEncoderTest {
+public class EdgeEncoderNonRedundantTest {
 
 	@Test
 	public void test() {

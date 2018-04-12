@@ -19,7 +19,7 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 import verification.ConstraintVerifier;
 
-public class DefaultRoutingResourceEncoderTest {
+public class RoutingResourceEncoderDefaultTest {
 
 	@Test
 	public void test() {

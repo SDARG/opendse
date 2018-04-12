@@ -19,7 +19,7 @@ import static org.mockito.Mockito.verify;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CustomCommunicationRoutingEncoderTest {
+public class CommunicationRoutingEncoderCustomTest {
 
 	@Test
 	public void test() {

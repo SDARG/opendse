@@ -22,7 +22,7 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 import verification.ConstraintVerifier;
 
-public class MappingEndNodeEncoderTest {
+public class EndNodeEncoderMappingTest {
 	@Test
 	public void test() {
 		Resource r0 = new Resource("r0");

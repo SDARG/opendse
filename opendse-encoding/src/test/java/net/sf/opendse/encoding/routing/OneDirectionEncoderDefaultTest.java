@@ -18,7 +18,7 @@ import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Resource;
 import verification.ConstraintVerifier;
 
-public class DefaultOneDirectionEncoderTest {
+public class OneDirectionEncoderDefaultTest {
 
 	@Test
 	public void test() {

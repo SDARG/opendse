@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CustomCommunicationFlowRoutingEncoderTest {
+public class CommunicationFlowRoutingEncoderCustomTest {
 
 	@Test
 	public void test() {

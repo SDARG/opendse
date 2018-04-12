@@ -13,7 +13,7 @@ import static org.mockito.Mockito.mock;
 
 import java.util.Set;
 
-public class NoAdditionalConstraintsEncoderTest {
+public class AdditionalConstraintsEncoderNoneTest {
 
 	@Test
 	public void test() {

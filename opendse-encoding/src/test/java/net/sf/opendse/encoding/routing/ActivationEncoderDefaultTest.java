@@ -20,7 +20,7 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 import verification.ConstraintVerifier;
 
-public class DefaultActivationEncoderTest {
+public class ActivationEncoderDefaultTest {
 
 	@Test
 	public void test() {

@@ -24,7 +24,7 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 import verification.ConstraintVerifier;
 
-public class DefaultCommunicationHierarchyEncoderTest {
+public class CommunicationHierarchyEncoderDefaultTest {
 
 	@Test
 	public void test() {
