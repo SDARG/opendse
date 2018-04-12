@@ -16,6 +16,7 @@ public class ApplicationConstraintManagerDefault implements ApplicationConstrain
 
 	protected void fillGeneratorMap() {
 		generatorMap.put(ActivationModes.STATIC, new ApplicationConstraintGeneratorStatic());
+		generatorMap.put(ActivationModes.ALTERNATIVE, new ApplicationConstraintGeneratorAlternative());
 	}
 
 	@Override
