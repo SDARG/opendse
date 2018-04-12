@@ -16,7 +16,7 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 
 /**
- * The {@link NonRedundantCycleBreakEncoder} formulates {@link Constraint}s that
+ * The {@link CycleBreakEncoderNonRedundant} formulates {@link Constraint}s that
  * prevent cycles for non-redundant message transmissions. In this simple case,
  * cycles can be prevented by stating that at most one in-link of a resource may
  * be used for the routing of the same message.
@@ -24,7 +24,7 @@ import net.sf.opendse.model.Task;
  * @author Fedor Smirnov
  *
  */
-public class NonRedundantCycleBreakEncoder implements CycleBreakEncoder {
+public class CycleBreakEncoderNonRedundant implements CycleBreakEncoder {
 
 	@Override
 	public Set<Constraint> toConstraints(T communicationVariable, Architecture<Resource, Link> routing) {

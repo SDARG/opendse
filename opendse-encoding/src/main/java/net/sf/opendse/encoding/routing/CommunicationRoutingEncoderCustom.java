@@ -1,16 +1,16 @@
 package net.sf.opendse.encoding.routing;
 
 /**
- * The {@link CustomCommunicationRoutingEncoder} does not offer any default
+ * The {@link CommunicationRoutingEncoderCustom} does not offer any default
  * behavior. Instead, its behavior is dictated by the classes used during its
  * construction.
  * 
  * @author Fedor Smirnov
  *
  */
-public class CustomCommunicationRoutingEncoder extends AbstractCommunicationRoutingEncoder {
+public class CommunicationRoutingEncoderCustom extends CommunicationRoutingEncoderAbstract {
 
-	public CustomCommunicationRoutingEncoder(OneDirectionEncoder oneDirectionEncoder,
+	public CommunicationRoutingEncoderCustom(OneDirectionEncoder oneDirectionEncoder,
 			CycleBreakEncoder cycleBreakEncoder, CommunicationHierarchyEncoder hierarchyEncoder,
 			CommunicationFlowRoutingManager communicationFlowRoutingManager,
 			AdditionalRoutingConstraintsEncoder additionalConstraintsEncoder) {

@@ -28,7 +28,7 @@ public class CustomCommunicationRoutingEncoderTest {
 		CommunicationFlowRoutingManager manager = mock(CommunicationFlowRoutingManager.class);
 		AdditionalRoutingConstraintsEncoder additional = mock(AdditionalRoutingConstraintsEncoder.class);
 		OneDirectionEncoder oneDirectionEncoder = mock(OneDirectionEncoder.class);
-		CustomCommunicationRoutingEncoder encoder = new CustomCommunicationRoutingEncoder(oneDirectionEncoder,
+		CommunicationRoutingEncoderCustom encoder = new CommunicationRoutingEncoderCustom(oneDirectionEncoder,
 				cycleBreak, hierarchyEncoder, manager, additional);
 		T mockT = mock(T.class);
 		CommunicationFlow commFlow = mock(CommunicationFlow.class);

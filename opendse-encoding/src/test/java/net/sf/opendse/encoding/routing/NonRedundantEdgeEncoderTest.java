@@ -47,7 +47,7 @@ public class NonRedundantEdgeEncoderTest {
 		DTT srcDep = Variables.varDTT(d0, t0, comm);
 		DTT destDep = Variables.varDTT(d1, comm, t1);
 		CommunicationFlow commFlow = new CommunicationFlow(srcDep, destDep);
-		NonRedundantRoutingEdgeEncoder encoder = new NonRedundantRoutingEdgeEncoder();
+		RoutingEdgeEncoderNonRedundant encoder = new RoutingEdgeEncoderNonRedundant();
 		Set<Constraint> cs = encoder.toConstraints(commFlow, routing);
 		assertEquals(18, cs.size());
 		Set<Object> activated = new HashSet<Object>();

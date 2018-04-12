@@ -18,7 +18,7 @@ import net.sf.opendse.model.Models.DirectedLink;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 
-public class DefaultCommunicationHierarchyEncoder implements CommunicationHierarchyEncoder {
+public class CommunicationHierarchyEncoderDefault implements CommunicationHierarchyEncoder {
 
 	@Override
 	public Set<Constraint> toConstraints(T communicationVariable, Set<CommunicationFlow> communicationFlows,

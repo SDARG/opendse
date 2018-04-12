@@ -14,7 +14,7 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Models.DirectedLink;
 
 /**
- * The {@link NonRedundantRoutingEdgeEncoder} encodes the activation of
+ * The {@link RoutingEdgeEncoderNonRedundant} encodes the activation of
  * {@link Link}s in the routing of a {@link CommunicationFlow} for the case of a
  * non-redundant message transmission. During a non-redundant transmission of a
  * {@link CommunicationFlow}, each {@link Resource} has at most one in- and at
@@ -23,7 +23,7 @@ import net.sf.opendse.model.Models.DirectedLink;
  * @author Fedor Smirnov
  *
  */
-public class NonRedundantRoutingEdgeEncoder implements RoutingEdgeEncoder {
+public class RoutingEdgeEncoderNonRedundant implements RoutingEdgeEncoder {
 
 	@Override
 	public Set<Constraint> toConstraints(CommunicationFlow communicationFlow, Architecture<Resource, Link> routing) {

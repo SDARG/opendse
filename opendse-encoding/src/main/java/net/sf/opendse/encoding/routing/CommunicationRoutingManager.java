@@ -15,7 +15,7 @@ import net.sf.opendse.model.Task;
  * @author Fedor Smirnov
  *
  */
-@ImplementedBy(DefaultCommunicationRoutingManager.class)
+@ImplementedBy(CommunicationRoutingManagerDefault.class)
 public interface CommunicationRoutingManager {
 
 	/**

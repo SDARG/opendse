@@ -61,7 +61,7 @@ public class MappingEndNodeEncoderTest {
 		mappingVars.add(Variables.varM(m3));
 		mappingVars.add(Variables.varM(m4));
 		mappingVars.add(Variables.varM(m5));
-		MappingEndNodeEncoder encoder = new MappingEndNodeEncoder();
+		EndNodeEncoderMapping encoder = new EndNodeEncoderMapping();
 		Set<Constraint> cs = encoder.toConstraints(commFlow, routing, mappingVars);
 		cs.addAll(encoder.toConstraints(commFlow2, routing, mappingVars));
 		assertEquals(18, cs.size());

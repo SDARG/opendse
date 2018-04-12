@@ -10,14 +10,14 @@ import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Resource;
 
-public class AbstractCommunicationFlowRoutingEncoder implements CommunicationFlowRoutingEncoder {
+public class CommunicationFlowRoutingEncoderAbstract implements CommunicationFlowRoutingEncoder {
 
 	protected final ActivationEncoder activationEncoder;
 	protected final EndNodeEncoder endNodeEncoder;
 	protected final RoutingResourceEncoder interimNodeEncoder;
 	protected final RoutingEdgeEncoder edgeEncoder;
 
-	public AbstractCommunicationFlowRoutingEncoder(ActivationEncoder activationEncoder, EndNodeEncoder endNodeEncoder,
+	public CommunicationFlowRoutingEncoderAbstract(ActivationEncoder activationEncoder, EndNodeEncoder endNodeEncoder,
 			RoutingResourceEncoder interimNodeEncoder, RoutingEdgeEncoder edgeEncoder) {
 		this.activationEncoder = activationEncoder;
 		this.endNodeEncoder = endNodeEncoder;

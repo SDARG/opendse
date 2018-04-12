@@ -35,7 +35,7 @@ public class NonRedundantCycleBreakEncoderTest {
 		CLRR inLink2 = Variables.varCLRR(comm, l1, r2, r1);
 		Set<Object> activated = new HashSet<Object>();
 		activated.add(inLink1);
-		NonRedundantCycleBreakEncoder encoder = new NonRedundantCycleBreakEncoder();
+		CycleBreakEncoderNonRedundant encoder = new CycleBreakEncoderNonRedundant();
 		Set<Constraint> cs = encoder.toConstraints(commVar, routing);
 		assertEquals(3, cs.size());
 		ConstraintVerifier verifyOneInLinkOnly = new ConstraintVerifier(activated, new HashSet<Object>(), cs);

@@ -15,7 +15,7 @@ import net.sf.opendse.model.Models;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Models.DirectedLink;
 
-public class DefaultRoutingResourceEncoder implements RoutingResourceEncoder {
+public class RoutingResourceEncoderDefault implements RoutingResourceEncoder {
 
 	@Override
 	public Set<Constraint> toConstraints(CommunicationFlow communicationFlow, Architecture<Resource, Link> routing) {

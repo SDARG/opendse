@@ -32,7 +32,7 @@ public class DefaultOneDirectionEncoderTest {
 		routing.addEdge(l1, r1, r2, EdgeType.UNDIRECTED);
 		Communication comm = new Communication("comm");
 		T commVar = Variables.varT(comm);
-		DefaultOneDirectionEncoder encoder = new DefaultOneDirectionEncoder();
+		OneDirectionEncoderDefault encoder = new OneDirectionEncoderDefault();
 		Set<Constraint> cs = encoder.toConstraints(commVar, routing);
 		assertEquals(2, cs.size());
 		CLRR l0_front = Variables.varCLRR(comm, l0, r0, r1);

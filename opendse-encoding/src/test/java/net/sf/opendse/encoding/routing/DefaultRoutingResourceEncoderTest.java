@@ -39,7 +39,7 @@ public class DefaultRoutingResourceEncoderTest {
 		Architecture<Resource, Link> routing = new Architecture<Resource, Link>();
 		routing.addEdge(l0, res0, res1, EdgeType.UNDIRECTED);
 		routing.addEdge(l1, res1, res2, EdgeType.UNDIRECTED);
-		DefaultRoutingResourceEncoder encoder = new DefaultRoutingResourceEncoder();
+		RoutingResourceEncoderDefault encoder = new RoutingResourceEncoderDefault();
 		Set<Constraint> cs = encoder.toConstraints(commFlow, routing);
 		assertEquals(17, cs.size());
 		Set<Object> activated = new HashSet<Object>();

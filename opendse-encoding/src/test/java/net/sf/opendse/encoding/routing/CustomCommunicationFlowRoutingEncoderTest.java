@@ -25,7 +25,7 @@ public class CustomCommunicationFlowRoutingEncoderTest {
 		EndNodeEncoder endNodeEncoder = mock(EndNodeEncoder.class);
 		RoutingResourceEncoder interimNodeEncoder = mock(RoutingResourceEncoder.class);
 		RoutingEdgeEncoder edgeEncoder = mock(RoutingEdgeEncoder.class);
-		CustomCommunicationFlowRoutingEncoder encoder = new CustomCommunicationFlowRoutingEncoder(activationEncoder, endNodeEncoder, interimNodeEncoder, edgeEncoder);
+		CommunicationFlowRoutingEncoderCustom encoder = new CommunicationFlowRoutingEncoderCustom(activationEncoder, endNodeEncoder, interimNodeEncoder, edgeEncoder);
 		CommunicationFlow commFlow = mock(CommunicationFlow.class);
 		@SuppressWarnings("unchecked")
 		Architecture<Resource, Link> routing = mock(Architecture.class);

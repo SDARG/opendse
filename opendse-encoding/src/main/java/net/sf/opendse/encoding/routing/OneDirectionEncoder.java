@@ -20,7 +20,7 @@ import net.sf.opendse.model.Task;
  * @author Fedor Smirnov
  *
  */
-@ImplementedBy(DefaultOneDirectionEncoder.class)
+@ImplementedBy(OneDirectionEncoderDefault.class)
 public interface OneDirectionEncoder {
 
 	/**

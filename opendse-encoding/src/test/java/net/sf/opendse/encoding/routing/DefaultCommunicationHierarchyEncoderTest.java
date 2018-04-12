@@ -52,7 +52,7 @@ public class DefaultCommunicationHierarchyEncoderTest {
 		flows.add(cf1);
 		flows.add(cf2);
 		T commVar = Variables.varT(comm);
-		DefaultCommunicationHierarchyEncoder encoder = new DefaultCommunicationHierarchyEncoder();
+		CommunicationHierarchyEncoderDefault encoder = new CommunicationHierarchyEncoderDefault();
 		Set<Constraint> cs = encoder.toConstraints(commVar, flows, routing);
 		assertEquals(21, cs.size());
 		CLRR commRoutVar1 = Variables.varCLRR(comm, l0, r0, r1);

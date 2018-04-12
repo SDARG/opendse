@@ -11,7 +11,7 @@ import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Resource;
 
-public abstract class AbstractCommunicationRoutingEncoder implements CommunicationRoutingEncoder {
+public abstract class CommunicationRoutingEncoderAbstract implements CommunicationRoutingEncoder {
 
 	protected final OneDirectionEncoder oneDirectionEncoder;
 	protected final CycleBreakEncoder cycleBreakEncoder;
@@ -19,7 +19,7 @@ public abstract class AbstractCommunicationRoutingEncoder implements Communicati
 	protected final CommunicationFlowRoutingManager communicationFlowRoutingManager;
 	protected final AdditionalRoutingConstraintsEncoder additionalConstraintsEncoder;
 
-	public AbstractCommunicationRoutingEncoder(OneDirectionEncoder oneDirectionEncoder,
+	public CommunicationRoutingEncoderAbstract(OneDirectionEncoder oneDirectionEncoder,
 			CycleBreakEncoder cycleBreakEncoder, CommunicationHierarchyEncoder hierarchyEncoder,
 			CommunicationFlowRoutingManager communicationFlowRoutingManager,
 			AdditionalRoutingConstraintsEncoder additionalConstraintsEncoder) {

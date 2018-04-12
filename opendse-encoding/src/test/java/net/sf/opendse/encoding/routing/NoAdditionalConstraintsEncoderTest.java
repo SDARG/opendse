@@ -22,7 +22,7 @@ public class NoAdditionalConstraintsEncoderTest {
 		Set<CommunicationFlow> commFlows = mock(Set.class);
 		@SuppressWarnings("unchecked")
 		Architecture<Resource, Link> routing = mock(Architecture.class);
-		NoAdditionalConstraintsEncoder encoder = new NoAdditionalConstraintsEncoder();
+		AdditionalRoutingConstraintsEncoderNone encoder = new AdditionalRoutingConstraintsEncoderNone();
 		assertTrue(encoder.toConstraints(mockT, commFlows, routing).isEmpty());
 	}
 

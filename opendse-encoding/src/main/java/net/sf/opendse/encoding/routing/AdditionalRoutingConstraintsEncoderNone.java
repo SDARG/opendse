@@ -11,13 +11,13 @@ import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Resource;
 
 /**
- * The {@link NoAdditionalConstraintsEncoder} is used when only the basic
+ * The {@link AdditionalRoutingConstraintsEncoderNone} is used when only the basic
  * routing constraints are needed.
  * 
  * @author Fedor Smirnov
  *
  */
-public class NoAdditionalConstraintsEncoder implements AdditionalRoutingConstraintsEncoder {
+public class AdditionalRoutingConstraintsEncoderNone implements AdditionalRoutingConstraintsEncoder {
 
 	@Override
 	public Set<Constraint> toConstraints(T communicationVariable, Set<CommunicationFlow> communicationFlows,

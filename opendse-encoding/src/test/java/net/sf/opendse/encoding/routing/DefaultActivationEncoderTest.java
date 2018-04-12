@@ -45,7 +45,7 @@ public class DefaultActivationEncoderTest {
 		Set<Object> deactivatedBoth = new HashSet<Object>();
 		deactivatedBoth.add(srcDep);
 		deactivatedBoth.add(destDep);
-		DefaultActivationEncoder encoder = new DefaultActivationEncoder();
+		ActivationEncoderDefault encoder = new ActivationEncoderDefault();
 		Set<Constraint> cs = encoder.toConstraints(flow, routing);
 		assertEquals(2, cs.size());
 		ConstraintVerifier verifyDeactivation1 = new ConstraintVerifier(new HashSet<Object>(), deactivatedSrc, cs);

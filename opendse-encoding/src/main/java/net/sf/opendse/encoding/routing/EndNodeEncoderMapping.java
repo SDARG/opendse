@@ -16,14 +16,14 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 
 /**
- * The {@link MappingEndNodeEncoder} formulates {@link Constraint}s that place
+ * The {@link EndNodeEncoderMapping} formulates {@link Constraint}s that place
  * the routing end-points on the mapping targets of the neighbor {@link Task}s
  * of the {@link Communication} that is being routed.
  * 
  * @author Fedor Smirnov
  *
  */
-public class MappingEndNodeEncoder implements EndNodeEncoder {
+public class EndNodeEncoderMapping implements EndNodeEncoder {
 
 	@Override
 	public Set<Constraint> toConstraints(CommunicationFlow communicationFlow, Architecture<Resource, Link> routing,
