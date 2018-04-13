@@ -27,7 +27,7 @@ public class ConstraintsTest {
 		ConstraintVerifier verifyImplication = new ConstraintVerifier(activated, new HashSet<Object>(), negImplication);
 		verifyImplication.verifyVariableNotFixed(b);
 		ConstraintVerifier verifyFreedom = new ConstraintVerifier(new HashSet<Object>(), activated, negImplication);
-		verifyFreedom.verifyVariableDeactivated(b);;
+		verifyFreedom.verifyVariableDeactivated(b);
 	}
 	
 	@Test
@@ -113,6 +113,7 @@ public class ConstraintsTest {
 		vars.add(var1);
 		vars.add(var2);
 		Constraint c = Constraints.generatePickExactlyNConstraint(vars, 1);
+		assertEquals(2, c.size());
 		Set<Constraint> cs = new HashSet<Constraint>();
 		cs.add(c);
 		Set<Object> active = new HashSet<Object>();
