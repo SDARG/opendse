@@ -72,7 +72,7 @@ public class DefaultImplementationEncodingTest {
 				.thenReturn(routingConstraints);
 		when(allocationEncoding.toConstraints(any(Set.class), any(Set.class), any(Architecture.class)))
 				.thenReturn(allocationConstraints);
-		DefaultImplementationEncoding encoding = new DefaultImplementationEncoding(applicationEncoding, mappingEncoding,
+		ImplementationEncodingModularDefault encoding = new ImplementationEncodingModularDefault(applicationEncoding, mappingEncoding,
 				routingEncoding, allocationEncoding, wrapper);
 		Set<Constraint> cs = encoding.toConstraints();
 		assertEquals(4, cs.size());
@@ -91,7 +91,7 @@ public class DefaultImplementationEncodingTest {
 		AllocationEncoding allocationEncoding = mock(AllocationEncoding.class);
 		SpecificationWrapper wrapper = mock(SpecificationWrapper.class);
 		when(wrapper.getSpecification()).thenReturn(mock(Specification.class));
-		DefaultImplementationEncoding encoding = new DefaultImplementationEncoding(applicationEncoding, mappingEncoding,
+		ImplementationEncodingModularDefault encoding = new ImplementationEncodingModularDefault(applicationEncoding, mappingEncoding,
 				routingEncoding, allocationEncoding, wrapper);
 		T mockT = mock(T.class);
 		DTT mockDTT = mock(DTT.class);

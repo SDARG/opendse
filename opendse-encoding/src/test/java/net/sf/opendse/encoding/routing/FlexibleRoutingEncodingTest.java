@@ -61,7 +61,7 @@ public class FlexibleRoutingEncodingTest {
 
 		CommunicationRoutingManager routingEncoderManager = mock(CommunicationRoutingManager.class);
 		CommunicationRoutingEncoder routingEncoder = mock(CommunicationRoutingEncoder.class);
-		FlexibleRoutingEncoding routingEncoding = new FlexibleRoutingEncoding(routingEncoderManager);
+		RoutingEncodingFlexible routingEncoding = new RoutingEncodingFlexible(routingEncoderManager);
 		when(routingEncoderManager.getRoutingEncoder(commVar,
 				routingEncoding.findCommunicationFlows(dependencyVariables))).thenReturn(routingEncoder);
 		when(routingEncoder.toConstraints(any(T.class), any(Set.class), any(Architecture.class), any(Set.class)))
@@ -100,7 +100,7 @@ public class FlexibleRoutingEncodingTest {
 		CommunicationFlow cf3 = new CommunicationFlow(dttVar4, dttVar2);
 		CommunicationFlow cf4 = new CommunicationFlow(dttVar4, dttVar3);
 		CommunicationRoutingManager routingEncoderManager = mock(CommunicationRoutingManager.class);
-		FlexibleRoutingEncoding routingEncoding = new FlexibleRoutingEncoding(routingEncoderManager);
+		RoutingEncodingFlexible routingEncoding = new RoutingEncodingFlexible(routingEncoderManager);
 		Set<CommunicationFlow> commFlows = routingEncoding.findCommunicationFlows(dependencyVariables);
 		assertEquals(4, commFlows.size());
 		assertTrue(commFlows.contains(cf1));
@@ -115,7 +115,7 @@ public class FlexibleRoutingEncodingTest {
 		ApplicationVariable unknown = mock(ApplicationVariable.class);
 		applVars.add(unknown);
 		CommunicationRoutingManager routingEncoderManager = mock(CommunicationRoutingManager.class);
-		FlexibleRoutingEncoding routingEncoding = new FlexibleRoutingEncoding(routingEncoderManager);
+		RoutingEncodingFlexible routingEncoding = new RoutingEncodingFlexible(routingEncoderManager);
 		routingEncoding.makeDependencyMap(applVars);
 	}
 
@@ -144,7 +144,7 @@ public class FlexibleRoutingEncodingTest {
 		DTT dttVar3 = Variables.varDTT(d3, comm, t3);
 		applVars.add(dttVar3);
 		CommunicationRoutingManager routingEncoderManager = mock(CommunicationRoutingManager.class);
-		FlexibleRoutingEncoding routingEncoding = new FlexibleRoutingEncoding(routingEncoderManager);
+		RoutingEncodingFlexible routingEncoding = new RoutingEncodingFlexible(routingEncoderManager);
 		Map<T, Set<DTT>> dependencyMap = routingEncoding.makeDependencyMap(applVars);
 		assertTrue(dependencyMap.containsKey(commVar));
 		assertEquals(1, dependencyMap.keySet().size());

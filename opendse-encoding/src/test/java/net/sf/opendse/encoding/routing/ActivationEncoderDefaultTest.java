@@ -47,12 +47,18 @@ public class ActivationEncoderDefaultTest {
 		deactivatedBoth.add(destDep);
 		ActivationEncoderDefault encoder = new ActivationEncoderDefault();
 		Set<Constraint> cs = encoder.toConstraints(flow, routing);
-		assertEquals(2, cs.size());
+		assertEquals(8, cs.size());
 		ConstraintVerifier verifyDeactivation1 = new ConstraintVerifier(new HashSet<Object>(), deactivatedSrc, cs);
 		ConstraintVerifier verifyDeactivation2 = new ConstraintVerifier(new HashSet<Object>(), deactivatedDest, cs);
 		ConstraintVerifier verifyDeactivation3 = new ConstraintVerifier(new HashSet<Object>(), deactivatedBoth, cs);
 		verifyDeactivation1.verifyVariableDeactivated(commFlowVar);
 		verifyDeactivation2.verifyVariableDeactivated(commFlowVar);
 		verifyDeactivation3.verifyVariableDeactivated(commFlowVar);
+		verifyDeactivation1.verifyVariableDeactivated(Variables.varDDR(flow, r0));
+		verifyDeactivation1.verifyVariableDeactivated(Variables.varDDR(flow, r1));
+		verifyDeactivation2.verifyVariableDeactivated(Variables.varDDR(flow, r0));
+		verifyDeactivation2.verifyVariableDeactivated(Variables.varDDR(flow, r1));
+		verifyDeactivation3.verifyVariableDeactivated(Variables.varDDR(flow, r0));
+		verifyDeactivation3.verifyVariableDeactivated(Variables.varDDR(flow, r1));
 	}
 }

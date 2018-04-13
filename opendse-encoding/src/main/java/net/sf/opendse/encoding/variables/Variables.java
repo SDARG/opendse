@@ -30,6 +30,11 @@ public class Variables {
 	private Variables() {
 	}
 	
+	public static void clearCaches() {
+		pCache.clear();
+		nCache.clear();
+	}
+	
 	public static ApplicationAlternative varApplicationAlternative(String functionName, String functionId) {
 		return new ApplicationAlternative(functionName, functionId);
 	}

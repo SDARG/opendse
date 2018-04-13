@@ -44,4 +44,9 @@ public class CommunicationFlow {
 		}
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return source.getDependency().getId() + " => " + destination.getDependency().getId();
+	}
 }

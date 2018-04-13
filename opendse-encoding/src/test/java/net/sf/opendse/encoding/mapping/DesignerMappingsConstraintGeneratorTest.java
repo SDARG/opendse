@@ -25,7 +25,7 @@ public class DesignerMappingsConstraintGeneratorTest {
 		T tVar = Variables.varT(task);
 		Set<T> processVars = new HashSet<T>();
 		processVars.add(tVar);
-		DesignerMappingsConstraintGenerator generator = new DesignerMappingsConstraintGenerator();
+		MappingConstraintGeneratorDesigner generator = new MappingConstraintGeneratorDesigner();
 		generator.toConstraints(processVars, new Mappings<Task, Resource>());
 	}
 
@@ -44,7 +44,7 @@ public class DesignerMappingsConstraintGeneratorTest {
 		M mVar2 = Variables.varM(m2);
 		Set<T> applVars = new HashSet<T>();
 		applVars.add(tVar);
-		DesignerMappingsConstraintGenerator generator = new DesignerMappingsConstraintGenerator();
+		MappingConstraintGeneratorDesigner generator = new MappingConstraintGeneratorDesigner();
 		Set<Constraint> constraints = generator.toConstraints(applVars, mappings);
 		assertEquals(1, constraints.size());
 

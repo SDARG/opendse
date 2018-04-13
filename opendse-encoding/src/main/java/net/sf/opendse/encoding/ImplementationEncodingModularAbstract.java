@@ -22,6 +22,7 @@ import net.sf.opendse.encoding.variables.ApplicationVariable;
 import net.sf.opendse.encoding.variables.InterfaceVariable;
 import net.sf.opendse.encoding.variables.MappingVariable;
 import net.sf.opendse.encoding.variables.RoutingVariable;
+import net.sf.opendse.encoding.variables.Variables;
 
 /**
  * Parent of all implementation encodings. Details the encoding flow and the
@@ -64,6 +65,7 @@ public abstract class ImplementationEncodingModularAbstract implements Implement
 	
 	@SuppressWarnings("unchecked")
 	protected Set<Constraint> generateTheConstraints(Specification specification){
+		Variables.clearCaches();
 		Application<Task, Dependency> application = specification.getApplication();
 		Mappings<Task, Resource> mappings = specification.getMappings();
 		Routings<Task, Resource, Link> routings = specification.getRoutings();

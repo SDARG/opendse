@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.opt4j.satdecoding.Constraint;
+import org.opt4j.satdecoding.Constraint.Operator;
+
 import net.sf.opendse.encoding.constraints.Constraints;
 import net.sf.opendse.encoding.variables.M;
 import net.sf.opendse.encoding.variables.MappingVariable;
@@ -78,7 +80,21 @@ public class EndNodeEncoderMapping implements EndNodeEncoder {
 			boolean source) {
 		Set<Constraint> result = new HashSet<Constraint>();
 		Variable endNodeVariable = source ? Variables.varDDsR(commFlow, res) : Variables.varDDdR(commFlow, res);
-		result.addAll(Constraints.generateOrConstraints(mappingVars, endNodeVariable));
+		if (mappingVars.isEmpty()) {
+			Constraint setToZero = new Constraint(Operator.EQ, 0);
+			setToZero.add(Variables.p(endNodeVariable));
+			result.add(setToZero);
+		} else if (mappingVars.size() == 1) {
+			M mappingVar = mappingVars.iterator().next();
+			Set<Variable> conditions = new HashSet<Variable>();
+			conditions.add(mappingVar);
+			conditions.add(commFlow.getSourceDTT());
+			conditions.add(commFlow.getDestinationDTT());
+			result.addAll(Constraints.generateAndConstraints(conditions, endNodeVariable));
+			
+		}else {
+			throw new IllegalArgumentException("More than one mapping between same task and resource");
+		}
 		return result;
 	}
 }

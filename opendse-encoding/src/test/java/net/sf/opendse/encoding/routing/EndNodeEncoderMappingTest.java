@@ -64,7 +64,7 @@ public class EndNodeEncoderMappingTest {
 		EndNodeEncoderMapping encoder = new EndNodeEncoderMapping();
 		Set<Constraint> cs = encoder.toConstraints(commFlow, routing, mappingVars);
 		cs.addAll(encoder.toConstraints(commFlow2, routing, mappingVars));
-		assertEquals(18, cs.size());
+		assertEquals(30, cs.size());
 		DDsR r0Src = Variables.varDDsR(commFlow, r0);
 		DDsR r1Src = Variables.varDDsR(commFlow, r1);
 		DDdR r0Dest = Variables.varDDdR(commFlow, r0);
@@ -79,6 +79,10 @@ public class EndNodeEncoderMappingTest {
 		activated.add(Variables.varM(m2));
 		activated.add(Variables.varM(m4));
 		activated.add(Variables.varM(m5));
+		activated.add(srcDet);
+		activated.add(destDet);
+		activated.add(srcDet2);
+		activated.add(destDet2);
 		Set<Object> deactivated = new HashSet<Object>();
 		deactivated.add(Variables.varM(m3));
 		ConstraintVerifier verifyEndNodeSetting = new ConstraintVerifier(activated, deactivated, cs);

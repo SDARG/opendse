@@ -45,4 +45,17 @@ public class CommunicationFlowTest {
 		DTT dtt3 = Variables.varDTT(d3, comm, t3);
 		assertNotEquals(flow, new CommunicationFlow(dtt1, dtt3));
 	}
+	
+	@Test
+	public void testToString() {
+		Task t1 = new Task("t1");
+		Communication comm = new Communication("comm");
+		Task t2 = new Task("t2");
+		Dependency d1 = new Dependency("d1");
+		Dependency d2 = new Dependency("d2");
+		DTT dtt1 = Variables.varDTT(d1, t1, comm);
+		DTT dtt2 = Variables.varDTT(d2, comm, t2);
+		CommunicationFlow flow = new CommunicationFlow(dtt1, dtt2);
+		assertEquals("d1 => d2", flow.toString());
+	}
 }
