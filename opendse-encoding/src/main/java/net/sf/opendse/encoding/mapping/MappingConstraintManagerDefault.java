@@ -5,11 +5,11 @@ import java.util.Map;
 
 import net.sf.opendse.model.properties.ProcessPropertyService.MappingModes;
 
-public class DefaultMappingConstraintGeneratorManager implements MappingConstraintGeneratorManager {
+public class MappingConstraintManagerDefault implements MappingConstraintManager {
 
 	protected final Map<MappingModes, MappingConstraintGenerator> generatorMap;
 	
-	public DefaultMappingConstraintGeneratorManager() {
+	public MappingConstraintManagerDefault() {
 		this.generatorMap = makeGeneratorMap();
 	}
 	
@@ -20,7 +20,7 @@ public class DefaultMappingConstraintGeneratorManager implements MappingConstrai
 	
 	protected Map<MappingModes, MappingConstraintGenerator> makeGeneratorMap(){
 		Map<MappingModes, MappingConstraintGenerator> result = new HashMap<MappingModes, MappingConstraintGenerator>();
-		result.put(MappingModes.DESIGNER, new DesignerMappingsConstraintGenerator());
+		result.put(MappingModes.DESIGNER, new MappingConstraintGeneratorDesigner());
 		return result;
 	}
 }

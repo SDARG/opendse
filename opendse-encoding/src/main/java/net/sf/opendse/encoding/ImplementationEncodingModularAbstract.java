@@ -30,7 +30,7 @@ import net.sf.opendse.encoding.variables.RoutingVariable;
  * @author Fedor Smirnov
  *
  */
-public abstract class AbstractImplementationEncoding implements ImplementationEncodingModular {
+public abstract class ImplementationEncodingModularAbstract implements ImplementationEncodingModular {
 	protected final ApplicationEncoding applicationEncoding;
 	protected final MappingEncoding mappingEncoding;
 	protected final RoutingEncoding routingEncoding;
@@ -42,7 +42,7 @@ public abstract class AbstractImplementationEncoding implements ImplementationEn
 	protected final Set<AllocationVariable> allocationVariables;
 	protected final Set<Constraint> constraints;
 
-	public AbstractImplementationEncoding(ApplicationEncoding applicationEncoding, MappingEncoding mappingEncoding,
+	public ImplementationEncodingModularAbstract(ApplicationEncoding applicationEncoding, MappingEncoding mappingEncoding,
 			RoutingEncoding routingEncoding, AllocationEncoding allocationEncoding, SpecificationWrapper specificationWrapper) {
 
 		this.applicationEncoding = applicationEncoding;

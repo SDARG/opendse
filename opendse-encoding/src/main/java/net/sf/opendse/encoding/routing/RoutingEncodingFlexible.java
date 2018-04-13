@@ -25,14 +25,14 @@ import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.TaskPropertyService;
 
 /**
- * The {@link FlexibleRoutingEncoding} enables picking different
+ * The {@link RoutingEncodingFlexible} enables picking different
  * {@link CommunicationRoutingEncoder}s based on the properties of the
  * communication tasks.
  * 
  * @author Fedor Smirnov
  *
  */
-public class FlexibleRoutingEncoding implements RoutingEncoding {
+public class RoutingEncodingFlexible implements RoutingEncoding {
 
 	protected final CommunicationRoutingManager routingEncoderManager;
 
@@ -45,7 +45,7 @@ public class FlexibleRoutingEncoding implements RoutingEncoding {
 	 *            {@link Constraint}s for the communication tasks
 	 */
 	@Inject
-	public FlexibleRoutingEncoding(CommunicationRoutingManager routingEncoderManager) {
+	public RoutingEncodingFlexible(CommunicationRoutingManager routingEncoderManager) {
 		this.routingEncoderManager = routingEncoderManager;
 	}
 

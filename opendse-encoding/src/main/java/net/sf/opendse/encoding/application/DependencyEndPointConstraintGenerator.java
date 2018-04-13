@@ -4,8 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.opt4j.satdecoding.Constraint;
-import org.opt4j.satdecoding.Constraint.Operator;
-
+import net.sf.opendse.encoding.constraints.Constraints;
 import net.sf.opendse.encoding.variables.ApplicationVariable;
 import net.sf.opendse.encoding.variables.DTT;
 import net.sf.opendse.encoding.variables.Variables;
@@ -38,27 +37,10 @@ public class DependencyEndPointConstraintGenerator {
 		for (ApplicationVariable applVar : applicationVariables) {
 			if (applVar instanceof DTT) {
 				DTT dttVar = (DTT) applVar;
-				result.add(formulateDeactivationConstraint(dttVar, dttVar.getSourceTask()));
-				result.add(formulateDeactivationConstraint(dttVar, dttVar.getDestinationTask()));
+				result.add(Constraints.generateNegativeImplication(Variables.varT(dttVar.getSourceTask()), dttVar));
+				result.add(Constraints.generateNegativeImplication(Variables.varT(dttVar.getDestinationTask()), dttVar));
 			}
 		}
-		return result;
-	}
-
-	/**
-	 * The DTT variable may only be active if its endpoint task is active.
-	 * 
-	 * DTT - T <= 0
-	 * 
-	 * @param dttVar
-	 * @param task
-	 * @return the constraint that ensures that a dependency can not be active if
-	 *         one of its end points is deactivated
-	 */
-	protected Constraint formulateDeactivationConstraint(DTT dttVar, Task task) {
-		Constraint result = new Constraint(Operator.LE, 0);
-		result.add(Variables.p(dttVar));
-		result.add(-1, Variables.p(Variables.varT(task)));
 		return result;
 	}
 }

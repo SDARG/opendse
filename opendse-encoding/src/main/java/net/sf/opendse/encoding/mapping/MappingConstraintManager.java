@@ -5,15 +5,15 @@ import com.google.inject.ImplementedBy;
 import net.sf.opendse.model.properties.ProcessPropertyService.MappingModes;
 
 /**
- * The {@link MappingConstraintGeneratorManager} manages the
+ * The {@link MappingConstraintManager} manages the
  * {@link MappingConstraintGenerator}s depending on the mapping mode of the
  * tasks.
  * 
  * @author Fedor Smirnov
  *
  */
-@ImplementedBy(DefaultMappingConstraintGeneratorManager.class)
-public interface MappingConstraintGeneratorManager {
+@ImplementedBy(MappingConstraintManagerDefault.class)
+public interface MappingConstraintManager {
 
 	/**
 	 * returns the constraint generator for the given mapping mode

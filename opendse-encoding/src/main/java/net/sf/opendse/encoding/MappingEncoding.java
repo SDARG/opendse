@@ -9,7 +9,7 @@ import com.google.inject.ImplementedBy;
 import net.sf.opendse.model.Mappings;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
-import net.sf.opendse.encoding.mapping.MappingModeEncoding;
+import net.sf.opendse.encoding.mapping.MappingEncodingMode;
 import net.sf.opendse.encoding.variables.ApplicationVariable;
 import net.sf.opendse.encoding.variables.M;
 
@@ -21,7 +21,7 @@ import net.sf.opendse.encoding.variables.M;
  * @author Fedor Smirnov
  *
  */
-@ImplementedBy(MappingModeEncoding.class)
+@ImplementedBy(MappingEncodingMode.class)
 public interface MappingEncoding {
 
 	/**

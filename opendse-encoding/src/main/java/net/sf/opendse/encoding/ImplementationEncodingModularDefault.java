@@ -10,16 +10,16 @@ import com.google.inject.Inject;
 import net.sf.opendse.optimization.SpecificationWrapper;
 
 /**
- * The {@link DefaultImplementationEncoding} performs the basic encoding without
+ * The {@link ImplementationEncodingModularDefault} performs the basic encoding without
  * any preprocessing or additional constraints.
  * 
  * @author Fedor Smirnov
  *
  */
-public class DefaultImplementationEncoding extends AbstractImplementationEncoding {
+public class ImplementationEncodingModularDefault extends ImplementationEncodingModularAbstract {
 
 	@Inject
-	public DefaultImplementationEncoding(ApplicationEncoding applicationEncoding, MappingEncoding mappingEncoding,
+	public ImplementationEncodingModularDefault(ApplicationEncoding applicationEncoding, MappingEncoding mappingEncoding,
 			RoutingEncoding routingEncoding, AllocationEncoding allocationEncoding, SpecificationWrapper specificationWrapper) {
 		super(applicationEncoding, mappingEncoding, routingEncoding, allocationEncoding, specificationWrapper);
 	}

@@ -27,7 +27,7 @@ import net.sf.opendse.model.Specification;
 
 /**
  * 
- * The {@link UtilizationAllocationEncoding} formulates the {@link Constraint}
+ * The {@link AllocationEncodingUtilization} formulates the {@link Constraint}
  * that ensure that the utilized parts of the {@link Specification}
  * {@link Architecture}, that is the {@link Resource} used as binding targets of
  * {@link Mapping}s and the {@link Link}s used for the routing of
@@ -37,7 +37,7 @@ import net.sf.opendse.model.Specification;
  * @author Fedor Smirnov
  *
  */
-public class UtilizationAllocationEncoding implements AllocationEncoding {
+public class AllocationEncodingUtilization implements AllocationEncoding {
 
 	@Override
 	public Set<Constraint> toConstraints(Set<MappingVariable> mappingVariables, Set<RoutingVariable> routingVariables,

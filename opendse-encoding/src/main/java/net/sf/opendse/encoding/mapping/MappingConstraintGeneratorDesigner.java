@@ -16,14 +16,14 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 
 /**
- * The {@link DesignerMappingsConstraintGenerator} ensures that exactly one of
+ * The {@link MappingConstraintGeneratorDesigner} ensures that exactly one of
  * the mappings provided by the designer is activated for each of the
  * corresponding processes (if the processes are activated).
  * 
  * @author Fedor Smirnov
  *
  */
-public class DesignerMappingsConstraintGenerator implements MappingConstraintGenerator {
+public class MappingConstraintGeneratorDesigner implements MappingConstraintGenerator {
 
 	@Override
 	public Set<Constraint> toConstraints(Set<T> processVariables, Mappings<Task, Resource> mappings) {

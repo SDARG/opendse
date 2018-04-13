@@ -21,18 +21,18 @@ import net.sf.opendse.model.properties.ProcessPropertyService.MappingModes;
 import net.sf.opendse.model.properties.TaskPropertyService;
 
 /**
- * The {@link MappingModeEncoding} encodes the mappings based on
+ * The {@link MappingEncodingMode} encodes the mappings based on
  * {@link MappingModes} which are defined for the {@link Task}s.
  * 
  * @author Fedor Smirnov
  *
  */
-public class MappingModeEncoding implements MappingEncoding {
+public class MappingEncodingMode implements MappingEncoding {
 
-	protected final MappingConstraintGeneratorManager generatorManager;
+	protected final MappingConstraintManager generatorManager;
 
 	@Inject
-	public MappingModeEncoding(MappingConstraintGeneratorManager generatorManager) {
+	public MappingEncodingMode(MappingConstraintManager generatorManager) {
 		this.generatorManager = generatorManager;
 	}
 
