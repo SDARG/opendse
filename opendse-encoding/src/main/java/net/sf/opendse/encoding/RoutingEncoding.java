@@ -11,7 +11,7 @@ import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Task;
-import net.sf.opendse.encoding.routing.FlexibleRoutingEncoding;
+import net.sf.opendse.encoding.routing.RoutingEncodingFlexible;
 import net.sf.opendse.encoding.variables.ApplicationVariable;
 import net.sf.opendse.encoding.variables.CLRR;
 import net.sf.opendse.encoding.variables.CR;
@@ -26,7 +26,7 @@ import net.sf.opendse.encoding.variables.MappingVariable;
  * @author Fedor Smirnov
  *
  */
-@ImplementedBy(FlexibleRoutingEncoding.class)
+@ImplementedBy(RoutingEncodingFlexible.class)
 public interface RoutingEncoding {
 
 	/**

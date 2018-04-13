@@ -1,6 +1,6 @@
 package net.sf.opendse.encoding.module;
 
-import net.sf.opendse.encoding.DefaultImplementationEncoding;
+import net.sf.opendse.encoding.ImplementationEncodingModularDefault;
 import net.sf.opendse.encoding.ImplementationEncodingModular;
 import net.sf.opendse.encoding.interpreter.InterpreterVariable;
 import net.sf.opendse.optimization.DesignSpaceExplorationCreator;
@@ -133,7 +133,7 @@ public class OptimizationNewModule extends ProblemModule {
 		} else {
 			bind(Interpreter.class).to(InterpreterVariable.class);
 			bind(ImplementationEncoding.class).to(ImplementationEncodingModular.class);
-			bind(ImplementationEncodingModular.class).to(DefaultImplementationEncoding.class);
+			bind(ImplementationEncodingModular.class).to(ImplementationEncodingModularDefault.class);
 		}
 	}
 }

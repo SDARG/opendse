@@ -12,6 +12,20 @@ import net.sf.opendse.model.properties.ApplicationElementPropertyService.Activat
 public class ApplicationElementPropertyServiceTest {
 
 	@Test(expected = IllegalArgumentException.class)
+	public void testWrongAlternativeAttrAccess() {
+		ApplicationElementPropertyService.setAlternativeAttributes(new Task("t"), "Func1", "A");
+	}
+
+	@Test
+	public void testAlternativeActivationAttributes() {
+		Task task = new Task("t");
+		ApplicationElementPropertyService.setActivationMode(task, ActivationModes.ALTERNATIVE);
+		ApplicationElementPropertyService.setAlternativeAttributes(task, "Func1", "A");
+		assertEquals("Func1", ApplicationElementPropertyService.getAlternativeFunction(task));
+		assertEquals("A", ApplicationElementPropertyService.getAlternativeId(task));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
 	public void testUnknownActivationMode() {
 		Task task = new Task("task");
 		task.setAttribute(ApplicationElementPropertyService.ApplicationElementAttributes.ACTIVATION_MODE.xmlName,

@@ -47,12 +47,12 @@ public class MappingModeEncodingTest {
 		Set<T> processVariables = new HashSet<T>();
 		processVariables.add(tvar1);
 		processVariables.add(tvar2);
-		MappingConstraintGeneratorManager generatorManager = mock(MappingConstraintGeneratorManager.class);
+		MappingConstraintManager generatorManager = mock(MappingConstraintManager.class);
 		MappingConstraintGenerator constraintGenerator = mock(MappingConstraintGenerator.class);
 		when(generatorManager.getMappingConstraintGenerator(MappingModes.DESIGNER)).thenReturn(constraintGenerator);
 		when(constraintGenerator.toConstraints(anySet(), any(Mappings.class)))
 				.thenReturn(new HashSet<Constraint>());
-		MappingModeEncoding encoding = new MappingModeEncoding(generatorManager);
+		MappingEncodingMode encoding = new MappingEncodingMode(generatorManager);
 		Set<Constraint> mappingConstraints = encoding.toConstraints(new Mappings<Task, Resource>(), applVars);
 		assertTrue(mappingConstraints.isEmpty());
 		verify(generatorManager).getMappingConstraintGenerator(MappingModes.DESIGNER);
@@ -72,8 +72,8 @@ public class MappingModeEncodingTest {
 		processVars.add(tVar2);
 		processVars.add(tVar3);
 		ProcessPropertyService.setMappingMode(t3, MappingModes.TYPE);
-		MappingConstraintGeneratorManager generatorManager = mock(MappingConstraintGeneratorManager.class);
-		MappingModeEncoding encoding = new MappingModeEncoding(generatorManager);
+		MappingConstraintManager generatorManager = mock(MappingConstraintManager.class);
+		MappingEncodingMode encoding = new MappingEncodingMode(generatorManager);
 		Map<MappingModes, Set<T>> result = encoding.filterProcessVariables(processVars);
 		assertTrue(result.containsKey(MappingModes.DESIGNER));
 		assertTrue(result.containsKey(MappingModes.TYPE));

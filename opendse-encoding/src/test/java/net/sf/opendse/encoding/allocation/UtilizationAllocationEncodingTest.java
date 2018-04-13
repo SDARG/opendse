@@ -48,7 +48,7 @@ public class UtilizationAllocationEncodingTest {
 		CR cr1 = Variables.varCR(comm, r1);
 		CR cr2 = Variables.varCR(comm, r2);
 		CR cr0 = Variables.varCR(comm, r0);
-		UtilizationAllocationEncoding encoder = new UtilizationAllocationEncoding();
+		AllocationEncodingUtilization encoder = new AllocationEncodingUtilization();
 		Set<MappingVariable> mappingVariables = new HashSet<MappingVariable>();
 		mappingVariables.add(mVar0);
 		mappingVariables.add(mVar1);

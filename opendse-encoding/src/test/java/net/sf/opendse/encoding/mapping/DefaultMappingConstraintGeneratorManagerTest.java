@@ -10,9 +10,9 @@ public class DefaultMappingConstraintGeneratorManagerTest {
 
 	@Test
 	public void test() {
-		DefaultMappingConstraintGeneratorManager generatorManager = new DefaultMappingConstraintGeneratorManager();
+		MappingConstraintManagerDefault generatorManager = new MappingConstraintManagerDefault();
 		MappingConstraintGenerator generator = generatorManager.getMappingConstraintGenerator(MappingModes.DESIGNER);
-		assertTrue((generator instanceof DesignerMappingsConstraintGenerator));
+		assertTrue((generator instanceof MappingConstraintGeneratorDesigner));
 	}
 
 }
