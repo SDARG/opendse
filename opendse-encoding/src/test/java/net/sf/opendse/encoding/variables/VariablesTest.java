@@ -21,6 +21,16 @@ import static org.mockito.Mockito.mock;
 public class VariablesTest {
 
 	@Test
+	public void testColoredCommNode(){
+		Task comm = new Task("comm");
+		Resource res = new Resource("res");
+		String color = "black";
+		ColoredCommNode ccn = Variables.varColoredCommNode(comm, res, color);
+		assertEquals(ccn, Variables.varColoredCommNode(comm, res, color));
+		assertNotEquals(ccn, Variables.varColoredCommNode(comm, res, "red"));
+	}
+	
+	@Test
 	public void testCRRvar() {
 		Task comm = new Task("comm");
 		Resource first = new Resource("first");
@@ -92,8 +102,10 @@ public class VariablesTest {
 		Link link = new Link("link");
 		Resource source = new Resource("source");
 		Resource destination = new Resource("destination");
+		DirectedLink dLink = new DirectedLink(link, source, destination);
 		CLRR clrrVar = Variables.varCLRR(comm, link, source, destination);
 		assertEquals(clrrVar, Variables.varCLRR(comm, link, source, destination));
+		assertEquals(clrrVar, Variables.varCLRR(comm, dLink));
 	}
 
 	@Test

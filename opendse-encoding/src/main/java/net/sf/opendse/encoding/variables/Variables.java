@@ -24,17 +24,22 @@ import net.sf.opendse.model.Task;
  */
 public class Variables {
 
+	// TODO refactor to get rid of the global variables and methods
 	protected static final Map<Variable, Literal> pCache = new HashMap<Variable, Literal>();
 	protected static final Map<Variable, Literal> nCache = new HashMap<Variable, Literal>();
 
 	private Variables() {
 	}
-	
+
 	public static void clearCaches() {
 		pCache.clear();
 		nCache.clear();
 	}
-	
+
+	public static ColoredCommNode varColoredCommNode(Task comm, Resource res, String color) {
+		return new ColoredCommNode(comm, res, color);
+	}
+
 	public static ApplicationAlternative varApplicationAlternative(String functionName, String functionId) {
 		return new ApplicationAlternative(functionName, functionId);
 	}
@@ -42,15 +47,15 @@ public class Variables {
 	public static CRR varCRR(Task communication, Resource first, Resource second) {
 		return new CRR(communication, first, second);
 	}
-	
+
 	public static L varL(Link link) {
 		return new L(link);
 	}
-	
+
 	public static R varR(Resource resource) {
 		return new R(resource);
 	}
-	
+
 	public static DDdR varDDdR(CommunicationFlow communicationFlow, Resource resource) {
 		return new DDdR(communicationFlow, resource);
 	}
@@ -70,6 +75,10 @@ public class Variables {
 
 	public static DDR varDDR(CommunicationFlow communicationFlow, Resource resource) {
 		return new DDR(communicationFlow, resource);
+	}
+
+	public static CLRR varCLRR(Task communication, DirectedLink directedLink) {
+		return varCLRR(communication, directedLink.getLink(), directedLink.getSource(), directedLink.getDest());
 	}
 
 	public static CLRR varCLRR(Task communication, Link link, Resource source, Resource destination) {
