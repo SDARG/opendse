@@ -16,13 +16,87 @@ import net.sf.opendse.encoding.variables.Variables;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Link;
+import net.sf.opendse.model.Models.DirectedLink;
 import net.sf.opendse.model.Resource;
+import net.sf.opendse.model.Task;
 import verification.ConstraintVerifier;
 
 public class CycleBreakEncoderColorTest {
 
 	@Test
-	public void testTwoColoring(){
+	public void testPaintNeighborhoodDifferently() {
+		Communication comm = new Communication("comm");
+		Resource res = new Resource("res");
+		Resource predecessor = new Resource("predecessor");
+		Resource successor = new Resource("successor");
+		Link l1 = new Link("l1");
+		Link l2 = new Link("l2");
+		DirectedLink inLink = new DirectedLink(l1, predecessor, res);
+		DirectedLink outLink = new DirectedLink(l2, res, successor);
+		CycleBreakEncoderColor breaker = new CycleBreakEncoderColor();
+		Set<Constraint> cs = breaker.paintNeighborhoodDifferently(comm, inLink, outLink, predecessor, successor);
+		CLRR inLinkUsed = Variables.varCLRR(comm, inLink);
+		CLRR outLinkUsed = Variables.varCLRR(comm, outLink);
+		ColoredCommNode preRed = Variables.varColoredCommNode(comm, predecessor, "red");
+		ColoredCommNode sucRed = Variables.varColoredCommNode(comm, successor, "red");
+		ColoredCommNode sucBlue = Variables.varColoredCommNode(comm, successor, "blue");
+		ConstraintVerifier oneLinkUnused = new ConstraintVerifier(cs);
+		oneLinkUnused.deactivateVariable(inLinkUsed);
+		oneLinkUnused.activateVariable(preRed);
+		oneLinkUnused.verifyVariableNotFixed(sucRed);
+		oneLinkUnused.verifyVariableNotFixed(sucBlue);
+		ConstraintVerifier bothLinksUsed = new ConstraintVerifier(cs);
+		bothLinksUsed.activateVariable(inLinkUsed);
+		bothLinksUsed.activateVariable(outLinkUsed);
+		bothLinksUsed.activateVariable(preRed);
+		bothLinksUsed.verifyVariableDeactivated(sucRed);
+		bothLinksUsed.verifyVariableNotFixed(sucBlue);
+	}
+
+	@Test
+	public void testPaintNeighborsDifferently() {
+		Communication comm = new Communication("comm");
+		Resource first = new Resource("first");
+		Resource second = new Resource("second");
+		Link l = new Link("l");
+		DirectedLink dLink = new DirectedLink(l, first, second);
+		CycleBreakEncoderColor breaker = new CycleBreakEncoderColor();
+		Set<Constraint> cs = breaker.paintNeighborsDifferently(comm, dLink, first, second);
+		assertEquals(3, cs.size());
+		CLRR linkUsed = Variables.varCLRR(comm, dLink);
+		ColoredCommNode firstRed = Variables.varColoredCommNode(comm, first, "red");
+		ColoredCommNode secondRed = Variables.varColoredCommNode(comm, second, "red");
+		ColoredCommNode secondBlue = Variables.varColoredCommNode(comm, second, "blue");
+		ConstraintVerifier linkNotUsed = new ConstraintVerifier(cs);
+		linkNotUsed.deactivateVariable(linkUsed);
+		linkNotUsed.activateVariable(firstRed);
+		linkNotUsed.verifyVariableNotFixed(secondRed);
+		linkNotUsed.verifyVariableNotFixed(secondBlue);
+		ConstraintVerifier linkActive = new ConstraintVerifier(cs);
+		linkActive.activateVariable(linkUsed);
+		linkActive.activateVariable(firstRed);
+		linkActive.verifyVariableDeactivated(secondRed);
+		linkActive.verifyVariableNotFixed(secondBlue);
+	}
+
+	@Test
+	public void testPaint3Colors() {
+		Resource res = new Resource("res");
+		Task task = new Task("task");
+		CycleBreakEncoderColor breaker = new CycleBreakEncoderColor();
+		Set<Constraint> cs = new HashSet<Constraint>();
+		cs.add(breaker.paintResource3Colors(task, res));
+		ConstraintVerifier verifyPainting = new ConstraintVerifier(cs);
+		ColoredCommNode resRed = Variables.varColoredCommNode(task, res, "red");
+		ColoredCommNode resBlue = Variables.varColoredCommNode(task, res, "blue");
+		verifyPainting.verifyVariableNotFixed(resBlue);
+		verifyPainting.verifyVariableNotFixed(resRed);
+		verifyPainting.activateVariable(resBlue);
+		verifyPainting.verifyVariableDeactivated(resRed);
+	}
+
+	@Test
+	public void testTwoColoring() {
 		Communication comm = new Communication("comm");
 		T commVar = Variables.varT(comm);
 		Resource src = new Resource("src");
@@ -32,7 +106,7 @@ public class CycleBreakEncoderColorTest {
 		routing.addEdge(l, src, dest, EdgeType.UNDIRECTED);
 		CycleBreakEncoderColor breaker = new CycleBreakEncoderColor();
 		Set<Constraint> cs = breaker.performTwoColoring(commVar, routing);
-		CLRR linkUsed = Variables.varCLRR(comm, l,src,dest);
+		CLRR linkUsed = Variables.varCLRR(comm, l, src, dest);
 		ColoredCommNode srcBlack = Variables.varColoredCommNode(comm, src, "black");
 		ColoredCommNode destBlack = Variables.varColoredCommNode(comm, dest, "black");
 		// verify deactivated link
@@ -62,7 +136,7 @@ public class CycleBreakEncoderColorTest {
 		verifyL4.deactivateVariable(destBlack);
 		verifyL4.verifyVariableDeactivated(linkUsed);
 	}
-	
+
 	@Test
 	public void testEvenCycle() {
 		Communication comm = new Communication("comm");
@@ -124,5 +198,4 @@ public class CycleBreakEncoderColorTest {
 		}
 		assertTrue(assertionError);
 	}
-
 }

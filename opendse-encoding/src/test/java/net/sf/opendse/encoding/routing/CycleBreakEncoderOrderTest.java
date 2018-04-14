@@ -7,7 +7,6 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.opt4j.satdecoding.Constraint;
-
 import edu.uci.ics.jung.graph.util.EdgeType;
 import net.sf.opendse.encoding.variables.T;
 import net.sf.opendse.encoding.variables.Variables;
@@ -62,8 +61,8 @@ public class CycleBreakEncoderOrderTest {
 		// the constraints should not be solvable
 		boolean assertionError = false;
 		try {
-		new ConstraintVerifier(activated, new HashSet<Object>(), cs);
-		}catch(AssertionError error) {
+			new ConstraintVerifier(activated, new HashSet<Object>(), cs);
+		} catch (AssertionError error) {
 			assertionError = true;
 		}
 		assertTrue(assertionError);
