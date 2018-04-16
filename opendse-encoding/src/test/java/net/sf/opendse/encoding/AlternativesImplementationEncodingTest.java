@@ -108,8 +108,6 @@ public class AlternativesImplementationEncodingTest {
 		ImplementationEncodingModularDefault encoding = new ImplementationEncodingModularDefault(applicationEncoding,
 				mappingEncoding, routingEncoding, allocationEncoding, wrapper);
 		Set<Constraint> cs = encoding.toConstraints();
-		assertEquals(307, cs.size());
-
 		// alternative a tests
 		Set<Object> active = new HashSet<Object>();
 		active.add(Variables.varDTT(prob.d0, prob.c0, prob.t2));
