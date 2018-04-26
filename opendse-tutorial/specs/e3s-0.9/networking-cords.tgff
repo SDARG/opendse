@@ -1,0 +1,2589 @@
+@HYPERPERIOD 0.0027
+
+@COMMUN_QUANT 0 {
+0	4194304
+1  8388608
+2  16777216
+}
+
+@TASK_GRAPH 0 {
+PERIOD 0.0009
+
+TASK ospf TYPE 16
+
+HARD_DEADLINE d0_0 ON ospf AT 0.0013
+}
+
+@TASK_GRAPH 1 {
+PERIOD 0.00135
+
+TASK src TYPE 45
+TASK patricia TYPE 17 HOST 1
+TASK pf512 TYPE 18 HOST 1
+TASK sink TYPE 45
+
+ARC a1_0 FROM src TO patricia TYPE 0
+ARC a1_1 FROM patricia TO pf512 TYPE 0
+ARC a1_2 FROM pf512 TO sink TYPE 0
+
+HARD_DEADLINE d1_0 ON sink AT 0.0018
+SOFT_DEADLINE d1_1 ON sink AT 0.0001
+}
+
+@TASK_GRAPH 2 {
+PERIOD 0.0009
+
+TASK src TYPE 45
+TASK patricia TYPE 17 HOST 1
+TASK pf1m TYPE 19 HOST 1
+TASK sink TYPE 45
+
+ARC a2_0 FROM src TO patricia TYPE 1
+ARC a2_1 FROM patricia TO pf1m TYPE 1
+ARC a2_2 FROM pf1m TO sink TYPE 1
+
+HARD_DEADLINE d2_0 ON sink AT 0.002
+SOFT_DEADLINE d2_1 ON sink AT 0.0001
+}
+
+@TASK_GRAPH 3 {
+PERIOD 0.00135
+
+TASK src TYPE 45
+TASK patricia TYPE 17 HOST 1
+TASK pf2m TYPE 20 HOST 1
+TASK sink TYPE 45
+
+ARC a3_0 FROM src TO patricia TYPE 2
+ARC a3_1 FROM patricia TO pf2m TYPE 2
+ARC a3_2 FROM pf2m TO sink TYPE 2
+
+HARD_DEADLINE d3_0 ON sink AT 0.0014
+}
+
+
+
+# AMD ElanSC520-133 MHz
+@PROC 0 {
+# price buffered preempt_power commun_energy_bit io_energy_bit idle_power
+  33    1        1.6           0                 0             0.16
+#------------------------------------------------------------------------------
+# type version valid task_time preempt_time code_bits task_power
+# Angle to Time Conversion
+0       0      1     9e-06     150E-6       6.9e+04   1.6
+
+# Basic floating point
+1       0      1     2.3e-05   150E-6       5.8e+04   1.6
+
+# Bit Manipulation
+2       0      1     0.00049   150E-6       2.9e+04   1.6
+
+# Cache Buster
+3       0      1     3.5e-06   150E-6       2e+04     1.6
+
+# CAN Remote Data Request
+4       0      1     1.8e-06   150E-6       1.4e+04   1.6
+
+# Fast Fourier Transform (Auto/Indust. Version)
+5       0      1     0.014     150E-6       7.1e+04   1.6
+
+# Finite Impulse Response Filter (Auto/Indust. Vers)
+6       0      1     6.9e-05   150E-6       1.7e+04   1.6
+
+# Infinite Impulse Response Filter
+7       0      1     8e-05     150E-6       8.7e+04   1.6
+
+# Inverse discrete cosine transfom
+8       0      1     0.00091   150E-6       7.5e+04   1.6
+
+# Inverse Fast Fourier Transform (Auto/Indust. Vers)
+9       0      1     0.013     150E-6       6.9e+04   1.6
+
+# Matrix arithmetic
+10      0      1     0.0067    150E-6       9.3e+04   1.6
+
+# Pointer Chasing
+11      0      1     0.00033   150E-6       9.6e+03   1.6
+
+# Pulse Width Modulation
+12      0      1     4.5e-06   150E-6       1.4e+04   1.6
+
+# Road Speed Calculation
+13      0      1     3.2e-06   150E-6       6.9e+03   1.6
+
+# Table Lookup and Interpolation
+14      0      1     3e-05     150E-6       6e+04     1.6
+
+# Tooth To Spark
+15      0      1     7.4e-05   150E-6       4.1e+04   1.6
+
+# OSPF/Dijkstra
+16      0      1     0.0012    150E-6       2.8e+05   1.6
+
+# Route Lookup/Patricia
+17      0      1     0.0032    150E-6       2.5e+05   1.6
+
+# Packet Flow - 512 kbytes
+18      0      1     0.00097   150E-6       2.6e+05   1.6
+
+# Packet Flow - 1 Mbyte
+19      0      1     0.002     150E-6       2.6e+05   1.6
+
+# Packet Flow - 2 Mbytes
+20      0      1     0.004     150E-6       2.6e+05   1.6
+
+# Autocorrelation - Data1 (pulse)
+21      0      1     3.1e-05   150E-6       4.4e+03   1.6
+
+# Autocorrelation - Data2 (sine)
+22      0      1     0.0051    150E-6       4.4e+03   1.6
+
+# Auto-Correlation - Data3 (speech)
+23      0      1     0.0048    150E-6       4.4e+03   1.6
+
+# Convolutional Encoder - Data1 (xk5r2dt)
+24      0      1     0.00068   150E-6       6.3e+03   1.6
+
+# Convolutional Encoder - Data2 (xk4r2dt)
+25      0      1     0.00081   150E-6       6.3e+03   1.6
+
+# Convolutional Encoder - Data3 (xk3r2dt)
+26      0      1     0.00092   150E-6       6.3e+03   1.6
+
+# Fixed-point Bit Allocation - Data2 (typ)
+27      0      1     0.0061    150E-6       5.4e+03   1.6
+
+# Fixed-point Bit Allocation - Data3 (step)
+28      0      1     0.00041   150E-6       5.4e+03   1.6
+
+# Fixed Point Bit Allocation - Data6 (pent)
+29      0      1     0.004     150E-6       5.4e+03   1.6
+
+# Fixed Point Complex FFT - Data1 (pulse)
+30      0      1     0.0013    150E-6       1.3e+05   1.6
+
+# Fixed point Complex FFT - Data2 (spn)
+31      0      1     0.0013    150E-6       1.3e+05   1.6
+
+# Fixed Point Complex FFT - Data3 (sine)
+32      0      1     0.0013    150E-6       1.3e+05   1.6
+
+# Viterbi GSM Decoder - Data1 (get)
+33      0      1     0.0031    150E-6       1.1e+04   1.6
+
+# Viterbi GSM Decoder - Data2 (toggle)
+34      0      1     0.0031    150E-6       1.1e+04   1.6
+
+# Viterbi GSM Decoder - Data3 (ones)
+35      0      1     0.0031    150E-6       1.1e+04   1.6
+
+# Viterbi GSM Decoder - Data4 (zeros)
+36      0      1     0.0031    150E-6       1.1e+04   1.6
+
+# Compress JPEG
+37      0      1     0.33      150E-6       2.4e+05   1.6
+
+# Decompress JPEG
+38      0      1     0.25      150E-6       2.9e+05   1.6
+
+# High Pass Grey-scale filter
+39      0      1     0.053     150E-6       7.6e+03   1.6
+
+# RGB to CYMK Conversion
+40      0      1     0.029     150E-6       5.8e+03   1.6
+
+# RGB to YIQ Conversion
+41      0      1     0.11      150E-6       7.2e+03   1.6
+
+# Dithering
+42      0      1     0.029     150E-6       3.6e+03   1.6
+
+# Image Rotation
+43      0      1     0.0061    150E-6       1.2e+04   1.6
+
+# Text Processing
+44      0      1     0.0091    150E-6       1.4e+04   1.6
+
+# src-sink
+45      0      1     1e-05     150E-6       80        1.6
+
+}
+
+# AMD K6-2 450
+@PROC 1 {
+# price buffered preempt_power commun_energy_bit io_energy_bit idle_power
+  88    1        11.3          0                 0             1.1
+#------------------------------------------------------------------------------
+# type version valid task_time preempt_time code_bits task_power
+# Angle to Time Conversion
+0       0      0     0         150E-6       0         11
+
+# Basic floating point
+1       0      0     0         150E-6       0         11
+
+# Bit Manipulation
+2       0      0     0         150E-6       0         11
+
+# Cache Buster
+3       0      0     0         150E-6       0         11
+
+# CAN Remote Data Request
+4       0      0     0         150E-6       0         11
+
+# Fast Fourier Transform (Auto/Indust. Version)
+5       0      0     0         150E-6       0         11
+
+# Finite Impulse Response Filter (Auto/Indust. Vers)
+6       0      0     0         150E-6       0         11
+
+# Infinite Impulse Response Filter
+7       0      0     0         150E-6       0         11
+
+# Inverse discrete cosine transfom
+8       0      0     0         150E-6       0         11
+
+# Inverse Fast Fourier Transform (Auto/Indust. Vers)
+9       0      0     0         150E-6       0         11
+
+# Matrix arithmetic
+10      0      0     0         150E-6       0         11
+
+# Pointer Chasing
+11      0      0     0         150E-6       0         11
+
+# Pulse Width Modulation
+12      0      0     0         150E-6       0         11
+
+# Road Speed Calculation
+13      0      0     0         150E-6       0         11
+
+# Table Lookup and Interpolation
+14      0      0     0         150E-6       0         11
+
+# Tooth To Spark
+15      0      0     0         150E-6       0         11
+
+# OSPF/Dijkstra
+16      0      1     0.00014   150E-6       6.4e+04   11
+
+# Route Lookup/Patricia
+17      0      1     0.00059   150E-6       3.2e+05   11
+
+# Packet Flow - 512 kbytes
+18      0      1     0.00044   150E-6       4.5e+04   11
+
+# Packet Flow - 1 Mbyte
+19      0      1     0.00086   150E-6       4.5e+04   11
+
+# Packet Flow - 2 Mbytes
+20      0      1     0.0018    150E-6       4.5e+04   11
+
+# Autocorrelation - Data1 (pulse)
+21      0      0     0         150E-6       0         11
+
+# Autocorrelation - Data2 (sine)
+22      0      0     0         150E-6       0         11
+
+# Auto-Correlation - Data3 (speech)
+23      0      0     0         150E-6       0         11
+
+# Convolutional Encoder - Data1 (xk5r2dt)
+24      0      0     0         150E-6       0         11
+
+# Convolutional Encoder - Data2 (xk4r2dt)
+25      0      0     0         150E-6       0         11
+
+# Convolutional Encoder - Data3 (xk3r2dt)
+26      0      0     0         150E-6       0         11
+
+# Fixed-point Bit Allocation - Data2 (typ)
+27      0      0     0         150E-6       0         11
+
+# Fixed-point Bit Allocation - Data3 (step)
+28      0      0     0         150E-6       0         11
+
+# Fixed Point Bit Allocation - Data6 (pent)
+29      0      0     0         150E-6       0         11
+
+# Fixed Point Complex FFT - Data1 (pulse)
+30      0      0     0         150E-6       0         11
+
+# Fixed point Complex FFT - Data2 (spn)
+31      0      0     0         150E-6       0         11
+
+# Fixed Point Complex FFT - Data3 (sine)
+32      0      0     0         150E-6       0         11
+
+# Viterbi GSM Decoder - Data1 (get)
+33      0      0     0         150E-6       0         11
+
+# Viterbi GSM Decoder - Data2 (toggle)
+34      0      0     0         150E-6       0         11
+
+# Viterbi GSM Decoder - Data3 (ones)
+35      0      0     0         150E-6       0         11
+
+# Viterbi GSM Decoder - Data4 (zeros)
+36      0      0     0         150E-6       0         11
+
+# Compress JPEG
+37      0      0     0         150E-6       0         11
+
+# Decompress JPEG
+38      0      0     0         150E-6       0         11
+
+# High Pass Grey-scale filter
+39      0      0     0         150E-6       0         11
+
+# RGB to CYMK Conversion
+40      0      0     0         150E-6       0         11
+
+# RGB to YIQ Conversion
+41      0      0     0         150E-6       0         11
+
+# Dithering
+42      0      0     0         150E-6       0         11
+
+# Image Rotation
+43      0      0     0         150E-6       0         11
+
+# Text Processing
+44      0      0     0         150E-6       0         11
+
+# src-sink
+45      0      1     1e-05     150E-6       80        11
+
+}
+
+# AMD K6-2E 400Mhz/ACR
+@PROC 2 {
+# price buffered preempt_power commun_energy_bit io_energy_bit idle_power
+  77    1        10.15         0                 0             1
+#------------------------------------------------------------------------------
+# type version valid task_time preempt_time code_bits task_power
+# Angle to Time Conversion
+0       0      1     1.5e-06   150E-6       6.9e+04   10
+
+# Basic floating point
+1       0      1     2.9e-06   150E-6       5.8e+04   10
+
+# Bit Manipulation
+2       0      1     9.1e-05   150E-6       2.9e+04   10
+
+# Cache Buster
+3       0      1     4.8e-07   150E-6       2e+04     10
+
+# CAN Remote Data Request
+4       0      1     3.5e-07   150E-6       1.4e+04   10
+
+# Fast Fourier Transform (Auto/Indust. Version)
+5       0      1     0.0016    150E-6       7.1e+04   10
+
+# Finite Impulse Response Filter (Auto/Indust. Vers)
+6       0      1     9.7e-06   150E-6       1.7e+04   10
+
+# Infinite Impulse Response Filter
+7       0      1     1.2e-05   150E-6       8.7e+04   10
+
+# Inverse discrete cosine transfom
+8       0      1     8.5e-05   150E-6       7.5e+04   10
+
+# Inverse Fast Fourier Transform (Auto/Indust. Vers)
+9       0      1     0.0015    150E-6       6.9e+04   10
+
+# Matrix arithmetic
+10      0      1     0.0009    150E-6       9.3e+04   10
+
+# Pointer Chasing
+11      0      1     4.9e-05   150E-6       9.6e+03   10
+
+# Pulse Width Modulation
+12      0      1     6.7e-07   150E-6       1.4e+04   10
+
+# Road Speed Calculation
+13      0      1     5e-07     150E-6       6.9e+03   10
+
+# Table Lookup and Interpolation
+14      0      1     3.6e-06   150E-6       6e+04     10
+
+# Tooth To Spark
+15      0      1     8.5e-06   150E-6       4.1e+04   10
+
+# OSPF/Dijkstra
+16      0      1     0.00014   150E-6       3.4e+04   10
+
+# Route Lookup/Patricia
+17      0      1     0.00064   150E-6       6.1e+03   10
+
+# Packet Flow - 512 kbytes
+18      0      1     0.00024   150E-6       1.8e+04   10
+
+# Packet Flow - 1 Mbyte
+19      0      1     0.00058   150E-6       1.8e+04   10
+
+# Packet Flow - 2 Mbytes
+20      0      1     0.0012    150E-6       1.8e+04   10
+
+# Autocorrelation - Data1 (pulse)
+21      0      1     2.8e-06   150E-6       4.4e+03   10
+
+# Autocorrelation - Data2 (sine)
+22      0      1     0.00037   150E-6       4.4e+03   10
+
+# Auto-Correlation - Data3 (speech)
+23      0      1     0.00035   150E-6       4.4e+03   10
+
+# Convolutional Encoder - Data1 (xk5r2dt)
+24      0      1     0.0001    150E-6       8.2e+03   10
+
+# Convolutional Encoder - Data2 (xk4r2dt)
+25      0      1     0.00012   150E-6       8.2e+03   10
+
+# Convolutional Encoder - Data3 (xk3r2dt)
+26      0      1     0.00014   150E-6       8.2e+03   10
+
+# Fixed-point Bit Allocation - Data2 (typ)
+27      0      1     0.00083   150E-6       5.4e+03   10
+
+# Fixed-point Bit Allocation - Data3 (step)
+28      0      1     6.2e-05   150E-6       5.4e+03   10
+
+# Fixed Point Bit Allocation - Data6 (pent)
+29      0      1     0.00056   150E-6       5.4e+03   10
+
+# Fixed Point Complex FFT - Data1 (pulse)
+30      0      1     0.00014   150E-6       1.3e+05   10
+
+# Fixed point Complex FFT - Data2 (spn)
+31      0      1     0.00014   150E-6       1.3e+05   10
+
+# Fixed Point Complex FFT - Data3 (sine)
+32      0      1     0.00014   150E-6       1.3e+05   10
+
+# Viterbi GSM Decoder - Data1 (get)
+33      0      1     0.00063   150E-6       1.1e+04   10
+
+# Viterbi GSM Decoder - Data2 (toggle)
+34      0      1     0.00061   150E-6       1.1e+04   10
+
+# Viterbi GSM Decoder - Data3 (ones)
+35      0      1     0.00061   150E-6       1.1e+04   10
+
+# Viterbi GSM Decoder - Data4 (zeros)
+36      0      1     0.00059   150E-6       1.1e+04   10
+
+# Compress JPEG
+37      0      1     0.056     150E-6       2.4e+05   10
+
+# Decompress JPEG
+38      0      1     0.045     150E-6       2.9e+05   10
+
+# High Pass Grey-scale filter
+39      0      1     0.011     150E-6       7.6e+03   10
+
+# RGB to CYMK Conversion
+40      0      1     0.0077    150E-6       5.8e+03   10
+
+# RGB to YIQ Conversion
+41      0      1     0.016     150E-6       7.2e+03   10
+
+# Dithering
+42      0      1     0.0051    150E-6       3.6e+03   10
+
+# Image Rotation
+43      0      1     0.0021    150E-6       1.2e+04   10
+
+# Text Processing
+44      0      1     0.0028    150E-6       1.4e+04   10
+
+# src-sink
+45      0      1     1e-05     150E-6       80        10
+
+}
+
+# AMD K6-2E+ 500Mhz/ACR
+@PROC 3 {
+# price buffered preempt_power commun_energy_bit io_energy_bit idle_power
+  99    1        13.9          0                 0             1.4
+#------------------------------------------------------------------------------
+# type version valid task_time preempt_time code_bits task_power
+# Angle to Time Conversion
+0       0      1     1.2e-06   150E-6       6.9e+04   14
+
+# Basic floating point
+1       0      1     2.3e-06   150E-6       5.8e+04   14
+
+# Bit Manipulation
+2       0      1     7.3e-05   150E-6       2.9e+04   14
+
+# Cache Buster
+3       0      1     3.4e-07   150E-6       2e+04     14
+
+# CAN Remote Data Request
+4       0      1     2.5e-07   150E-6       1.4e+04   14
+
+# Fast Fourier Transform (Auto/Indust. Version)
+5       0      1     0.0011    150E-6       7.1e+04   14
+
+# Finite Impulse Response Filter (Auto/Indust. Vers)
+6       0      1     7.7e-06   150E-6       1.7e+04   14
+
+# Infinite Impulse Response Filter
+7       0      1     9.2e-06   150E-6       8.7e+04   14
+
+# Inverse discrete cosine transfom
+8       0      1     6.7e-05   150E-6       7.5e+04   14
+
+# Inverse Fast Fourier Transform (Auto/Indust. Vers)
+9       0      1     0.001     150E-6       6.9e+04   14
+
+# Matrix arithmetic
+10      0      1     0.00064   150E-6       9.3e+04   14
+
+# Pointer Chasing
+11      0      1     3.9e-05   150E-6       9.6e+03   14
+
+# Pulse Width Modulation
+12      0      1     4.8e-07   150E-6       1.4e+04   14
+
+# Road Speed Calculation
+13      0      1     3.6e-07   150E-6       6.9e+03   14
+
+# Table Lookup and Interpolation
+14      0      1     2.8e-06   150E-6       6e+04     14
+
+# Tooth To Spark
+15      0      1     6.7e-06   150E-6       4.1e+04   14
+
+# OSPF/Dijkstra
+16      0      1     0.00011   150E-6       3.4e+04   14
+
+# Route Lookup/Patricia
+17      0      1     0.0005    150E-6       6.1e+03   14
+
+# Packet Flow - 512 kbytes
+18      0      1     0.00012   150E-6       1.8e+04   14
+
+# Packet Flow - 1 Mbyte
+19      0      1     0.00024   150E-6       1.8e+04   14
+
+# Packet Flow - 2 Mbytes
+20      0      1     0.00069   150E-6       1.8e+04   14
+
+# Autocorrelation - Data1 (pulse)
+21      0      1     2.2e-06   150E-6       4.4e+03   14
+
+# Autocorrelation - Data2 (sine)
+22      0      1     0.00029   150E-6       4.4e+03   14
+
+# Auto-Correlation - Data3 (speech)
+23      0      1     0.00028   150E-6       4.4e+03   14
+
+# Convolutional Encoder - Data1 (xk5r2dt)
+24      0      1     8.3e-05   150E-6       6.3e+03   14
+
+# Convolutional Encoder - Data2 (xk4r2dt)
+25      0      1     9.8e-05   150E-6       6.3e+03   14
+
+# Convolutional Encoder - Data3 (xk3r2dt)
+26      0      1     0.00011   150E-6       6.3e+03   14
+
+# Fixed-point Bit Allocation - Data2 (typ)
+27      0      1     0.00066   150E-6       5.4e+03   14
+
+# Fixed-point Bit Allocation - Data3 (step)
+28      0      1     5e-05     150E-6       5.4e+03   14
+
+# Fixed Point Bit Allocation - Data6 (pent)
+29      0      1     0.00044   150E-6       5.4e+03   14
+
+# Fixed Point Complex FFT - Data1 (pulse)
+30      0      1     0.00011   150E-6       1.3e+05   14
+
+# Fixed point Complex FFT - Data2 (spn)
+31      0      1     0.00011   150E-6       1.3e+05   14
+
+# Fixed Point Complex FFT - Data3 (sine)
+32      0      1     0.00011   150E-6       1.3e+05   14
+
+# Viterbi GSM Decoder - Data1 (get)
+33      0      1     0.0005    150E-6       1.1e+04   14
+
+# Viterbi GSM Decoder - Data2 (toggle)
+34      0      1     0.00049   150E-6       1.1e+04   14
+
+# Viterbi GSM Decoder - Data3 (ones)
+35      0      1     0.00049   150E-6       1.1e+04   14
+
+# Viterbi GSM Decoder - Data4 (zeros)
+36      0      1     0.00047   150E-6       1.1e+04   14
+
+# Compress JPEG
+37      0      1     0.041     150E-6       2.4e+05   14
+
+# Decompress JPEG
+38      0      1     0.033     150E-6       2.9e+05   14
+
+# High Pass Grey-scale filter
+39      0      1     0.0078    150E-6       7.6e+03   14
+
+# RGB to CYMK Conversion
+40      0      1     0.0061    150E-6       5.8e+03   14
+
+# RGB to YIQ Conversion
+41      0      1     0.012     150E-6       7.2e+03   14
+
+# Dithering
+42      0      1     0.0039    150E-6       3.6e+03   14
+
+# Image Rotation
+43      0      1     0.0012    150E-6       1.2e+04   14
+
+# Text Processing
+44      0      1     0.0016    150E-6       1.4e+04   14
+
+# src-sink
+45      0      1     1e-05     150E-6       80        14
+
+}
+
+# AMD K6-IIIE+ 550Mhz/ACR
+@PROC 4 {
+# price buffered preempt_power commun_energy_bit io_energy_bit idle_power
+  125.6 1        15.7          0                 0             1.6
+#------------------------------------------------------------------------------
+# type version valid task_time preempt_time code_bits task_power
+# Angle to Time Conversion
+0       0      1     1.1e-06   150E-6       6.9e+04   16
+
+# Basic floating point
+1       0      1     2.1e-06   150E-6       5.8e+04   16
+
+# Bit Manipulation
+2       0      1     6.6e-05   150E-6       2.9e+04   16
+
+# Cache Buster
+3       0      1     3.1e-07   150E-6       2e+04     16
+
+# CAN Remote Data Request
+4       0      1     2.3e-07   150E-6       1.4e+04   16
+
+# Fast Fourier Transform (Auto/Indust. Version)
+5       0      1     0.001     150E-6       7.1e+04   16
+
+# Finite Impulse Response Filter (Auto/Indust. Vers)
+6       0      1     7e-06     150E-6       1.7e+04   16
+
+# Infinite Impulse Response Filter
+7       0      1     8.4e-06   150E-6       8.7e+04   16
+
+# Inverse discrete cosine transfom
+8       0      1     6.1e-05   150E-6       7.5e+04   16
+
+# Inverse Fast Fourier Transform (Auto/Indust. Vers)
+9       0      1     0.00093   150E-6       6.9e+04   16
+
+# Matrix arithmetic
+10      0      1     0.00058   150E-6       9.3e+04   16
+
+# Pointer Chasing
+11      0      1     3.5e-05   150E-6       9.6e+03   16
+
+# Pulse Width Modulation
+12      0      1     4.4e-07   150E-6       1.4e+04   16
+
+# Road Speed Calculation
+13      0      1     3.3e-07   150E-6       6.9e+03   16
+
+# Table Lookup and Interpolation
+14      0      1     2.6e-06   150E-6       6e+04     16
+
+# Tooth To Spark
+15      0      1     6e-06     150E-6       4.1e+04   16
+
+# OSPF/Dijkstra
+16      0      1     9.8e-05   150E-6       3.4e+04   16
+
+# Route Lookup/Patricia
+17      0      1     0.00046   150E-6       6.1e+03   16
+
+# Packet Flow - 512 kbytes
+18      0      1     0.00011   150E-6       1.8e+04   16
+
+# Packet Flow - 1 Mbyte
+19      0      1     0.00022   150E-6       1.8e+04   16
+
+# Packet Flow - 2 Mbytes
+20      0      1     0.00044   150E-6       1.8e+04   16
+
+# Autocorrelation - Data1 (pulse)
+21      0      1     2e-06     150E-6       4.4e+03   16
+
+# Autocorrelation - Data2 (sine)
+22      0      1     0.00027   150E-6       4.4e+03   16
+
+# Auto-Correlation - Data3 (speech)
+23      0      1     0.00025   150E-6       4.4e+03   16
+
+# Convolutional Encoder - Data1 (xk5r2dt)
+24      0      1     7.6e-05   150E-6       6.3e+03   16
+
+# Convolutional Encoder - Data2 (xk4r2dt)
+25      0      1     8.9e-05   150E-6       6.3e+03   16
+
+# Convolutional Encoder - Data3 (xk3r2dt)
+26      0      1     9.9e-05   150E-6       6.3e+03   16
+
+# Fixed-point Bit Allocation - Data2 (typ)
+27      0      1     0.0006    150E-6       5.4e+03   16
+
+# Fixed-point Bit Allocation - Data3 (step)
+28      0      1     4.5e-05   150E-6       5.4e+03   16
+
+# Fixed Point Bit Allocation - Data6 (pent)
+29      0      1     0.0004    150E-6       5.4e+03   16
+
+# Fixed Point Complex FFT - Data1 (pulse)
+30      0      1     0.0001    150E-6       1.3e+05   16
+
+# Fixed point Complex FFT - Data2 (spn)
+31      0      1     0.0001    150E-6       1.3e+05   16
+
+# Fixed Point Complex FFT - Data3 (sine)
+32      0      1     0.0001    150E-6       1.3e+05   16
+
+# Viterbi GSM Decoder - Data1 (get)
+33      0      1     0.00046   150E-6       1.1e+04   16
+
+# Viterbi GSM Decoder - Data2 (toggle)
+34      0      1     0.00045   150E-6       1.1e+04   16
+
+# Viterbi GSM Decoder - Data3 (ones)
+35      0      1     0.00044   150E-6       1.1e+04   16
+
+# Viterbi GSM Decoder - Data4 (zeros)
+36      0      1     0.00043   150E-6       1.1e+04   16
+
+# Compress JPEG
+37      0      0     0         150E-6       0         16
+
+# Decompress JPEG
+38      0      0     0         150E-6       0         16
+
+# High Pass Grey-scale filter
+39      0      0     0         150E-6       0         16
+
+# RGB to CYMK Conversion
+40      0      0     0         150E-6       0         16
+
+# RGB to YIQ Conversion
+41      0      0     0         150E-6       0         16
+
+# Dithering
+42      0      1     0.0035    150E-6       3.6e+03   16
+
+# Image Rotation
+43      0      1     0.0011    150E-6       1.2e+04   16
+
+# Text Processing
+44      0      1     0.0014    150E-6       1.4e+04   16
+
+# src-sink
+45      0      1     1e-05     150E-6       80        16
+
+}
+
+# Analog Devices 21065L - 60 MHz
+@PROC 5 {
+# price buffered preempt_power commun_energy_bit io_energy_bit idle_power
+  10    1        0.907         0                 0             0.091
+#------------------------------------------------------------------------------
+# type version valid task_time preempt_time code_bits task_power
+# Angle to Time Conversion
+0       0      0     0         150E-6       0         0.91
+
+# Basic floating point
+1       0      0     0         150E-6       0         0.91
+
+# Bit Manipulation
+2       0      0     0         150E-6       0         0.91
+
+# Cache Buster
+3       0      0     0         150E-6       0         0.91
+
+# CAN Remote Data Request
+4       0      0     0         150E-6       0         0.91
+
+# Fast Fourier Transform (Auto/Indust. Version)
+5       0      0     0         150E-6       0         0.91
+
+# Finite Impulse Response Filter (Auto/Indust. Vers)
+6       0      0     0         150E-6       0         0.91
+
+# Infinite Impulse Response Filter
+7       0      0     0         150E-6       0         0.91
+
+# Inverse discrete cosine transfom
+8       0      0     0         150E-6       0         0.91
+
+# Inverse Fast Fourier Transform (Auto/Indust. Vers)
+9       0      0     0         150E-6       0         0.91
+
+# Matrix arithmetic
+10      0      0     0         150E-6       0         0.91
+
+# Pointer Chasing
+11      0      0     0         150E-6       0         0.91
+
+# Pulse Width Modulation
+12      0      0     0         150E-6       0         0.91
+
+# Road Speed Calculation
+13      0      0     0         150E-6       0         0.91
+
+# Table Lookup and Interpolation
+14      0      0     0         150E-6       0         0.91
+
+# Tooth To Spark
+15      0      0     0         150E-6       0         0.91
+
+# OSPF/Dijkstra
+16      0      0     0         150E-6       0         0.91
+
+# Route Lookup/Patricia
+17      0      0     0         150E-6       0         0.91
+
+# Packet Flow - 512 kbytes
+18      0      0     0         150E-6       0         0.91
+
+# Packet Flow - 1 Mbyte
+19      0      0     0         150E-6       0         0.91
+
+# Packet Flow - 2 Mbytes
+20      0      0     0         150E-6       0         0.91
+
+# Autocorrelation - Data1 (pulse)
+21      0      1     7.7e-06   150E-6       2.3e+03   0.91
+
+# Autocorrelation - Data2 (sine)
+22      0      1     0.00082   150E-6       2.3e+03   0.91
+
+# Auto-Correlation - Data3 (speech)
+23      0      1     0.00081   150E-6       2.3e+03   0.91
+
+# Convolutional Encoder - Data1 (xk5r2dt)
+24      0      1     0.0012    150E-6       8.4e+02   0.91
+
+# Convolutional Encoder - Data2 (xk4r2dt)
+25      0      1     0.0014    150E-6       8.4e+02   0.91
+
+# Convolutional Encoder - Data3 (xk3r2dt)
+26      0      1     0.0015    150E-6       8.4e+02   0.91
+
+# Fixed-point Bit Allocation - Data2 (typ)
+27      0      1     0.0063    150E-6       2.8e+03   0.91
+
+# Fixed-point Bit Allocation - Data3 (step)
+28      0      1     0.00037   150E-6       2.8e+03   0.91
+
+# Fixed Point Bit Allocation - Data6 (pent)
+29      0      1     0.0035    150E-6       2.8e+03   0.91
+
+# Fixed Point Complex FFT - Data1 (pulse)
+30      0      1     0.0007    150E-6       5.4e+03   0.91
+
+# Fixed point Complex FFT - Data2 (spn)
+31      0      1     0.00071   150E-6       5.4e+03   0.91
+
+# Fixed Point Complex FFT - Data3 (sine)
+32      0      1     0.0007    150E-6       5.4e+03   0.91
+
+# Viterbi GSM Decoder - Data1 (get)
+33      0      1     0.0036    150E-6       3.6e+03   0.91
+
+# Viterbi GSM Decoder - Data2 (toggle)
+34      0      1     0.0036    150E-6       3.6e+03   0.91
+
+# Viterbi GSM Decoder - Data3 (ones)
+35      0      1     0.0036    150E-6       3.6e+03   0.91
+
+# Viterbi GSM Decoder - Data4 (zeros)
+36      0      1     0.0036    150E-6       3.6e+03   0.91
+
+# Compress JPEG
+37      0      0     0         150E-6       0         0.91
+
+# Decompress JPEG
+38      0      0     0         150E-6       0         0.91
+
+# High Pass Grey-scale filter
+39      0      0     0         150E-6       0         0.91
+
+# RGB to CYMK Conversion
+40      0      0     0         150E-6       0         0.91
+
+# RGB to YIQ Conversion
+41      0      0     0         150E-6       0         0.91
+
+# Dithering
+42      0      0     0         150E-6       0         0.91
+
+# Image Rotation
+43      0      0     0         150E-6       0         0.91
+
+# Text Processing
+44      0      0     0         150E-6       0         0.91
+
+# src-sink
+45      0      1     1e-05     150E-6       80        0.91
+
+}
+
+# IBM PowerPC 405GP - 266 Mhz
+@PROC 6 {
+# price buffered preempt_power commun_energy_bit io_energy_bit idle_power
+  65    1        2             0                 0             0.2
+#------------------------------------------------------------------------------
+# type version valid task_time preempt_time code_bits task_power
+# Angle to Time Conversion
+0       0      1     9.2e-07   150E-6       3.9e+04   2
+
+# Basic floating point
+1       0      1     1.8e-06   150E-6       1.4e+05   2
+
+# Bit Manipulation
+2       0      1     9.2e-05   150E-6       5.5e+04   2
+
+# Cache Buster
+3       0      1     2.4e-07   150E-6       2.9e+04   2
+
+# CAN Remote Data Request
+4       0      1     1.8e-07   150E-6       6.6e+04   2
+
+# Fast Fourier Transform (Auto/Indust. Version)
+5       0      1     0.00081   150E-6       1.8e+05   2
+
+# Finite Impulse Response Filter (Auto/Indust. Vers)
+6       0      1     4.1e-06   150E-6       5.3e+04   2
+
+# Infinite Impulse Response Filter
+7       0      1     8.5e-06   150E-6       7e+04     2
+
+# Inverse discrete cosine transfom
+8       0      1     5.7e-05   150E-6       1.3e+05   2
+
+# Inverse Fast Fourier Transform (Auto/Indust. Vers)
+9       0      1     0.0007    150E-6       3.1e+05   2
+
+# Matrix arithmetic
+10      0      1     0.00031   150E-6       2.7e+05   2
+
+# Pointer Chasing
+11      0      1     3.7e-05   150E-6       5.8e+04   2
+
+# Pulse Width Modulation
+12      0      1     3.2e-07   150E-6       9.7e+04   2
+
+# Road Speed Calculation
+13      0      1     3.3e-07   150E-6       2.5e+04   2
+
+# Table Lookup and Interpolation
+14      0      1     2.9e-06   150E-6       1.2e+05   2
+
+# Tooth To Spark
+15      0      1     7.7e-06   150E-6       4.4e+05   2
+
+# OSPF/Dijkstra
+16      0      1     0.0018    150E-6       4.8e+04   2
+
+# Route Lookup/Patricia
+17      0      1     0.0045    150E-6       9.9e+03   2
+
+# Packet Flow - 512 kbytes
+18      0      1     0.0012    150E-6       1.8e+04   2
+
+# Packet Flow - 1 Mbyte
+19      0      1     0.0023    150E-6       1.8e+04   2
+
+# Packet Flow - 2 Mbytes
+20      0      1     0.0046    150E-6       1.8e+04   2
+
+# Autocorrelation - Data1 (pulse)
+21      0      1     1.5e-06   150E-6       4.4e+04   2
+
+# Autocorrelation - Data2 (sine)
+22      0      1     0.00023   150E-6       4.4e+04   2
+
+# Auto-Correlation - Data3 (speech)
+23      0      1     0.00022   150E-6       4.4e+04   2
+
+# Convolutional Encoder - Data1 (xk5r2dt)
+24      0      1     0.00012   150E-6       4.7e+04   2
+
+# Convolutional Encoder - Data2 (xk4r2dt)
+25      0      1     0.0001    150E-6       4.7e+04   2
+
+# Convolutional Encoder - Data3 (xk3r2dt)
+26      0      1     8e-05     150E-6       4.7e+04   2
+
+# Fixed-point Bit Allocation - Data2 (typ)
+27      0      1     0.00049   150E-6       4.6e+04   2
+
+# Fixed-point Bit Allocation - Data3 (step)
+28      0      1     3e-05     150E-6       4.6e+04   2
+
+# Fixed Point Bit Allocation - Data6 (pent)
+29      0      1     0.00029   150E-6       4.6e+04   2
+
+# Fixed Point Complex FFT - Data1 (pulse)
+30      0      1     6.7e-05   150E-6       1.2e+05   2
+
+# Fixed point Complex FFT - Data2 (spn)
+31      0      1     6.6e-05   150E-6       1.2e+05   2
+
+# Fixed Point Complex FFT - Data3 (sine)
+32      0      1     6.7e-05   150E-6       1.2e+05   2
+
+# Viterbi GSM Decoder - Data1 (get)
+33      0      1     0.00031   150E-6       5.3e+04   2
+
+# Viterbi GSM Decoder - Data2 (toggle)
+34      0      1     0.00031   150E-6       5.3e+04   2
+
+# Viterbi GSM Decoder - Data3 (ones)
+35      0      1     0.00032   150E-6       5.3e+04   2
+
+# Viterbi GSM Decoder - Data4 (zeros)
+36      0      1     0.00031   150E-6       5.3e+04   2
+
+# Compress JPEG
+37      0      1     0.016     150E-6       3.9e+05   2
+
+# Decompress JPEG
+38      0      1     0.013     150E-6       3.8e+05   2
+
+# High Pass Grey-scale filter
+39      0      1     0.0015    150E-6       9.5e+03   2
+
+# RGB to CYMK Conversion
+40      0      1     0.0015    150E-6       3.9e+03   2
+
+# RGB to YIQ Conversion
+41      0      1     0.0016    150E-6       3.9e+03   2
+
+# Dithering
+42      0      1     0.0035    150E-6       3.3e+03   2
+
+# Image Rotation
+43      0      1     0.0007    150E-6       1.6e+04   2
+
+# Text Processing
+44      0      1     0.0016    150E-6       1.5e+05   2
+
+# src-sink
+45      0      1     1e-05     150E-6       80        2
+
+}
+
+# IBM PowerPC 750CX - 500 MHz
+@PROC 7 {
+# price buffered preempt_power commun_energy_bit io_energy_bit idle_power
+  210   1        6             0                 0             0.6
+#------------------------------------------------------------------------------
+# type version valid task_time preempt_time code_bits task_power
+# Angle to Time Conversion
+0       0      1     1e-05     150E-6       2.3e+04   6
+
+# Basic floating point
+1       0      1     0.00013   150E-6       1.6e+04   6
+
+# Bit Manipulation
+2       0      1     0.00056   150E-6       3.4e+04   6
+
+# Cache Buster
+3       0      1     2.7e-06   150E-6       1.7e+04   6
+
+# CAN Remote Data Request
+4       0      1     1.7e-06   150E-6       1.1e+04   6
+
+# Fast Fourier Transform (Auto/Indust. Version)
+5       0      1     0.0084    150E-6       3.1e+04   6
+
+# Finite Impulse Response Filter (Auto/Indust. Vers)
+6       0      1     4.8e-05   150E-6       1.4e+04   6
+
+# Infinite Impulse Response Filter
+7       0      1     5e-05     150E-6       3.7e+04   6
+
+# Inverse discrete cosine transfom
+8       0      1     0.00076   150E-6       5.1e+04   6
+
+# Inverse Fast Fourier Transform (Auto/Indust. Vers)
+9       0      1     0.0075    150E-6       2.9e+04   6
+
+# Matrix arithmetic
+10      0      1     0.022     150E-6       4.4e+04   6
+
+# Pointer Chasing
+11      0      1     0.0004    150E-6       9e+03     6
+
+# Pulse Width Modulation
+12      0      1     3.5e-06   150E-6       1.3e+04   6
+
+# Road Speed Calculation
+13      0      1     2.7e-06   150E-6       7.6e+03   6
+
+# Table Lookup and Interpolation
+14      0      1     4.8e-05   150E-6       2e+04     6
+
+# Tooth To Spark
+15      0      1     5.3e-05   150E-6       3.5e+04   6
+
+# OSPF/Dijkstra
+16      0      0     0         150E-6       0         6
+
+# Route Lookup/Patricia
+17      0      0     0         150E-6       0         6
+
+# Packet Flow - 512 kbytes
+18      0      0     0         150E-6       0         6
+
+# Packet Flow - 1 Mbyte
+19      0      0     0         150E-6       0         6
+
+# Packet Flow - 2 Mbytes
+20      0      0     0         150E-6       0         6
+
+# Autocorrelation - Data1 (pulse)
+21      0      1     1.2e-05   150E-6       4.7e+03   6
+
+# Autocorrelation - Data2 (sine)
+22      0      1     0.0018    150E-6       4.7e+03   6
+
+# Auto-Correlation - Data3 (speech)
+23      0      1     0.0017    150E-6       4.7e+03   6
+
+# Convolutional Encoder - Data1 (xk5r2dt)
+24      0      1     0.0012    150E-6       8.1e+03   6
+
+# Convolutional Encoder - Data2 (xk4r2dt)
+25      0      1     0.0011    150E-6       8.1e+03   6
+
+# Convolutional Encoder - Data3 (xk3r2dt)
+26      0      1     0.00083   150E-6       8.1e+03   6
+
+# Fixed-point Bit Allocation - Data2 (typ)
+27      0      1     0.004     150E-6       7.2e+03   6
+
+# Fixed-point Bit Allocation - Data3 (step)
+28      0      1     0.00029   150E-6       7.2e+03   6
+
+# Fixed Point Bit Allocation - Data6 (pent)
+29      0      1     0.0027    150E-6       7.2e+03   6
+
+# Fixed Point Complex FFT - Data1 (pulse)
+30      0      1     0.00088   150E-6       1.1e+05   6
+
+# Fixed point Complex FFT - Data2 (spn)
+31      0      1     0.00088   150E-6       1.1e+05   6
+
+# Fixed Point Complex FFT - Data3 (sine)
+32      0      1     0.00088   150E-6       1.1e+05   6
+
+# Viterbi GSM Decoder - Data1 (get)
+33      0      1     0.0049    150E-6       1.4e+04   6
+
+# Viterbi GSM Decoder - Data2 (toggle)
+34      0      1     0.0049    150E-6       1.4e+04   6
+
+# Viterbi GSM Decoder - Data3 (ones)
+35      0      1     0.0049    150E-6       1.4e+04   6
+
+# Viterbi GSM Decoder - Data4 (zeros)
+36      0      1     0.0049    150E-6       1.4e+04   6
+
+# Compress JPEG
+37      0      0     0         150E-6       0         6
+
+# Decompress JPEG
+38      0      0     0         150E-6       0         6
+
+# High Pass Grey-scale filter
+39      0      0     0         150E-6       0         6
+
+# RGB to CYMK Conversion
+40      0      0     0         150E-6       0         6
+
+# RGB to YIQ Conversion
+41      0      0     0         150E-6       0         6
+
+# Dithering
+42      0      1     0.084     150E-6       5.7e+03   6
+
+# Image Rotation
+43      0      1     0.0042    150E-6       6.2e+03   6
+
+# Text Processing
+44      0      1     0.4       150E-6       2.2e+04   6
+
+# src-sink
+45      0      1     1e-05     150E-6       80        6
+
+}
+
+# IDT32334-100 MHz
+@PROC 8 {
+# price buffered preempt_power commun_energy_bit io_energy_bit idle_power
+  16    1        1.2           0                 0             0.12
+#------------------------------------------------------------------------------
+# type version valid task_time preempt_time code_bits task_power
+# Angle to Time Conversion
+0       0      0     0         150E-6       0         1.2
+
+# Basic floating point
+1       0      0     0         150E-6       0         1.2
+
+# Bit Manipulation
+2       0      0     0         150E-6       0         1.2
+
+# Cache Buster
+3       0      0     0         150E-6       0         1.2
+
+# CAN Remote Data Request
+4       0      0     0         150E-6       0         1.2
+
+# Fast Fourier Transform (Auto/Indust. Version)
+5       0      0     0         150E-6       0         1.2
+
+# Finite Impulse Response Filter (Auto/Indust. Vers)
+6       0      0     0         150E-6       0         1.2
+
+# Infinite Impulse Response Filter
+7       0      0     0         150E-6       0         1.2
+
+# Inverse discrete cosine transfom
+8       0      0     0         150E-6       0         1.2
+
+# Inverse Fast Fourier Transform (Auto/Indust. Vers)
+9       0      0     0         150E-6       0         1.2
+
+# Matrix arithmetic
+10      0      0     0         150E-6       0         1.2
+
+# Pointer Chasing
+11      0      0     0         150E-6       0         1.2
+
+# Pulse Width Modulation
+12      0      0     0         150E-6       0         1.2
+
+# Road Speed Calculation
+13      0      0     0         150E-6       0         1.2
+
+# Table Lookup and Interpolation
+14      0      0     0         150E-6       0         1.2
+
+# Tooth To Spark
+15      0      0     0         150E-6       0         1.2
+
+# OSPF/Dijkstra
+16      0      1     0.0016    150E-6       4.4e+04   1.2
+
+# Route Lookup/Patricia
+17      0      1     0.0044    150E-6       1.1e+04   1.2
+
+# Packet Flow - 512 kbytes
+18      0      1     0.0013    150E-6       1.5e+04   1.2
+
+# Packet Flow - 1 Mbyte
+19      0      1     0.0024    150E-6       1.5e+04   1.2
+
+# Packet Flow - 2 Mbytes
+20      0      1     0.0048    150E-6       1.5e+04   1.2
+
+# Autocorrelation - Data1 (pulse)
+21      0      1     1.5e-05   150E-6       1.1e+04   1.2
+
+# Autocorrelation - Data2 (sine)
+22      0      1     0.0023    150E-6       1.1e+04   1.2
+
+# Auto-Correlation - Data3 (speech)
+23      0      1     0.0022    150E-6       1.1e+04   1.2
+
+# Convolutional Encoder - Data1 (xk5r2dt)
+24      0      1     0.0015    150E-6       1.6e+04   1.2
+
+# Convolutional Encoder - Data2 (xk4r2dt)
+25      0      1     0.0013    150E-6       1.6e+04   1.2
+
+# Convolutional Encoder - Data3 (xk3r2dt)
+26      0      1     0.001     150E-6       1.6e+04   1.2
+
+# Fixed-point Bit Allocation - Data2 (typ)
+27      0      0     0         150E-6       0         1.2
+
+# Fixed-point Bit Allocation - Data3 (step)
+28      0      0     0         150E-6       0         1.2
+
+# Fixed Point Bit Allocation - Data6 (pent)
+29      0      0     0         150E-6       0         1.2
+
+# Fixed Point Complex FFT - Data1 (pulse)
+30      0      1     0.00082   150E-6       7.2e+04   1.2
+
+# Fixed point Complex FFT - Data2 (spn)
+31      0      1     0.00082   150E-6       7.2e+04   1.2
+
+# Fixed Point Complex FFT - Data3 (sine)
+32      0      1     0.00082   150E-6       7.2e+04   1.2
+
+# Viterbi GSM Decoder - Data1 (get)
+33      0      1     0.0027    150E-6       2.1e+04   1.2
+
+# Viterbi GSM Decoder - Data2 (toggle)
+34      0      1     0.0027    150E-6       2.1e+04   1.2
+
+# Viterbi GSM Decoder - Data3 (ones)
+35      0      1     0.0027    150E-6       2.1e+04   1.2
+
+# Viterbi GSM Decoder - Data4 (zeros)
+36      0      1     0.0027    150E-6       2.1e+04   1.2
+
+# Compress JPEG
+37      0      0     0         150E-6       0         1.2
+
+# Decompress JPEG
+38      0      0     0         150E-6       0         1.2
+
+# High Pass Grey-scale filter
+39      0      0     0         150E-6       0         1.2
+
+# RGB to CYMK Conversion
+40      0      0     0         150E-6       0         1.2
+
+# RGB to YIQ Conversion
+41      0      0     0         150E-6       0         1.2
+
+# Dithering
+42      0      0     0         150E-6       0         1.2
+
+# Image Rotation
+43      0      0     0         150E-6       0         1.2
+
+# Text Processing
+44      0      0     0         150E-6       0         1.2
+
+# src-sink
+45      0      1     1e-05     150E-6       80        1.2
+
+}
+
+# IDT79RC32364-100
+@PROC 9 {
+# price buffered preempt_power commun_energy_bit io_energy_bit idle_power
+  12.50 1        0.58          0                 0             0.058
+#------------------------------------------------------------------------------
+# type version valid task_time preempt_time code_bits task_power
+# Angle to Time Conversion
+0       0      0     0         150E-6       0         0.58
+
+# Basic floating point
+1       0      0     0         150E-6       0         0.58
+
+# Bit Manipulation
+2       0      0     0         150E-6       0         0.58
+
+# Cache Buster
+3       0      0     0         150E-6       0         0.58
+
+# CAN Remote Data Request
+4       0      0     0         150E-6       0         0.58
+
+# Fast Fourier Transform (Auto/Indust. Version)
+5       0      0     0         150E-6       0         0.58
+
+# Finite Impulse Response Filter (Auto/Indust. Vers)
+6       0      0     0         150E-6       0         0.58
+
+# Infinite Impulse Response Filter
+7       0      0     0         150E-6       0         0.58
+
+# Inverse discrete cosine transfom
+8       0      0     0         150E-6       0         0.58
+
+# Inverse Fast Fourier Transform (Auto/Indust. Vers)
+9       0      0     0         150E-6       0         0.58
+
+# Matrix arithmetic
+10      0      0     0         150E-6       0         0.58
+
+# Pointer Chasing
+11      0      0     0         150E-6       0         0.58
+
+# Pulse Width Modulation
+12      0      0     0         150E-6       0         0.58
+
+# Road Speed Calculation
+13      0      0     0         150E-6       0         0.58
+
+# Table Lookup and Interpolation
+14      0      0     0         150E-6       0         0.58
+
+# Tooth To Spark
+15      0      0     0         150E-6       0         0.58
+
+# OSPF/Dijkstra
+16      0      1     0.0013    150E-6       4.9e+04   0.58
+
+# Route Lookup/Patricia
+17      0      1     0.0036    150E-6       9.9e+03   0.58
+
+# Packet Flow - 512 kbytes
+18      0      1     0.00065   150E-6       1.8e+04   0.58
+
+# Packet Flow - 1 Mbyte
+19      0      1     0.0012    150E-6       1.8e+04   0.58
+
+# Packet Flow - 2 Mbytes
+20      0      1     0.0025    150E-6       1.8e+04   0.58
+
+# Autocorrelation - Data1 (pulse)
+21      0      1     8.3e-06   150E-6       4.7e+03   0.58
+
+# Autocorrelation - Data2 (sine)
+22      0      1     0.0012    150E-6       4.7e+03   0.58
+
+# Auto-Correlation - Data3 (speech)
+23      0      1     0.0011    150E-6       4.7e+03   0.58
+
+# Convolutional Encoder - Data1 (xk5r2dt)
+24      0      1     0.00073   150E-6       8.1e+03   0.58
+
+# Convolutional Encoder - Data2 (xk4r2dt)
+25      0      1     0.00064   150E-6       8.1e+03   0.58
+
+# Convolutional Encoder - Data3 (xk3r2dt)
+26      0      1     0.00051   150E-6       8.1e+03   0.58
+
+# Fixed-point Bit Allocation - Data2 (typ)
+27      0      1     0.0038    150E-6       7.2e+03   0.58
+
+# Fixed-point Bit Allocation - Data3 (step)
+28      0      1     0.00019   150E-6       7.2e+03   0.58
+
+# Fixed Point Bit Allocation - Data6 (pent)
+29      0      1     0.0018    150E-6       7.2e+03   0.58
+
+# Fixed Point Complex FFT - Data1 (pulse)
+30      0      1     0.00046   150E-6       1.1e+05   0.58
+
+# Fixed point Complex FFT - Data2 (spn)
+31      0      1     0.00046   150E-6       1.1e+05   0.58
+
+# Fixed Point Complex FFT - Data3 (sine)
+32      0      1     0.00046   150E-6       1.1e+05   0.58
+
+# Viterbi GSM Decoder - Data1 (get)
+33      0      1     0.002     150E-6       1.4e+04   0.58
+
+# Viterbi GSM Decoder - Data2 (toggle)
+34      0      1     0.002     150E-6       1.4e+04   0.58
+
+# Viterbi GSM Decoder - Data3 (ones)
+35      0      1     0.002     150E-6       1.4e+04   0.58
+
+# Viterbi GSM Decoder - Data4 (zeros)
+36      0      1     0.002     150E-6       1.4e+04   0.58
+
+# Compress JPEG
+37      0      0     0         150E-6       0         0.58
+
+# Decompress JPEG
+38      0      0     0         150E-6       0         0.58
+
+# High Pass Grey-scale filter
+39      0      0     0         150E-6       0         0.58
+
+# RGB to CYMK Conversion
+40      0      0     0         150E-6       0         0.58
+
+# RGB to YIQ Conversion
+41      0      0     0         150E-6       0         0.58
+
+# Dithering
+42      0      0     0         150E-6       0         0.58
+
+# Image Rotation
+43      0      0     0         150E-6       0         0.58
+
+# Text Processing
+44      0      0     0         150E-6       0         0.58
+
+# src-sink
+45      0      1     1e-05     150E-6       80        0.58
+
+}
+
+# IDT79RC32V334-150
+@PROC 10 {
+# price buffered preempt_power commun_energy_bit io_energy_bit idle_power
+  24    1        1.7           0                 0             0.17
+#------------------------------------------------------------------------------
+# type version valid task_time preempt_time code_bits task_power
+# Angle to Time Conversion
+0       0      0     0         150E-6       0         1.7
+
+# Basic floating point
+1       0      0     0         150E-6       0         1.7
+
+# Bit Manipulation
+2       0      0     0         150E-6       0         1.7
+
+# Cache Buster
+3       0      0     0         150E-6       0         1.7
+
+# CAN Remote Data Request
+4       0      0     0         150E-6       0         1.7
+
+# Fast Fourier Transform (Auto/Indust. Version)
+5       0      0     0         150E-6       0         1.7
+
+# Finite Impulse Response Filter (Auto/Indust. Vers)
+6       0      0     0         150E-6       0         1.7
+
+# Infinite Impulse Response Filter
+7       0      0     0         150E-6       0         1.7
+
+# Inverse discrete cosine transfom
+8       0      0     0         150E-6       0         1.7
+
+# Inverse Fast Fourier Transform (Auto/Indust. Vers)
+9       0      0     0         150E-6       0         1.7
+
+# Matrix arithmetic
+10      0      0     0         150E-6       0         1.7
+
+# Pointer Chasing
+11      0      0     0         150E-6       0         1.7
+
+# Pulse Width Modulation
+12      0      0     0         150E-6       0         1.7
+
+# Road Speed Calculation
+13      0      0     0         150E-6       0         1.7
+
+# Table Lookup and Interpolation
+14      0      0     0         150E-6       0         1.7
+
+# Tooth To Spark
+15      0      0     0         150E-6       0         1.7
+
+# OSPF/Dijkstra
+16      0      1     0.00036   150E-6       4.7e+04   1.7
+
+# Route Lookup/Patricia
+17      0      1     0.001     150E-6       1.4e+04   1.7
+
+# Packet Flow - 512 kbytes
+18      0      1     0.00033   150E-6       1.8e+04   1.7
+
+# Packet Flow - 1 Mbyte
+19      0      1     0.00061   150E-6       1.8e+04   1.7
+
+# Packet Flow - 2 Mbytes
+20      0      1     0.0012    150E-6       1.8e+04   1.7
+
+# Autocorrelation - Data1 (pulse)
+21      0      1     6.5e-06   150E-6       4.3e+02   1.7
+
+# Autocorrelation - Data2 (sine)
+22      0      1     0.00098   150E-6       4.3e+02   1.7
+
+# Auto-Correlation - Data3 (speech)
+23      0      1     0.00093   150E-6       4.3e+02   1.7
+
+# Convolutional Encoder - Data1 (xk5r2dt)
+24      0      1     0.00058   150E-6       4.3e+02   1.7
+
+# Convolutional Encoder - Data2 (xk4r2dt)
+25      0      1     0.00051   150E-6       4.3e+02   1.7
+
+# Convolutional Encoder - Data3 (xk3r2dt)
+26      0      1     0.0004    150E-6       4.3e+02   1.7
+
+# Fixed-point Bit Allocation - Data2 (typ)
+27      0      0     0         150E-6       0         1.7
+
+# Fixed-point Bit Allocation - Data3 (step)
+28      0      0     0         150E-6       0         1.7
+
+# Fixed Point Bit Allocation - Data6 (pent)
+29      0      0     0         150E-6       0         1.7
+
+# Fixed Point Complex FFT - Data1 (pulse)
+30      0      1     0.00029   150E-6       4.7e+02   1.7
+
+# Fixed point Complex FFT - Data2 (spn)
+31      0      1     0.00029   150E-6       4.7e+02   1.7
+
+# Fixed Point Complex FFT - Data3 (sine)
+32      0      1     0.00029   150E-6       4.7e+02   1.7
+
+# Viterbi GSM Decoder - Data1 (get)
+33      0      1     0.001     150E-6       4.4e+02   1.7
+
+# Viterbi GSM Decoder - Data2 (toggle)
+34      0      1     0.001     150E-6       4.4e+02   1.7
+
+# Viterbi GSM Decoder - Data3 (ones)
+35      0      1     0.001     150E-6       4.4e+02   1.7
+
+# Viterbi GSM Decoder - Data4 (zeros)
+36      0      1     0.001     150E-6       4.4e+02   1.7
+
+# Compress JPEG
+37      0      0     0         150E-6       0         1.7
+
+# Decompress JPEG
+38      0      0     0         150E-6       0         1.7
+
+# High Pass Grey-scale filter
+39      0      0     0         150E-6       0         1.7
+
+# RGB to CYMK Conversion
+40      0      0     0         150E-6       0         1.7
+
+# RGB to YIQ Conversion
+41      0      0     0         150E-6       0         1.7
+
+# Dithering
+42      0      0     0         150E-6       0         1.7
+
+# Image Rotation
+43      0      0     0         150E-6       0         1.7
+
+# Text Processing
+44      0      0     0         150E-6       0         1.7
+
+# src-sink
+45      0      1     1e-05     150E-6       80        1.7
+
+}
+
+# IDT79RC64575-250MHz
+@PROC 11 {
+# price buffered preempt_power commun_energy_bit io_energy_bit idle_power
+  52.10 1        0.77          0                 0             0.077
+#------------------------------------------------------------------------------
+# type version valid task_time preempt_time code_bits task_power
+# Angle to Time Conversion
+0       0      0     0         150E-6       0         0.77
+
+# Basic floating point
+1       0      0     0         150E-6       0         0.77
+
+# Bit Manipulation
+2       0      0     0         150E-6       0         0.77
+
+# Cache Buster
+3       0      0     0         150E-6       0         0.77
+
+# CAN Remote Data Request
+4       0      0     0         150E-6       0         0.77
+
+# Fast Fourier Transform (Auto/Indust. Version)
+5       0      0     0         150E-6       0         0.77
+
+# Finite Impulse Response Filter (Auto/Indust. Vers)
+6       0      0     0         150E-6       0         0.77
+
+# Infinite Impulse Response Filter
+7       0      0     0         150E-6       0         0.77
+
+# Inverse discrete cosine transfom
+8       0      0     0         150E-6       0         0.77
+
+# Inverse Fast Fourier Transform (Auto/Indust. Vers)
+9       0      0     0         150E-6       0         0.77
+
+# Matrix arithmetic
+10      0      0     0         150E-6       0         0.77
+
+# Pointer Chasing
+11      0      0     0         150E-6       0         0.77
+
+# Pulse Width Modulation
+12      0      0     0         150E-6       0         0.77
+
+# Road Speed Calculation
+13      0      0     0         150E-6       0         0.77
+
+# Table Lookup and Interpolation
+14      0      0     0         150E-6       0         0.77
+
+# Tooth To Spark
+15      0      0     0         150E-6       0         0.77
+
+# OSPF/Dijkstra
+16      0      1     6.8e-05   150E-6       4.2e+04   0.77
+
+# Route Lookup/Patricia
+17      0      1     0.00023   150E-6       1.3e+04   0.77
+
+# Packet Flow - 512 kbytes
+18      0      1     3.2e-05   150E-6       1.6e+04   0.77
+
+# Packet Flow - 1 Mbyte
+19      0      1     6.1e-05   150E-6       1.6e+04   0.77
+
+# Packet Flow - 2 Mbytes
+20      0      1     0.00014   150E-6       1.6e+04   0.77
+
+# Autocorrelation - Data1 (pulse)
+21      0      1     2.7e-06   150E-6       2.4e+03   0.77
+
+# Autocorrelation - Data2 (sine)
+22      0      1     0.00029   150E-6       2.4e+03   0.77
+
+# Auto-Correlation - Data3 (speech)
+23      0      1     0.00028   150E-6       2.4e+03   0.77
+
+# Convolutional Encoder - Data1 (xk5r2dt)
+24      0      1     0.00036   150E-6       3.8e+03   0.77
+
+# Convolutional Encoder - Data2 (xk4r2dt)
+25      0      1     0.00032   150E-6       3.8e+03   0.77
+
+# Convolutional Encoder - Data3 (xk3r2dt)
+26      0      1     0.00028   150E-6       3.8e+03   0.77
+
+# Fixed-point Bit Allocation - Data2 (typ)
+27      0      1     0.0014    150E-6       3.8e+03   0.77
+
+# Fixed-point Bit Allocation - Data3 (step)
+28      0      1     1.2e-05   150E-6       3.8e+03   0.77
+
+# Fixed Point Bit Allocation - Data6 (pent)
+29      0      1     0.00039   150E-6       3.8e+03   0.77
+
+# Fixed Point Complex FFT - Data1 (pulse)
+30      0      1     0.00017   150E-6       5.2e+03   0.77
+
+# Fixed point Complex FFT - Data2 (spn)
+31      0      1     0.00017   150E-6       5.2e+03   0.77
+
+# Fixed Point Complex FFT - Data3 (sine)
+32      0      1     0.00017   150E-6       5.2e+03   0.77
+
+# Viterbi GSM Decoder - Data1 (get)
+33      0      1     0.0012    150E-6       5.1e+03   0.77
+
+# Viterbi GSM Decoder - Data2 (toggle)
+34      0      1     0.0012    150E-6       5.1e+03   0.77
+
+# Viterbi GSM Decoder - Data3 (ones)
+35      0      1     0.0012    150E-6       5.1e+03   0.77
+
+# Viterbi GSM Decoder - Data4 (zeros)
+36      0      1     0.0012    150E-6       5.1e+03   0.77
+
+# Compress JPEG
+37      0      0     0         150E-6       0         0.77
+
+# Decompress JPEG
+38      0      0     0         150E-6       0         0.77
+
+# High Pass Grey-scale filter
+39      0      0     0         150E-6       0         0.77
+
+# RGB to CYMK Conversion
+40      0      0     0         150E-6       0         0.77
+
+# RGB to YIQ Conversion
+41      0      0     0         150E-6       0         0.77
+
+# Dithering
+42      0      0     0         150E-6       0         0.77
+
+# Image Rotation
+43      0      0     0         150E-6       0         0.77
+
+# Text Processing
+44      0      0     0         150E-6       0         0.77
+
+# src-sink
+45      0      1     1e-05     150E-6       80        0.77
+
+}
+
+# Imsys Cjip 40 Mhz
+@PROC 12 {
+# price buffered preempt_power commun_energy_bit io_energy_bit idle_power
+  19    1        0.165         0                 0             0.017
+#------------------------------------------------------------------------------
+# type version valid task_time preempt_time code_bits task_power
+# Angle to Time Conversion
+0       0      0     0         150E-6       0         0.17
+
+# Basic floating point
+1       0      0     0         150E-6       0         0.17
+
+# Bit Manipulation
+2       0      0     0         150E-6       0         0.17
+
+# Cache Buster
+3       0      0     0         150E-6       0         0.17
+
+# CAN Remote Data Request
+4       0      0     0         150E-6       0         0.17
+
+# Fast Fourier Transform (Auto/Indust. Version)
+5       0      0     0         150E-6       0         0.17
+
+# Finite Impulse Response Filter (Auto/Indust. Vers)
+6       0      0     0         150E-6       0         0.17
+
+# Infinite Impulse Response Filter
+7       0      0     0         150E-6       0         0.17
+
+# Inverse discrete cosine transfom
+8       0      0     0         150E-6       0         0.17
+
+# Inverse Fast Fourier Transform (Auto/Indust. Vers)
+9       0      0     0         150E-6       0         0.17
+
+# Matrix arithmetic
+10      0      0     0         150E-6       0         0.17
+
+# Pointer Chasing
+11      0      0     0         150E-6       0         0.17
+
+# Pulse Width Modulation
+12      0      0     0         150E-6       0         0.17
+
+# Road Speed Calculation
+13      0      0     0         150E-6       0         0.17
+
+# Table Lookup and Interpolation
+14      0      0     0         150E-6       0         0.17
+
+# Tooth To Spark
+15      0      0     0         150E-6       0         0.17
+
+# OSPF/Dijkstra
+16      0      0     0         150E-6       0         0.17
+
+# Route Lookup/Patricia
+17      0      0     0         150E-6       0         0.17
+
+# Packet Flow - 512 kbytes
+18      0      0     0         150E-6       0         0.17
+
+# Packet Flow - 1 Mbyte
+19      0      0     0         150E-6       0         0.17
+
+# Packet Flow - 2 Mbytes
+20      0      0     0         150E-6       0         0.17
+
+# Autocorrelation - Data1 (pulse)
+21      0      0     0         150E-6       0         0.17
+
+# Autocorrelation - Data2 (sine)
+22      0      0     0         150E-6       0         0.17
+
+# Auto-Correlation - Data3 (speech)
+23      0      0     0         150E-6       0         0.17
+
+# Convolutional Encoder - Data1 (xk5r2dt)
+24      0      0     0         150E-6       0         0.17
+
+# Convolutional Encoder - Data2 (xk4r2dt)
+25      0      0     0         150E-6       0         0.17
+
+# Convolutional Encoder - Data3 (xk3r2dt)
+26      0      0     0         150E-6       0         0.17
+
+# Fixed-point Bit Allocation - Data2 (typ)
+27      0      0     0         150E-6       0         0.17
+
+# Fixed-point Bit Allocation - Data3 (step)
+28      0      0     0         150E-6       0         0.17
+
+# Fixed Point Bit Allocation - Data6 (pent)
+29      0      0     0         150E-6       0         0.17
+
+# Fixed Point Complex FFT - Data1 (pulse)
+30      0      0     0         150E-6       0         0.17
+
+# Fixed point Complex FFT - Data2 (spn)
+31      0      0     0         150E-6       0         0.17
+
+# Fixed Point Complex FFT - Data3 (sine)
+32      0      0     0         150E-6       0         0.17
+
+# Viterbi GSM Decoder - Data1 (get)
+33      0      0     0         150E-6       0         0.17
+
+# Viterbi GSM Decoder - Data2 (toggle)
+34      0      0     0         150E-6       0         0.17
+
+# Viterbi GSM Decoder - Data3 (ones)
+35      0      0     0         150E-6       0         0.17
+
+# Viterbi GSM Decoder - Data4 (zeros)
+36      0      0     0         150E-6       0         0.17
+
+# Compress JPEG
+37      0      0     0         150E-6       0         0.17
+
+# Decompress JPEG
+38      0      0     0         150E-6       0         0.17
+
+# High Pass Grey-scale filter
+39      0      0     0         150E-6       0         0.17
+
+# RGB to CYMK Conversion
+40      0      0     0         150E-6       0         0.17
+
+# RGB to YIQ Conversion
+41      0      0     0         150E-6       0         0.17
+
+# Dithering
+42      0      1     0.59      150E-6       1.7e+03   0.17
+
+# Image Rotation
+43      0      1     0.045     150E-6       7.1e+03   0.17
+
+# Text Processing
+44      0      1     0.29      150E-6       1.9e+04   0.17
+
+# src-sink
+45      0      1     1e-05     150E-6       80        0.17
+
+}
+
+# Motorola MPC555 - 40MHz
+@PROC 13 {
+# price buffered preempt_power commun_energy_bit io_energy_bit idle_power
+  45    1        1             0                 0             0.1
+#------------------------------------------------------------------------------
+# type version valid task_time preempt_time code_bits task_power
+# Angle to Time Conversion
+0       0      1     5.3e-07   150E-6       4.2e+04   1
+
+# Basic floating point
+1       0      1     8.9e-07   150E-6       1.4e+05   1
+
+# Bit Manipulation
+2       0      1     3.8e-05   150E-6       5.4e+04   1
+
+# Cache Buster
+3       0      1     1.5e-07   150E-6       4e+04     1
+
+# CAN Remote Data Request
+4       0      1     1.2e-07   150E-6       6.4e+04   1
+
+# Fast Fourier Transform (Auto/Indust. Version)
+5       0      1     0.00033   150E-6       1.9e+05   1
+
+# Finite Impulse Response Filter (Auto/Indust. Vers)
+6       0      1     1.7e-06   150E-6       5.3e+04   1
+
+# Infinite Impulse Response Filter
+7       0      1     1.5e-06   150E-6       7e+04     1
+
+# Inverse discrete cosine transfom
+8       0      1     2.6e-05   150E-6       1.3e+05   1
+
+# Inverse Fast Fourier Transform (Auto/Indust. Vers)
+9       0      1     0.00032   150E-6       3.1e+05   1
+
+# Matrix arithmetic
+10      0      1     0.00016   150E-6       2.8e+05   1
+
+# Pointer Chasing
+11      0      1     1.6e-05   150E-6       6.1e+04   1
+
+# Pulse Width Modulation
+12      0      1     2.1e-07   150E-6       9.6e+04   1
+
+# Road Speed Calculation
+13      0      1     1.4e-07   150E-6       2.6e+04   1
+
+# Table Lookup and Interpolation
+14      0      1     1.9e-06   150E-6       1.2e+05   1
+
+# Tooth To Spark
+15      0      1     3.4e-06   150E-6       4.3e+05   1
+
+# OSPF/Dijkstra
+16      0      0     0         150E-6       0         1
+
+# Route Lookup/Patricia
+17      0      0     0         150E-6       0         1
+
+# Packet Flow - 512 kbytes
+18      0      0     0         150E-6       0         1
+
+# Packet Flow - 1 Mbyte
+19      0      0     0         150E-6       0         1
+
+# Packet Flow - 2 Mbytes
+20      0      0     0         150E-6       0         1
+
+# Autocorrelation - Data1 (pulse)
+21      0      0     0         150E-6       0         1
+
+# Autocorrelation - Data2 (sine)
+22      0      0     0         150E-6       0         1
+
+# Auto-Correlation - Data3 (speech)
+23      0      0     0         150E-6       0         1
+
+# Convolutional Encoder - Data1 (xk5r2dt)
+24      0      0     0         150E-6       0         1
+
+# Convolutional Encoder - Data2 (xk4r2dt)
+25      0      0     0         150E-6       0         1
+
+# Convolutional Encoder - Data3 (xk3r2dt)
+26      0      0     0         150E-6       0         1
+
+# Fixed-point Bit Allocation - Data2 (typ)
+27      0      0     0         150E-6       0         1
+
+# Fixed-point Bit Allocation - Data3 (step)
+28      0      0     0         150E-6       0         1
+
+# Fixed Point Bit Allocation - Data6 (pent)
+29      0      0     0         150E-6       0         1
+
+# Fixed Point Complex FFT - Data1 (pulse)
+30      0      0     0         150E-6       0         1
+
+# Fixed point Complex FFT - Data2 (spn)
+31      0      0     0         150E-6       0         1
+
+# Fixed Point Complex FFT - Data3 (sine)
+32      0      0     0         150E-6       0         1
+
+# Viterbi GSM Decoder - Data1 (get)
+33      0      0     0         150E-6       0         1
+
+# Viterbi GSM Decoder - Data2 (toggle)
+34      0      0     0         150E-6       0         1
+
+# Viterbi GSM Decoder - Data3 (ones)
+35      0      0     0         150E-6       0         1
+
+# Viterbi GSM Decoder - Data4 (zeros)
+36      0      0     0         150E-6       0         1
+
+# Compress JPEG
+37      0      0     0         150E-6       0         1
+
+# Decompress JPEG
+38      0      0     0         150E-6       0         1
+
+# High Pass Grey-scale filter
+39      0      0     0         150E-6       0         1
+
+# RGB to CYMK Conversion
+40      0      0     0         150E-6       0         1
+
+# RGB to YIQ Conversion
+41      0      0     0         150E-6       0         1
+
+# Dithering
+42      0      0     0         150E-6       0         1
+
+# Image Rotation
+43      0      0     0         150E-6       0         1
+
+# Text Processing
+44      0      0     0         150E-6       0         1
+
+# src-sink
+45      0      1     1e-05     150E-6       80        1
+
+}
+
+# NEC  VR5432 - 167 MHz
+@PROC 14 {
+# price buffered preempt_power commun_energy_bit io_energy_bit idle_power
+  30    1        2.5           0                 0             0.25
+#------------------------------------------------------------------------------
+# type version valid task_time preempt_time code_bits task_power
+# Angle to Time Conversion
+0       0      1     2.8e-05   150E-6       1.8e+04   2.5
+
+# Basic floating point
+1       0      1     0.00016   150E-6       1.5e+04   2.5
+
+# Bit Manipulation
+2       0      1     0.001     150E-6       6.7e+04   2.5
+
+# Cache Buster
+3       0      1     3.8e-06   150E-6       2.1e+04   2.5
+
+# CAN Remote Data Request
+4       0      1     2.5e-06   150E-6       1.4e+04   2.5
+
+# Fast Fourier Transform (Auto/Indust. Version)
+5       0      1     0.018     150E-6       4e+04     2.5
+
+# Finite Impulse Response Filter (Auto/Indust. Vers)
+6       0      1     3.8e-05   150E-6       1.3e+04   2.5
+
+# Infinite Impulse Response Filter
+7       0      1     8.3e-05   150E-6       2.6e+04   2.5
+
+# Inverse discrete cosine transfom
+8       0      1     0.00084   150E-6       6.9e+04   2.5
+
+# Inverse Fast Fourier Transform (Auto/Indust. Vers)
+9       0      1     0.016     150E-6       3.8e+04   2.5
+
+# Matrix arithmetic
+10      0      1     0.036     150E-6       5.5e+04   2.5
+
+# Pointer Chasing
+11      0      1     0.00049   150E-6       1.1e+04   2.5
+
+# Pulse Width Modulation
+12      0      1     3.9e-06   150E-6       1.3e+04   2.5
+
+# Road Speed Calculation
+13      0      1     3.1e-06   150E-6       6.6e+03   2.5
+
+# Table Lookup and Interpolation
+14      0      1     0.00013   150E-6       3.9e+04   2.5
+
+# Tooth To Spark
+15      0      1     8.4e-05   150E-6       3.6e+04   2.5
+
+# OSPF/Dijkstra
+16      0      1     0.0014    150E-6       8.6e+03   2.5
+
+# Route Lookup/Patricia
+17      0      1     0.004     150E-6       1.1e+04   2.5
+
+# Packet Flow - 512 kbytes
+18      0      1     0.0011    150E-6       1.3e+04   2.5
+
+# Packet Flow - 1 Mbyte
+19      0      1     0.0019    150E-6       1.3e+04   2.5
+
+# Packet Flow - 2 Mbytes
+20      0      1     0.0042    150E-6       1.3e+04   2.5
+
+# Autocorrelation - Data1 (pulse)
+21      0      1     1.1e-05   150E-6       6.3e+03   2.5
+
+# Autocorrelation - Data2 (sine)
+22      0      1     0.0013    150E-6       6.3e+03   2.5
+
+# Auto-Correlation - Data3 (speech)
+23      0      1     0.0013    150E-6       6.3e+03   2.5
+
+# Convolutional Encoder - Data1 (xk5r2dt)
+24      0      1     0.0011    150E-6       9.7e+03   2.5
+
+# Convolutional Encoder - Data2 (xk4r2dt)
+25      0      1     0.00095   150E-6       9.7e+03   2.5
+
+# Convolutional Encoder - Data3 (xk3r2dt)
+26      0      1     0.00088   150E-6       9.7e+03   2.5
+
+# Fixed-point Bit Allocation - Data2 (typ)
+27      0      1     0.0043    150E-6       8.6e+03   2.5
+
+# Fixed-point Bit Allocation - Data3 (step)
+28      0      1     0.00026   150E-6       8.6e+03   2.5
+
+# Fixed Point Bit Allocation - Data6 (pent)
+29      0      1     0.0027    150E-6       8.6e+03   2.5
+
+# Fixed Point Complex FFT - Data1 (pulse)
+30      0      1     0.00058   150E-6       5.1e+04   2.5
+
+# Fixed point Complex FFT - Data2 (spn)
+31      0      1     0.00058   150E-6       5.1e+04   2.5
+
+# Fixed Point Complex FFT - Data3 (sine)
+32      0      1     0.00058   150E-6       5.1e+04   2.5
+
+# Viterbi GSM Decoder - Data1 (get)
+33      0      1     0.003     150E-6       2.1e+04   2.5
+
+# Viterbi GSM Decoder - Data2 (toggle)
+34      0      1     0.003     150E-6       2.1e+04   2.5
+
+# Viterbi GSM Decoder - Data3 (ones)
+35      0      1     0.003     150E-6       2.1e+04   2.5
+
+# Viterbi GSM Decoder - Data4 (zeros)
+36      0      1     0.003     150E-6       2.1e+04   2.5
+
+# Compress JPEG
+37      0      1     0.41      150E-6       2.9e+05   2.5
+
+# Decompress JPEG
+38      0      1     0.24      150E-6       3.4e+05   2.5
+
+# High Pass Grey-scale filter
+39      0      1     0.052     150E-6       1.3e+04   2.5
+
+# RGB to CYMK Conversion
+40      0      1     0.023     150E-6       1e+04     2.5
+
+# RGB to YIQ Conversion
+41      0      1     0.04      150E-6       9.1e+03   2.5
+
+# Dithering
+42      0      1     0.031     150E-6       4.7e+03   2.5
+
+# Image Rotation
+43      0      1     0.0083    150E-6       1.6e+04   2.5
+
+# Text Processing
+44      0      1     0.017     150E-6       2.5e+04   2.5
+
+# src-sink
+45      0      1     1e-05     150E-6       80        2.5
+
+}
+
+# ST20C2 50 Mhz
+@PROC 15 {
+# price buffered preempt_power commun_energy_bit io_energy_bit idle_power
+  15    1        75E-3         0                 0             0.0075
+#------------------------------------------------------------------------------
+# type version valid task_time preempt_time code_bits task_power
+# Angle to Time Conversion
+0       0      0     0         150E-6       0         0.075
+
+# Basic floating point
+1       0      0     0         150E-6       0         0.075
+
+# Bit Manipulation
+2       0      0     0         150E-6       0         0.075
+
+# Cache Buster
+3       0      0     0         150E-6       0         0.075
+
+# CAN Remote Data Request
+4       0      0     0         150E-6       0         0.075
+
+# Fast Fourier Transform (Auto/Indust. Version)
+5       0      0     0         150E-6       0         0.075
+
+# Finite Impulse Response Filter (Auto/Indust. Vers)
+6       0      0     0         150E-6       0         0.075
+
+# Infinite Impulse Response Filter
+7       0      0     0         150E-6       0         0.075
+
+# Inverse discrete cosine transfom
+8       0      0     0         150E-6       0         0.075
+
+# Inverse Fast Fourier Transform (Auto/Indust. Vers)
+9       0      0     0         150E-6       0         0.075
+
+# Matrix arithmetic
+10      0      0     0         150E-6       0         0.075
+
+# Pointer Chasing
+11      0      0     0         150E-6       0         0.075
+
+# Pulse Width Modulation
+12      0      0     0         150E-6       0         0.075
+
+# Road Speed Calculation
+13      0      0     0         150E-6       0         0.075
+
+# Table Lookup and Interpolation
+14      0      0     0         150E-6       0         0.075
+
+# Tooth To Spark
+15      0      0     0         150E-6       0         0.075
+
+# OSPF/Dijkstra
+16      0      1     0.0013    150E-6       3.3e+04   0.075
+
+# Route Lookup/Patricia
+17      0      1     0.0026    150E-6       1.5e+04   0.075
+
+# Packet Flow - 512 kbytes
+18      0      1     0.00082   150E-6       1.6e+04   0.075
+
+# Packet Flow - 1 Mbyte
+19      0      1     0.0016    150E-6       1.6e+04   0.075
+
+# Packet Flow - 2 Mbytes
+20      0      1     0.0031    150E-6       1.6e+04   0.075
+
+# Autocorrelation - Data1 (pulse)
+21      0      1     1.1e-06   150E-6       7.9e+03   0.075
+
+# Autocorrelation - Data2 (sine)
+22      0      1     6.9e-05   150E-6       7.9e+03   0.075
+
+# Auto-Correlation - Data3 (speech)
+23      0      1     6.7e-05   150E-6       7.9e+03   0.075
+
+# Convolutional Encoder - Data1 (xk5r2dt)
+24      0      1     0.00017   150E-6       9e+03     0.075
+
+# Convolutional Encoder - Data2 (xk4r2dt)
+25      0      1     0.00016   150E-6       9e+03     0.075
+
+# Convolutional Encoder - Data3 (xk3r2dt)
+26      0      1     0.00015   150E-6       9e+03     0.075
+
+# Fixed-point Bit Allocation - Data2 (typ)
+27      0      1     0.0015    150E-6       1.8e+04   0.075
+
+# Fixed-point Bit Allocation - Data3 (step)
+28      0      1     9.9e-05   150E-6       1.9e+04   0.075
+
+# Fixed Point Bit Allocation - Data6 (pent)
+29      0      1     0.001     150E-6       1.8e+04   0.075
+
+# Fixed Point Complex FFT - Data1 (pulse)
+30      0      1     0.00012   150E-6       2.4e+04   0.075
+
+# Fixed point Complex FFT - Data2 (spn)
+31      0      1     0.00012   150E-6       2.4e+04   0.075
+
+# Fixed Point Complex FFT - Data3 (sine)
+32      0      1     0.00012   150E-6       2.4e+04   0.075
+
+# Viterbi GSM Decoder - Data1 (get)
+33      0      1     0.00082   150E-6       1.5e+04   0.075
+
+# Viterbi GSM Decoder - Data2 (toggle)
+34      0      1     0.00082   150E-6       1.5e+04   0.075
+
+# Viterbi GSM Decoder - Data3 (ones)
+35      0      1     0.00082   150E-6       1.5e+04   0.075
+
+# Viterbi GSM Decoder - Data4 (zeros)
+36      0      1     0.00082   150E-6       1.5e+04   0.075
+
+# Compress JPEG
+37      0      1     0.087     150E-6       9.2e+05   0.075
+
+# Decompress JPEG
+38      0      1     0.07      150E-6       9.4e+05   0.075
+
+# High Pass Grey-scale filter
+39      0      1     0.0086    150E-6       3.7e+04   0.075
+
+# RGB to CYMK Conversion
+40      0      1     0.008     150E-6       2e+04     0.075
+
+# RGB to YIQ Conversion
+41      0      1     0.0068    150E-6       3.5e+04   0.075
+
+# Dithering
+42      0      1     2.4       150E-6       4.9e+03   0.075
+
+# Image Rotation
+43      0      1     0.27      150E-6       6e+03     0.075
+
+# Text Processing
+44      0      1     1.1       150E-6       1.7e+04   0.075
+
+# src-sink
+45      0      1     1e-05     150E-6       80        0.075
+
+}
+
+# TI TMS320C6203-300MHz
+@PROC 16 {
+# price buffered preempt_power commun_energy_bit io_energy_bit idle_power
+  111.2 1        1.55          0                 0             0.15
+#------------------------------------------------------------------------------
+# type version valid task_time preempt_time code_bits task_power
+# Angle to Time Conversion
+0       0      0     0         150E-6       0         1.6
+
+# Basic floating point
+1       0      0     0         150E-6       0         1.6
+
+# Bit Manipulation
+2       0      0     0         150E-6       0         1.6
+
+# Cache Buster
+3       0      0     0         150E-6       0         1.6
+
+# CAN Remote Data Request
+4       0      0     0         150E-6       0         1.6
+
+# Fast Fourier Transform (Auto/Indust. Version)
+5       0      0     0         150E-6       0         1.6
+
+# Finite Impulse Response Filter (Auto/Indust. Vers)
+6       0      0     0         150E-6       0         1.6
+
+# Infinite Impulse Response Filter
+7       0      0     0         150E-6       0         1.6
+
+# Inverse discrete cosine transfom
+8       0      0     0         150E-6       0         1.6
+
+# Inverse Fast Fourier Transform (Auto/Indust. Vers)
+9       0      0     0         150E-6       0         1.6
+
+# Matrix arithmetic
+10      0      0     0         150E-6       0         1.6
+
+# Pointer Chasing
+11      0      0     0         150E-6       0         1.6
+
+# Pulse Width Modulation
+12      0      0     0         150E-6       0         1.6
+
+# Road Speed Calculation
+13      0      0     0         150E-6       0         1.6
+
+# Table Lookup and Interpolation
+14      0      0     0         150E-6       0         1.6
+
+# Tooth To Spark
+15      0      0     0         150E-6       0         1.6
+
+# OSPF/Dijkstra
+16      0      0     0         150E-6       0         1.6
+
+# Route Lookup/Patricia
+17      0      0     0         150E-6       0         1.6
+
+# Packet Flow - 512 kbytes
+18      0      0     0         150E-6       0         1.6
+
+# Packet Flow - 1 Mbyte
+19      0      0     0         150E-6       0         1.6
+
+# Packet Flow - 2 Mbytes
+20      0      0     0         150E-6       0         1.6
+
+# Autocorrelation - Data1 (pulse)
+21      0      1     7.6e-07   150E-6       1.2e+04   1.6
+
+# Autocorrelation - Data2 (sine)
+22      0      1     3.5e-05   150E-6       1.2e+04   1.6
+
+# Auto-Correlation - Data3 (speech)
+23      0      1     3.4e-05   150E-6       1.2e+04   1.6
+
+# Convolutional Encoder - Data1 (xk5r2dt)
+24      0      1     3.8e-06   150E-6       2e+04     1.6
+
+# Convolutional Encoder - Data2 (xk4r2dt)
+25      0      1     3.6e-06   150E-6       2e+04     1.6
+
+# Convolutional Encoder - Data3 (xk3r2dt)
+26      0      1     3.4e-06   150E-6       2e+04     1.6
+
+# Fixed-point Bit Allocation - Data2 (typ)
+27      0      1     0.00018   150E-6       1.3e+04   1.6
+
+# Fixed-point Bit Allocation - Data3 (step)
+28      0      1     2.3e-05   150E-6       1.3e+04   1.6
+
+# Fixed Point Bit Allocation - Data6 (pent)
+29      0      1     0.00011   150E-6       1.3e+04   1.6
+
+# Fixed Point Complex FFT - Data1 (pulse)
+30      0      1     9e-06     150E-6       2.3e+04   1.6
+
+# Fixed point Complex FFT - Data2 (spn)
+31      0      1     9e-06     150E-6       2.3e+04   1.6
+
+# Fixed Point Complex FFT - Data3 (sine)
+32      0      1     9e-06     150E-6       2.3e+04   1.6
+
+# Viterbi GSM Decoder - Data1 (get)
+33      0      1     6.3e-05   150E-6       2.2e+04   1.6
+
+# Viterbi GSM Decoder - Data2 (toggle)
+34      0      1     6.3e-05   150E-6       2.2e+04   1.6
+
+# Viterbi GSM Decoder - Data3 (ones)
+35      0      1     6.3e-05   150E-6       2.2e+04   1.6
+
+# Viterbi GSM Decoder - Data4 (zeros)
+36      0      1     6.3e-05   150E-6       2.2e+04   1.6
+
+# Compress JPEG
+37      0      0     0         150E-6       0         1.6
+
+# Decompress JPEG
+38      0      0     0         150E-6       0         1.6
+
+# High Pass Grey-scale filter
+39      0      0     0         150E-6       0         1.6
+
+# RGB to CYMK Conversion
+40      0      0     0         150E-6       0         1.6
+
+# RGB to YIQ Conversion
+41      0      0     0         150E-6       0         1.6
+
+# Dithering
+42      0      0     0         150E-6       0         1.6
+
+# Image Rotation
+43      0      0     0         150E-6       0         1.6
+
+# Text Processing
+44      0      0     0         150E-6       0         1.6
+
+# src-sink
+45      0      1     1e-05     150E-6       80        1.6
+
+}
+
+
+@LINK 0 {
+# use_price contact_price  packet_size  bit_time    power    contacts
+# VME (Tundra SCV64 + transceiver)
+  0         180            1            2.27E-9     10.35    4
+}
+
+@LINK 1 {
+# use_price contact_price  packet_size  bit_time    power    contacts
+# USB 2.0 (Cypress CY7C68013-100AC)
+  0         14.19          1            2.08E-3     0.66     4
+}
+
+@LINK 2 {
+# use_price contact_price  packet_size  bit_time    power    contacts
+# USB (Cypress SL811HS)
+  0         6.38           1            83.3E-3     69.3E-3  4
+}
+
+@LINK 3 {
+# use_price contact_price  packet_size  bit_time    power    contacts
+# PCI-32-33 (TI PCI2040, IBM 8266[034])
+  0         10.56          1            947E-12     1.5      4
+}
+
+@LINK 4 {
+# use_price contact_price  packet_size  bit_time    power    contacts
+# CAN (Philips SJA1000N)
+  0         6.05           1            1E-6        75E-3    4
+}
+
+@LINK 5 {
+# use_price contact_price  packet_size  bit_time    power    contacts
+# Firewire, IEEE1394 (TI TSB12LV01B and TSB14AA1)
+  0         14.81          1            2.5E-9      3.51     4
+}
+
+
+
+
+@MEMORY 8388608 1
+
