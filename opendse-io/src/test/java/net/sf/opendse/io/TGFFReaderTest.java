@@ -1,7 +1,5 @@
 package net.sf.opendse.io;
 
-import java.util.Set;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -10,7 +8,6 @@ import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Dependency;
-import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Mappings;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
