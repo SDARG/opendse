@@ -125,9 +125,11 @@ public class TGFFReader {
 		application = new Application<Task, Dependency>();
 		architecture = new Architecture<Resource, Link>();
 		mappings = new Mappings<Task, Resource>();
-				
+			
+		BufferedReader br = null;
+		
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(tgffFile));
+			br = new BufferedReader(new FileReader(tgffFile));
 						
 			String currentLine;
 			while ((currentLine = br.readLine()) != null) {
@@ -167,9 +169,17 @@ public class TGFFReader {
 				else if (!isComment(currentLine) && currentLine.contains(AT)) {
 					importProperty(currentLine);
 				}
-			}			
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if(br!=null){
+					br.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -290,7 +300,7 @@ public class TGFFReader {
 	private void addTask(String line, String suffix, double period) {
 	
 		String [] entries = line.split(SEPARATOR);
-		assert entries.length == 4: "tgff-file \"" + TASK + "\": wrong number of entries";
+		assert entries.length >= 4: "tgff-file \"" + TASK + "\": wrong number of entries";
 		
 		String id = entries[1] + suffix;
 		String type = entries[3];

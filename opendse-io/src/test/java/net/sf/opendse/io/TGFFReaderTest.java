@@ -1,5 +1,7 @@
 package net.sf.opendse.io;
 
+import java.util.Collection;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -94,7 +96,7 @@ public class TGFFReaderTest {
 		Assert.assertEquals("3.10e-03", resource.getAttribute("width"));
 		Assert.assertEquals("3.10e-03", resource.getAttribute("height"));
 		Assert.assertEquals("0.275", resource.getAttribute("density"));
-		Assert.assertEquals("0", resource.getAttribute("preemt_power"));
+		Assert.assertEquals("0", resource.getAttribute("preempt_power"));
 		Assert.assertEquals("0", resource.getAttribute("commun_en_bit"));
 		Assert.assertEquals("0", resource.getAttribute("io_en_bit"));
 		Assert.assertEquals("0.16", resource.getAttribute("idle_power"));
