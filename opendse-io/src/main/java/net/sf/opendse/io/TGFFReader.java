@@ -143,23 +143,23 @@ public class TGFFReader {
 					
 				// import application graphs
 				else if (currentLine.contains(TASK_GRAPH)) {
-			    	importTaskGraph(currentLine, br);
+			    	importTaskGraph(currentLine, br, application);
 			    }
 				
 				// import resources and mappings (only mappings to valid resource types are created)
 				else if (currentLine.contains(CORE) || currentLine.contains(PROC) || 
 						 currentLine.contains(CLIENT_PE) || currentLine.contains(SERVER_PE)) {
-					importCore(currentLine, br);
+					importCore(currentLine, br, architecture, mappings);
 				}
 				
 				// import -coords/-cowls link resources
 				else if (currentLine.contains(LINK)) {
-					importLink(currentLine, br);
+					importLink(currentLine, br, architecture);
 				}
 				
 				// import -mocsyn wiring-properties as resource
 				else if (currentLine.contains(WIRE)) {
-					importWiring(br);
+					importWiring(br, architecture);
 				}
 				
 				// import other @-annotated properties 
@@ -180,7 +180,7 @@ public class TGFFReader {
 		}
 	}
 	
-	private void importCore(String name, BufferedReader br) throws IOException {
+	private void importCore(String name, BufferedReader br, Architecture<Resource, Link> architecture, Mappings<Task, Resource> mappings) throws IOException {
 		
 		// create resource (type)
 		Resource res = new Resource("r" + name.split(SEPARATOR)[1]);
@@ -262,7 +262,7 @@ public class TGFFReader {
 		return sizes;
 	}
 	
-	private void importTaskGraph(String name, BufferedReader br) throws NumberFormatException, IOException {
+	private void importTaskGraph(String name, BufferedReader br, Application<Task, Dependency> application) throws NumberFormatException, IOException {
 		
 		String id = CONNECTOR + name.split(SEPARATOR)[1];
 		
@@ -277,24 +277,24 @@ public class TGFFReader {
 				}
 					
 				else if (line.contains(TASK)) {
-					addTask(line, id, period);
+					addTask(line, id, period, application);
 				}
 				
 				else if (line.contains(ARC)) {
-					addCommunication(line, id, period);
+					addCommunication(line, id, period, application);
 				}
 				
 				else if (line.contains(HARD_DEADLINE)) {
-					addDeadline(line, id, HARD_DEADLINE);
+					addDeadline(line, id, application, HARD_DEADLINE);
 				}
 				else if (line.contains(SOFT_DEADLINE)) {
-					addDeadline(line, id, SOFT_DEADLINE); 
+					addDeadline(line, id, application, SOFT_DEADLINE); 
 				}	
 			}	
     	}
 	}
 
-	private void addTask(String line, String suffix, double period) {
+	private void addTask(String line, String suffix, double period, Application<Task, Dependency> application) {
 	
 		String [] entries = line.split(SEPARATOR);
 		assert entries.length >= 4: "tgff-file \"" + TASK + "\": wrong number of entries";
@@ -321,7 +321,7 @@ public class TGFFReader {
 		application.addVertex(task);
 	}	
 	
-	private void addCommunication (String line, String suffix, double period) {
+	private void addCommunication (String line, String suffix, double period, Application<Task, Dependency> application) {
 			
 		String [] entries = line.split(SEPARATOR);
 		assert entries.length == 8: "tgff-file \"ARC\": wrong number of entries in line";
@@ -341,7 +341,7 @@ public class TGFFReader {
 		application.addEdge(new Dependency(id + "_1"), comm, t2);		
 	}
 	
-	private void addDeadline(String line, String suffix, String deadlineType) {
+	private void addDeadline(String line, String suffix, Application<Task, Dependency> application, String deadlineType) {
 		
 		String [] entries = line.split(SEPARATOR);
 		assert entries.length == 6 : "tgff-file \"" + deadlineType +"\": wrong number of entries";
@@ -353,7 +353,7 @@ public class TGFFReader {
 		}
 	}
 	
-	private void importWiring(BufferedReader br) throws IOException {
+	private void importWiring(BufferedReader br, Architecture<Resource, Link> architecture) throws IOException {
 		
 		Resource res = new Resource(WIRE);
 		
@@ -387,7 +387,7 @@ public class TGFFReader {
 		properties.put(property[0], property[1]);	
 	}
 
-	private void importLink(String name, BufferedReader br) throws IOException {
+	private void importLink(String name, BufferedReader br, Architecture<Resource, Link> architecture) throws IOException {
 				
 		// create resource
 		Resource link = new Resource("l" + name.split(SEPARATOR)[1]);
