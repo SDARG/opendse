@@ -16,6 +16,7 @@ import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
+import net.sf.opendse.model.properties.ResourcePropertyService;
 
 /**
  * The {@link EndNodeEncoderMapping} formulates {@link Constraint}s that place
@@ -39,7 +40,8 @@ public class EndNodeEncoderMapping implements EndNodeEncoder {
 			for (MappingVariable mappingVar : mappingVariables) {
 				if (mappingVar instanceof M) {
 					M mVar = (M) mappingVar;
-					if (mVar.getMapping().getTarget().equals(res)) {
+					String proxyId = ResourcePropertyService.getProxyId(mVar.getMapping().getTarget());
+					if (proxyId.equals(res.getId())) {
 						if (mVar.getMapping().getSource().equals(srcTask)) {
 							srcMappings.add(mVar);
 						}

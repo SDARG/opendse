@@ -20,9 +20,44 @@ import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
+import net.sf.opendse.model.properties.ResourcePropertyService;
 import verification.ConstraintVerifier;
 
 public class EndNodeEncoderMappingTest {
+	
+	@Test
+	public void testProxy() {
+		Resource r0 = new Resource("r0");
+		Resource proxy = new Resource("proxy");
+		Resource r1 = new Resource("r1");
+		Architecture<Resource, Link> routing = new Architecture<Resource, Link>();
+		routing.addVertex(proxy);
+		ResourcePropertyService.setProxyId(r0, proxy);
+		ResourcePropertyService.setProxyId(r1, proxy);
+		Task t0 = new Task("t0");
+		Task t1 = new Task("t1");
+		Communication comm = new Communication("comm");
+		Dependency d0 = new Dependency("d0");
+		Dependency d1 = new Dependency("d1");
+		DTT src = Variables.varDTT(d0, t0, comm);
+		DTT dest = Variables.varDTT(d1, comm, t1);
+		CommunicationFlow flow = new CommunicationFlow(src, dest);
+		Mapping<Task, Resource> m0 = new Mapping<Task, Resource>("m0", t0, r0);
+		Mapping<Task, Resource> m1 = new Mapping<Task, Resource>("m1", t1, r1);
+		Set<MappingVariable> mappingVariables = new HashSet<MappingVariable>();
+		mappingVariables.add(Variables.varM(m0));
+		mappingVariables.add(Variables.varM(m1));
+		EndNodeEncoderMapping encoder = new EndNodeEncoderMapping();
+		Set<Constraint> cs = encoder.toConstraints(flow, routing, mappingVariables);
+		ConstraintVerifier verifyEndNodes = new ConstraintVerifier(cs);
+		verifyEndNodes.activateVariable(Variables.varM(m0));
+		verifyEndNodes.activateVariable(Variables.varM(m1));
+		verifyEndNodes.activateVariable(src);
+		verifyEndNodes.activateVariable(dest);
+		verifyEndNodes.verifyVariableActivated(Variables.varDDsR(flow, proxy));
+		verifyEndNodes.verifyVariableActivated(Variables.varDDdR(flow, proxy));
+	}
+	
 	@Test
 	public void test() {
 		Resource r0 = new Resource("r0");
