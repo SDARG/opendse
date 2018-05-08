@@ -40,7 +40,6 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
-import net.sf.opendse.optimization.encoding.Interpreter;
 
 /**
  * The {@link InterpreterVariable} gets the set of {@link InterfaceVariable}s created by
@@ -51,7 +50,7 @@ import net.sf.opendse.optimization.encoding.Interpreter;
  * @author Fedor Smirnov
  *
  */
-public class InterpreterVariable implements Interpreter{
+public class InterpreterVariable extends InterpreterAbstract{
 
 	protected final ImplementationEncodingModular implementationEncoding;
 	protected boolean variablesInitialized = false;
@@ -61,21 +60,13 @@ public class InterpreterVariable implements Interpreter{
 	protected Set<AllocationVariable> allocationVariables = new HashSet<AllocationVariable>();
 
 	@Inject
-	public InterpreterVariable(ImplementationEncodingModular implementationEncoding) {
+	public InterpreterVariable(SpecificationPostProcessor postProcessor, ImplementationEncodingModular implementationEncoding) {
+		super(postProcessor);
 		this.implementationEncoding = implementationEncoding;
 	}
 
-	/**
-	 * Creates the {@link Specification} where the {@link Constraint}s are solved by
-	 * the given {@link Model}.
-	 * 
-	 * @param model
-	 *            the {@link Model} containing the assignment of the
-	 *            {@link Variable}s satisfying the {@link Constraint}s
-	 * @return the {@link Specification} where the {@link Constraint}s are solved by
-	 *         the given {@link Model}
-	 */
-	public Specification toImplementation(Specification specification, Model model) {
+	@Override
+	public Specification decodeModel(Specification specification, Model model) {
 		if (!variablesInitialized) {
 			initializeInterfaceVariables();
 		}

@@ -32,6 +32,7 @@ import net.sf.opendse.encoding.variables.Variables;
  *
  */
 public abstract class ImplementationEncodingModularAbstract implements ImplementationEncodingModular {
+	protected final SpecificationPreprocessor preprocessor;
 	protected final ApplicationEncoding applicationEncoding;
 	protected final MappingEncoding mappingEncoding;
 	protected final RoutingEncoding routingEncoding;
@@ -43,9 +44,10 @@ public abstract class ImplementationEncodingModularAbstract implements Implement
 	protected final Set<AllocationVariable> allocationVariables;
 	protected final Set<Constraint> constraints;
 
-	public ImplementationEncodingModularAbstract(ApplicationEncoding applicationEncoding, MappingEncoding mappingEncoding,
+	public ImplementationEncodingModularAbstract(SpecificationPreprocessor preprocessor, ApplicationEncoding applicationEncoding, MappingEncoding mappingEncoding,
 			RoutingEncoding routingEncoding, AllocationEncoding allocationEncoding, SpecificationWrapper specificationWrapper) {
 
+		this.preprocessor = preprocessor;
 		this.applicationEncoding = applicationEncoding;
 		this.mappingEncoding = mappingEncoding;
 		this.routingEncoding = routingEncoding;
@@ -64,8 +66,9 @@ public abstract class ImplementationEncodingModularAbstract implements Implement
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected Set<Constraint> generateTheConstraints(Specification specification){
+	protected Set<Constraint> generateTheConstraints(Specification userSpecification){
 		Variables.clearCaches();
+		Specification specification = preprocessor.preprocessSpecification(userSpecification);
 		Application<Task, Dependency> application = specification.getApplication();
 		Mappings<Task, Resource> mappings = specification.getMappings();
 		Routings<Task, Resource, Link> routings = specification.getRoutings();
@@ -119,11 +122,6 @@ public abstract class ImplementationEncodingModularAbstract implements Implement
 		result.addAll(dependencyConstraintGenerator.toConstraints(applicationVariables));
 		return result;
 	}
-
-	/**
-	 * perform the necessary preprocessing
-	 */
-	protected abstract void preprocessSpecification();
 
 	/**
 	 * Adds additional constraints.

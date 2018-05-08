@@ -59,6 +59,7 @@ public class DefaultImplementationEncodingTest {
 		ApplicationEncoding applicationEncoding = mock(ApplicationEncoding.class);
 		MappingEncoding mappingEncoding = mock(MappingEncoding.class);
 		RoutingEncoding routingEncoding = mock(RoutingEncoding.class);
+		SpecificationPreprocessor preprocessor = new SpecificationPreprocessorNone();
 		AllocationEncoding allocationEncoding = mock(AllocationEncoding.class);
 		Architecture<Resource, Link> arch = new Architecture<Resource, Link>();
 		Application<Task, Dependency> appl = new Application<Task, Dependency>();
@@ -72,8 +73,8 @@ public class DefaultImplementationEncodingTest {
 				.thenReturn(routingConstraints);
 		when(allocationEncoding.toConstraints(any(Set.class), any(Set.class), any(Architecture.class)))
 				.thenReturn(allocationConstraints);
-		ImplementationEncodingModularDefault encoding = new ImplementationEncodingModularDefault(applicationEncoding, mappingEncoding,
-				routingEncoding, allocationEncoding, wrapper);
+		ImplementationEncodingModularDefault encoding = new ImplementationEncodingModularDefault(preprocessor,
+				applicationEncoding, mappingEncoding, routingEncoding, allocationEncoding, wrapper);
 		Set<Constraint> cs = encoding.toConstraints();
 		assertEquals(4, cs.size());
 		verify(applicationEncoding).toConstraints(appl);
@@ -89,10 +90,11 @@ public class DefaultImplementationEncodingTest {
 		MappingEncoding mappingEncoding = mock(MappingEncoding.class);
 		RoutingEncoding routingEncoding = mock(RoutingEncoding.class);
 		AllocationEncoding allocationEncoding = mock(AllocationEncoding.class);
+		SpecificationPreprocessor preprocessor = new SpecificationPreprocessorNone();
 		SpecificationWrapper wrapper = mock(SpecificationWrapper.class);
 		when(wrapper.getSpecification()).thenReturn(mock(Specification.class));
-		ImplementationEncodingModularDefault encoding = new ImplementationEncodingModularDefault(applicationEncoding, mappingEncoding,
-				routingEncoding, allocationEncoding, wrapper);
+		ImplementationEncodingModularDefault encoding = new ImplementationEncodingModularDefault(preprocessor,
+				applicationEncoding, mappingEncoding, routingEncoding, allocationEncoding, wrapper);
 		T mockT = mock(T.class);
 		DTT mockDTT = mock(DTT.class);
 		M mockM = mock(M.class);

@@ -1,7 +1,5 @@
 package net.sf.opendse.encoding;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import org.opt4j.satdecoding.Constraint;
 
@@ -105,8 +103,9 @@ public class AlternativesImplementationEncodingTest {
 		MappingEncoding mappingEncoding = new MappingEncodingMode(new MappingConstraintManagerDefault());
 		RoutingEncoding routingEncoding = new RoutingEncodingFlexible(new CommunicationRoutingManagerDefault());
 		AllocationEncoding allocationEncoding = new AllocationEncodingUtilization();
-		ImplementationEncodingModularDefault encoding = new ImplementationEncodingModularDefault(applicationEncoding,
-				mappingEncoding, routingEncoding, allocationEncoding, wrapper);
+		SpecificationPreprocessor preprocessor = new SpecificationPreprocessorNone();
+		ImplementationEncodingModularDefault encoding = new ImplementationEncodingModularDefault(preprocessor,
+				applicationEncoding, mappingEncoding, routingEncoding, allocationEncoding, wrapper);
 		Set<Constraint> cs = encoding.toConstraints();
 		// alternative a tests
 		Set<Object> active = new HashSet<Object>();
@@ -132,12 +131,12 @@ public class AlternativesImplementationEncodingTest {
 		verifyAlternativeA.verifyVariableActivated(Variables.varCLRR(prob.c0, prob.l0, prob.r0, prob.r1));
 		verifyAlternativeA.verifyVariableActivated(Variables.varCR(prob.c0, prob.r0));
 		verifyAlternativeA.verifyVariableActivated(Variables.varCR(prob.c0, prob.r1));
-		
+
 		verifyAlternativeA.verifyVariableDeactivated(Variables.varCLRR(prob.c0, prob.l0, prob.r1, prob.r0));
 		verifyAlternativeA.verifyVariableDeactivated(Variables.varCLRR(prob.c0, prob.l1, prob.r0, prob.r2));
 		verifyAlternativeA.verifyVariableDeactivated(Variables.varCLRR(prob.c0, prob.l1, prob.r2, prob.r0));
 		verifyAlternativeA.verifyVariableDeactivated(Variables.varCR(prob.c0, prob.r2));
-		
+
 		verifyAlternativeA.verifyVariableDeactivated(Variables.varCLRR(prob.c1, prob.l0, prob.r0, prob.r1));
 		verifyAlternativeA.verifyVariableDeactivated(Variables.varCLRR(prob.c1, prob.l0, prob.r1, prob.r0));
 		verifyAlternativeA.verifyVariableDeactivated(Variables.varCLRR(prob.c1, prob.l1, prob.r0, prob.r2));
@@ -151,7 +150,7 @@ public class AlternativesImplementationEncodingTest {
 		verifyAlternativeA.verifyVariableDeactivated(Variables.varR(prob.r2));
 		verifyAlternativeA.verifyVariableActivated(Variables.varL(prob.l0));
 		verifyAlternativeA.verifyVariableDeactivated(Variables.varL(prob.l1));
-		
+
 		// alternative b tests
 		active.clear();
 		active.add(Variables.varDTT(prob.d1, prob.c0, prob.t1));
