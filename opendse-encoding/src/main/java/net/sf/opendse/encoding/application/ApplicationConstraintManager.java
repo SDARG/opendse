@@ -2,8 +2,6 @@ package net.sf.opendse.encoding.application;
 
 import com.google.inject.ImplementedBy;
 
-import net.sf.opendse.model.properties.ApplicationElementPropertyService.ActivationModes;
-
 /**
  * provides the {@link ApplicationConstraintGenerator}s for the different
  * activation modes
@@ -24,6 +22,6 @@ public interface ApplicationConstraintManager {
 	 * @return the {@link ApplicationConstraintGenerator} for the given
 	 *         activation mode
 	 */
-	public ApplicationConstraintGenerator getConstraintGenerator(ActivationModes activationMode);
+	public ApplicationConstraintGenerator getConstraintGenerator(String activationMode);
 
 }

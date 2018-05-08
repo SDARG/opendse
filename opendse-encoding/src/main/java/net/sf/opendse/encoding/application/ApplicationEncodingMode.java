@@ -17,7 +17,6 @@ import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.ApplicationElementPropertyService;
-import net.sf.opendse.model.properties.ApplicationElementPropertyService.ActivationModes;
 
 /**
  * The {@link ApplicationEncodingMode} is an {@link ApplicationEncoding} that
@@ -39,10 +38,10 @@ public class ApplicationEncodingMode implements ApplicationEncoding {
 	@Override
 	public Set<Constraint> toConstraints(Application<Task, Dependency> application) {
 		Set<Constraint> applicationConstraints = new HashSet<Constraint>();
-		Map<ActivationModes, Set<ApplicationVariable>> applicationModeMap = filterApplicationModes(application);
+		Map<String, Set<ApplicationVariable>> applicationModeMap = filterApplicationModes(application);
 		// generate the constraints for each mode
-		for (Entry<ActivationModes, Set<ApplicationVariable>> entry : applicationModeMap.entrySet()) {
-			ActivationModes activationMode = entry.getKey();
+		for (Entry<String, Set<ApplicationVariable>> entry : applicationModeMap.entrySet()) {
+			String activationMode = entry.getKey();
 			Set<ApplicationVariable> variables = entry.getValue();
 			ApplicationConstraintGenerator constraintGenerator = generatorManager
 					.getConstraintGenerator(activationMode);
@@ -59,12 +58,12 @@ public class ApplicationEncodingMode implements ApplicationEncoding {
 	 * @return map where the activation modes are mapped onto the sets of their
 	 *         application variables
 	 */
-	protected Map<ActivationModes, Set<ApplicationVariable>> filterApplicationModes(
+	protected Map<String, Set<ApplicationVariable>> filterApplicationModes(
 			Application<Task, Dependency> application) {
-		Map<ActivationModes, Set<ApplicationVariable>> result = new HashMap<ActivationModes, Set<ApplicationVariable>>();
+		Map<String, Set<ApplicationVariable>> result = new HashMap<String, Set<ApplicationVariable>>();
 		// process the tasks
 		for (Task task : application) {
-			ActivationModes activationMode = ApplicationElementPropertyService.getActivationMode(task);
+			String activationMode = ApplicationElementPropertyService.getActivationMode(task);
 			if (!result.containsKey(activationMode)) {
 				result.put(activationMode, new HashSet<ApplicationVariable>());
 			}
@@ -72,7 +71,7 @@ public class ApplicationEncodingMode implements ApplicationEncoding {
 		}
 		// process the dependencies
 		for (Dependency dependency : application.getEdges()) {
-			ActivationModes activationMode = ApplicationElementPropertyService.getActivationMode(dependency);
+			String activationMode = ApplicationElementPropertyService.getActivationMode(dependency);
 			if (!result.containsKey(activationMode)) {
 				result.put(activationMode, new HashSet<ApplicationVariable>());
 			}

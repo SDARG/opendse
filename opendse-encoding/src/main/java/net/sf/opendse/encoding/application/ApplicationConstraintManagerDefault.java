@@ -3,24 +3,24 @@ package net.sf.opendse.encoding.application;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.opendse.model.properties.ApplicationElementPropertyService.ActivationModes;
+import net.sf.opendse.model.properties.ApplicationElementPropertyService;
 
 public class ApplicationConstraintManagerDefault implements ApplicationConstraintManager {
 
-	protected final Map<ActivationModes, ApplicationConstraintGenerator> generatorMap;
+	protected final Map<String, ApplicationConstraintGenerator> generatorMap;
 
 	public ApplicationConstraintManagerDefault() {
-		this.generatorMap = new HashMap<ActivationModes, ApplicationConstraintGenerator>();
+		this.generatorMap = new HashMap<String, ApplicationConstraintGenerator>();
 		fillGeneratorMap();
 	}
 
 	protected void fillGeneratorMap() {
-		generatorMap.put(ActivationModes.STATIC, new ApplicationConstraintGeneratorStatic());
-		generatorMap.put(ActivationModes.ALTERNATIVE, new ApplicationConstraintGeneratorAlternative());
+		generatorMap.put(ApplicationElementPropertyService.activationAttributeStatic, new ApplicationConstraintGeneratorStatic());
+		generatorMap.put(ApplicationElementPropertyService.activationAttributeAlternative, new ApplicationConstraintGeneratorAlternative());
 	}
 
 	@Override
-	public ApplicationConstraintGenerator getConstraintGenerator(ActivationModes activationMode) {
+	public ApplicationConstraintGenerator getConstraintGenerator(String activationMode) {
 		if (!generatorMap.containsKey(activationMode)) {
 			throw new IllegalArgumentException("Unknown activation mode " + activationMode);
 		} else {

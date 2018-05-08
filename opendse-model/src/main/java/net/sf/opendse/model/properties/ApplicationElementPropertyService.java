@@ -14,20 +14,14 @@ import net.sf.opendse.model.Task;
  */
 public class ApplicationElementPropertyService extends AbstractPropertyService {
 
+	public final static String activationAttributeStatic = "static";
+	public final static String activationAttributeAlternative = "alternative";
+	
 	public enum ApplicationElementAttributes {
 		ACTIVATION_MODE("activation mode"), ALT_FUNCTION("alternative application"), ALT_ID("alternative id");
 		protected String xmlName;
 
 		private ApplicationElementAttributes(String xmlName) {
-			this.xmlName = xmlName;
-		}
-	}
-
-	public enum ActivationModes {
-		STATIC("static"), ALTERNATIVE("alternative");
-		protected String xmlName;
-
-		private ActivationModes(String xmlName) {
 			this.xmlName = xmlName;
 		}
 	}
@@ -69,7 +63,7 @@ public class ApplicationElementPropertyService extends AbstractPropertyService {
 	 */
 	public static void setAlternativeAttributes(Element element, String alternativeFunction, String alternativeId) {
 		checkElement(element);
-		if (!getActivationMode(element).equals(ActivationModes.ALTERNATIVE)) {
+		if (!getActivationMode(element).equals(activationAttributeAlternative)) {
 			throw new IllegalArgumentException(
 					"The element " + element.getId() + " is not activated as an alternative.");
 		}
@@ -120,25 +114,17 @@ public class ApplicationElementPropertyService extends AbstractPropertyService {
 	 *            the input {@link Element}
 	 * @return the activation mode of the task
 	 */
-	public static ActivationModes getActivationMode(Element element) {
+	public static String getActivationMode(Element element) {
 		checkElement(element);
 		if (!isAttributeSet(element, ApplicationElementAttributes.ACTIVATION_MODE.xmlName)) {
-			return ActivationModes.STATIC;
+			return activationAttributeStatic;
 		} else {
-			String attrString = element.getAttribute(ApplicationElementAttributes.ACTIVATION_MODE.xmlName);
-			if (attrString.equals(ActivationModes.STATIC.xmlName)) {
-				return ActivationModes.STATIC;
-			} else if (attrString.equals(ActivationModes.ALTERNATIVE.xmlName)) {
-				return ActivationModes.ALTERNATIVE;
-			} else {
-				throw new IllegalArgumentException(
-						"Unknown activation mode for application element " + element.getId());
-			}
+			return (String) getAttribute(element, ApplicationElementAttributes.ACTIVATION_MODE.xmlName);
 		}
 	}
 
-	public static void setActivationMode(Element element, ActivationModes activationMode) {
+	public static void setActivationMode(Element element, String activationMode) {
 		checkElement(element);
-		element.setAttribute(ApplicationElementAttributes.ACTIVATION_MODE.xmlName, activationMode.xmlName);
+		element.setAttribute(ApplicationElementAttributes.ACTIVATION_MODE.xmlName, activationMode);
 	}
 }
