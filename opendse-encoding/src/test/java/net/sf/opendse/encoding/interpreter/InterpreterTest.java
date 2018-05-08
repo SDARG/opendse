@@ -46,8 +46,9 @@ import static org.mockito.Mockito.verify;
 public class InterpreterTest {
 
 	public static InterpreterVariable getInterpreter() {
+		SpecificationPostProcessor postProcessor = new SpecificationPostProcessorNone();
 		ImplementationEncodingModular mockEncoding = mock(ImplementationEncodingModular.class);
-		return new InterpreterVariable(mockEncoding);
+		return new InterpreterVariable(postProcessor, mockEncoding);
 	}
 	
 	@Test
@@ -57,7 +58,8 @@ public class InterpreterTest {
 		when(encoding.getInterfaceVariables()).thenReturn(new HashSet<InterfaceVariable>());
 		Specification s = new Specification(new Application<Task, Dependency>(), new Architecture<Resource, Link>(), new Mappings<Task, Resource>());
 		when(wrapper.getSpecification()).thenReturn(s);
-		InterpreterVariable inter = new InterpreterVariable(encoding);
+		SpecificationPostProcessor postProcessor = new SpecificationPostProcessorNone();
+		InterpreterVariable inter = new InterpreterVariable(postProcessor, encoding);
 		Model m = new Model();
 		Specification spec = inter.toImplementation(mock(Specification.class), m);
 		assertEquals(0, spec.getApplication().getVertexCount());
@@ -439,7 +441,8 @@ public class InterpreterTest {
 		Set<InterfaceVariable> vars = new HashSet<InterfaceVariable>();
 		vars.add(interMock);
 		when(mockEncoding.getInterfaceVariables()).thenReturn(vars);
-		InterpreterVariable inter = new InterpreterVariable(mockEncoding);
+		SpecificationPostProcessor postProcessor = new SpecificationPostProcessorNone();
+		InterpreterVariable inter = new InterpreterVariable(postProcessor, mockEncoding);
 		inter.initializeInterfaceVariables();
 	}
 
@@ -456,7 +459,8 @@ public class InterpreterTest {
 		vars.add(mapMock);
 		vars.add(allocationMock);
 		when(mockEncoding.getInterfaceVariables()).thenReturn(vars);
-		InterpreterVariable inter = new InterpreterVariable(mockEncoding);
+		SpecificationPostProcessor postProcessor = new SpecificationPostProcessorNone();
+		InterpreterVariable inter = new InterpreterVariable(postProcessor, mockEncoding);
 		assertFalse(inter.variablesInitialized);
 		inter.initializeInterfaceVariables();
 		verify(mockEncoding).getInterfaceVariables();
@@ -497,7 +501,8 @@ public class InterpreterTest {
 		InterfaceVariable mockVar = mock(InterfaceVariable.class);
 		when(mockVar.toString()).thenReturn("mockVar");
 		ImplementationEncodingModular mockEncoding = mock(ImplementationEncodingModular.class);
-		InterpreterVariable inter = new InterpreterVariable(mockEncoding);
+		SpecificationPostProcessor postProcessor = new SpecificationPostProcessorNone();
+		InterpreterVariable inter = new InterpreterVariable(postProcessor, mockEncoding);
 		String expected = "The variable mockVar is not encoded";
 		assertEquals(expected, inter.getNotEncodedMessage(mockVar));
 	}
