@@ -1,7 +1,5 @@
 package net.sf.opendse.io;
 
-import java.util.Collection;
-
 import org.junit.Assert;
 import org.junit.Test;
 

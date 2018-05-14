@@ -225,22 +225,20 @@ public class TGFFReader {
     				validMapping = values[attributes.indexOf(VALID)].equals("1") ? true : false;
     			}
     			
-    			if (validMapping) {
     			
-    				// if tasks exist that can be mapped to current resource type
-	    			if (tgffTypeMap.containsKey(tgffType)) {
+    			// if tasks exist that can be mapped to current resource type
+    			if (validMapping && tgffTypeMap.containsKey(tgffType)) {
 		    			
-	    				for (Task task : tgffTypeMap.get(tgffType)) {
-	    					String mappingID = "m" + CONNECTOR + task.getId() + CONNECTOR + res.getId();
-	    					Mapping<Task, Resource> mapping = new Mapping<Task, Resource>(mappingID, task, res);
-	    					
-	    					// annotate extracted attributes and values
-	    					for (int i = 0; i < values.length; i++) {
-	    						mapping.setAttribute(attributes.get(i), values[i]);
-	    					}
-	    					mappings.add(mapping);
-		    			}
-	    			}
+    				for (Task task : tgffTypeMap.get(tgffType)) {
+    					String mappingID = "m" + CONNECTOR + task.getId() + CONNECTOR + res.getId();
+    					Mapping<Task, Resource> mapping = new Mapping<Task, Resource>(mappingID, task, res);
+    					
+    					// annotate extracted attributes and values
+    					for (int i = 0; i < values.length; i++) {
+    						mapping.setAttribute(attributes.get(i), values[i]);
+    					}
+    					mappings.add(mapping);
+	    			}	
     			}
     		}		
     	}		
@@ -417,11 +415,7 @@ public class TGFFReader {
 	}
 
 	private static boolean isComment(String currentLine) {
-
-		if (currentLine.startsWith(COMMENT)) {
-			return true;
-		}
-		return false;
+		return currentLine.startsWith(COMMENT);
 	}	
 
 	private static boolean isClosing (String s) {
