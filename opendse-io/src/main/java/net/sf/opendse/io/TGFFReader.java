@@ -176,7 +176,7 @@ public class TGFFReader {
 				
 				// import -mocsyn wiring-properties as resource
 				else if (currentLine.contains(WIRE)) {
-					this.wiring = importWiring(br, resourceTypes);
+					this.wiring = importWiring(br);
 				}
 				
 				// import other @-annotated properties 
@@ -369,7 +369,7 @@ public class TGFFReader {
 		}
 	}
 	
-	private Link importWiring(BufferedReader br, ResourceTypes<Resource> resourceTypes) throws IOException {
+	private Link importWiring(BufferedReader br) throws IOException {
 		
 		Link link = new Link(WIRE);
 		
@@ -386,8 +386,7 @@ public class TGFFReader {
 			else {
 				link.setAttribute(property, currentLine);
 			}
-		}
-		
+		}		
 		return link;
 	}
 
