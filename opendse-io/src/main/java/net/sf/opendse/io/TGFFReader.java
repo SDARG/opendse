@@ -12,13 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import net.sf.opendse.model.Application;
-import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Mappings;
 import net.sf.opendse.model.Resource;
+import net.sf.opendse.model.ResourceTypes;
+import net.sf.opendse.model.TGFFSpecification;
 import net.sf.opendse.model.Task;
 
 
@@ -42,7 +43,6 @@ public class TGFFReader {
 	private static final String SERVER_PE = "@SERVER_PE";
 	private static final String PROC = "@PROC";
 	private static final String LINK = "LINK";  // also for @CLIENT_LINK, @SERVER_LINK, @PRIM_LINK -> no "@"
-	private static final String WIRE = "@WIRING";
 	
 	private static final String TASK = "TASK";
 	private static final String ARC = "ARC";
@@ -53,10 +53,9 @@ public class TGFFReader {
 	private static final String CLOSING = "}";
 	private static final String COMMENT = "#";
 	private static final String AT = "@";
-	private static final String SEPARATOR = " +";
+	private static final String SEPARATOR = "\\s+";
 	protected static final String CONNECTOR = "_";
 	
-	// names of set attributes -> public
 	public static final String TGFF_TYPE = "TGFF_TYPE";
 	public static final String PERIOD = "PERIOD"; 
 	public static final String MSG_SIZE = "MSG_SIZE";
@@ -64,21 +63,27 @@ public class TGFFReader {
 	public static final String RES_VALUES = "RES_VALUES";
 	public static final String HARD_DEADLINE = "HARD_DEADLINE";
 	public static final String SOFT_DEADLINE = "SOFT_DEADLINE";
+	public static final String WIRE = "@WIRING";
 	
-	protected String fileName;
+	
 	protected boolean parsed = false;
+	protected String fileName;
 	protected double hyperperiod;
 	protected String memory;
 
 	protected Application<Task, Dependency> application;
-	protected Architecture<Resource, Link> architecture;
+	protected ResourceTypes<Resource> resourceTypes;
 	protected Mappings<Task, Resource> mappings;
+	
+	protected TGFFSpecification tgffSpec;
+	
+	protected Link wiring;
 	
 	protected Map<String, String> properties;
 	protected Map<String, Double> messageSizes;	
+	
 
 	protected Map<String, List<Task>> tgffTypeMap = new HashMap<String, List<Task>>();
-
 	
 	public TGFFReader(String fileName) {
 		this.fileName = fileName;
@@ -98,8 +103,20 @@ public class TGFFReader {
 		return mappings;
 	}
 	
-	public Architecture<Resource, Link> getArchitecture() {
-		return architecture;
+	public ResourceTypes<Resource> getResourceTypes() {
+		return resourceTypes;
+	}
+	
+	public Link getWiring() {
+		return wiring;
+	}
+	
+	public TGFFSpecification getTGFFSpecification() {
+		
+		if (tgffSpec == null) {
+			tgffSpec = new TGFFSpecification(application, resourceTypes, mappings, wiring);
+		}
+		return tgffSpec;
 	}
 	
 	/**
@@ -120,7 +137,7 @@ public class TGFFReader {
 	private void parseFile(File tgffFile) {
 		
 		application = new Application<Task, Dependency>();
-		architecture = new Architecture<Resource, Link>();
+		resourceTypes = new ResourceTypes<Resource>();
 		mappings = new Mappings<Task, Resource>();
 			
 		BufferedReader br = null;
@@ -149,17 +166,17 @@ public class TGFFReader {
 				// import resources and mappings (only mappings to valid resource types are created)
 				else if (currentLine.contains(CORE) || currentLine.contains(PROC) || 
 						 currentLine.contains(CLIENT_PE) || currentLine.contains(SERVER_PE)) {
-					importCore(currentLine, br, architecture, mappings);
+					importCore(currentLine, br, resourceTypes, mappings);
 				}
 				
 				// import -coords/-cowls link resources
 				else if (currentLine.contains(LINK)) {
-					importLink(currentLine, br, architecture);
+					importLink(currentLine, br, resourceTypes);
 				}
 				
 				// import -mocsyn wiring-properties as resource
 				else if (currentLine.contains(WIRE)) {
-					importWiring(br, architecture);
+					this.wiring = importWiring(br, resourceTypes);
 				}
 				
 				// import other @-annotated properties 
@@ -180,10 +197,11 @@ public class TGFFReader {
 		}
 	}
 	
-	private void importCore(String name, BufferedReader br, Architecture<Resource, Link> architecture, Mappings<Task, Resource> mappings) throws IOException {
+	private void importCore(String name, BufferedReader br, ResourceTypes<Resource> resourceTypes, Mappings<Task, Resource> mappings) throws IOException {
 		
 		// create resource (type)
-		Resource res = new Resource("r" + name.split(SEPARATOR)[1]);
+		String id = "r" + name.split(SEPARATOR)[1];
+		Resource res = new Resource(id);
 		
 		// first line contains attributes of resources
 		String [] resAttributes = (br.readLine()).replace(COMMENT, "").trim().split(SEPARATOR);		
@@ -197,7 +215,7 @@ public class TGFFReader {
 		for (int i = 0; i < resAttributes.length; i++) {
 			res.setAttribute(resAttributes[i], resValues[i]);
 		}			
-		architecture.addVertex(res);
+		resourceTypes.put(id, res);
 		
 		// create mappings
 		String line;
@@ -212,7 +230,7 @@ public class TGFFReader {
     		// extract values for each attribute
     		else if (!isComment(line) && line.length() > 0) {
 
-    			String [] values = line.split(SEPARATOR);
+    			String [] values = line.trim().split(SEPARATOR);
     			assert values.length == attributes.size() : "tgff-file \"" + CORE + "\": number of values is not "
     					+ "equal to required number of attributes";
     			
@@ -244,15 +262,15 @@ public class TGFFReader {
     	}		
 	}
 
-	private static Map<String, Double> importMessageSizes (BufferedReader br) throws NumberFormatException, IOException {
+	private Map<String, Double> importMessageSizes (BufferedReader br) throws NumberFormatException, IOException {
 
 		Map<String, Double> sizes = new HashMap<String, Double>();
 		String line;
 		
 		while (!isClosing(line = br.readLine())) {
 			if (!isComment(line)) {					
-				String [] entries = line.split(SEPARATOR);
-				assert entries.length == 2: "tgff-file \"" + COMMUN_QUANT + "\": wrong number of entries";
+				String [] entries = line.trim().split(SEPARATOR);
+				assert entries.length >= 2: "tgff-file \"" + COMMUN_QUANT + "\": wrong number of entries";
 								
 	    		sizes.put(entries[0], Double.valueOf(entries[1]));
 	    	}			    		
@@ -294,7 +312,7 @@ public class TGFFReader {
 
 	private void addTask(String line, String suffix, double period, Application<Task, Dependency> application) {
 	
-		String [] entries = line.split(SEPARATOR);
+		String [] entries = line.trim().split(SEPARATOR);
 		assert entries.length >= 4: "tgff-file \"" + TASK + "\": wrong number of entries";
 		
 		String id = entries[1] + suffix;
@@ -321,7 +339,7 @@ public class TGFFReader {
 	
 	private void addCommunication (String line, String suffix, double period, Application<Task, Dependency> application) {
 			
-		String [] entries = line.split(SEPARATOR);
+		String [] entries = line.trim().split(SEPARATOR);
 		assert entries.length == 8: "tgff-file \"ARC\": wrong number of entries in line";
 		
 		String id = entries[1];
@@ -341,7 +359,7 @@ public class TGFFReader {
 	
 	private void addDeadline(String line, String suffix, Application<Task, Dependency> application, String deadlineType) {
 		
-		String [] entries = line.split(SEPARATOR);
+		String [] entries = line.trim().split(SEPARATOR);
 		assert entries.length == 6 : "tgff-file \"" + deadlineType +"\": wrong number of entries";
 		
 		Task t = application.getVertex(entries[3] + suffix);
@@ -351,9 +369,9 @@ public class TGFFReader {
 		}
 	}
 	
-	private void importWiring(BufferedReader br, Architecture<Resource, Link> architecture) throws IOException {
+	private Link importWiring(BufferedReader br, ResourceTypes<Resource> resourceTypes) throws IOException {
 		
-		Resource res = new Resource(WIRE);
+		Link link = new Link(WIRE);
 		
 		String currentLine;
 		String property = "";
@@ -366,10 +384,11 @@ public class TGFFReader {
 			}
 			// get corresponding attribute value
 			else {
-				res.setAttribute(property, currentLine);
+				link.setAttribute(property, currentLine);
 			}
 		}
-		architecture.addVertex(res);		
+		
+		return link;
 	}
 
 	private void importProperty(String line) {
@@ -385,10 +404,11 @@ public class TGFFReader {
 		properties.put(property[0], property[1]);	
 	}
 
-	private void importLink(String name, BufferedReader br, Architecture<Resource, Link> architecture) throws IOException {
+	private void importLink(String name, BufferedReader br, ResourceTypes<Resource> resourceTypes) throws IOException {
 				
 		// create resource
-		Resource link = new Resource("l" + name.split(SEPARATOR)[1]);
+		String id = "l" + name.split(SEPARATOR)[1];
+		Resource link = new Resource(id);
 		
 		// next line contains attributes of links
 		String [] linkAttributes = (br.readLine()).replace(COMMENT, "").trim().split(SEPARATOR);		
@@ -407,18 +427,18 @@ public class TGFFReader {
 				}
 			}
 		}
-		architecture.addVertex(link);
+		resourceTypes.put(id, link);
 	}
 
-	private static double importHyperperiod(String line) {
+	private double importHyperperiod(String line) {
 		return Double.parseDouble(line.replace(HYPERPERIOD, "").trim());
 	}
 
-	private static boolean isComment(String currentLine) {
-		return currentLine.startsWith(COMMENT);
+	private boolean isComment(String line) {
+		return line.startsWith(COMMENT);
 	}	
 
-	private static boolean isClosing (String s) {
-		return (s.contains(CLOSING) && !s.contains(COMMENT));
+	private boolean isClosing (String line) {
+		return (line.contains(CLOSING) && !line.contains(COMMENT));
 	}
 }
