@@ -35,7 +35,7 @@ public class RoutingSearch {
 	public static Architecture<Resource, Link> findShortestPath(Resource source, Resource destination,
 			Architecture<Resource, Link> architecture) {
 		Architecture<Resource, Link> result = new Architecture<Resource, Link>();
-
+		result.addVertex(source);
 		UnweightedShortestPath<Resource, Link> shortestPath = new UnweightedShortestPath<Resource, Link>(architecture);
 		// checks if destination is reachable from source
 		if (!shortestPath.getDistanceMap(source).containsKey(destination)) {
