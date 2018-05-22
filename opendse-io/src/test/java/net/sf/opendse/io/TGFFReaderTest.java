@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,9 @@ import org.junit.Test;
 
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Dependency;
+import net.sf.opendse.model.Link;
+import net.sf.opendse.model.LinkTypes;
+import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Mappings;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.ResourceTypes;
@@ -78,7 +82,16 @@ public class TGFFReaderTest {
 	 */
 	@Test
 	public void testToSpecification() {
-		fail("Not yet implemented");
+		
+		List<String> in = importFile(testFile, 0);	
+		TypeBasedSpecification spec = new TGFFReader().toSpecification(in);
+
+		Assert.assertNotNull(spec);
+		Assert.assertNotNull(spec.getApplication());
+		Assert.assertNotNull(spec.getResourceTypes());
+		Assert.assertNotNull(spec.getLinkTypes());
+		Assert.assertNotNull(spec.getMappings());
+
 	}
 
 	/**
@@ -87,7 +100,30 @@ public class TGFFReaderTest {
 	 */
 	@Test
 	public void testToApplication() {
-		fail("Not yet implemented");
+		
+		List<String> in = importFile(testFile, 0);	
+		Application<Task, Dependency> application = new TGFFReader().toApplication(in);
+
+		Assert.assertNotNull(application);
+		
+		Assert.assertEquals(8, application.getVertexCount());
+		Assert.assertEquals(6, application.getEdgeCount());
+		
+		Assert.assertEquals("t0_0_0", (application.getVertices()).iterator().next());
+		Assert.assertEquals("t0_1_0", (application.getVertices()).iterator().next());
+		Assert.assertEquals("t0_2_0", (application.getVertices()).iterator().next());
+		Assert.assertEquals("t0_3_0", (application.getVertices()).iterator().next());
+		
+		Assert.assertEquals("a0_0", (application.getVertices()).iterator().next());
+		Assert.assertEquals("a0_1", (application.getVertices()).iterator().next());
+		Assert.assertEquals("a0_2", (application.getVertices()).iterator().next());
+		
+		Assert.assertEquals("a0_0_0", (application.getEdges()).iterator().next());
+		Assert.assertEquals("a0_0_1", (application.getEdges()).iterator().next());
+		Assert.assertEquals("a0_1_0", (application.getEdges()).iterator().next());
+		Assert.assertEquals("a0_1_1", (application.getEdges()).iterator().next());
+		Assert.assertEquals("a0_2_0", (application.getEdges()).iterator().next());
+		Assert.assertEquals("a0_2_1", (application.getEdges()).iterator().next());
 	}
 
 	/**
@@ -132,7 +168,12 @@ public class TGFFReaderTest {
 	 */
 	@Test
 	public void testToLinkTypes() {
-		fail("Not yet implemented");
+		
+		LinkTypes<Link> linkTypes = new TGFFReader().toLinkTypes(importFile(testFile, 0));
+		
+		Assert.assertEquals(1, linkTypes.size());
+		Assert.assertTrue(linkTypes.containsKey(TGFFReader.WIRE));
+		Assert.assertNotNull(linkTypes.get(TGFFReader.WIRE).getAttribute("max_buffer_size"));
 	}
 
 	/**
@@ -141,7 +182,33 @@ public class TGFFReaderTest {
 	 */
 	@Test
 	public void testImportTaskGraph() {
-		fail("Not yet implemented");
+		
+		String line = "@TASK_GRAPH 0 test";
+		Iterator<String> it = importFile(testFile, 11).iterator();	
+		Application<Task, Dependency> application = new Application<Task, Dependency>();
+		
+		new TGFFReader().importTaskGraph(line, it, application);
+		
+		Assert.assertNotNull(application);
+		
+		Assert.assertEquals(8, application.getVertexCount());
+		Assert.assertEquals(6, application.getEdgeCount());
+		
+		Assert.assertEquals("t0_0_0", (application.getVertices()).iterator().next());
+		Assert.assertEquals("t0_1_0", (application.getVertices()).iterator().next());
+		Assert.assertEquals("t0_2_0", (application.getVertices()).iterator().next());
+		Assert.assertEquals("t0_3_0", (application.getVertices()).iterator().next());
+		
+		Assert.assertEquals("a0_0", (application.getVertices()).iterator().next());
+		Assert.assertEquals("a0_1", (application.getVertices()).iterator().next());
+		Assert.assertEquals("a0_2", (application.getVertices()).iterator().next());
+		
+		Assert.assertEquals("a0_0_0", (application.getEdges()).iterator().next());
+		Assert.assertEquals("a0_0_1", (application.getEdges()).iterator().next());
+		Assert.assertEquals("a0_1_0", (application.getEdges()).iterator().next());
+		Assert.assertEquals("a0_1_1", (application.getEdges()).iterator().next());
+		Assert.assertEquals("a0_2_0", (application.getEdges()).iterator().next());
+		Assert.assertEquals("a0_2_1", (application.getEdges()).iterator().next());
 	}
 
 	/**
@@ -257,7 +324,27 @@ public class TGFFReaderTest {
 	 */
 	@Test
 	public void testImportMappings() {
-		fail("Not yet implemented");
+		
+		List<String> in = importFile(testFile, 0);
+		
+		TGFFReader reader = new TGFFReader();
+		ResourceTypes<Resource> resourceTypes = reader.toResourceTypes(in);
+		
+		Iterator<String> it = importFile(testFile, 30).iterator();
+		String name = "@CORE 0 test";
+		
+		Mappings<Task, Resource> mappings = new Mappings<Task, Resource>();
+		reader.importMappings(name, it, resourceTypes, mappings);
+				
+		Assert.assertEquals(4, mappings.size());
+		
+		List<String> ids = new ArrayList<String>(Arrays.asList("m_t0_0_r0", "m_t0_1_r0, m_t0_2_r0, m_t0_3_r0"));
+		List<String> times = new ArrayList<String>(Arrays.asList("7", "10", "11"));
+		
+		for (Mapping<Task, Resource> mapping : mappings.getAll()) {
+			Assert.assertTrue(ids.contains(mapping.getId()));
+			Assert.assertTrue(times.contains(mapping.getAttribute("time")));
+		}
 	}
 
 	/**
@@ -283,20 +370,19 @@ public class TGFFReaderTest {
 
 	/**
 	 * Test method for
-	 * {@link net.sf.opendse.io.TGFFReader#importLink(java.lang.String, java.util.Iterator, net.sf.opendse.model.LinkTypes)}.
-	 */
-	@Test
-	public void testImportLink() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for
 	 * {@link net.sf.opendse.io.TGFFReader#importWireLink(java.util.Iterator, net.sf.opendse.model.LinkTypes)}.
 	 */
 	@Test
 	public void testImportWireLink() {
-		fail("Not yet implemented");
+		
+		Iterator<String> it = importFile(testFile, 67).iterator();
+		LinkTypes<Link> linkTypes = new LinkTypes<Link>();
+		
+		new TGFFReader().importWireLink(it, linkTypes);
+		
+		Assert.assertEquals(1, linkTypes.size());
+		Assert.assertTrue(linkTypes.containsKey(TGFFReader.WIRE));
+		Assert.assertNotNull(linkTypes.get(TGFFReader.WIRE).getAttribute("max_buffer_size"));
 	}
 
 	/**
@@ -305,7 +391,11 @@ public class TGFFReaderTest {
 	 */
 	@Test
 	public void testImportHyperperiod() {
-		fail("Not yet implemented");
+		
+		String line = "@HYPERPERIOD 300";
+		Double hyperperiod = new TGFFReader().importHyperperiod(line);
+		
+		Assert.assertEquals(300l, hyperperiod.longValue());
 	}
 
 	/**
