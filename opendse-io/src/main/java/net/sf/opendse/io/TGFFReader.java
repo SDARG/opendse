@@ -300,12 +300,15 @@ public class TGFFReader {
 		assert entries.length == 8 : "tgff-file \"ARC\": wrong number of entries in line";
 
 		String id = entries[1];
+		String tgffType = entries[7];
 
 		Communication comm = new Communication(id);
 		comm.setAttribute(PERIOD, period);
-		comm.setAttribute(TGFF_TYPE, entries[7]);
+		comm.setAttribute(TGFF_TYPE, tgffType);
 
-		comm.setAttribute(MSG_SIZE, messageSizes.get(entries[7]));
+		if (messageSizes != null && messageSizes.containsKey(tgffType)) {
+			comm.setAttribute(MSG_SIZE, messageSizes.get(entries[7]));
+		}
 
 		Task t1 = application.getVertex(entries[3] + suffix);
 		Task t2 = application.getVertex(entries[5] + suffix);
@@ -360,8 +363,7 @@ public class TGFFReader {
 
 		// skip resource type information (already imported in
 		// toResourceTypes())
-		String typeInfo;
-		while (it.hasNext() && skip(typeInfo = it.next())) {
+		while (it.hasNext() && skip(it.next())) {
 		}
 
 		// create mappings
