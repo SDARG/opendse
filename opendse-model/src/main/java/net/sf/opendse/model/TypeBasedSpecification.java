@@ -5,22 +5,22 @@ import java.util.Set;
 import net.sf.opendse.model.parameter.Parameter;
 
 /**
- * The {@code TGFFSpecification} consists of an {@link Application},
- * {@link ResourceTypes}, and {@link Mappings}.
+ * The {@code TypeBasedSpecification} consists of an {@link Application},
+ * {@link ResourceTypes}, {@link LinkTypes}, and {@link Mappings}.
  * 
  * @author Valentina Richthammer
  * 
  */
-public class TGFFSpecification implements IAttributes {
+public class TypeBasedSpecification implements IAttributes, ApplicationProvider {
 
-	protected ResourceTypes<?> resourceTypes = null;
 	protected Application<?, ?> application = null;
 	protected Mappings<?, ?> mappings = null;
-	protected Link wiring = null;
+	protected ResourceTypes<?> resourceTypes = null;
+	protected LinkTypes<?> linkTypes = null;
 	protected Attributes attributes = new Attributes();
 
 	/**
-	 * Constructs the specification. 
+	 * Constructs the specification.
 	 * 
 	 * @param application
 	 *            the application
@@ -29,12 +29,12 @@ public class TGFFSpecification implements IAttributes {
 	 * @param mappings
 	 *            the type mappings
 	 */
-	public TGFFSpecification(Application<?, ?> application, ResourceTypes<?> resourceTypes, Mappings<?, ?> mappings, Link wiring) {
-		super();
+	public TypeBasedSpecification(Application<?, ?> application, ResourceTypes<?> resourceTypes,
+			Mappings<?, ?> mappings, LinkTypes<?> linkTypes) {
 		this.resourceTypes = resourceTypes;
 		this.application = application;
 		this.mappings = mappings;
-		this.wiring = wiring;
+		this.linkTypes = linkTypes;
 	}
 
 	/**
@@ -45,10 +45,10 @@ public class TGFFSpecification implements IAttributes {
 	 * @return the architecture
 	 */
 	@SuppressWarnings("unchecked")
-	public <L extends Link> L getWiring() {
-		return (L) wiring;
+	public <L extends LinkTypes<?>> L getLinkTypes() {
+		return (L) linkTypes;
 	}
-	
+
 	/**
 	 * Returns the set of resource types.
 	 * 
