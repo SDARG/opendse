@@ -41,8 +41,8 @@ import edu.uci.ics.jung.graph.util.Pair;
 public class Models {
 
 	/**
-	 * The {@code IsCommunicationPredicate} is a {@code Predicate} that returns true if the task implements the
-	 * {@link ICommunication} interface.
+	 * The {@code IsCommunicationPredicate} is a {@code Predicate} that returns true
+	 * if the task implements the {@link ICommunication} interface.
 	 * 
 	 * @author Martin Lukasiewycz
 	 * 
@@ -66,7 +66,8 @@ public class Models {
 	protected static IsCommunicationPredicate isCommunicationPredicate = new IsCommunicationPredicate();
 
 	/**
-	 * The {@code OnlyCommunicationIterator} is an iterator for tasks that only considers communication tasks.
+	 * The {@code OnlyCommunicationIterator} is an iterator for tasks that only
+	 * considers communication tasks.
 	 * 
 	 * @author Martin Lukasiewycz
 	 * 
@@ -90,8 +91,8 @@ public class Models {
 	protected static IsProcessPredicate isProcessPredicate = new IsProcessPredicate();
 
 	/**
-	 * The {@code IsCommunicationPredicate} is a {@code Predicate} that returns true if the task does not implement the
-	 * {@link ICommunication} interface.
+	 * The {@code IsCommunicationPredicate} is a {@code Predicate} that returns true
+	 * if the task does not implement the {@link ICommunication} interface.
 	 * 
 	 * @author Martin Lukasiewycz
 	 * 
@@ -110,7 +111,8 @@ public class Models {
 	}
 
 	/**
-	 * The {@code OnlyCommunicationIterator} is an iterator for tasks that only considers process tasks.
+	 * The {@code OnlyCommunicationIterator} is an iterator for tasks that only
+	 * considers process tasks.
 	 * 
 	 * @author Martin Lukasiewycz
 	 * 
@@ -129,7 +131,8 @@ public class Models {
 	}
 
 	/**
-	 * Filters an {@code Iterable} such that only communication tasks are considered.
+	 * Filters an {@code Iterable} such that only communication tasks are
+	 * considered.
 	 * 
 	 * @param iterable
 	 *            the iterable
@@ -183,8 +186,8 @@ public class Models {
 	}
 
 	/**
-	 * The {@code DirectedLink} is a {@link Link} wrapper that contains the source {@code Resource} and destination
-	 * {@code Resource}.
+	 * The {@code DirectedLink} is a {@link Link} wrapper that contains the source
+	 * {@code Resource} and destination {@code Resource}.
 	 * 
 	 * @author Martin Lukasiewycz
 	 * 
@@ -209,6 +212,15 @@ public class Models {
 			this.l = l;
 			this.r0 = r0;
 			this.r1 = r1;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj instanceof DirectedLink) {
+				DirectedLink other = (DirectedLink) obj;
+				return (this.l.equals(other.l) && this.r0.equals(other.r0) && this.r1.equals(other.r1));
+			}
+			return false;
 		}
 
 		/**
@@ -240,7 +252,8 @@ public class Models {
 	}
 
 	/**
-	 * Returns the list of {@code DirectedLink} elements that have a given source {code Resource}.
+	 * Returns the list of {@code DirectedLink} elements that have a given source
+	 * {code Resource}.
 	 * 
 	 * @param architecture
 	 *            the architecture
@@ -262,7 +275,8 @@ public class Models {
 	}
 
 	/**
-	 * Returns the list of {@code DirectedLink} elements that have a given destination {code Resource}.
+	 * Returns the list of {@code DirectedLink} elements that have a given
+	 * destination {code Resource}.
 	 * 
 	 * @param architecture
 	 *            the architecture
@@ -295,7 +309,8 @@ public class Models {
 	}
 
 	/**
-	 * Returns all {@code DirectedLink} elements of an {@code Architecture} for given {@code Link}.
+	 * Returns all {@code DirectedLink} elements of an {@code Architecture} for
+	 * given {@code Link}.
 	 * 
 	 * @param architecture
 	 *            the architecture
@@ -320,7 +335,8 @@ public class Models {
 	}
 
 	/**
-	 * Returns a map of all pairs of {@code ids} and the corresponding {@code Element} objects.
+	 * Returns a map of all pairs of {@code ids} and the corresponding
+	 * {@code Element} objects.
 	 * 
 	 * @param specification
 	 *            the specification
@@ -373,8 +389,8 @@ public class Models {
 	}
 
 	/**
-	 * Returns an {@link Iterable} which returns only those {@link Element}s from the given {@code iterable} which are
-	 * of one of the given {@code types}.
+	 * Returns an {@link Iterable} which returns only those {@link Element}s from
+	 * the given {@code iterable} which are of one of the given {@code types}.
 	 * 
 	 * @param <E>
 	 *            the type of the element
@@ -405,8 +421,8 @@ public class Models {
 	}
 
 	/**
-	 * Creates a copy of the given {@link Specification} using {@link #copy(Element)}, i.e., create new instances for
-	 * all {@link Element}s.
+	 * Creates a copy of the given {@link Specification} using
+	 * {@link #copy(Element)}, i.e., create new instances for all {@link Element}s.
 	 * 
 	 * @param specification
 	 * @return
@@ -528,7 +544,8 @@ public class Models {
 	}
 
 	/**
-	 * Creates a clone of the {@link Specification}, i.e., with identical {@link Element}s ({@code ==}).
+	 * Creates a clone of the {@link Specification}, i.e., with identical
+	 * {@link Element}s ({@code ==}).
 	 * 
 	 * @param specification
 	 *            the specification to be cloned
@@ -555,7 +572,8 @@ public class Models {
 	}
 
 	/**
-	 * Creates a clone of the {@link Application}, i.e., with identical {@link Element}s ({@code ==}).
+	 * Creates a clone of the {@link Application}, i.e., with identical
+	 * {@link Element}s ({@code ==}).
 	 * 
 	 * @param sApplication
 	 *            the application to be cloned
@@ -579,7 +597,8 @@ public class Models {
 	}
 
 	/**
-	 * Creates a clone of the {@link Architecture}, i.e., with identical {@link Element}s ({@code ==}).
+	 * Creates a clone of the {@link Architecture}, i.e., with identical
+	 * {@link Element}s ({@code ==}).
 	 * 
 	 * @param sArchitecture
 	 *            the architecture to be cloned

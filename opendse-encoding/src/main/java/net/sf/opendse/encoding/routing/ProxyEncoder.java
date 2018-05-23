@@ -153,7 +153,7 @@ public class ProxyEncoder implements AdditionalCommFlowEncoder {
 	protected Set<Constraint> generateInternalRoutings(M srcM, M destM, CommunicationFlow commFlow) {
 		Set<Constraint> result = new HashSet<Constraint>();
 		Resource src = srcM.getMapping().getTarget();
-		Resource dest = srcM.getMapping().getTarget();
+		Resource dest = destM.getMapping().getTarget();
 		Set<DirectedLink> path = proxyRoutings.getLinksBetweenResources(src, dest);
 		Set<M> activationConditions = new HashSet<M>();
 		activationConditions.add(srcM);
@@ -243,7 +243,7 @@ public class ProxyEncoder implements AdditionalCommFlowEncoder {
 			c.add(new Term(-1, net.sf.opendse.optimization.encoding.variables.Variables.n(linkVar)));
 			c.add(Variables.n(endPointMapping));
 			for (M neighborMapping : neighborMappings) {
-				c.add(Variables.n(neighborMapping));
+				c.add(Variables.p(neighborMapping));
 			}
 			result.add(c);
 		}
