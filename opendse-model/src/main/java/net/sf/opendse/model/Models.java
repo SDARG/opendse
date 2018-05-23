@@ -222,6 +222,16 @@ public class Models {
 			}
 			return false;
 		}
+		
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((l == null) ? 0 : l.hashCode());
+			result = prime * result + ((r0 == null) ? 0 : r0.hashCode());
+			result = prime * result + ((r1 == null) ? 0 : r1.hashCode());
+			return result;
+		}
 
 		/**
 		 * Returns the wrapped {@code Link}.
