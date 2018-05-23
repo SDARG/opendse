@@ -417,7 +417,7 @@ public class TGFFReaderTest {
 		TGFFReader reader = new TGFFReader();
 
 		Assert.assertTrue(reader.isComment("# a comment"));
-		Assert.assertTrue(!reader.isComment("not a comment"));
+		Assert.assertFalse(reader.isComment("not a comment"));
 	}
 
 	/**
@@ -430,7 +430,7 @@ public class TGFFReaderTest {
 		TGFFReader reader = new TGFFReader();
 
 		Assert.assertTrue(reader.isClosing("closing line: }"));
-		Assert.assertTrue(!reader.isClosing("# non-closing line..."));
+		Assert.assertFalse(reader.isClosing("# non-closing line..."));
 	}
 
 	/**
@@ -443,7 +443,7 @@ public class TGFFReaderTest {
 		TGFFReader reader = new TGFFReader();
 
 		Assert.assertTrue(reader.skip("line to be skipped"));
-		Assert.assertTrue(!reader.skip(TGFFReader.HEADER));
+		Assert.assertFalse(reader.skip(TGFFReader.HEADER));
 	}
 
 	public static List<String> importFile(String file, int startingLine) {
