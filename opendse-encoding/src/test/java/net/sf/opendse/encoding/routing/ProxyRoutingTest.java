@@ -23,6 +23,7 @@ import net.sf.opendse.model.Mappings;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Task;
+import net.sf.opendse.model.properties.ArchitectureElementPropertyService;
 import net.sf.opendse.model.properties.ResourcePropertyService;
 import verification.ConstraintVerifier;
 
@@ -98,6 +99,12 @@ public class ProxyRoutingTest {
 		ResourcePropertyService.setProxyId(r4, r1);
 		ResourcePropertyService.setProxyId(r3, r2);
 		routing.addEdge(l2, r1, r2, EdgeType.UNDIRECTED);
+		routing.addEdge(l0, r0, r1, EdgeType.UNDIRECTED);
+		ArchitectureElementPropertyService.setOfferRoutingVariety(l0, false);
+		routing.addEdge(l3, r2, r3, EdgeType.UNDIRECTED);
+		ArchitectureElementPropertyService.setOfferRoutingVariety(l3, false);
+		routing.addEdge(l1, r1, r4, EdgeType.UNDIRECTED);
+		ArchitectureElementPropertyService.setOfferRoutingVariety(l1, false);
 		routings.set(c0, routing);
 		routings.set(c1, routing);
 
@@ -124,7 +131,6 @@ public class ProxyRoutingTest {
 		for (MappingVariable mVar : mappingVariables) {
 			verifyRouting.activateVariable(mVar);
 		}
-
 		
 		CLRR c0l2 = Variables.varCLRR(c0, l2, r1, r2);
 		CLRR c0l0 = Variables.varCLRR(c0, l0, r0, r1);
@@ -142,9 +148,8 @@ public class ProxyRoutingTest {
 		verifyRouting.verifyVariableDeactivated(c0l1);
 		
 		verifyRouting.verifyVariableDeactivated(c1l2);
-		verifyRouting.verifyVariableDeactivated(c1l0);
+		verifyRouting.verifyVariableActivated(c1l0);
 		verifyRouting.verifyVariableDeactivated(c1l3);
-		verifyRouting.verifyVariableDeactivated(c1l1);
+		verifyRouting.verifyVariableActivated(c1l1);
 	}
-
 }

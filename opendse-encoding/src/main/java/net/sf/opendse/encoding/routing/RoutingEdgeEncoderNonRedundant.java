@@ -11,6 +11,7 @@ import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Models;
 import net.sf.opendse.model.Resource;
+import net.sf.opendse.model.properties.ArchitectureElementPropertyService;
 import net.sf.opendse.model.Models.DirectedLink;
 
 /**
@@ -31,6 +32,19 @@ public class RoutingEdgeEncoderNonRedundant implements RoutingEdgeEncoder {
 		for (Resource resource : routing) {
 			Set<DirectedLink> inLinks = new HashSet<Models.DirectedLink>(Models.getInLinks(routing, resource));
 			Set<DirectedLink> outLinks = new HashSet<Models.DirectedLink>(Models.getOutLinks(routing, resource));
+			Set<DirectedLink> toRemove = new HashSet<Models.DirectedLink>();
+			for (DirectedLink dirLink : inLinks) {
+				if (!ArchitectureElementPropertyService.getOffersRoutingVariety(dirLink.getLink())) {
+					toRemove.add(dirLink);
+				}
+			}
+			for (DirectedLink dirLink : outLinks) {
+				if (!ArchitectureElementPropertyService.getOffersRoutingVariety(dirLink.getLink())) {
+					toRemove.add(dirLink);
+				}
+			}
+			inLinks.removeAll(toRemove);
+			outLinks.removeAll(toRemove);
 			routingEdgeConstraints.add(makeOutLinkConstraint(communicationFlow, resource, outLinks));
 			routingEdgeConstraints.add(makeInLinkConstraint(communicationFlow, resource, inLinks));
 			routingEdgeConstraints.add(makeLinkBalanceConstraint(communicationFlow, resource, inLinks, outLinks));

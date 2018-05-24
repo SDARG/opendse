@@ -9,6 +9,7 @@ import org.opt4j.satdecoding.Term;
 
 import net.sf.opendse.encoding.constraints.Constraints;
 import net.sf.opendse.encoding.preprocessing.ProxyRoutings;
+import net.sf.opendse.encoding.preprocessing.ProxyRoutingsShortestPath;
 import net.sf.opendse.encoding.variables.DDLRR;
 import net.sf.opendse.encoding.variables.M;
 import net.sf.opendse.encoding.variables.MappingVariable;
@@ -30,17 +31,11 @@ import net.sf.opendse.model.properties.ResourcePropertyService;
  * @author Fedor Smirnov
  *
  */
-public class ProxyEncoder implements AdditionalCommFlowEncoder {
+public class ProxyEncoder {
 
-	protected final ProxyRoutings proxyRoutings;
-
-	public ProxyEncoder(ProxyRoutings proxyRoutings) {
-		this.proxyRoutings = proxyRoutings;
-	}
-
-	@Override
 	public Set<Constraint> toConstraints(CommunicationFlow flow, Architecture<Resource, Link> routing,
 			Set<MappingVariable> mappingVariables) {
+		ProxyRoutings proxyRoutings = new ProxyRoutingsShortestPath(routing);
 		Set<Constraint> result = new HashSet<Constraint>();
 		// finds the mapping variables for the src and the dest task
 		Task srcTask = flow.getSourceDTT().getSourceTask();
@@ -67,10 +62,10 @@ public class ProxyEncoder implements AdditionalCommFlowEncoder {
 				}
 			}
 			// formulates the routing to proxy constraints
-			result.addAll(generateSourceToProxyConstraint(srcMvar, proxyNeighborMappings, flow));
+			result.addAll(generateSourceToProxyConstraint(srcMvar, proxyNeighborMappings, flow, proxyRoutings));
 			// formulates the internal routing constraints
 			for (M neighborDestM : proxyNeighborMappings) {
-				result.addAll(generateInternalRoutings(srcMvar, neighborDestM, flow));
+				result.addAll(generateInternalRoutings(srcMvar, neighborDestM, flow, proxyRoutings));
 			}
 		}
 		// formulate the constraints for external dest mappings
@@ -82,14 +77,14 @@ public class ProxyEncoder implements AdditionalCommFlowEncoder {
 					proxyNeighborMappings.add(srcMvar);
 				}
 			}
-			result.addAll(generateProxyToDestinationConstraints(destMvar, proxyNeighborMappings, flow));
+			result.addAll(generateProxyToDestinationConstraints(destMvar, proxyNeighborMappings, flow, proxyRoutings));
 		}
 		// formulates the constraints excluding unnecessary links that don't offer
 		// routing variety
 		for (Link link : routing.getEdges()) {
 			if (!ArchitectureElementPropertyService.getOffersRoutingVariety(link)) {
 				for (DirectedLink dirLink : Models.getLinks(routing, link)) {
-					result.add(processDirectedLink(dirLink, flow, srcMapVars, destMapVars));
+					result.add(processDirectedLink(dirLink, flow, srcMapVars, destMapVars, proxyRoutings));
 				}
 			}
 		}
@@ -115,7 +110,7 @@ public class ProxyEncoder implements AdditionalCommFlowEncoder {
 	 *         active
 	 */
 	protected Constraint processDirectedLink(DirectedLink dirLink, CommunicationFlow commFlow, Set<M> srcMappings,
-			Set<M> destMappings) {
+			Set<M> destMappings, ProxyRoutings proxyRoutings) {
 		Set<Resource> relevantResourcesSource = proxyRoutings.getRelevantSourceResources(dirLink);
 		Set<Resource> relevantResourcesDestination = proxyRoutings.getRelevantDestinationResources(dirLink);
 		Set<M> relevantVariables = new HashSet<M>();
@@ -150,7 +145,8 @@ public class ProxyEncoder implements AdditionalCommFlowEncoder {
 	 *         to the mapping destination has to be active inside the proxy area if
 	 *         both mappings are active
 	 */
-	protected Set<Constraint> generateInternalRoutings(M srcM, M destM, CommunicationFlow commFlow) {
+	protected Set<Constraint> generateInternalRoutings(M srcM, M destM, CommunicationFlow commFlow,
+			ProxyRoutings proxyRoutings) {
 		Set<Constraint> result = new HashSet<Constraint>();
 		Resource src = srcM.getMapping().getTarget();
 		Resource dest = destM.getMapping().getTarget();
@@ -184,8 +180,8 @@ public class ProxyEncoder implements AdditionalCommFlowEncoder {
 	 *         active and the source mapping lies outside the proxy area
 	 */
 	protected Set<Constraint> generateProxyToDestinationConstraints(M destM, Set<M> neighborSrcMs,
-			CommunicationFlow commFlow) {
-		return generateProxyRoutingConstraints(destM, neighborSrcMs, commFlow, false);
+			CommunicationFlow commFlow, ProxyRoutings proxyRoutings) {
+		return generateProxyRoutingConstraints(destM, neighborSrcMs, commFlow, false, proxyRoutings);
 	}
 
 	/**
@@ -205,9 +201,9 @@ public class ProxyEncoder implements AdditionalCommFlowEncoder {
 	 *         the proxy has to be active if the source mapping is active and the
 	 *         destination mapping lies outside the proxy area
 	 */
-	protected Set<Constraint> generateSourceToProxyConstraint(M srcM, Set<M> neighborDestMs,
-			CommunicationFlow commFlow) {
-		return generateProxyRoutingConstraints(srcM, neighborDestMs, commFlow, true);
+	protected Set<Constraint> generateSourceToProxyConstraint(M srcM, Set<M> neighborDestMs, CommunicationFlow commFlow,
+			ProxyRoutings proxyRoutings) {
+		return generateProxyRoutingConstraints(srcM, neighborDestMs, commFlow, true, proxyRoutings);
 	}
 
 	/**
@@ -231,7 +227,7 @@ public class ProxyEncoder implements AdditionalCommFlowEncoder {
 	 *         active within the proxy area
 	 */
 	protected Set<Constraint> generateProxyRoutingConstraints(M endPointMapping, Set<M> neighborMappings,
-			CommunicationFlow commFlow, boolean source) {
+			CommunicationFlow commFlow, boolean source, ProxyRoutings proxyRoutings) {
 		Set<Constraint> result = new HashSet<Constraint>();
 		Resource resource = endPointMapping.getMapping().getTarget();
 		Set<DirectedLink> directedLinks = source ? proxyRoutings.getResourceToProxyLinks(resource)

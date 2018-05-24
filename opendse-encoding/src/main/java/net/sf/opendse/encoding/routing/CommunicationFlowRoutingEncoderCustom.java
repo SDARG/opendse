@@ -11,8 +11,7 @@ package net.sf.opendse.encoding.routing;
 public class CommunicationFlowRoutingEncoderCustom extends CommunicationFlowRoutingEncoderAbstract {
 
 	public CommunicationFlowRoutingEncoderCustom(ActivationEncoder activationEncoder, EndNodeEncoder endNodeEncoder,
-			RoutingResourceEncoder interimNodeEncoder, RoutingEdgeEncoder edgeEncoder) {
-		super(activationEncoder, endNodeEncoder, interimNodeEncoder, edgeEncoder);
+			RoutingResourceEncoder interimNodeEncoder, RoutingEdgeEncoder edgeEncoder, ProxyEncoder proxyEncoder) {
+		super(activationEncoder, endNodeEncoder, interimNodeEncoder, edgeEncoder, proxyEncoder);
 	}
-
 }

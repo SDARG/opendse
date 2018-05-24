@@ -140,7 +140,7 @@ public class ProxyEncoderTest {
 		destRes1.add(r1);
 		when(proxyRoutings.getRelevantDestinationResources(dirLink3_1)).thenReturn(destRes1);
 		
-		ProxyEncoder proxyEncoder = new ProxyEncoder(proxyRoutings);
+		ProxyEncoder proxyEncoder = new ProxyEncoder();
 		Set<Constraint> cs = proxyEncoder.toConstraints(flow_t0_t1, routing, mappingVariables);
 		ConstraintVerifier verifyFlow1 = new ConstraintVerifier(activatedVars, deactivatedVars, cs);
 		verifyFlow1.verifyVariableActivated(Variables.varDDLRR(flow_t0_t1, new DirectedLink(l0, r0, r3)));
