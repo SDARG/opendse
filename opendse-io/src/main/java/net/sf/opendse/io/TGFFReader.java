@@ -350,10 +350,10 @@ public class TGFFReader {
 		assert entries.length == 6 : "tgff-file \"" + deadlineType + "\": wrong number of entries";
 
 		Task t = application.getVertex(entries[3] + suffix);
+		assert t != null : "error in tgff file: task " + entries[3]
+				+ " does not exist, so cannot be assigned a deadline.";
 
-		if (t != null) {
-			t.setAttribute(deadlineType, Double.parseDouble(entries[5]));
-		}
+		t.setAttribute(deadlineType, Double.parseDouble(entries[5]));
 	}
 
 	protected void importCore(String name, Iterator<String> it, ResourceTypes<Resource> resourceTypes) {

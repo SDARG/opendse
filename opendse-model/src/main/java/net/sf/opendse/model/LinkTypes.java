@@ -10,7 +10,6 @@ import java.util.HashMap;
  * @param <L>
  *            the type of link
  */
-
 public class LinkTypes<L extends Link> extends HashMap<String, L> {
 
 	private static final long serialVersionUID = 1L;

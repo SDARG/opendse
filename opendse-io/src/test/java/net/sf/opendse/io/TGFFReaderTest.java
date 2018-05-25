@@ -302,7 +302,7 @@ public class TGFFReaderTest {
 	 * Test method for
 	 * {@link net.sf.opendse.io.TGFFReader#addDeadline(java.lang.String, java.lang.String, net.sf.opendse.model.Application, java.lang.String)}.
 	 */
-	@Test
+	@Test(expected = AssertionError.class)
 	public void testAddDeadlineToNonExistantTask() {
 
 		String line = "HARD_DEADLINE d0_0 ON sink AT 0.0003";
@@ -310,10 +310,7 @@ public class TGFFReaderTest {
 
 		Application<Task, Dependency> application = new Application<Task, Dependency>();
 
-		String deadlineType = TGFFReader.HARD_DEADLINE;
-
-		TGFFReader reader = new TGFFReader();
-		reader.addDeadline(line, suffix, application, deadlineType);
+		new TGFFReader().addDeadline(line, suffix, application, TGFFReader.HARD_DEADLINE);
 	}
 
 	/**
