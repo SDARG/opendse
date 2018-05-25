@@ -308,8 +308,6 @@ public class TGFFReaderTest {
 		String line = "HARD_DEADLINE d0_0 ON sink AT 0.0003";
 		String suffix = "_0";
 
-		Task task0 = new Task("sink_0");
-
 		Application<Task, Dependency> application = new Application<Task, Dependency>();
 
 		String deadlineType = TGFFReader.HARD_DEADLINE;
