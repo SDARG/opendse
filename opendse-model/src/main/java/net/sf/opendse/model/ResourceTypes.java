@@ -6,10 +6,7 @@ import java.util.HashMap;
  * The {@code ResourceTypes} is a map of different resource types.
  * 
  * @author Valentina Richthammer
- * @param <R>
- * 
- * @param String
- * 			  the id of the resource type
+ *
  * @param <R>
  *            the type of resource
  */

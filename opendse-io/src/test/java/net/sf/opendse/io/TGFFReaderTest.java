@@ -300,6 +300,26 @@ public class TGFFReaderTest {
 
 	/**
 	 * Test method for
+	 * {@link net.sf.opendse.io.TGFFReader#addDeadline(java.lang.String, java.lang.String, net.sf.opendse.model.Application, java.lang.String)}.
+	 */
+	@Test
+	public void testAddDeadlineToNonExistantTask() {
+
+		String line = "HARD_DEADLINE d0_0 ON sink AT 0.0003";
+		String suffix = "_0";
+
+		Task task0 = new Task("sink_0");
+
+		Application<Task, Dependency> application = new Application<Task, Dependency>();
+
+		String deadlineType = TGFFReader.HARD_DEADLINE;
+
+		TGFFReader reader = new TGFFReader();
+		reader.addDeadline(line, suffix, application, deadlineType);
+	}
+
+	/**
+	 * Test method for
 	 * {@link net.sf.opendse.io.TGFFReader#importCore(java.lang.String, java.util.Iterator, net.sf.opendse.model.ResourceTypes)}.
 	 */
 	@Test
@@ -387,7 +407,7 @@ public class TGFFReaderTest {
 		Iterator<String> it = importFile(testFile, 67).iterator();
 		LinkTypes<Link> linkTypes = new LinkTypes<Link>();
 
-		new TGFFReader().importWireLink(it, linkTypes);
+		new TGFFReader().importLink(it, linkTypes);
 
 		Assert.assertEquals(1, linkTypes.size());
 		Assert.assertTrue(linkTypes.containsKey(TGFFReader.WIRE));

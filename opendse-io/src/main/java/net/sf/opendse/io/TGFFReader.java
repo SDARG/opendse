@@ -79,7 +79,7 @@ public class TGFFReader {
 	protected Map<String, List<Task>> tgffTypeMap = new HashMap<String, List<Task>>();
 
 	/**
-	 * Read specification from a file.
+	 * Reads specification from a file.
 	 * 
 	 * @param filename
 	 *            the file name
@@ -90,7 +90,7 @@ public class TGFFReader {
 	}
 
 	/**
-	 * Read specification from a file.
+	 * Reads specification from a file.
 	 * 
 	 * @param file
 	 *            the file
@@ -106,7 +106,7 @@ public class TGFFReader {
 	}
 
 	/**
-	 * Read specification from an input stream.
+	 * Reads specification from an input stream.
 	 * 
 	 * @param in
 	 *            the input stream
@@ -130,11 +130,11 @@ public class TGFFReader {
 	}
 
 	/**
-	 * Read application, mappings and resource types from a tgff-file and
-	 * convert into a type-based specification.
+	 * Reads application, mappings, resource types and link types from a
+	 * tgff-file and convert into a type-based specification.
 	 * 
 	 * @param in
-	 *            the input stream of the tgff file
+	 *            the list of lines contained in the tgff-file
 	 * @return the type-based specification
 	 */
 	public TypeBasedSpecification toSpecification(List<String> in) {
@@ -146,6 +146,13 @@ public class TGFFReader {
 		return new TypeBasedSpecification(application, resourceTypes, mappings, toLinkTypes(in));
 	}
 
+	/**
+	 * Reads an application from a tgff-file.
+	 * 
+	 * @param in
+	 *            the list of lines contained in the tgff-file
+	 * @return the application
+	 */
 	protected Application<Task, Dependency> toApplication(List<String> in) {
 
 		Application<Task, Dependency> application = new Application<Task, Dependency>();
@@ -174,6 +181,13 @@ public class TGFFReader {
 		return application;
 	}
 
+	/**
+	 * Reads the database of resource types from a tgff-file.
+	 * 
+	 * @param in
+	 *            the list of lines contained in the tgff-file
+	 * @return the resource types
+	 */
 	protected ResourceTypes<Resource> toResourceTypes(List<String> in) {
 
 		ResourceTypes<Resource> resourceTypes = new ResourceTypes<Resource>();
@@ -194,6 +208,15 @@ public class TGFFReader {
 		return resourceTypes;
 	}
 
+	/**
+	 * Reads the task-to-type mappings from a tgff-file.
+	 * 
+	 * @param in
+	 *            the list of lines contained in the tgff-file
+	 * @param resourceTypes
+	 *            the resource types
+	 * @return the mappings
+	 */
 	protected Mappings<Task, Resource> toMappings(List<String> in, ResourceTypes<Resource> resourceTypes) {
 
 		Mappings<Task, Resource> mappings = new Mappings<Task, Resource>();
@@ -213,6 +236,13 @@ public class TGFFReader {
 		return mappings;
 	}
 
+	/**
+	 * Reads the task-to-type mappings from a tgff-file.
+	 * 
+	 * @param in
+	 *            the list of lines contained in the tgff-file
+	 * @return the link types
+	 */
 	protected LinkTypes<Link> toLinkTypes(List<String> in) {
 
 		LinkTypes<Link> linkTypes = new LinkTypes<Link>();
@@ -222,14 +252,9 @@ public class TGFFReader {
 
 		while (it.hasNext()) {
 			currentLine = it.next();
-			// import -coords/-cowls links
-			if (currentLine.contains(LINK)) {
-				importLink(currentLine, it, linkTypes);
-			}
-
 			// import -mocsyn wiring-properties as link
-			else if (currentLine.contains(WIRE)) {
-				importWireLink(it, linkTypes);
+			if (currentLine.contains(WIRE)) {
+				importLink(it, linkTypes);
 			}
 		}
 		return linkTypes;
@@ -427,32 +452,7 @@ public class TGFFReader {
 		return sizes;
 	}
 
-	protected void importLink(String name, Iterator<String> it, LinkTypes<Link> linkTypes) {
-
-		String id = "l" + name.split(SEPARATOR)[1];
-		Link link = new Link(id);
-
-		// contains attributes of links
-		String[] linkAttributes = (it.next()).replace(COMMENT, "").trim().split(SEPARATOR);
-
-		String currentLine;
-		while (!isClosing(currentLine = it.next())) {
-
-			if (!isComment(currentLine)) {
-
-				String[] linkValues = currentLine.trim().split(SEPARATOR);
-				assert linkAttributes.length == linkValues.length : "tgff-file \"" + LINK + "\": number of values "
-						+ "is not equal to required number of resource attributes";
-
-				for (int i = 0; i < linkAttributes.length; i++) {
-					link.setAttribute(linkAttributes[i], linkValues[i]);
-				}
-			}
-		}
-		linkTypes.put(id, link);
-	}
-
-	protected void importWireLink(Iterator<String> it, LinkTypes<Link> linkTypes) {
+	protected void importLink(Iterator<String> it, LinkTypes<Link> linkTypes) {
 
 		Link link = new Link(WIRE);
 
