@@ -15,6 +15,23 @@ import net.sf.opendse.model.Resource;
 public interface ProxyRoutings {
 
 	/**
+	 * Returns a set of all {@link DirectedLink}s that do not offer any routing
+	 * variety.
+	 * 
+	 * @return a set of all {@link DirectedLink}s that do not offer any routing
+	 *         variety
+	 */
+	public Set<DirectedLink> getInvariantLinks();
+	
+	/**
+	 * Returns the set of the links from the proxy area of the given proxy. 
+	 * 
+	 * @param proxyId the id of the given proxy
+	 * @return the set of the links from the proxy area of the given proxy
+	 */
+	public Set<DirectedLink> getProxyLinks(String proxyId);
+
+	/**
 	 * Returns the set of {@link DirectedLink}s that form the path leading from the
 	 * given {@link Resource} to its proxy. Returns an empty set if the given
 	 * resource has no proxy.

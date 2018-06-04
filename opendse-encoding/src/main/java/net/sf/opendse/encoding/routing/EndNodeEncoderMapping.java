@@ -6,7 +6,7 @@ import java.util.Set;
 import org.opt4j.satdecoding.Constraint;
 import org.opt4j.satdecoding.Constraint.Operator;
 
-import net.sf.opendse.encoding.constraints.Constraints;
+import net.sf.opendse.encoding.variables.DTT;
 import net.sf.opendse.encoding.variables.M;
 import net.sf.opendse.encoding.variables.MappingVariable;
 import net.sf.opendse.encoding.variables.Variable;
@@ -86,16 +86,39 @@ public class EndNodeEncoderMapping implements EndNodeEncoder {
 			Constraint setToZero = new Constraint(Operator.EQ, 0);
 			setToZero.add(Variables.p(endNodeVariable));
 			result.add(setToZero);
-		} else if (mappingVars.size() == 1) {
-			M mappingVar = mappingVars.iterator().next();
-			Set<Variable> conditions = new HashSet<Variable>();
-			conditions.add(mappingVar);
-			conditions.add(commFlow.getSourceDTT());
-			conditions.add(commFlow.getDestinationDTT());
-			result.addAll(Constraints.generateAndConstraints(conditions, endNodeVariable));
+		} else {
+			DTT srcDtt = commFlow.getSourceDTT();
+			DTT destDtt = commFlow.getDestinationDTT();
 			
-		}else {
-			throw new IllegalArgumentException("More than one mapping between same task and resource");
+			// DDeR <= DDT_s (DDeR = EndNodeResource)
+			Constraint constraint1 = new Constraint(Operator.LE, 0);
+			constraint1.add(Variables.p(endNodeVariable));
+			constraint1.add(-1, Variables.p(srcDtt));
+			result.add(constraint1);
+			
+			// DDeR <= DDT_d
+			Constraint constraint2 = new Constraint(Operator.LE, 0);
+			constraint2.add(Variables.p(endNodeVariable));
+			constraint2.add(-1, Variables.p(destDtt));
+			result.add(constraint2);
+			
+			// DDeR <= sum(M)
+			Constraint constraint3 = new Constraint(Operator.LE, 0);
+			constraint3.add(Variables.p(endNodeVariable));
+			for (M mVar : mappingVars) {
+				constraint3.add(-1, Variables.p(mVar));
+			}
+			result.add(constraint3);
+			
+			// sum(M) + DDT_s + DDT_d - |M| * DDeR <= 2
+ 			Constraint constraint4 = new Constraint(Operator.LE, 2);
+ 			for (M mVar : mappingVars) {
+ 				constraint4.add(Variables.p(mVar));
+ 			}
+ 			constraint4.add(Variables.p(srcDtt));
+ 			constraint4.add(Variables.p(destDtt));
+ 			constraint4.add(-mappingVars.size(), Variables.p(endNodeVariable));
+ 			result.add(constraint4);
 		}
 		return result;
 	}

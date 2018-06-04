@@ -127,6 +127,8 @@ public class ProxySearch implements SpecificationPreprocessor {
 		if (unmarked.size() != 1) {
 			throw new IllegalArgumentException("A newly found proxy should have exactly one unmarked edge.");
 		}
-		ArchitectureElementPropertyService.setOfferRoutingVariety(unmarked.iterator().next(), false);
+		Link proxyLink = unmarked.iterator().next();
+		ArchitectureElementPropertyService.setOfferRoutingVariety(proxyLink, false);
+		ArchitectureElementPropertyService.setOuterResourceId(proxyLink, res);
 	}
 }

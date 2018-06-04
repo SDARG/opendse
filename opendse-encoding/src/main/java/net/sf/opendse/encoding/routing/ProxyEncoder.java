@@ -21,7 +21,6 @@ import net.sf.opendse.model.Models;
 import net.sf.opendse.model.Models.DirectedLink;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
-import net.sf.opendse.model.properties.ArchitectureElementPropertyService;
 import net.sf.opendse.model.properties.ResourcePropertyService;
 
 /**
@@ -51,40 +50,50 @@ public class ProxyEncoder {
 					destMapVars.add(mVar);
 			}
 		}
-		// formulates the routing constraints for the source mappings
-		for (M srcMvar : srcMapVars) {
-			// find all dest mappings inside same proxy area
-			Set<M> proxyNeighborMappings = new HashSet<M>();
-			String proxyId = ResourcePropertyService.getProxyId(srcMvar.getMapping().getTarget());
-			for (M destMvar : destMapVars) {
-				if (ResourcePropertyService.getProxyId(destMvar.getMapping().getTarget()).equals(proxyId)) {
-					proxyNeighborMappings.add(destMvar);
+		
+		// process all pairs of src- and dest-mappings
+		for (M srcM : srcMapVars) {
+			for (M destM : destMapVars) {
+				Set<DirectedLink> usedLinks = new HashSet<Models.DirectedLink>();
+				Set<DirectedLink> unUsedLinks = new HashSet<Models.DirectedLink>(proxyRoutings.getInvariantLinks());
+				
+				Resource srcRes = srcM.getMapping().getTarget();
+				Resource destRes = destM.getMapping().getTarget();
+				String srcProxyId = ResourcePropertyService.getProxyId(srcRes);
+				String destProxyId = ResourcePropertyService.getProxyId(destRes);
+				
+				if (srcRes.equals(destRes)) {
+					// mapped on same res => no links used at all; do nothing
+				}else {
+					if (srcProxyId.equals(destProxyId)) {
+						// same proxy area => use internal links
+						usedLinks = new HashSet<Models.DirectedLink>(proxyRoutings.getLinksBetweenResources(srcRes, destRes));
+					}else {
+						// different proxy areas
+						if (!srcProxyId.equals(srcRes.getId())) {
+							// src in proxy
+							usedLinks.addAll(proxyRoutings.getResourceToProxyLinks(srcRes));
+						}
+						if (!destProxyId.equals(destRes.getId())) {
+							// dest in proxy
+							usedLinks.addAll(proxyRoutings.getProxyToResourceLinks(destRes));
+						}
+					}
 				}
-			}
-			// formulates the routing to proxy constraints
-			result.addAll(generateSourceToProxyConstraint(srcMvar, proxyNeighborMappings, flow, proxyRoutings));
-			// formulates the internal routing constraints
-			for (M neighborDestM : proxyNeighborMappings) {
-				result.addAll(generateInternalRoutings(srcMvar, neighborDestM, flow, proxyRoutings));
-			}
-		}
-		// formulate the constraints for external dest mappings
-		for (M destMvar : destMapVars) {
-			Set<M> proxyNeighborMappings = new HashSet<M>();
-			String proxyId = ResourcePropertyService.getProxyId(destMvar.getMapping().getTarget());
-			for (M srcMvar : srcMapVars) {
-				if (ResourcePropertyService.getProxyId(srcMvar.getMapping().getTarget()).equals(proxyId)) {
-					proxyNeighborMappings.add(srcMvar);
+				unUsedLinks.removeAll(usedLinks);
+				for (DirectedLink dl : usedLinks) {
+					Constraint useLink = new Constraint(Operator.LE, 1);
+					useLink.add(Variables.p(srcM));
+					useLink.add(Variables.p(destM));
+					useLink.add(-1, Variables.p(Variables.varDDLRR(flow, dl)));
+					result.add(useLink);
 				}
-			}
-			result.addAll(generateProxyToDestinationConstraints(destMvar, proxyNeighborMappings, flow, proxyRoutings));
-		}
-		// formulates the constraints excluding unnecessary links that don't offer
-		// routing variety
-		for (Link link : routing.getEdges()) {
-			if (!ArchitectureElementPropertyService.getOffersRoutingVariety(link)) {
-				for (DirectedLink dirLink : Models.getLinks(routing, link)) {
-					result.add(processDirectedLink(dirLink, flow, srcMapVars, destMapVars, proxyRoutings));
+				for (DirectedLink dl : unUsedLinks) {
+					Constraint doNotUseLink = new Constraint(Operator.LE, 1);
+					doNotUseLink.add(Variables.p(srcM));
+					doNotUseLink.add(Variables.p(destM));
+					doNotUseLink.add(-1, Variables.n(Variables.varDDLRR(flow, dl)));
+					result.add(doNotUseLink);
 				}
 			}
 		}
@@ -150,13 +159,26 @@ public class ProxyEncoder {
 		Set<Constraint> result = new HashSet<Constraint>();
 		Resource src = srcM.getMapping().getTarget();
 		Resource dest = destM.getMapping().getTarget();
-		Set<DirectedLink> path = proxyRoutings.getLinksBetweenResources(src, dest);
-		Set<M> activationConditions = new HashSet<M>();
-		activationConditions.add(srcM);
-		activationConditions.add(destM);
-		for (DirectedLink dirLink : path) {
-			result.add(Constraints.generateDistributedActivationConstraint(activationConditions,
-					Variables.varDDLRR(commFlow, dirLink)));
+		// get the links used for the connections of the source to the destination
+		// (always active if the stuff is active)
+		Set<DirectedLink> usedLinks = proxyRoutings.getLinksBetweenResources(src, dest);
+		for (DirectedLink dl : usedLinks) {
+			Constraint useLink = new Constraint(Operator.LE, 1);
+			useLink.add(Variables.p(srcM));
+			useLink.add(Variables.p(destM));
+			useLink.add(-1, Variables.p(Variables.varDDLRR(commFlow, dl)));
+			result.add(useLink);
+		}
+		// get the links that are not used for the connection (always inactive if the
+		// stuff is inactive)
+		Set<DirectedLink> unusedLinks = new HashSet<Models.DirectedLink>(proxyRoutings.getInvariantLinks());
+		unusedLinks.removeAll(usedLinks);
+		for (DirectedLink dl : unusedLinks) {
+			Constraint doNotUseLink = new Constraint(Operator.LE, 1);
+			doNotUseLink.add(Variables.p(srcM));
+			doNotUseLink.add(Variables.p(destM));
+			doNotUseLink.add(-1, Variables.n(Variables.varDDLRR(commFlow, dl)));
+			result.add(doNotUseLink);
 		}
 		return result;
 	}
@@ -233,10 +255,24 @@ public class ProxyEncoder {
 		Set<DirectedLink> directedLinks = source ? proxyRoutings.getResourceToProxyLinks(resource)
 				: proxyRoutings.getProxyToResourceLinks(resource);
 		for (DirectedLink dirLink : directedLinks) {
-			// not(M_end) + sum(not(M_neighbor)) - not(DDLRR) >= 0
+			// not(M_end) + sum((M_neighbor)) - not(DDLRR) >= 0
 			DDLRR linkVar = Variables.varDDLRR(commFlow, dirLink);
 			Constraint c = new Constraint(Operator.GE, 0);
 			c.add(new Term(-1, net.sf.opendse.optimization.encoding.variables.Variables.n(linkVar)));
+			c.add(Variables.n(endPointMapping));
+			for (M neighborMapping : neighborMappings) {
+				c.add(Variables.p(neighborMapping));
+			}
+			result.add(c);
+		}
+		Set<DirectedLink> unusedLinks = new HashSet<Models.DirectedLink>(
+				proxyRoutings.getProxyLinks(ResourcePropertyService.getProxyId(resource)));
+		unusedLinks.removeAll(directedLinks);
+		for (DirectedLink dirLink : unusedLinks) {
+			// not(M_end) + sum((M_neighbor)) - (DDLRR) >= 0
+			DDLRR linkVar = Variables.varDDLRR(commFlow, dirLink);
+			Constraint c = new Constraint(Operator.GE, 0);
+			c.add(new Term(-1, net.sf.opendse.optimization.encoding.variables.Variables.p(linkVar)));
 			c.add(Variables.n(endPointMapping));
 			for (M neighborMapping : neighborMappings) {
 				c.add(Variables.p(neighborMapping));

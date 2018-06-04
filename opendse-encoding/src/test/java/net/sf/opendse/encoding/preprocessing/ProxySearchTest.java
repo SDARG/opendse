@@ -65,5 +65,9 @@ public class ProxySearchTest {
 		assertTrue(ResourcePropertyService.getProxyId(preprocessedArch.getVertex(r4)).equals(r4.getId()));
 		assertTrue(ResourcePropertyService.getProxyId(preprocessedArch.getVertex(r5)).equals(r5.getId()));
 		assertTrue(ResourcePropertyService.getProxyId(preprocessedArch.getVertex(r6)).equals(r6.getId()));
+		
+		assertTrue(ArchitectureElementPropertyService.getOuterElementId(l2).equals(r2.getId()));
+		assertTrue(ArchitectureElementPropertyService.getOuterElementId(l0).equals(r0.getId()));
+		assertTrue(ArchitectureElementPropertyService.getOuterElementId(l1).equals(r1.getId()));
 	}
 }

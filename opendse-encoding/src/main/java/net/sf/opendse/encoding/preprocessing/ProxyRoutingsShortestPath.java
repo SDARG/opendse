@@ -11,6 +11,7 @@ import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Models;
 import net.sf.opendse.model.Models.DirectedLink;
 import net.sf.opendse.model.Resource;
+import net.sf.opendse.model.properties.ArchitectureElementPropertyService;
 import net.sf.opendse.model.properties.ResourcePropertyService;
 
 public class ProxyRoutingsShortestPath implements ProxyRoutings {
@@ -68,8 +69,46 @@ public class ProxyRoutingsShortestPath implements ProxyRoutings {
 	protected final Map<Connection, Set<DirectedLink>> proxyInternalConnectionMaps = new HashMap<ProxyRoutingsShortestPath.Connection, Set<DirectedLink>>();
 	protected final Map<DirectedLink, Set<Resource>> dirLink2RelevantSrcResources = new HashMap<Models.DirectedLink, Set<Resource>>();
 	protected final Map<DirectedLink, Set<Resource>> dirLink2RelevantDestResources = new HashMap<Models.DirectedLink, Set<Resource>>();
+	protected final Set<DirectedLink> invariantLinks = new HashSet<Models.DirectedLink>();
+	protected final Map<String, Set<DirectedLink>> proxyLinkMap = new HashMap<String, Set<DirectedLink>>();
 
 	public ProxyRoutingsShortestPath(Architecture<Resource, Link> architecture) {
+		// find all invariant links
+		for (Link l : architecture.getEdges()) {
+			if(!ArchitectureElementPropertyService.getOffersRoutingVariety(l)) {
+				DirectedLink first = new DirectedLink(l, architecture.getEndpoints(l).getFirst(), architecture.getEndpoints(l).getSecond());
+				DirectedLink second = new DirectedLink(l, architecture.getEndpoints(l).getSecond(), architecture.getEndpoints(l).getFirst());
+				invariantLinks.add(first);
+				invariantLinks.add(second);
+			}
+		}
+		
+		// find all proxies
+		Set<String> proxies = new HashSet<String>();
+		for (Resource res : architecture) {
+			if (!ResourcePropertyService.getProxyId(res).equals(res.getId())) {
+				proxies.add(ResourcePropertyService.getProxyId(res));
+			}
+		}
+		
+		for (DirectedLink dl : invariantLinks) {
+			Resource first = dl.getSource();
+			Resource second = dl.getDest();
+			String proxy = null;
+			if (!ResourcePropertyService.getProxyId(first).equals(first.getId())) {
+				proxy = ResourcePropertyService.getProxyId(first);
+			}
+			if (!ResourcePropertyService.getProxyId(second).equals(second.getId())) {
+				proxy = ResourcePropertyService.getProxyId(second);
+			}
+			if (proxy != null) {
+				if (!proxyLinkMap.containsKey(proxy)) {
+					proxyLinkMap.put(proxy, new HashSet<Models.DirectedLink>());
+				}
+				proxyLinkMap.get(proxy).add(dl);
+			}
+		}
+		
 		// group the resources into sets according to their proxies
 		Map<Resource, Set<Resource>> proxy2ResourcesMap = new HashMap<Resource, Set<Resource>>();
 		for (Resource res : architecture) {
@@ -173,6 +212,16 @@ public class ProxyRoutingsShortestPath implements ProxyRoutings {
 		} else {
 			return dirLink2RelevantDestResources.get(directedLink);
 		}
+	}
+
+	@Override
+	public Set<DirectedLink> getInvariantLinks() {
+		return invariantLinks;
+	}
+
+	@Override
+	public Set<DirectedLink> getProxyLinks(String proxyId) {
+		return proxyLinkMap.get(proxyId);
 	}
 
 }

@@ -1,8 +1,10 @@
 package net.sf.opendse.encoding.module;
 
 import net.sf.opendse.encoding.ImplementationEncodingModularDefault;
+import net.sf.opendse.encoding.SpecificationPreprocessor;
 import net.sf.opendse.encoding.ImplementationEncodingModular;
 import net.sf.opendse.encoding.interpreter.InterpreterVariable;
+import net.sf.opendse.encoding.preprocessing.ProxySearch;
 import net.sf.opendse.optimization.DesignSpaceExplorationCreator;
 import net.sf.opendse.optimization.DesignSpaceExplorationDecoder;
 import net.sf.opendse.optimization.DesignSpaceExplorationEvaluator;
@@ -39,6 +41,8 @@ public class OptimizationNewModule extends ProblemModule {
 
 	protected RoutingEncoding routingEncoding = RoutingEncoding.FLOW;
 
+	protected boolean doProxyPreprocessing = false;
+	
 	@Constant(value = "preprocessing", namespace = SATConstraints.class)
 	protected boolean usePreprocessing = true;
 
@@ -52,6 +56,14 @@ public class OptimizationNewModule extends ProblemModule {
 
 	@Constant(value = "variableorder", namespace = SATCreatorDecoder.class)
 	protected boolean useVariableOrder = true;
+
+	public boolean isDoProxyPreprocessing() {
+		return doProxyPreprocessing;
+	}
+
+	public void setDoProxyPreprocessing(boolean doProxyPreprocessing) {
+		this.doProxyPreprocessing = doProxyPreprocessing;
+	}
 
 	public boolean isUseModularEncoding() {
 		return useModularEncoding;
@@ -134,6 +146,9 @@ public class OptimizationNewModule extends ProblemModule {
 			bind(Interpreter.class).to(InterpreterVariable.class);
 			bind(ImplementationEncoding.class).to(ImplementationEncodingModular.class);
 			bind(ImplementationEncodingModular.class).to(ImplementationEncodingModularDefault.class);
+			if(doProxyPreprocessing) {
+				bind(SpecificationPreprocessor.class).to(ProxySearch.class);
+			}
 		}
 	}
 }

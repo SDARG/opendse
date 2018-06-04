@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.opt4j.satdecoding.Constraint;
 
 import edu.uci.ics.jung.graph.util.EdgeType;
-import net.sf.opendse.encoding.preprocessing.ProxyRoutings;
 import net.sf.opendse.encoding.variables.DTT;
 import net.sf.opendse.encoding.variables.M;
 import net.sf.opendse.encoding.variables.MappingVariable;
@@ -25,9 +24,6 @@ import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.ArchitectureElementPropertyService;
 import net.sf.opendse.model.properties.ResourcePropertyService;
 import verification.ConstraintVerifier;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class ProxyEncoderTest {
 
@@ -113,33 +109,6 @@ public class ProxyEncoderTest {
 	@Test
 	public void test() {
 		init();
-		ProxyRoutings proxyRoutings = mock(ProxyRoutings.class);
-		Set<DirectedLink> routeR0R1 = new HashSet<DirectedLink>();
-		Set<DirectedLink> routeR0R3 = new HashSet<DirectedLink>();
-	
-		DirectedLink dirLink0_3 = new DirectedLink(l0, r0, r3);
-		DirectedLink dirLink3_0 = new DirectedLink(l0, r3, r0);
-		DirectedLink dirLink3_1 = new DirectedLink(l1, r3, r1);
-		DirectedLink dirLink1_3 = new DirectedLink(l1, r1, r3);
-		
-		routeR0R1.add(dirLink0_3);
-		routeR0R1.add(dirLink3_1);
-		routeR0R3.add(dirLink0_3);
-		when(proxyRoutings.getLinksBetweenResources(r0, r1)).thenReturn(routeR0R1);
-		when(proxyRoutings.getResourceToProxyLinks(r0)).thenReturn(routeR0R3);
-		Set<Resource> sourceRes0 = new HashSet<Resource>();
-		sourceRes0.add(r0);
-		when(proxyRoutings.getRelevantSourceResources(dirLink0_3)).thenReturn(sourceRes0);
-		Set<Resource> sourceRes1 = new HashSet<Resource>();
-		sourceRes1.add(r1);
-		when(proxyRoutings.getRelevantSourceResources(dirLink1_3)).thenReturn(sourceRes1);
-		Set<Resource> destRes0 = new HashSet<Resource>();
-		destRes0.add(r0);
-		when(proxyRoutings.getRelevantDestinationResources(dirLink3_0)).thenReturn(destRes0);
-		Set<Resource> destRes1 = new HashSet<Resource>();
-		destRes1.add(r1);
-		when(proxyRoutings.getRelevantDestinationResources(dirLink3_1)).thenReturn(destRes1);
-		
 		ProxyEncoder proxyEncoder = new ProxyEncoder();
 		Set<Constraint> cs = proxyEncoder.toConstraints(flow_t0_t1, routing, mappingVariables);
 		ConstraintVerifier verifyFlow1 = new ConstraintVerifier(activatedVars, deactivatedVars, cs);
