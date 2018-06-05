@@ -5,6 +5,7 @@ import java.util.Set;
 import org.opt4j.satdecoding.Constraint;
 
 import net.sf.opendse.encoding.variables.DDR;
+import net.sf.opendse.encoding.variables.MappingVariable;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Resource;
@@ -29,6 +30,6 @@ public interface RoutingResourceEncoder {
 	 * @return the set of {@link Constraint}s encoding the {@link DDR} variables for
 	 *         the given {@link CommunicationFlow}
 	 */
-	public Set<Constraint> toConstraints(CommunicationFlow communicationFlow, Architecture<Resource, Link> routing);
-
+	public Set<Constraint> toConstraints(CommunicationFlow communicationFlow, Architecture<Resource, Link> routing,
+			Set<MappingVariable> mappingVariables);
 }

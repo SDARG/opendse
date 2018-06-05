@@ -36,6 +36,10 @@ public class Variables {
 		nCache.clear();
 	}
 
+	public static AndVariable varAndVariable(Variable... variables) {
+		return new AndVariable(variables);
+	}
+	
 	public static ColoredCommNode varColoredCommNode(Task comm, Resource res, String color) {
 		return new ColoredCommNode(comm, res, color);
 	}

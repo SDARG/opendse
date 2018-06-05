@@ -16,6 +16,25 @@ import java.util.Set;
 public class ConstraintsTest {
 
 	@Test
+	public void testAndVariable() {
+		Variable a = mock(Variable.class);
+		Variable b = mock(Variable.class);
+		Set<Constraint> cs = new HashSet<Constraint>();
+		Set<Variable> arguments = new HashSet<Variable>();
+		arguments.add(a);
+		arguments.add(b);
+		Variable and = Constraints.generateAndVariable(arguments, cs);
+		ConstraintVerifier verifyOneActive = new ConstraintVerifier(cs);
+		verifyOneActive.activateVariable(a);
+		verifyOneActive.deactivateVariable(b);
+		verifyOneActive.verifyVariableDeactivated(and);
+		ConstraintVerifier verifyBothActive = new ConstraintVerifier(cs);
+		verifyBothActive.activateVariable(a);
+		verifyBothActive.activateVariable(b);
+		verifyBothActive.verifyVariableActivated(and);
+	}
+
+	@Test
 	public void testNegativeImplication() {
 		Variable a = mock(Variable.class);
 		Variable b = mock(Variable.class);
@@ -29,7 +48,7 @@ public class ConstraintsTest {
 		ConstraintVerifier verifyFreedom = new ConstraintVerifier(new HashSet<Object>(), activated, negImplication);
 		verifyFreedom.verifyVariableDeactivated(b);
 	}
-	
+
 	@Test
 	public void testDistributedActivationConstraint() {
 		Variable a = mock(Variable.class);
@@ -52,7 +71,7 @@ public class ConstraintsTest {
 		ConstraintVerifier verifyFreedom = new ConstraintVerifier(activated, deactivated, distributedActivation);
 		verifyFreedom.verifyVariableNotFixed(c);
 	}
-	
+
 	@Test
 	public void testAndConstraints() {
 		Variable a = mock(Variable.class);
@@ -79,7 +98,7 @@ public class ConstraintsTest {
 		ConstraintVerifier verifyActivation = new ConstraintVerifier(activated, deactivated, andConstraints);
 		verifyActivation.verifyVariableActivated(c);
 	}
-	
+
 	@Test
 	public void testGenerateEqualityConstraint() {
 		Variable var1 = mock(Variable.class);

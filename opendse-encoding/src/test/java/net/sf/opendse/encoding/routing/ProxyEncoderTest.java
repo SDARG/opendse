@@ -112,16 +112,16 @@ public class ProxyEncoderTest {
 		ProxyEncoder proxyEncoder = new ProxyEncoder();
 		Set<Constraint> cs = proxyEncoder.toConstraints(flow_t0_t1, routing, mappingVariables);
 		ConstraintVerifier verifyFlow1 = new ConstraintVerifier(activatedVars, deactivatedVars, cs);
+		verifyFlow1.deactivateVariable(Variables.varDDLRR(flow_t0_t1, new DirectedLink(l0, r3, r0)));
+		verifyFlow1.deactivateVariable(Variables.varDDLRR(flow_t0_t1, new DirectedLink(l1, r1, r3)));
 		verifyFlow1.verifyVariableActivated(Variables.varDDLRR(flow_t0_t1, new DirectedLink(l0, r0, r3)));
 		verifyFlow1.verifyVariableActivated(Variables.varDDLRR(flow_t0_t1, new DirectedLink(l1, r3, r1)));
-		verifyFlow1.verifyVariableDeactivated(Variables.varDDLRR(flow_t0_t1, new DirectedLink(l0, r3, r0)));
-		verifyFlow1.verifyVariableDeactivated(Variables.varDDLRR(flow_t0_t1, new DirectedLink(l1, r1, r3)));
 		
 		Set<Constraint> cs2 = proxyEncoder.toConstraints(flow_t0_t2, routing, mappingVariables);
 		ConstraintVerifier verifyFlow2 = new ConstraintVerifier(activatedVars, deactivatedVars, cs2);
+		verifyFlow2.deactivateVariable(Variables.varDDLRR(flow_t0_t2, new DirectedLink(l0, r3, r0)));
+		verifyFlow2.deactivateVariable(Variables.varDDLRR(flow_t0_t2, new DirectedLink(l1, r3, r1)));
 		verifyFlow2.verifyVariableActivated(Variables.varDDLRR(flow_t0_t2, new DirectedLink(l0, r0, r3)));
-		verifyFlow2.verifyVariableDeactivated(Variables.varDDLRR(flow_t0_t2, new DirectedLink(l1, r3, r1)));
-		verifyFlow2.verifyVariableDeactivated(Variables.varDDLRR(flow_t0_t2, new DirectedLink(l0, r3, r0)));
 		verifyFlow2.verifyVariableDeactivated(Variables.varDDLRR(flow_t0_t2, new DirectedLink(l1, r1, r3)));
 	}
 }

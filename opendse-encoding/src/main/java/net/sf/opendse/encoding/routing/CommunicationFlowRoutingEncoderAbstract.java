@@ -32,7 +32,7 @@ public class CommunicationFlowRoutingEncoderAbstract implements CommunicationFlo
 		Set<Constraint> communicationFlowRoutingConstraints = new HashSet<Constraint>();
 		communicationFlowRoutingConstraints.addAll(activationEncoder.toConstraints(communicationFlow, routing));
 		communicationFlowRoutingConstraints.addAll(endNodeEncoder.toConstraints(communicationFlow, routing, mappingVariables));
-		communicationFlowRoutingConstraints.addAll(interimNodeEncoder.toConstraints(communicationFlow, routing));
+		communicationFlowRoutingConstraints.addAll(interimNodeEncoder.toConstraints(communicationFlow, routing, mappingVariables));
 		communicationFlowRoutingConstraints.addAll(edgeEncoder.toConstraints(communicationFlow, routing));
 		communicationFlowRoutingConstraints.addAll(proxyEncoder.toConstraints(communicationFlow, routing, mappingVariables));
 		return communicationFlowRoutingConstraints;

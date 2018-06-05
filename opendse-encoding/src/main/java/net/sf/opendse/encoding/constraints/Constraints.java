@@ -6,6 +6,7 @@ import java.util.Set;
 import org.opt4j.satdecoding.Constraint;
 import org.opt4j.satdecoding.Constraint.Operator;
 
+import net.sf.opendse.encoding.variables.AndVariable;
 import net.sf.opendse.encoding.variables.Variable;
 import net.sf.opendse.encoding.variables.Variables;
 
@@ -23,10 +24,28 @@ public class Constraints {
 	}
 
 	/**
-	 * Generates a set of {@link Constraint}s that encode an AND
-	 * relationship between the {@link Variable}s provided as arguments and the
-	 * variable provided as result. Example: arguments = (A, B, C); result = D; The
-	 * generated constraints then encode the relation A and B and C = D.
+	 * Returns a variable that encodes the AND relation of the given arguments. The
+	 * variables is encoded by adding additional constraints to the provided set of
+	 * constraints.
+	 * 
+	 * @param arguments
+	 *            the {@link Variable}s whose AND-relation is encoded
+	 * @param constraints
+	 *            the set of prevailing constraints
+	 * @return a variable that encodes the AND relation of the given arguments
+	 */
+	public static <V extends Variable> AndVariable generateAndVariable(Set<V> arguments, Set<Constraint> constraints) {
+		Variable[] inputs = arguments.toArray(new Variable[arguments.size()]);
+		AndVariable result = Variables.varAndVariable(inputs);
+		constraints.addAll(generateAndConstraints(arguments, result));
+		return result;
+	}
+
+	/**
+	 * Generates a set of {@link Constraint}s that encode an AND relationship
+	 * between the {@link Variable}s provided as arguments and the variable provided
+	 * as result. Example: arguments = (A, B, C); result = D; The generated
+	 * constraints then encode the relation A and B and C = D.
 	 * 
 	 * @param arguments
 	 *            the set of {@link Variable}s that shall affect the activation of

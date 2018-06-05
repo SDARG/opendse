@@ -1,7 +1,5 @@
 package net.sf.opendse.encoding.routing;
 
-import static org.junit.Assert.*;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,11 +8,14 @@ import org.opt4j.satdecoding.Constraint;
 
 import edu.uci.ics.jung.graph.util.EdgeType;
 import net.sf.opendse.encoding.variables.DTT;
+import net.sf.opendse.encoding.variables.M;
+import net.sf.opendse.encoding.variables.MappingVariable;
 import net.sf.opendse.encoding.variables.Variables;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Link;
+import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 import verification.ConstraintVerifier;
@@ -39,13 +40,20 @@ public class RoutingResourceEncoderDefaultTest {
 		Architecture<Resource, Link> routing = new Architecture<Resource, Link>();
 		routing.addEdge(l0, res0, res1, EdgeType.UNDIRECTED);
 		routing.addEdge(l1, res1, res2, EdgeType.UNDIRECTED);
+		Mapping<Task, Resource> mapping1 = new Mapping<Task, Resource>("m1", t0, res0);
+		Mapping<Task, Resource> mapping2 = new Mapping<Task, Resource>("m2", t1, res2);
+		M mVar1 = Variables.varM(mapping1);
+		M mVar2 = Variables.varM(mapping2);
+		Set<MappingVariable> mappingVars = new HashSet<MappingVariable>();
+		mappingVars.add(mVar1);
+		mappingVars.add(mVar2);
 		RoutingResourceEncoderDefault encoder = new RoutingResourceEncoderDefault();
-		Set<Constraint> cs = encoder.toConstraints(commFlow, routing);
-		assertEquals(17, cs.size());
+		Set<Constraint> cs = encoder.toConstraints(commFlow, routing, mappingVars);
 		Set<Object> activated = new HashSet<Object>();
-		activated.add(Variables.varDDsR(commFlow, res0));
+		activated.add(mVar1);
 		activated.add(Variables.varDDLRR(commFlow, l0, res0, res1));
 		Set<Object> deactivated = new HashSet<Object>();
+		deactivated.add(mVar2);
 		deactivated.add(Variables.varDDsR(commFlow, res1));
 		deactivated.add(Variables.varDDsR(commFlow, res2));
 		deactivated.add(Variables.varDDdR(commFlow, res0));

@@ -35,6 +35,10 @@ public class EndNodeEncoderMapping implements EndNodeEncoder {
 		Task srcTask = communicationFlow.getSourceDTT().getSourceTask();
 		Task desTask = communicationFlow.getDestinationDTT().getDestinationTask();
 		for (Resource res : routing) {
+			if (!res.getId().equals(ResourcePropertyService.getProxyId(res))) {
+				// resource has a proxy => never an end point
+				continue;
+			}
 			Set<M> srcMappings = new HashSet<M>();
 			Set<M> destMappings = new HashSet<M>();
 			for (MappingVariable mappingVar : mappingVariables) {

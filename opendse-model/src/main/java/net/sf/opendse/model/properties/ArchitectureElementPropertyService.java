@@ -15,7 +15,7 @@ import net.sf.opendse.model.Resource;
 public class ArchitectureElementPropertyService extends AbstractPropertyService {
 
 	public enum ArchitectureElementAttributes {
-		ROUTING_VARIETY("offers routing variaty");
+		ROUTING_VARIETY("offers routing variaty"), OUTER_ELEMENT("outer element");
 		protected String xmlName;
 
 		private ArchitectureElementAttributes(String xmlName) {
@@ -36,6 +36,33 @@ public class ArchitectureElementPropertyService extends AbstractPropertyService 
 		}
 	}
 
+	/**
+	 * Returns the ID of the outer element of the given element, that is, the neighbor that is further away from the proxy.
+	 * 
+	 * @param element the given {@link Element}
+	 * @return the ID of the outer element of the given element, that is, the neighbor that is further away from the proxy
+	 */
+	public static String getOuterElementId(Element element) {
+		checkElement(element);
+		if (getOffersRoutingVariety(element)) {
+			throw new IllegalArgumentException("The element " + element + "offers routing variety and, hence, has no outer element.");
+		}
+		String attributeName = ArchitectureElementAttributes.OUTER_ELEMENT.xmlName;
+		checkAttribute(element, attributeName);
+		return (String) element.getAttribute(attributeName);
+	}
+	
+	/**
+	 * Sets the outer element for the given element. The outer element is the neighbor of the element that is further away from the proxy.
+	 * 
+	 * @param element the given {@link Element} 
+	 * @param outerElement the neighbor {@link Element} that is further away from the proxy 
+	 */
+	public static void setOuterResourceId(Element element, Element outerElement) {
+		checkElement(element);
+		element.setAttribute(ArchitectureElementAttributes.OUTER_ELEMENT.xmlName, outerElement.getId());
+	}
+	
 	/**
 	 * Sets the attribute that dictates whether the given element should be
 	 * considered for the encoding of the routings.

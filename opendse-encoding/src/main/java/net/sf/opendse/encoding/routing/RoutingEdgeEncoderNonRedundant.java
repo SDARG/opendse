@@ -12,6 +12,7 @@ import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Models;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.properties.ArchitectureElementPropertyService;
+import net.sf.opendse.model.properties.ResourcePropertyService;
 import net.sf.opendse.model.Models.DirectedLink;
 
 /**
@@ -30,6 +31,10 @@ public class RoutingEdgeEncoderNonRedundant implements RoutingEdgeEncoder {
 	public Set<Constraint> toConstraints(CommunicationFlow communicationFlow, Architecture<Resource, Link> routing) {
 		Set<Constraint> routingEdgeConstraints = new HashSet<Constraint>();
 		for (Resource resource : routing) {
+			if (!resource.getId().equals(ResourcePropertyService.getProxyId(resource))) {
+				// resource has a proxy => taken care of by the proxy encoder
+				continue;
+			}
 			Set<DirectedLink> inLinks = new HashSet<Models.DirectedLink>(Models.getInLinks(routing, resource));
 			Set<DirectedLink> outLinks = new HashSet<Models.DirectedLink>(Models.getOutLinks(routing, resource));
 			Set<DirectedLink> toRemove = new HashSet<Models.DirectedLink>();

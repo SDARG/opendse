@@ -35,14 +35,14 @@ public class CommunicationFlowRoutingEncoderCustomTest {
 		Set<MappingVariable> mappingVariables = mock(Set.class);
 		when(activationEncoder.toConstraints(commFlow, routing)).thenReturn(new HashSet<Constraint>());
 		when(endNodeEncoder.toConstraints(commFlow, routing, mappingVariables)).thenReturn(new HashSet<Constraint>());
-		when(interimNodeEncoder.toConstraints(commFlow, routing)).thenReturn(new HashSet<Constraint>());
+		when(interimNodeEncoder.toConstraints(commFlow, routing, mappingVariables)).thenReturn(new HashSet<Constraint>());
 		when(edgeEncoder.toConstraints(commFlow, routing)).thenReturn(new HashSet<Constraint>());
 		when(proxyEncoder.toConstraints(commFlow, routing, mappingVariables)).thenReturn(new HashSet<Constraint>());
 		Set<Constraint> cs = encoder.toConstraints(commFlow, routing, mappingVariables);
 		assertTrue(cs.isEmpty());
 		verify(activationEncoder).toConstraints(commFlow, routing);
 		verify(endNodeEncoder).toConstraints(commFlow, routing, mappingVariables);
-		verify(interimNodeEncoder).toConstraints(commFlow, routing);
+		verify(interimNodeEncoder).toConstraints(commFlow, routing, mappingVariables);
 		verify(edgeEncoder).toConstraints(commFlow, routing);
 	}
 }

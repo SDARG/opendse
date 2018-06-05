@@ -147,7 +147,6 @@ public class ProxyRoutingTest {
 	public void test() {
 		init();
 		RoutingEncodingFlexible encoder = new RoutingEncodingFlexible(new CommunicationRoutingManagerDefault());
-
 		Set<Constraint> cs = encoder.toConstraints(applVars, mappingVariables, routings);
 		ConstraintVerifier verifyRouting = new ConstraintVerifier(cs);
 		for (ApplicationVariable applVar : applVars) {

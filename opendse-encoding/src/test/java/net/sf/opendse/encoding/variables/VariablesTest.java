@@ -21,6 +21,16 @@ import static org.mockito.Mockito.mock;
 public class VariablesTest {
 
 	@Test
+	public void testAndVar() {
+		Variable var1 = mock(Variable.class);
+		Variable var2 = mock(Variable.class);
+		Variable var3 = mock(Variable.class);
+		AndVariable andVar = Variables.varAndVariable(var1, var2);
+		assertEquals(andVar, Variables.varAndVariable(var1, var2));
+		assertNotEquals(andVar, Variables.varAndVariable(var1, var3));
+	}
+	
+	@Test
 	public void testColoredCommNode(){
 		Task comm = new Task("comm");
 		Resource res = new Resource("res");

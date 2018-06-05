@@ -6,6 +6,8 @@ import java.util.Set;
 import org.opt4j.satdecoding.Constraint;
 import net.sf.opendse.encoding.constraints.Constraints;
 import net.sf.opendse.encoding.variables.DDR;
+import net.sf.opendse.encoding.variables.M;
+import net.sf.opendse.encoding.variables.MappingVariable;
 import net.sf.opendse.encoding.variables.Variable;
 import net.sf.opendse.encoding.variables.Variables;
 import net.sf.opendse.model.Architecture;
@@ -13,17 +15,55 @@ import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Models;
 import net.sf.opendse.model.Resource;
+import net.sf.opendse.model.Task;
 import net.sf.opendse.model.Models.DirectedLink;
 
 public class RoutingResourceEncoderDefault implements RoutingResourceEncoder {
 
 	@Override
-	public Set<Constraint> toConstraints(CommunicationFlow communicationFlow, Architecture<Resource, Link> routing) {
+	public Set<Constraint> toConstraints(CommunicationFlow communicationFlow, Architecture<Resource, Link> routing,
+			Set<MappingVariable> mappingVariables) {
 		Set<Constraint> routingResourceConstraints = new HashSet<Constraint>();
+		Task srcTask = communicationFlow.getSourceDTT().getSourceTask();
+		Task destTask = communicationFlow.getDestinationDTT().getDestinationTask();
+		Set<M> srcMappings = new HashSet<M>();
+		Set<M> destMappings = new HashSet<M>();
+		for (MappingVariable mappingVar : mappingVariables) {
+			M mVar = (M) mappingVar;
+			if (mVar.getMapping().getSource().equals(srcTask)) {
+				srcMappings.add(mVar);
+			}
+			if (mVar.getMapping().getSource().equals(destTask)) {
+				destMappings.add(mVar);
+			}
+		}
 		for (Resource res : routing) {
-			DDR routingResourceVariable = Variables.varDDR(communicationFlow, res);
+			Set<M> srcMOnRes = new HashSet<M>();
+			Set<M> destMOnRes = new HashSet<M>();
+			for (M mVar : srcMappings) {
+				if (mVar.getMapping().getTarget().equals(res)) {
+					srcMOnRes.add(mVar);
+				}
+			}
+			for (M mVar : destMappings) {
+				if (mVar.getMapping().getTarget().equals(res)) {
+					destMOnRes.add(mVar);
+				}
+			}
 			Set<Variable> relevantVariables = gatherRelevantVariables(communicationFlow, res, routing);
-			routingResourceConstraints.addAll(Constraints.generateOrConstraints(relevantVariables, routingResourceVariable));
+			if (!(srcMOnRes.isEmpty() && destMOnRes.isEmpty())) {
+				// consider the case where both src and destination are mapped on the resource
+				Set<Variable> processingResource = new HashSet<Variable>();
+				processingResource.addAll(srcMOnRes);
+				processingResource.addAll(destMOnRes);
+				processingResource.add(communicationFlow.getSourceDTT());
+				processingResource.add(communicationFlow.getDestinationDTT());
+				Variable andVariable = Constraints.generateAndVariable(processingResource, routingResourceConstraints);
+				relevantVariables.add(andVariable);
+			}
+			DDR routingResourceVariable = Variables.varDDR(communicationFlow, res);
+			routingResourceConstraints
+					.addAll(Constraints.generateOrConstraints(relevantVariables, routingResourceVariable));
 		}
 		return routingResourceConstraints;
 	}
@@ -45,8 +85,6 @@ public class RoutingResourceEncoderDefault implements RoutingResourceEncoder {
 	protected Set<Variable> gatherRelevantVariables(CommunicationFlow communicationFlow, Resource resource,
 			Architecture<Resource, Link> routing) {
 		Set<Variable> result = new HashSet<Variable>();
-		result.add(Variables.varDDsR(communicationFlow, resource));
-		result.add(Variables.varDDdR(communicationFlow, resource));
 		Set<DirectedLink> nodeLinks = new HashSet<Models.DirectedLink>(Models.getInLinks(routing, resource));
 		nodeLinks.addAll(Models.getOutLinks(routing, resource));
 		for (DirectedLink directedLink : nodeLinks) {
