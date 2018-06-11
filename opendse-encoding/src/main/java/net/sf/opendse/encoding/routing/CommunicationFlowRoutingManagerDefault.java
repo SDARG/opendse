@@ -7,15 +7,12 @@ public class CommunicationFlowRoutingManagerDefault implements CommunicationFlow
 	protected final CommunicationFlowRoutingEncoderCustom encoder;
 
 	@Inject
-	public CommunicationFlowRoutingManagerDefault() {
+	public CommunicationFlowRoutingManagerDefault(ActivationEncoder activationEncoder, EndNodeEncoder endNodeEncoder,
+			RoutingResourceEncoder routingResourceEncoder, RoutingEdgeEncoder routingEdgeEncoder,
+			ProxyEncoder proxyEncoder) {
 		// just returns the default stuff for now
-		ActivationEncoder activationEncoder = new ActivationEncoderDefault();
-		EndNodeEncoder endNodeEncoder = new EndNodeEncoderMapping();
-		RoutingResourceEncoder interimNodeEncoder = new RoutingResourceEncoderDefault();
-		RoutingEdgeEncoder edgeEncoder = new RoutingEdgeEncoderNonRedundant();
-		ProxyEncoder proxyEncoder = new ProxyEncoder();
-		this.encoder = new CommunicationFlowRoutingEncoderCustom(activationEncoder, endNodeEncoder, interimNodeEncoder,
-				edgeEncoder, proxyEncoder);
+		this.encoder = new CommunicationFlowRoutingEncoderCustom(activationEncoder, endNodeEncoder,
+				routingResourceEncoder, routingEdgeEncoder, proxyEncoder);
 	}
 
 	@Override

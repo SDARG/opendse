@@ -9,8 +9,19 @@ import net.sf.opendse.encoding.application.ApplicationConstraintManagerDefault;
 import net.sf.opendse.encoding.application.ApplicationEncodingMode;
 import net.sf.opendse.encoding.mapping.MappingConstraintManagerDefault;
 import net.sf.opendse.encoding.mapping.MappingEncodingMode;
+import net.sf.opendse.encoding.routing.ActivationEncoderDefault;
+import net.sf.opendse.encoding.routing.AdditionalRoutingConstraintsEncoderNone;
+import net.sf.opendse.encoding.routing.CommunicationFlowRoutingManager;
+import net.sf.opendse.encoding.routing.CommunicationFlowRoutingManagerDefault;
+import net.sf.opendse.encoding.routing.CommunicationHierarchyEncoderDefault;
 import net.sf.opendse.encoding.routing.CommunicationRoutingManagerDefault;
+import net.sf.opendse.encoding.routing.CycleBreakEncoderColor;
+import net.sf.opendse.encoding.routing.EndNodeEncoderMapping;
+import net.sf.opendse.encoding.routing.OneDirectionEncoderDefault;
+import net.sf.opendse.encoding.routing.ProxyEncoderCompact;
+import net.sf.opendse.encoding.routing.RoutingEdgeEncoderNonRedundant;
 import net.sf.opendse.encoding.routing.RoutingEncodingFlexible;
+import net.sf.opendse.encoding.routing.RoutingResourceEncoderDefault;
 import net.sf.opendse.encoding.variables.Variables;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
@@ -93,6 +104,18 @@ public class AlternativesImplementationEncodingTest {
 		}
 	}
 
+	protected static RoutingEncoding getRoutingEncoding() {
+		CommunicationFlowRoutingManager communicationFlowManager = new CommunicationFlowRoutingManagerDefault(
+				new ActivationEncoderDefault(), new EndNodeEncoderMapping(), new RoutingResourceEncoderDefault(),
+				new RoutingEdgeEncoderNonRedundant(), new ProxyEncoderCompact());
+		CommunicationRoutingManagerDefault routingEncoderManager = new CommunicationRoutingManagerDefault(
+				new OneDirectionEncoderDefault(), new CycleBreakEncoderColor(),
+				new CommunicationHierarchyEncoderDefault(), communicationFlowManager,
+				new AdditionalRoutingConstraintsEncoderNone());
+
+		return new RoutingEncodingFlexible(routingEncoderManager);
+	}
+
 	@Test
 	public void test() {
 		Problem prob = new Problem();
@@ -101,7 +124,7 @@ public class AlternativesImplementationEncodingTest {
 		ApplicationEncoding applicationEncoding = new ApplicationEncodingMode(
 				new ApplicationConstraintManagerDefault());
 		MappingEncoding mappingEncoding = new MappingEncodingMode(new MappingConstraintManagerDefault());
-		RoutingEncoding routingEncoding = new RoutingEncodingFlexible(new CommunicationRoutingManagerDefault());
+		RoutingEncoding routingEncoding = getRoutingEncoding();
 		AllocationEncoding allocationEncoding = new AllocationEncodingUtilization();
 		SpecificationPreprocessor preprocessor = new SpecificationPreprocessorNone();
 		ImplementationEncodingModularDefault encoding = new ImplementationEncodingModularDefault(preprocessor,

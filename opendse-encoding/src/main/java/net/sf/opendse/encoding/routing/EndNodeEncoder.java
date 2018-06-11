@@ -4,6 +4,8 @@ import java.util.Set;
 
 import org.opt4j.satdecoding.Constraint;
 
+import com.google.inject.ImplementedBy;
+
 import net.sf.opendse.encoding.MappingEncoding;
 import net.sf.opendse.encoding.variables.DDdR;
 import net.sf.opendse.encoding.variables.DDsR;
@@ -20,6 +22,7 @@ import net.sf.opendse.model.Resource;
  * @author Fedor Smirnov
  *
  */
+@ImplementedBy(EndNodeEncoderMapping.class)
 public interface EndNodeEncoder {
 
 	/**

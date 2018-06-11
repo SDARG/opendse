@@ -109,7 +109,7 @@ public class ProxyEncoderTest {
 	@Test
 	public void test() {
 		init();
-		ProxyEncoder proxyEncoder = new ProxyEncoder();
+		ProxyEncoderCompact proxyEncoder = new ProxyEncoderCompact();
 		Set<Constraint> cs = proxyEncoder.toConstraints(flow_t0_t1, routing, mappingVariables);
 		ConstraintVerifier verifyFlow1 = new ConstraintVerifier(activatedVars, deactivatedVars, cs);
 		verifyFlow1.deactivateVariable(Variables.varDDLRR(flow_t0_t1, new DirectedLink(l0, r3, r0)));

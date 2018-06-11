@@ -4,6 +4,8 @@ import java.util.Set;
 
 import org.opt4j.satdecoding.Constraint;
 
+import com.google.inject.ImplementedBy;
+
 import net.sf.opendse.encoding.variables.DDR;
 import net.sf.opendse.encoding.variables.MappingVariable;
 import net.sf.opendse.model.Architecture;
@@ -17,6 +19,7 @@ import net.sf.opendse.model.Resource;
  * @author Fedor Smirnov
  *
  */
+@ImplementedBy(RoutingResourceEncoderDefault.class)
 public interface RoutingResourceEncoder {
 
 	/**

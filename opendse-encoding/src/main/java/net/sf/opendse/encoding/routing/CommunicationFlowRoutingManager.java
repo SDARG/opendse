@@ -2,6 +2,8 @@ package net.sf.opendse.encoding.routing;
 
 import org.opt4j.satdecoding.Constraint;
 
+import com.google.inject.ImplementedBy;
+
 /**
  * The {@link CommunicationFlowRoutingManager} provides the appropriate
  * {@link CommunicationFlowRoutingEncoder} for the given
@@ -10,6 +12,7 @@ import org.opt4j.satdecoding.Constraint;
  * @author Fedor Smirnov
  *
  */
+@ImplementedBy(CommunicationFlowRoutingManagerDefault.class)
 public interface CommunicationFlowRoutingManager {
 
 	/**

@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.opt4j.satdecoding.Constraint;
 
 import edu.uci.ics.jung.graph.util.EdgeType;
+import net.sf.opendse.encoding.RoutingEncoding;
 import net.sf.opendse.encoding.variables.ApplicationVariable;
 import net.sf.opendse.encoding.variables.CLRR;
 import net.sf.opendse.encoding.variables.CR;
@@ -143,10 +144,22 @@ public class ProxyRoutingTest {
 		mappingVariables.add(mVar5);
 	}
 
+	protected static RoutingEncoding getRoutingEncoding() {
+		CommunicationFlowRoutingManager communicationFlowManager = new CommunicationFlowRoutingManagerDefault(
+				new ActivationEncoderDefault(), new EndNodeEncoderMapping(), new RoutingResourceEncoderDefault(),
+				new RoutingEdgeEncoderNonRedundant(), new ProxyEncoderCompact());
+		CommunicationRoutingManagerDefault routingEncoderManager = new CommunicationRoutingManagerDefault(
+				new OneDirectionEncoderDefault(), new CycleBreakEncoderColor(),
+				new CommunicationHierarchyEncoderDefault(), communicationFlowManager,
+				new AdditionalRoutingConstraintsEncoderNone());
+
+		return new RoutingEncodingFlexible(routingEncoderManager);
+	}
+	
 	@Test
 	public void test() {
 		init();
-		RoutingEncodingFlexible encoder = new RoutingEncodingFlexible(new CommunicationRoutingManagerDefault());
+		RoutingEncoding encoder = getRoutingEncoding();
 		Set<Constraint> cs = encoder.toConstraints(applVars, mappingVariables, routings);
 		ConstraintVerifier verifyRouting = new ConstraintVerifier(cs);
 		for (ApplicationVariable applVar : applVars) {

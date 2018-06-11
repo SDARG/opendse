@@ -25,7 +25,7 @@ public class CommunicationFlowRoutingEncoderCustomTest {
 		EndNodeEncoder endNodeEncoder = mock(EndNodeEncoder.class);
 		RoutingResourceEncoder interimNodeEncoder = mock(RoutingResourceEncoder.class);
 		RoutingEdgeEncoder edgeEncoder = mock(RoutingEdgeEncoder.class);
-		ProxyEncoder proxyEncoder = mock(ProxyEncoder.class);
+		ProxyEncoderCompact proxyEncoder = mock(ProxyEncoderCompact.class);
 		CommunicationFlowRoutingEncoderCustom encoder = new CommunicationFlowRoutingEncoderCustom(activationEncoder,
 				endNodeEncoder, interimNodeEncoder, edgeEncoder, proxyEncoder);
 		CommunicationFlow commFlow = mock(CommunicationFlow.class);
