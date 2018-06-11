@@ -11,7 +11,7 @@ import net.sf.opendse.model.parameter.Parameter;
  * @author Valentina Richthammer
  * 
  */
-public class TypeBasedSpecification implements IAttributes, ApplicationProvider {
+public class SpecificationTypeBased implements IAttributes, ApplicationProvider {
 
 	protected Application<?, ?> application = null;
 	protected Mappings<?, ?> mappings = null;
@@ -29,7 +29,7 @@ public class TypeBasedSpecification implements IAttributes, ApplicationProvider 
 	 * @param mappings
 	 *            the type mappings
 	 */
-	public TypeBasedSpecification(Application<?, ?> application, ResourceTypes<?> resourceTypes,
+	public SpecificationTypeBased(Application<?, ?> application, ResourceTypes<?> resourceTypes,
 			Mappings<?, ?> mappings, LinkTypes<?> linkTypes) {
 		this.resourceTypes = resourceTypes;
 		this.application = application;

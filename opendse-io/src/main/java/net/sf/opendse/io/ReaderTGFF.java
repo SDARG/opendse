@@ -24,8 +24,8 @@ import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Mappings;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.ResourceTypes;
+import net.sf.opendse.model.SpecificationTypeBased;
 import net.sf.opendse.model.Task;
-import net.sf.opendse.model.TypeBasedSpecification;
 
 /**
  * The {@code TgffReader} imports an {@code Application}, {@code Mappings} and a
@@ -39,7 +39,7 @@ import net.sf.opendse.model.TypeBasedSpecification;
  * 
  * @author Valentina Richthammer
  */
-public class TGFFReader {
+public class ReaderTGFF {
 
 	public static final String TGFF_TYPE = "TGFF_TYPE";
 	public static final String PERIOD = "PERIOD";
@@ -85,7 +85,7 @@ public class TGFFReader {
 	 *            the file name
 	 * @return the specification
 	 */
-	public TypeBasedSpecification read(String filename) {
+	public SpecificationTypeBased read(String filename) {
 		return read(new File(filename));
 	}
 
@@ -96,7 +96,7 @@ public class TGFFReader {
 	 *            the file
 	 * @return the specification
 	 */
-	public TypeBasedSpecification read(File file) {
+	public SpecificationTypeBased read(File file) {
 		try {
 			return read(new FileInputStream(file));
 		} catch (FileNotFoundException e) {
@@ -112,7 +112,7 @@ public class TGFFReader {
 	 *            the input stream
 	 * @return the specification
 	 */
-	public TypeBasedSpecification read(InputStream in) {
+	public SpecificationTypeBased read(InputStream in) {
 
 		List<String> tgffFile = new ArrayList<String>();
 		try {
@@ -137,13 +137,13 @@ public class TGFFReader {
 	 *            the list of lines contained in the tgff-file
 	 * @return the type-based specification
 	 */
-	public TypeBasedSpecification toSpecification(List<String> in) {
+	public SpecificationTypeBased toSpecification(List<String> in) {
 
 		Application<Task, Dependency> application = toApplication(in);
 		ResourceTypes<Resource> resourceTypes = toResourceTypes(in);
 		Mappings<Task, Resource> mappings = toMappings(in, resourceTypes);
 
-		return new TypeBasedSpecification(application, resourceTypes, mappings, toLinkTypes(in));
+		return new SpecificationTypeBased(application, resourceTypes, mappings, toLinkTypes(in));
 	}
 
 	/**
@@ -388,14 +388,14 @@ public class TGFFReader {
 
 		// skip resource type information (already imported in
 		// toResourceTypes())
-		while (it.hasNext() && skip(it.next())) {
+		while (skip(it.next())) {
 		}
 
 		// create mappings
 		String line;
 		List<String> attributes = new LinkedList<String>();
 
-		while (it.hasNext() && !isClosing((line = it.next()))) {
+		while (!isClosing((line = it.next()))) {
 
 			// extract attributes of resource type
 			if (line.contains(TYPE)) {
@@ -441,7 +441,7 @@ public class TGFFReader {
 		Map<String, Double> sizes = new HashMap<String, Double>();
 		String line;
 
-		while (it.hasNext() && !isClosing(line = it.next())) {
+		while (!isClosing(line = it.next())) {
 			if (!isComment(line)) {
 				String[] entries = line.trim().split(SEPARATOR);
 				assert entries.length >= 2 : "tgff-file \"" + COMMUN_QUANT + "\": wrong number of entries";
@@ -459,7 +459,7 @@ public class TGFFReader {
 		String currentLine;
 		String property = "";
 
-		while (it.hasNext() && !isClosing(currentLine = it.next())) {
+		while (!isClosing(currentLine = it.next())) {
 
 			// get attribute name
 			if (isComment(currentLine)) {
