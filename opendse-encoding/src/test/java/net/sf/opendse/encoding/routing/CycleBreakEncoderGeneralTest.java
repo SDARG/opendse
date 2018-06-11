@@ -23,7 +23,7 @@ import net.sf.opendse.model.Task;
 public class CycleBreakEncoderGeneralTest {
 
 	protected static final int minNodeNumber = 3;
-	protected static final int maxNodeNumber = 13;
+	protected static final int maxNodeNumber = 11;
 
 	protected static final String resourceName = "res";
 	protected static final String linkName = "link";
