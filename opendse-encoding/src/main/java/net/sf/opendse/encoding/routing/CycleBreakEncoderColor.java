@@ -53,30 +53,62 @@ public class CycleBreakEncoderColor implements CycleBreakEncoder {
 	 *            routings for the communication that is being routed
 	 * @return {@link Constraint}s that result in a 2-coloring of the routing
 	 *         graph. A link may only be used for the routing of the
-	 *         communication if its tow end points have a different color. By
+	 *         communication if its two end points have a different color. By
 	 *         this, all cycles with an odd number of nodes are prevented.
 	 */
 	protected Set<Constraint> performTwoColoring(T commVar, Architecture<Resource, Link> routing) {
 		Set<Constraint> result = new HashSet<Constraint>();
 		Task comm = commVar.getTask();
-		// iterates all directed links
-		for (DirectedLink dLink : Models.getLinks(routing)) {
-			CLRR linkUsed = Variables.varCLRR(comm, dLink);
-			Resource src = dLink.getSource();
-			Resource dest = dLink.getDest();
-			ColoredCommNode srcBlack = Variables.varColoredCommNode(comm, src, black);
-			ColoredCommNode destBlack = Variables.varColoredCommNode(comm, dest, black);
-			Constraint notBothWhite = new Constraint(Operator.GE, 0);
-			notBothWhite.add(Variables.p(srcBlack));
-			notBothWhite.add(Variables.p(destBlack));
-			notBothWhite.add(-1, Variables.p(linkUsed));
-			result.add(notBothWhite);
-			Constraint notBothBlack = new Constraint(Operator.LE, 2);
-			notBothBlack.add(Variables.p(srcBlack));
-			notBothBlack.add(Variables.p(destBlack));
-			notBothBlack.add(Variables.p(linkUsed));
-			result.add(notBothBlack);
+		// iterates all pairs of directed links
+		for (Resource first : routing) {
+			for (Link firstLink : routing.getIncidentEdges(first)) {
+				for (Link secondLink : routing.getIncidentEdges(first)) {
+					if (firstLink.equals(secondLink)) {
+						continue;
+					}
+					Resource second = routing.getOpposite(first, firstLink);
+					Resource third = routing.getOpposite(first, secondLink);
+					
+					CLRR inLink1 = Variables.varCLRR(comm, new DirectedLink(firstLink, second, first));
+					CLRR outLink1 = Variables.varCLRR(comm, new DirectedLink(secondLink, first, third));
+					
+					CLRR outLink2 = Variables.varCLRR(comm, new DirectedLink(firstLink, first, second));
+					CLRR inLink2 = Variables.varCLRR(comm, new DirectedLink(secondLink, third, first));
+					
+					ColoredCommNode secondBlack = Variables.varColoredCommNode(comm, second, black);
+					ColoredCommNode thirdBlack = Variables.varColoredCommNode(comm, third, black);
+					
+					Constraint differentNeighborColor1a = new Constraint(Operator.LE, 3);
+					differentNeighborColor1a.add(Variables.p(inLink1));
+					differentNeighborColor1a.add(Variables.p(outLink1));
+					differentNeighborColor1a.add(Variables.p(secondBlack));
+					differentNeighborColor1a.add(Variables.p(thirdBlack));
+					result.add(differentNeighborColor1a);
+					
+					Constraint differentNeighborColor1b = new Constraint(Operator.LE, 1);
+					differentNeighborColor1b.add(Variables.p(inLink1));
+					differentNeighborColor1b.add(Variables.p(outLink1));
+					differentNeighborColor1b.add(-1, Variables.p(secondBlack));
+					differentNeighborColor1b.add(-1, Variables.p(thirdBlack));
+					result.add(differentNeighborColor1b);
+					
+					Constraint differentNeighborColor2a = new Constraint(Operator.LE, 3);
+					differentNeighborColor2a.add(Variables.p(inLink2));
+					differentNeighborColor2a.add(Variables.p(outLink2));
+					differentNeighborColor2a.add(Variables.p(secondBlack));
+					differentNeighborColor2a.add(Variables.p(thirdBlack));
+					result.add(differentNeighborColor2a);
+					
+					Constraint differentNeighborColor2b = new Constraint(Operator.LE, 1);
+					differentNeighborColor2b.add(Variables.p(inLink2));
+					differentNeighborColor2b.add(Variables.p(outLink2));
+					differentNeighborColor2b.add(-1, Variables.p(secondBlack));
+					differentNeighborColor2b.add(-1, Variables.p(thirdBlack));
+					result.add(differentNeighborColor2b);
+				}
+			}
 		}
+		
 		return result;
 	}
 
