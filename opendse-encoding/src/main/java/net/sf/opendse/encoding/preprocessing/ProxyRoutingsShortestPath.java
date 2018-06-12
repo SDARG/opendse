@@ -143,29 +143,38 @@ public class ProxyRoutingsShortestPath implements ProxyRoutings {
 				}
 			}
 		}
+		
+		for (Resource res : resource2ProxyMap.keySet()) {
+			if (resource2ProxyMap.get(res).size() > 2) {
+				throw new IllegalArgumentException("bla");
+			}
+			if (proxy2ResourceMap.get(res).size() > 2) {
+				throw new IllegalArgumentException("bla");
+			}
+		}
 
 		// fill the maps of the resources relevant to the directed links
-		for (Entry<Resource, Set<DirectedLink>> srcEntry : resource2ProxyMap.entrySet()) {
-			Resource src = srcEntry.getKey();
-			Set<DirectedLink> links = srcEntry.getValue();
-			for (DirectedLink link : links) {
-				if (!dirLink2RelevantSrcResources.containsKey(link)) {
-					dirLink2RelevantSrcResources.put(link, new HashSet<Resource>());
-				}
-				dirLink2RelevantSrcResources.get(link).add(src);
-			}
-		}
-
-		for (Entry<Resource, Set<DirectedLink>> destEntry : proxy2ResourceMap.entrySet()) {
-			Resource dest = destEntry.getKey();
-			Set<DirectedLink> links = destEntry.getValue();
-			for (DirectedLink link : links) {
-				if (!dirLink2RelevantDestResources.containsKey(link)) {
-					dirLink2RelevantDestResources.put(link, new HashSet<Resource>());
-				}
-				dirLink2RelevantDestResources.get(link).add(dest);
-			}
-		}
+//		for (Entry<Resource, Set<DirectedLink>> srcEntry : resource2ProxyMap.entrySet()) {
+//			Resource src = srcEntry.getKey();
+//			Set<DirectedLink> links = srcEntry.getValue();
+//			for (DirectedLink link : links) {
+//				if (!dirLink2RelevantSrcResources.containsKey(link)) {
+//					dirLink2RelevantSrcResources.put(link, new HashSet<Resource>());
+//				}
+//				dirLink2RelevantSrcResources.get(link).add(src);
+//			}
+//		}
+//
+//		for (Entry<Resource, Set<DirectedLink>> destEntry : proxy2ResourceMap.entrySet()) {
+//			Resource dest = destEntry.getKey();
+//			Set<DirectedLink> links = destEntry.getValue();
+//			for (DirectedLink link : links) {
+//				if (!dirLink2RelevantDestResources.containsKey(link)) {
+//					dirLink2RelevantDestResources.put(link, new HashSet<Resource>());
+//				}
+//				dirLink2RelevantDestResources.get(link).add(dest);
+//			}
+//		}
 	}
 
 	@Override
