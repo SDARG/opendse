@@ -15,18 +15,19 @@ public class DTT extends Variable implements ApplicationVariable {
 	protected DTT(Dependency dependency, Task sourceTask, Task destinationTask) {
 		super(dependency, sourceTask, destinationTask);
 		if (TaskPropertyService.isProcess(sourceTask) && TaskPropertyService.isProcess(destinationTask)) {
-			throw new IllegalArgumentException("Dependencies should not connect two processes");
+			throw new IllegalArgumentException(
+					"Dependencies should not connect the two processes: " + sourceTask + " and " + destinationTask);
 		}
 	}
 
 	public Dependency getDependency() {
 		return get(0);
 	}
-	
+
 	public Task getSourceTask() {
 		return get(1);
 	}
-	
+
 	public Task getDestinationTask() {
 		return get(2);
 	}
