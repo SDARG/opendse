@@ -1,9 +1,10 @@
 package net.sf.opendse.model;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
- * The {@code LinkTypes} is a map of different link types.
+ * The {@link LinkTypes} is a {@link Map} of different types of {@link Link}s.
  * 
  * @author Valentina Richthammer
  * 

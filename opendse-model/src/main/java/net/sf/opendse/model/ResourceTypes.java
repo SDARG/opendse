@@ -1,9 +1,11 @@
 package net.sf.opendse.model;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
- * The {@code ResourceTypes} is a map of different resource types.
+ * The {@link ResourceTypes} is a {@link Map} of different types of
+ * {@link Resource}s.
  * 
  * @author Valentina Richthammer
  *

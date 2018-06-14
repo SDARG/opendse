@@ -5,7 +5,7 @@ import java.util.Set;
 import net.sf.opendse.model.parameter.Parameter;
 
 /**
- * The {@code TypeBasedSpecification} consists of an {@link Application},
+ * The {@link SpecificationTypeBased} consists of an {@link Application},
  * {@link ResourceTypes}, {@link LinkTypes}, and {@link Mappings}.
  * 
  * @author Valentina Richthammer
@@ -20,7 +20,7 @@ public class SpecificationTypeBased implements IAttributes, ApplicationProvider 
 	protected Attributes attributes = new Attributes();
 
 	/**
-	 * Constructs the specification.
+	 * Constructs the {@link SpecificationTypeBased}.
 	 * 
 	 * @param application
 	 *            the application
@@ -38,10 +38,10 @@ public class SpecificationTypeBased implements IAttributes, ApplicationProvider 
 	}
 
 	/**
-	 * Returns the set of resource types.
+	 * Returns the {@link LinkTypes}.
 	 * 
-	 * @param <A>
-	 *            the type of architecture
+	 * @param <L>
+	 *            the type of {@link LinkTypes}
 	 * @return the architecture
 	 */
 	@SuppressWarnings("unchecked")
@@ -50,10 +50,10 @@ public class SpecificationTypeBased implements IAttributes, ApplicationProvider 
 	}
 
 	/**
-	 * Returns the set of resource types.
+	 * Returns the {@link ResourceTypes}.
 	 * 
-	 * @param <A>
-	 *            the type of architecture
+	 * @param <R>
+	 *            the type {@link ResourceTypes}
 	 * @return the architecture
 	 */
 	@SuppressWarnings("unchecked")
@@ -62,10 +62,10 @@ public class SpecificationTypeBased implements IAttributes, ApplicationProvider 
 	}
 
 	/**
-	 * Returns the application.
+	 * Returns the {@link Application}.
 	 * 
 	 * @param <A>
-	 *            the type of application
+	 *            the type of {@link Application}
 	 * @return the application
 	 */
 	@SuppressWarnings("unchecked")
@@ -74,10 +74,10 @@ public class SpecificationTypeBased implements IAttributes, ApplicationProvider 
 	}
 
 	/**
-	 * Returns the mappings.
+	 * Returns the {@link Mappings}.
 	 * 
 	 * @param <M>
-	 *            the type of mappings
+	 *            the type of {@link Mappings}
 	 * @return the mappings
 	 */
 	@SuppressWarnings("unchecked")
