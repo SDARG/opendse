@@ -134,6 +134,7 @@ public class OptimizationNewModule extends ProblemModule {
 			bind(Interpreter.class).to(InterpreterVariable.class);
 			bind(ImplementationEncoding.class).to(ImplementationEncodingModular.class);
 			bind(ImplementationEncodingModular.class).to(ImplementationEncodingModularDefault.class);
+			bind(VariableClassOrderModular.class).asEagerSingleton();
 		}
 	}
 }

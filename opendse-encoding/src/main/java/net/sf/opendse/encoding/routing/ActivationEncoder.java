@@ -4,6 +4,8 @@ import java.util.Set;
 
 import org.opt4j.satdecoding.Constraint;
 
+import com.google.inject.ImplementedBy;
+
 import net.sf.opendse.encoding.variables.RoutingVariable;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Communication;
@@ -18,6 +20,7 @@ import net.sf.opendse.model.Resource;
  * @author Fedor Smirnov
  *
  */
+@ImplementedBy(ActivationEncoderDefault.class)
 public interface ActivationEncoder {
 
 	/**

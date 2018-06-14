@@ -9,7 +9,12 @@ import net.sf.opendse.encoding.application.ApplicationConstraintManagerDefault;
 import net.sf.opendse.encoding.application.ApplicationEncodingMode;
 import net.sf.opendse.encoding.mapping.MappingConstraintManagerDefault;
 import net.sf.opendse.encoding.mapping.MappingEncodingMode;
+import net.sf.opendse.encoding.routing.AdditionalRoutingConstraintsEncoderNone;
+import net.sf.opendse.encoding.routing.CommunicationFlowRoutingManagerDefault;
+import net.sf.opendse.encoding.routing.CommunicationHierarchyEncoderDefault;
 import net.sf.opendse.encoding.routing.CommunicationRoutingManagerDefault;
+import net.sf.opendse.encoding.routing.CycleBreakEncoderColor;
+import net.sf.opendse.encoding.routing.OneDirectionEncoderDefault;
 import net.sf.opendse.encoding.routing.RoutingEncodingFlexible;
 import net.sf.opendse.encoding.variables.Variables;
 import net.sf.opendse.model.Application;
@@ -106,7 +111,10 @@ public class AlternativesImplementationEncodingTest {
 		ApplicationEncoding applicationEncoding = new ApplicationEncodingMode(
 				new ApplicationConstraintManagerDefault());
 		MappingEncoding mappingEncoding = new MappingEncodingMode(new MappingConstraintManagerDefault());
-		RoutingEncoding routingEncoding = new RoutingEncodingFlexible(new CommunicationRoutingManagerDefault());
+		RoutingEncoding routingEncoding = new RoutingEncodingFlexible(
+				new CommunicationRoutingManagerDefault(new OneDirectionEncoderDefault(), new CycleBreakEncoderColor(),
+						new CommunicationHierarchyEncoderDefault(), new CommunicationFlowRoutingManagerDefault(),
+						new AdditionalRoutingConstraintsEncoderNone()));
 		AllocationEncoding allocationEncoding = new AllocationEncodingUtilization();
 		SpecificationPreprocessor preprocessor = new SpecificationPreprocessorNone();
 		ImplementationEncodingModularDefault encoding = new ImplementationEncodingModularDefault(preprocessor,
