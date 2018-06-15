@@ -38,6 +38,7 @@ import net.sf.opendse.model.Task;
  * "http://ziyang.eecs.umich.edu/~dickrp/e3s/">http://ziyang.eecs.umich.edu/~dickrp/e3s/</a>
  * 
  * @author Valentina Richthammer
+ * 
  */
 public class ReaderTGFF {
 
@@ -148,7 +149,7 @@ public class ReaderTGFF {
 	}
 
 	/**
-	 * Reads an application from a tgff-file.
+	 * Reads an {@link Application} from a tgff-file.
 	 * 
 	 * @param in
 	 *            the list of lines contained in the tgff-file

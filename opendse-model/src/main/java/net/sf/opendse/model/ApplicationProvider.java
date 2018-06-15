@@ -3,7 +3,7 @@ package net.sf.opendse.model;
 /**
  * The {@link ApplicationProvider} interface applies to classes that provide an
  * {@link Application}.
- *
+ * 
  */
 public interface ApplicationProvider {
 
