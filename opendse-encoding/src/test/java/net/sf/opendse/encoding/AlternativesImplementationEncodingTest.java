@@ -34,7 +34,6 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.ApplicationElementPropertyService;
-import net.sf.opendse.model.properties.ApplicationElementPropertyService.ActivationModes;
 import net.sf.opendse.optimization.SpecificationWrapper;
 import verification.ConstraintVerifier;
 
@@ -83,12 +82,18 @@ public class AlternativesImplementationEncodingTest {
 			appl.addEdge(d1, c0, t1, EdgeType.DIRECTED);
 			appl.addEdge(d2, t1, c1, EdgeType.DIRECTED);
 			appl.addEdge(d3, c1, t2, EdgeType.DIRECTED);
-			ApplicationElementPropertyService.setActivationMode(d0, ActivationModes.ALTERNATIVE);
-			ApplicationElementPropertyService.setActivationMode(d1, ActivationModes.ALTERNATIVE);
-			ApplicationElementPropertyService.setActivationMode(d2, ActivationModes.ALTERNATIVE);
-			ApplicationElementPropertyService.setActivationMode(d3, ActivationModes.ALTERNATIVE);
-			ApplicationElementPropertyService.setActivationMode(t1, ActivationModes.ALTERNATIVE);
-			ApplicationElementPropertyService.setActivationMode(c1, ActivationModes.ALTERNATIVE);
+			ApplicationElementPropertyService.setActivationMode(d0,
+					ApplicationElementPropertyService.activationAttributeAlternative);
+			ApplicationElementPropertyService.setActivationMode(d1,
+					ApplicationElementPropertyService.activationAttributeAlternative);
+			ApplicationElementPropertyService.setActivationMode(d2,
+					ApplicationElementPropertyService.activationAttributeAlternative);
+			ApplicationElementPropertyService.setActivationMode(d3,
+					ApplicationElementPropertyService.activationAttributeAlternative);
+			ApplicationElementPropertyService.setActivationMode(t1,
+					ApplicationElementPropertyService.activationAttributeAlternative);
+			ApplicationElementPropertyService.setActivationMode(c1,
+					ApplicationElementPropertyService.activationAttributeAlternative);
 			ApplicationElementPropertyService.setAlternativeAttributes(d0, "func", "a");
 			ApplicationElementPropertyService.setAlternativeAttributes(d1, "func", "b");
 			ApplicationElementPropertyService.setAlternativeAttributes(d2, "func", "b");
@@ -124,7 +129,11 @@ public class AlternativesImplementationEncodingTest {
 		ApplicationEncoding applicationEncoding = new ApplicationEncodingMode(
 				new ApplicationConstraintManagerDefault());
 		MappingEncoding mappingEncoding = new MappingEncodingMode(new MappingConstraintManagerDefault());
-		RoutingEncoding routingEncoding = getRoutingEncoding();
+		CommunicationFlowRoutingManager manager = new CommunicationFlowRoutingManagerDefault(new ActivationEncoderDefault(), new EndNodeEncoderMapping(), new RoutingResourceEncoderDefault(), new RoutingEdgeEncoderNonRedundant(), new ProxyEncoderCompact());
+		RoutingEncoding routingEncoding = new RoutingEncodingFlexible(
+				new CommunicationRoutingManagerDefault(new OneDirectionEncoderDefault(), new CycleBreakEncoderColor(),
+						new CommunicationHierarchyEncoderDefault(), manager,
+						new AdditionalRoutingConstraintsEncoderNone()));
 		AllocationEncoding allocationEncoding = new AllocationEncodingUtilization();
 		SpecificationPreprocessor preprocessor = new SpecificationPreprocessorNone();
 		ImplementationEncodingModularDefault encoding = new ImplementationEncodingModularDefault(preprocessor,

@@ -13,7 +13,6 @@ import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.ApplicationElementPropertyService;
-import net.sf.opendse.model.properties.ApplicationElementPropertyService.ActivationModes;
 import static org.mockito.Mockito.*;
 
 import java.util.HashSet;
@@ -29,14 +28,15 @@ public class ApplicationEncodingModeTest {
 		Application<Task, Dependency> appl = new Application<Task, Dependency>();
 		appl.addVertex(task);
 		ApplicationConstraintGenerator generator = mock(ApplicationConstraintGenerator.class);
-		when(generatorManager.getConstraintGenerator(ActivationModes.STATIC)).thenReturn(generator);
+		when(generatorManager.getConstraintGenerator(ApplicationElementPropertyService.activationAttributeStatic))
+				.thenReturn(generator);
 		Set<ApplicationVariable> vars = new HashSet<ApplicationVariable>();
 		vars.add(Variables.varT(task));
 		when(generator.toConstraints(vars)).thenReturn(new HashSet<Constraint>());
 		ApplicationEncodingMode encoding = new ApplicationEncodingMode(generatorManager);
 		encoding.toConstraints(appl);
 		verify(generator).toConstraints(vars);
-		verify(generatorManager).getConstraintGenerator(ActivationModes.STATIC);
+		verify(generatorManager).getConstraintGenerator(ApplicationElementPropertyService.activationAttributeStatic);
 	}
 
 	@Test
@@ -47,25 +47,34 @@ public class ApplicationEncodingModeTest {
 		Task t2 = new Communication("t2");
 		Task t3 = new Task("t3");
 		Task t4 = new Communication("t4");
-		ApplicationElementPropertyService.setActivationMode(t1, ActivationModes.ALTERNATIVE);
-		ApplicationElementPropertyService.setActivationMode(t2, ActivationModes.ALTERNATIVE);
+		ApplicationElementPropertyService.setActivationMode(t1,
+				ApplicationElementPropertyService.activationAttributeAlternative);
+		ApplicationElementPropertyService.setActivationMode(t2,
+				ApplicationElementPropertyService.activationAttributeAlternative);
 		Dependency d1 = new Dependency("d1");
 		Dependency d2 = new Dependency("d2");
-		ApplicationElementPropertyService.setActivationMode(d1, ActivationModes.ALTERNATIVE);
+		ApplicationElementPropertyService.setActivationMode(d1,
+				ApplicationElementPropertyService.activationAttributeAlternative);
 		Application<Task, Dependency> appl = new Application<Task, Dependency>();
 		appl.addEdge(d1, t1, t2, EdgeType.DIRECTED);
 		appl.addEdge(d2, t3, t4, EdgeType.DIRECTED);
-		Map<ActivationModes, Set<ApplicationVariable>> modeMap = encoding.filterApplicationModes(appl);
+		Map<String, Set<ApplicationVariable>> modeMap = encoding.filterApplicationModes(appl);
 		assertEquals(2, modeMap.keySet().size());
-		assertTrue(modeMap.keySet().contains(ActivationModes.ALTERNATIVE));
-		assertTrue(modeMap.keySet().contains(ActivationModes.STATIC));
-		assertEquals(3, modeMap.get(ActivationModes.STATIC).size());
-		assertTrue(modeMap.get(ActivationModes.STATIC).contains(Variables.varT(t3)));
-		assertTrue(modeMap.get(ActivationModes.STATIC).contains(Variables.varT(t4)));
-		assertTrue(modeMap.get(ActivationModes.STATIC).contains(Variables.varDTT(d2, t3, t4)));
-		assertEquals(3, modeMap.get(ActivationModes.ALTERNATIVE).size());
-		assertTrue(modeMap.get(ActivationModes.ALTERNATIVE).contains(Variables.varT(t1)));
-		assertTrue(modeMap.get(ActivationModes.ALTERNATIVE).contains(Variables.varT(t2)));
-		assertTrue(modeMap.get(ActivationModes.ALTERNATIVE).contains(Variables.varDTT(d1, t1, t2)));
+		assertTrue(modeMap.keySet().contains(ApplicationElementPropertyService.activationAttributeAlternative));
+		assertTrue(modeMap.keySet().contains(ApplicationElementPropertyService.activationAttributeStatic));
+		assertEquals(3, modeMap.get(ApplicationElementPropertyService.activationAttributeStatic).size());
+		assertTrue(
+				modeMap.get(ApplicationElementPropertyService.activationAttributeStatic).contains(Variables.varT(t3)));
+		assertTrue(
+				modeMap.get(ApplicationElementPropertyService.activationAttributeStatic).contains(Variables.varT(t4)));
+		assertTrue(modeMap.get(ApplicationElementPropertyService.activationAttributeStatic)
+				.contains(Variables.varDTT(d2, t3, t4)));
+		assertEquals(3, modeMap.get(ApplicationElementPropertyService.activationAttributeAlternative).size());
+		assertTrue(modeMap.get(ApplicationElementPropertyService.activationAttributeAlternative)
+				.contains(Variables.varT(t1)));
+		assertTrue(modeMap.get(ApplicationElementPropertyService.activationAttributeAlternative)
+				.contains(Variables.varT(t2)));
+		assertTrue(modeMap.get(ApplicationElementPropertyService.activationAttributeAlternative)
+				.contains(Variables.varDTT(d1, t1, t2)));
 	}
 }

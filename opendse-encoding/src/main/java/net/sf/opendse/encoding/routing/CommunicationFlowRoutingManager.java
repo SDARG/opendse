@@ -12,7 +12,7 @@ import com.google.inject.ImplementedBy;
  * @author Fedor Smirnov
  *
  */
-@ImplementedBy(CommunicationFlowRoutingManagerDefault.class)
+@ImplementedBy(CommunicationFlowRoutingManagerInjective.class)
 public interface CommunicationFlowRoutingManager {
 
 	/**

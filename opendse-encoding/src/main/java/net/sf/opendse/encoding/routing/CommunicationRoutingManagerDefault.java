@@ -12,24 +12,25 @@ public class CommunicationRoutingManagerDefault implements CommunicationRoutingM
 	protected final CycleBreakEncoder cycleBreakEncoder;
 	protected final CommunicationHierarchyEncoder hierarchyEncoder;
 	protected final CommunicationFlowRoutingManager communicationFlowManager;
-	protected final AdditionalRoutingConstraintsEncoder additionalConstraintsEncoder;
+	protected final AdditionalRoutingConstraintsEncoder additionalConstraintEncoder;
 
 	@Inject
 	public CommunicationRoutingManagerDefault(OneDirectionEncoder oneDirectionEncoder,
 			CycleBreakEncoder cycleBreakEncoder, CommunicationHierarchyEncoder hierarchyEncoder,
+
 			CommunicationFlowRoutingManager communicationFlowManager,
-			AdditionalRoutingConstraintsEncoder additionalConstraintsEncoder) {
+			AdditionalRoutingConstraintsEncoder additionalConstraintEncoder) {
 		this.oneDirectionEncoder = oneDirectionEncoder;
 		this.cycleBreakEncoder = cycleBreakEncoder;
 		this.hierarchyEncoder = hierarchyEncoder;
 		this.communicationFlowManager = communicationFlowManager;
-		this.additionalConstraintsEncoder = additionalConstraintsEncoder;
+		this.additionalConstraintEncoder = additionalConstraintEncoder;
 	}
 
 	@Override
 	public CommunicationRoutingEncoder getRoutingEncoder(T communicationTaskVariable,
 			Set<CommunicationFlow> communicationFlows) {
 		return new CommunicationRoutingEncoderCustom(oneDirectionEncoder, cycleBreakEncoder, hierarchyEncoder,
-				communicationFlowManager, additionalConstraintsEncoder);
+				communicationFlowManager, additionalConstraintEncoder);
 	}
 }

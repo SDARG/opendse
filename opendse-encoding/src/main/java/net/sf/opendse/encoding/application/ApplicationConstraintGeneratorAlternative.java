@@ -17,7 +17,6 @@ import net.sf.opendse.encoding.variables.Variables;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Element;
 import net.sf.opendse.model.properties.ApplicationElementPropertyService;
-import net.sf.opendse.model.properties.ApplicationElementPropertyService.ActivationModes;
 
 /**
  * The {@link ApplicationConstraintGeneratorAlternative} is used when the
@@ -38,7 +37,7 @@ public class ApplicationConstraintGeneratorAlternative implements ApplicationCon
 	 * 
 	 * @param applicationVariables
 	 *            the {@link ApplicationVariable}s with the alternative
-	 *            {@link ActivationModes} from the {@link Application} provided by
+	 *            activation mode from the {@link Application} provided by
 	 *            the designer
 	 * @return the {@link Constraint}s that make sure that in each valid
 	 *         implementation, exactly one alternative is activated for each
@@ -77,7 +76,7 @@ public class ApplicationConstraintGeneratorAlternative implements ApplicationCon
 	 *            of the particular function
 	 * @param applicationVariables
 	 *            the set of {@link ApplicationVariable}s of the application
-	 *            {@link Element}s with the ALTERNATIVE {@link ActivationModes}
+	 *            {@link Element}s with the ALTERNATIVE activation mode
 	 */
 	protected void fillFunctionToIdsMap(Map<String, Set<String>> functionToIdsMap,
 			Set<ApplicationVariable> applicationVariables) {

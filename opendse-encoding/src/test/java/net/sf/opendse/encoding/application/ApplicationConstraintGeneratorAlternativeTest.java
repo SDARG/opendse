@@ -20,7 +20,6 @@ import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.ApplicationElementPropertyService;
-import net.sf.opendse.model.properties.ApplicationElementPropertyService.ActivationModes;
 import verification.ConstraintVerifier;
 
 public class ApplicationConstraintGeneratorAlternativeTest {
@@ -68,12 +67,18 @@ public class ApplicationConstraintGeneratorAlternativeTest {
 			func2.add(tVar1);
 			func2.add(dttVar3);
 
-			ApplicationElementPropertyService.setActivationMode(d0, ActivationModes.ALTERNATIVE);
-			ApplicationElementPropertyService.setActivationMode(d1, ActivationModes.ALTERNATIVE);
-			ApplicationElementPropertyService.setActivationMode(d2, ActivationModes.ALTERNATIVE);
-			ApplicationElementPropertyService.setActivationMode(d3, ActivationModes.ALTERNATIVE);
-			ApplicationElementPropertyService.setActivationMode(c0, ActivationModes.ALTERNATIVE);
-			ApplicationElementPropertyService.setActivationMode(t1, ActivationModes.ALTERNATIVE);
+			ApplicationElementPropertyService.setActivationMode(d0,
+					ApplicationElementPropertyService.activationAttributeAlternative);
+			ApplicationElementPropertyService.setActivationMode(d1,
+					ApplicationElementPropertyService.activationAttributeAlternative);
+			ApplicationElementPropertyService.setActivationMode(d2,
+					ApplicationElementPropertyService.activationAttributeAlternative);
+			ApplicationElementPropertyService.setActivationMode(d3,
+					ApplicationElementPropertyService.activationAttributeAlternative);
+			ApplicationElementPropertyService.setActivationMode(c0,
+					ApplicationElementPropertyService.activationAttributeAlternative);
+			ApplicationElementPropertyService.setActivationMode(t1,
+					ApplicationElementPropertyService.activationAttributeAlternative);
 
 			ApplicationElementPropertyService.setAlternativeAttributes(d0, "Function", "A");
 			ApplicationElementPropertyService.setAlternativeAttributes(d1, "Function", "B");
@@ -112,7 +117,7 @@ public class ApplicationConstraintGeneratorAlternativeTest {
 			verifyActivationB.verifyVariableActivated(activated);
 		}
 	}
-	
+
 	@Test
 	public void testFillFunctionToIdsMap() {
 		AlternativeApplication problem = new AlternativeApplication();
