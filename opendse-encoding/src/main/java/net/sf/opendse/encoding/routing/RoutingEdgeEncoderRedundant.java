@@ -74,7 +74,7 @@ public class RoutingEdgeEncoderRedundant implements RoutingEdgeEncoder {
 
 	/**
 	 * Generates the constraints stating that the destination of the communication
-	 * flow has a) at least one in-edge and b) no out-edges.
+	 * flow (which is not a source) has a) at least one in-edge and b) no out-edges.
 	 * 
 	 * @param flow
 	 *            the {@link CommunicationFlow} that is being routed
@@ -91,8 +91,8 @@ public class RoutingEdgeEncoderRedundant implements RoutingEdgeEncoder {
 	}
 
 	/**
-	 * Generates the constraints stating that the source of the communication flow
-	 * has a) at least one out-edge and b) no in-edges.
+	 * Generates the constraints stating that the source of the communication flow (which is not a destination)
+	 * has a) at least one out-edge
 	 * 
 	 * sum(outLink) + dest - src >= 0 each inLink <= src
 	 * 
@@ -113,8 +113,8 @@ public class RoutingEdgeEncoderRedundant implements RoutingEdgeEncoder {
 	protected Set<Constraint> generateEndPointConstraints(CommunicationFlow flow, Resource res,
 			Architecture<Resource, Link> routing, boolean source) {
 		Set<Constraint> result = new HashSet<Constraint>();
-		Set<DirectedLink> inLinks = source ? new HashSet<Models.DirectedLink>(Models.getInLinks(routing, res))
-				: new HashSet<Models.DirectedLink>(Models.getOutLinks(routing, res));
+//		Set<DirectedLink> inLinks = source ? new HashSet<Models.DirectedLink>(Models.getInLinks(routing, res))
+//				: new HashSet<Models.DirectedLink>(Models.getOutLinks(routing, res));
 		Set<DirectedLink> outLinks = source ? new HashSet<Models.DirectedLink>(Models.getOutLinks(routing, res))
 				: new HashSet<Models.DirectedLink>(Models.getInLinks(routing, res));
 		Constraint outLinkConstraint = new Constraint(Operator.GE, 0);
@@ -126,13 +126,12 @@ public class RoutingEdgeEncoderRedundant implements RoutingEdgeEncoder {
 			outLinkConstraint.add(Variables.p(Variables.varDDLRR(flow, outLink)));
 		}
 		result.add(outLinkConstraint);
-		for (DirectedLink inLink : inLinks) {
-			Constraint inLinkConstraint = new Constraint(Operator.LE, 0);
-			inLinkConstraint.add(Variables.p(Variables.varDDLRR(flow, inLink)));
-			inLinkConstraint.add(-1, Variables.n(resourceSource));
-			result.add(inLinkConstraint);
-		}
-
+//		for (DirectedLink inLink : inLinks) {
+//			Constraint inLinkConstraint = new Constraint(Operator.LE, 0);
+//			inLinkConstraint.add(Variables.p(Variables.varDDLRR(flow, inLink)));
+//			inLinkConstraint.add(-1, Variables.n(resourceSource));
+//			result.add(inLinkConstraint);
+//		}
 		return result;
 	}
 }

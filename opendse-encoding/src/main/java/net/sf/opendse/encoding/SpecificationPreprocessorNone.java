@@ -11,7 +11,7 @@ import net.sf.opendse.model.Specification;
 public class SpecificationPreprocessorNone implements SpecificationPreprocessor{
 
 	@Override
-	public Specification preprocessSpecification(Specification userSpecification) {
-		return userSpecification;
+	public void preprocessSpecification(Specification userSpecification) {
+		
 	}
 }

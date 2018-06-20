@@ -20,8 +20,7 @@ public interface SpecificationPreprocessor {
 	 * 
 	 * @param userSpecification
 	 *            the {@link Specification} provided by the user
-	 * @return the {@link Specification} that is to be used for the encoding process
 	 */
-	public Specification preprocessSpecification(Specification userSpecification);
+	public void preprocessSpecification(Specification userSpecification);
 
 }

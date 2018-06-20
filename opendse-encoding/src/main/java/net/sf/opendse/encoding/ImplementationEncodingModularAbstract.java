@@ -66,9 +66,9 @@ public abstract class ImplementationEncodingModularAbstract implements Implement
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected Set<Constraint> generateTheConstraints(Specification userSpecification){
+	protected Set<Constraint> generateTheConstraints(Specification specification){
 		Variables.clearCaches();
-		Specification specification = preprocessor.preprocessSpecification(userSpecification);
+		preprocessor.preprocessSpecification(specification);
 		Application<Task, Dependency> application = specification.getApplication();
 		Mappings<Task, Resource> mappings = specification.getMappings();
 		Routings<Task, Resource, Link> routings = specification.getRoutings();

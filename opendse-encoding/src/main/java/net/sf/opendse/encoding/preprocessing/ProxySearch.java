@@ -20,8 +20,15 @@ import net.sf.opendse.model.properties.ResourcePropertyService;
  */
 public class ProxySearch implements SpecificationPreprocessor {
 
+	protected final String specProcessedAttribute = "spec proxy processed";
+	
 	@Override
-	public Specification preprocessSpecification(Specification userSpecification) {
+	public void preprocessSpecification(Specification userSpecification) {
+		if (userSpecification.getAttribute(specProcessedAttribute) != null) {
+			return;
+		}else {
+			userSpecification.setAttribute(specProcessedAttribute, true);
+		}
 		Architecture<Resource, Link> arch = userSpecification.getArchitecture();
 		Set<Resource> varietyResources = new HashSet<Resource>(arch.getVertices());
 		int varResNum = 0;
@@ -30,7 +37,6 @@ public class ProxySearch implements SpecificationPreprocessor {
 			Set<Resource> proxiedResources = findProxiedResources(arch, varietyResources);
 			varietyResources.removeAll(proxiedResources);
 		}
-		return new Specification(userSpecification.getApplication(), arch, userSpecification.getMappings());
 	}
 
 	/**

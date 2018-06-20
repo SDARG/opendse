@@ -7,7 +7,6 @@ import com.google.inject.Inject;
 
 import edu.uci.ics.jung.graph.util.EdgeType;
 import net.sf.opendse.encoding.preprocessing.ProxyRoutingsShortestPath;
-import net.sf.opendse.encoding.preprocessing.ProxySearch;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Dependency;
@@ -37,10 +36,8 @@ public class SpecificationPostProcessorProxy implements SpecificationPostProcess
 
 	@Inject
 	public SpecificationPostProcessorProxy(SpecificationWrapper specWrapper) {
-		ProxySearch proxySearch = new ProxySearch();
-		Specification annotatedSpec = proxySearch.preprocessSpecification(specWrapper.getSpecification());
-		this.annotatedArch = annotatedSpec.getArchitecture();
-		this.proxyRoutings = new ProxyRoutingsShortestPath(annotatedSpec.getArchitecture());
+		this.annotatedArch = specWrapper.getSpecification().getArchitecture();
+		this.proxyRoutings = new ProxyRoutingsShortestPath(annotatedArch);
 	}
 
 	@Override
