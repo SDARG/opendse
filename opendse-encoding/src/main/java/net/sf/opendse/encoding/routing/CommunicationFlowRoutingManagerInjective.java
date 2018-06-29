@@ -10,7 +10,7 @@ public class CommunicationFlowRoutingManagerInjective implements CommunicationFl
 	public CommunicationFlowRoutingManagerInjective(ActivationEncoder activationEncoder, EndNodeEncoder endNodeEncoder,
 			RoutingResourceEncoder interimNodeEncoder, RoutingEdgeEncoder edgeEncoder, ProxyEncoder proxyEncoder) {
 		this.encoder = new CommunicationFlowRoutingEncoderCustom(activationEncoder, endNodeEncoder, interimNodeEncoder,
-				edgeEncoder, proxyEncoder);
+				edgeEncoder);
 	}
 
 	@Override

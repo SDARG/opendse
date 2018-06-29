@@ -64,15 +64,16 @@ public class FlexibleRoutingEncodingTest {
 		RoutingEncodingFlexible routingEncoding = new RoutingEncodingFlexible(routingEncoderManager);
 		when(routingEncoderManager.getRoutingEncoder(commVar,
 				routingEncoding.findCommunicationFlows(dependencyVariables))).thenReturn(routingEncoder);
-		when(routingEncoder.toConstraints(any(T.class), any(Set.class), any(Architecture.class), any(Set.class)))
-				.thenReturn(new HashSet<Constraint>());
+		when(routingEncoder.toConstraints(any(T.class), any(Set.class), any(Architecture.class), any(Set.class),
+				any(Set.class))).thenReturn(new HashSet<Constraint>());
 
 		Set<Constraint> constraints = routingEncoding.toConstraints(applVars, new HashSet<MappingVariable>(),
 				new Routings<Task, Resource, Link>());
 		assertTrue(constraints.isEmpty());
 		verify(routingEncoderManager).getRoutingEncoder(commVar,
 				routingEncoding.findCommunicationFlows(dependencyVariables));
-		verify(routingEncoder).toConstraints(any(T.class), any(Set.class), any(Architecture.class), any(Set.class));
+		verify(routingEncoder).toConstraints(any(T.class), any(Set.class), any(Architecture.class), any(Set.class),
+				any(Set.class));
 	}
 
 	@Test

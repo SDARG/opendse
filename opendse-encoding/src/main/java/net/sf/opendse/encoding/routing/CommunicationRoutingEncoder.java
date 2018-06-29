@@ -5,6 +5,7 @@ import java.util.Set;
 import org.opt4j.satdecoding.Constraint;
 
 import net.sf.opendse.encoding.MappingEncoding;
+import net.sf.opendse.encoding.variables.ApplicationVariable;
 import net.sf.opendse.encoding.variables.MappingVariable;
 import net.sf.opendse.encoding.variables.T;
 import net.sf.opendse.model.Architecture;
@@ -39,6 +40,7 @@ public interface CommunicationRoutingEncoder {
 	 * @return the constraints encoding a valid routing of the communication
 	 */
 	public Set<Constraint> toConstraints(T communicationVariable, Set<CommunicationFlow> communicationFlows,
-			Architecture<Resource, Link> routing, Set<MappingVariable> mappingVariables);
+			Architecture<Resource, Link> routing, Set<MappingVariable> mappingVariables,
+			Set<ApplicationVariable> applicationVariables);
 
 }

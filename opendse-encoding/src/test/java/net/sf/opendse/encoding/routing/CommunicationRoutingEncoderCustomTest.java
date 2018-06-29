@@ -6,11 +6,13 @@ import org.junit.Test;
 import org.opt4j.satdecoding.Constraint;
 import org.opt4j.satdecoding.Constraint.Operator;
 
+import net.sf.opendse.encoding.variables.ApplicationVariable;
 import net.sf.opendse.encoding.variables.MappingVariable;
 import net.sf.opendse.encoding.variables.T;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Resource;
+import net.sf.opendse.model.Task;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -27,9 +29,10 @@ public class CommunicationRoutingEncoderCustomTest {
 		CommunicationHierarchyEncoder hierarchyEncoder = mock(CommunicationHierarchyEncoder.class);
 		CommunicationFlowRoutingManager manager = mock(CommunicationFlowRoutingManager.class);
 		AdditionalRoutingConstraintsEncoder additional = mock(AdditionalRoutingConstraintsEncoder.class);
+		ProxyEncoderCompact proxyEncoder = mock(ProxyEncoderCompact.class);
 		OneDirectionEncoder oneDirectionEncoder = mock(OneDirectionEncoder.class);
 		CommunicationRoutingEncoderCustom encoder = new CommunicationRoutingEncoderCustom(oneDirectionEncoder,
-				cycleBreak, hierarchyEncoder, manager, additional);
+				cycleBreak, hierarchyEncoder, manager, proxyEncoder,additional);
 		T mockT = mock(T.class);
 		CommunicationFlow commFlow = mock(CommunicationFlow.class);
 		Set<CommunicationFlow> commFlows = new HashSet<CommunicationFlow>();
@@ -38,6 +41,8 @@ public class CommunicationRoutingEncoderCustomTest {
 		Architecture<Resource, Link> routing = mock(Architecture.class);
 		@SuppressWarnings("unchecked")
 		Set<MappingVariable> mappings = mock(Set.class);
+		@SuppressWarnings("unchecked")
+		Set<ApplicationVariable> applVars = mock(Set.class);
 		Constraint oneDirection = new Constraint(Operator.EQ, 1);
 		Set<Constraint> oneDirectionCs = new HashSet<Constraint>();
 		oneDirectionCs.add(oneDirection);
@@ -53,6 +58,8 @@ public class CommunicationRoutingEncoderCustomTest {
 		Constraint flowC = new Constraint(Operator.EQ, 5);
 		Set<Constraint> flowCs = new HashSet<Constraint>();
 		flowCs.add(flowC);
+		Task communication = new Task("comm");
+		when(mockT.getTask()).thenReturn(communication);
 		when(oneDirectionEncoder.toConstraints(mockT, routing)).thenReturn(oneDirectionCs);
 		when(cycleBreak.toConstraints(mockT, routing)).thenReturn(cycleBreakCs);
 		when(hierarchyEncoder.toConstraints(mockT, commFlows, routing)).thenReturn(hierarchyCs);
@@ -60,7 +67,8 @@ public class CommunicationRoutingEncoderCustomTest {
 		CommunicationFlowRoutingEncoder mockEncoder = mock(CommunicationFlowRoutingEncoder.class);
 		when(mockEncoder.toConstraints(commFlow, routing, mappings)).thenReturn(flowCs);
 		when(manager.getEncoder(commFlow)).thenReturn(mockEncoder);
-		Set<Constraint> cs = encoder.toConstraints(mockT, commFlows, routing, mappings);
+		when(proxyEncoder.toConstraints(communication, routing, mappings, applVars)).thenReturn(new HashSet<Constraint>());
+		Set<Constraint> cs = encoder.toConstraints(mockT, commFlows, routing, mappings, applVars);
 		assertEquals(5, cs.size());
 		verify(oneDirectionEncoder).toConstraints(mockT, routing);
 		verify(cycleBreak).toConstraints(mockT, routing);

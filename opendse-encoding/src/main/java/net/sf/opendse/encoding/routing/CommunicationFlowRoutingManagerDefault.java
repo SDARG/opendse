@@ -8,11 +8,10 @@ public class CommunicationFlowRoutingManagerDefault implements CommunicationFlow
 
 	@Inject
 	public CommunicationFlowRoutingManagerDefault(ActivationEncoder activationEncoder, EndNodeEncoder endNodeEncoder,
-			RoutingResourceEncoder routingResourceEncoder, RoutingEdgeEncoder routingEdgeEncoder,
-			ProxyEncoder proxyEncoder) {
+			RoutingResourceEncoder routingResourceEncoder, RoutingEdgeEncoder routingEdgeEncoder) {
 		// just returns the default stuff for now
 		this.encoder = new CommunicationFlowRoutingEncoderCustom(activationEncoder, endNodeEncoder,
-				routingResourceEncoder, routingEdgeEncoder, proxyEncoder);
+				routingResourceEncoder, routingEdgeEncoder);
 	}
 
 	@Override

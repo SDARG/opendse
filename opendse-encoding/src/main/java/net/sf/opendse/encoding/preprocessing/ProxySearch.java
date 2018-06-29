@@ -107,8 +107,15 @@ public class ProxySearch implements SpecificationPreprocessor {
 	 */
 	protected void updateProxies(Architecture<Resource, Link> arch, Resource res) {
 		Resource proxy = arch.getVertex(ResourcePropertyService.getProxyId(res));
+		ResourcePropertyService.setProxyDistance(res, ResourcePropertyService.getProxyDistance(res) + 1);
+		ResourcePropertyService.addLowerResource(proxy, res);
+		for (Resource lowerResource : ResourcePropertyService.getLowerResources(res)) {
+			ResourcePropertyService.addLowerResource(proxy, lowerResource);
+		}
 		for (Resource r : arch) {
 			if (ResourcePropertyService.getProxyId(r).equals(res.getId())) {
+				// increment the proxy distance
+				ResourcePropertyService.setProxyDistance(r, ResourcePropertyService.getProxyDistance(r) + 1);
 				ResourcePropertyService.setProxyId(r, proxy);
 			}
 		}

@@ -6,10 +6,12 @@ import org.opt4j.satdecoding.Constraint;
 
 import com.google.inject.ImplementedBy;
 
+import net.sf.opendse.encoding.variables.ApplicationVariable;
 import net.sf.opendse.encoding.variables.MappingVariable;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Resource;
+import net.sf.opendse.model.Task;
 
 /**
  * The {@link ProxyEncoder} generates the constraints that describe the
@@ -34,7 +36,6 @@ public interface ProxyEncoder {
 	 * @return the constraints that describe the activation conditions of the
 	 *         elements inside the proxy areas
 	 */
-	public Set<Constraint> toConstraints(CommunicationFlow flow, Architecture<Resource, Link> routing,
-			Set<MappingVariable> mappingVariables);
+	public Set<Constraint> toConstraints(Task communication, Architecture<Resource, Link> routing, Set<MappingVariable> mappingVariables, Set<ApplicationVariable> applicationVariables);
 
 }

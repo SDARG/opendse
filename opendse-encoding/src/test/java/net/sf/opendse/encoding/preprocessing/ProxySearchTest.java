@@ -27,7 +27,7 @@ public class ProxySearchTest {
 		Resource r4 = new Resource("r4");
 		Resource r5 = new Resource("r5");
 		Resource r6 = new Resource("r6");
-		
+
 		Link l0 = new Link("l0");
 		Link l1 = new Link("l1");
 		Link l2 = new Link("l2");
@@ -35,7 +35,7 @@ public class ProxySearchTest {
 		Link l4 = new Link("l4");
 		Link l5 = new Link("l5");
 		Link l6 = new Link("l6");
-		
+
 		Architecture<Resource, Link> arch = new Architecture<Resource, Link>();
 		arch.addEdge(l0, r0, r2, EdgeType.UNDIRECTED);
 		arch.addEdge(l1, r1, r2, EdgeType.UNDIRECTED);
@@ -44,13 +44,14 @@ public class ProxySearchTest {
 		arch.addEdge(l4, r3, r5, EdgeType.UNDIRECTED);
 		arch.addEdge(l5, r4, r6, EdgeType.UNDIRECTED);
 		arch.addEdge(l6, r5, r6, EdgeType.UNDIRECTED);
-		
-		Specification spec = new Specification(new Application<Task, Dependency>(), arch, new Mappings<Task, Resource>());
+
+		Specification spec = new Specification(new Application<Task, Dependency>(), arch,
+				new Mappings<Task, Resource>());
 		ProxySearch search = new ProxySearch();
 		search.preprocessSpecification(spec);
-		Specification processedSpec = spec; 
+		Specification processedSpec = spec;
 		Architecture<Resource, Link> preprocessedArch = processedSpec.getArchitecture();
-		
+
 		assertFalse(ArchitectureElementPropertyService.getOffersRoutingVariety(preprocessedArch.getEdge(l0)));
 		assertFalse(ArchitectureElementPropertyService.getOffersRoutingVariety(preprocessedArch.getEdge(l1)));
 		assertFalse(ArchitectureElementPropertyService.getOffersRoutingVariety(preprocessedArch.getEdge(l2)));
@@ -58,7 +59,7 @@ public class ProxySearchTest {
 		assertTrue(ArchitectureElementPropertyService.getOffersRoutingVariety(preprocessedArch.getEdge(l4)));
 		assertTrue(ArchitectureElementPropertyService.getOffersRoutingVariety(preprocessedArch.getEdge(l5)));
 		assertTrue(ArchitectureElementPropertyService.getOffersRoutingVariety(preprocessedArch.getEdge(l6)));
-		
+
 		assertTrue(ResourcePropertyService.getProxyId(preprocessedArch.getVertex(r0)).equals(r3.getId()));
 		assertTrue(ResourcePropertyService.getProxyId(preprocessedArch.getVertex(r1)).equals(r3.getId()));
 		assertTrue(ResourcePropertyService.getProxyId(preprocessedArch.getVertex(r2)).equals(r3.getId()));
@@ -66,9 +67,31 @@ public class ProxySearchTest {
 		assertTrue(ResourcePropertyService.getProxyId(preprocessedArch.getVertex(r4)).equals(r4.getId()));
 		assertTrue(ResourcePropertyService.getProxyId(preprocessedArch.getVertex(r5)).equals(r5.getId()));
 		assertTrue(ResourcePropertyService.getProxyId(preprocessedArch.getVertex(r6)).equals(r6.getId()));
-		
+
 		assertTrue(ArchitectureElementPropertyService.getOuterElementId(l2).equals(r2.getId()));
 		assertTrue(ArchitectureElementPropertyService.getOuterElementId(l0).equals(r0.getId()));
 		assertTrue(ArchitectureElementPropertyService.getOuterElementId(l1).equals(r1.getId()));
+
+		assertEquals(2, ResourcePropertyService.getProxyDistance(r0));
+		assertEquals(2, ResourcePropertyService.getProxyDistance(r1));
+		assertEquals(1, ResourcePropertyService.getProxyDistance(r2));
+		assertEquals(0, ResourcePropertyService.getProxyDistance(r3));
+		assertEquals(0, ResourcePropertyService.getProxyDistance(r4));
+		assertEquals(0, ResourcePropertyService.getProxyDistance(r5));
+		assertEquals(0, ResourcePropertyService.getProxyDistance(r6));
+
+		assertEquals(0, ResourcePropertyService.getLowerResources(r0).size());
+		assertEquals(0, ResourcePropertyService.getLowerResources(r1).size());
+		assertEquals(2, ResourcePropertyService.getLowerResources(r2).size());
+		assertEquals(3, ResourcePropertyService.getLowerResources(r3).size());
+		assertEquals(0, ResourcePropertyService.getLowerResources(r4).size());
+		assertEquals(0, ResourcePropertyService.getLowerResources(r5).size());
+		assertEquals(0, ResourcePropertyService.getLowerResources(r6).size());
+
+		assertTrue(ResourcePropertyService.getLowerResources(r2).contains(r0));
+		assertTrue(ResourcePropertyService.getLowerResources(r2).contains(r1));
+		assertTrue(ResourcePropertyService.getLowerResources(r3).contains(r0));
+		assertTrue(ResourcePropertyService.getLowerResources(r3).contains(r1));
+		assertTrue(ResourcePropertyService.getLowerResources(r3).contains(r2));
 	}
 }

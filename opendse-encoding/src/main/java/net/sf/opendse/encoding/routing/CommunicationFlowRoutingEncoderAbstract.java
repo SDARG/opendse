@@ -16,15 +16,13 @@ public class CommunicationFlowRoutingEncoderAbstract implements CommunicationFlo
 	protected final EndNodeEncoder endNodeEncoder;
 	protected final RoutingResourceEncoder interimNodeEncoder;
 	protected final RoutingEdgeEncoder edgeEncoder;
-	protected final ProxyEncoder proxyEncoder;
 
 	public CommunicationFlowRoutingEncoderAbstract(ActivationEncoder activationEncoder, EndNodeEncoder endNodeEncoder,
-			RoutingResourceEncoder interimNodeEncoder, RoutingEdgeEncoder edgeEncoder, ProxyEncoder proxyEncoder) {
+			RoutingResourceEncoder interimNodeEncoder, RoutingEdgeEncoder edgeEncoder) {
 		this.activationEncoder = activationEncoder;
 		this.endNodeEncoder = endNodeEncoder;
 		this.interimNodeEncoder = interimNodeEncoder;
 		this.edgeEncoder = edgeEncoder;
-		this.proxyEncoder = proxyEncoder;
 	}
 
 	@Override
@@ -34,7 +32,6 @@ public class CommunicationFlowRoutingEncoderAbstract implements CommunicationFlo
 		communicationFlowRoutingConstraints.addAll(endNodeEncoder.toConstraints(communicationFlow, routing, mappingVariables));
 		communicationFlowRoutingConstraints.addAll(interimNodeEncoder.toConstraints(communicationFlow, routing, mappingVariables));
 		communicationFlowRoutingConstraints.addAll(edgeEncoder.toConstraints(communicationFlow, routing));
-		communicationFlowRoutingConstraints.addAll(proxyEncoder.toConstraints(communicationFlow, routing, mappingVariables));
 		return communicationFlowRoutingConstraints;
 	}
 }

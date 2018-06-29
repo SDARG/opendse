@@ -75,7 +75,7 @@ public class EdgeEncoderRedundantTest {
 				new RoutingEdgeEncoderRedundant(), new ProxyEncoderCompact());
 		CommunicationRoutingManager routingEncoderManager = new CommunicationRoutingManagerDefault(
 				new OneDirectionEncoderDefault(), new CycleBreakEncoderOrder(),
-				new CommunicationHierarchyEncoderDefault(), commFlowManager,
+				new CommunicationHierarchyEncoderDefault(), commFlowManager, new ProxyEncoderCompact(),
 				new AdditionalRoutingConstraintsEncoderNone());
 		RoutingEncodingFlexible routingEncoding = new RoutingEncodingFlexible(routingEncoderManager);
 

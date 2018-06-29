@@ -25,9 +25,8 @@ public class CommunicationFlowRoutingEncoderCustomTest {
 		EndNodeEncoder endNodeEncoder = mock(EndNodeEncoder.class);
 		RoutingResourceEncoder interimNodeEncoder = mock(RoutingResourceEncoder.class);
 		RoutingEdgeEncoder edgeEncoder = mock(RoutingEdgeEncoder.class);
-		ProxyEncoderCompact proxyEncoder = mock(ProxyEncoderCompact.class);
 		CommunicationFlowRoutingEncoderCustom encoder = new CommunicationFlowRoutingEncoderCustom(activationEncoder,
-				endNodeEncoder, interimNodeEncoder, edgeEncoder, proxyEncoder);
+				endNodeEncoder, interimNodeEncoder, edgeEncoder);
 		CommunicationFlow commFlow = mock(CommunicationFlow.class);
 		@SuppressWarnings("unchecked")
 		Architecture<Resource, Link> routing = mock(Architecture.class);
@@ -37,7 +36,6 @@ public class CommunicationFlowRoutingEncoderCustomTest {
 		when(endNodeEncoder.toConstraints(commFlow, routing, mappingVariables)).thenReturn(new HashSet<Constraint>());
 		when(interimNodeEncoder.toConstraints(commFlow, routing, mappingVariables)).thenReturn(new HashSet<Constraint>());
 		when(edgeEncoder.toConstraints(commFlow, routing)).thenReturn(new HashSet<Constraint>());
-		when(proxyEncoder.toConstraints(commFlow, routing, mappingVariables)).thenReturn(new HashSet<Constraint>());
 		Set<Constraint> cs = encoder.toConstraints(commFlow, routing, mappingVariables);
 		assertTrue(cs.isEmpty());
 		verify(activationEncoder).toConstraints(commFlow, routing);

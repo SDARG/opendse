@@ -112,10 +112,10 @@ public class AlternativesImplementationEncodingTest {
 	protected static RoutingEncoding getRoutingEncoding() {
 		CommunicationFlowRoutingManager communicationFlowManager = new CommunicationFlowRoutingManagerDefault(
 				new ActivationEncoderDefault(), new EndNodeEncoderMapping(), new RoutingResourceEncoderDefault(),
-				new RoutingEdgeEncoderNonRedundant(), new ProxyEncoderCompact());
+				new RoutingEdgeEncoderNonRedundant());
 		CommunicationRoutingManagerDefault routingEncoderManager = new CommunicationRoutingManagerDefault(
 				new OneDirectionEncoderDefault(), new CycleBreakEncoderColor(),
-				new CommunicationHierarchyEncoderDefault(), communicationFlowManager,
+				new CommunicationHierarchyEncoderDefault(), communicationFlowManager, new ProxyEncoderCompact(),
 				new AdditionalRoutingConstraintsEncoderNone());
 
 		return new RoutingEncodingFlexible(routingEncoderManager);
@@ -129,10 +129,12 @@ public class AlternativesImplementationEncodingTest {
 		ApplicationEncoding applicationEncoding = new ApplicationEncodingMode(
 				new ApplicationConstraintManagerDefault());
 		MappingEncoding mappingEncoding = new MappingEncodingMode(new MappingConstraintManagerDefault());
-		CommunicationFlowRoutingManager manager = new CommunicationFlowRoutingManagerDefault(new ActivationEncoderDefault(), new EndNodeEncoderMapping(), new RoutingResourceEncoderDefault(), new RoutingEdgeEncoderNonRedundant(), new ProxyEncoderCompact());
+		CommunicationFlowRoutingManager manager = new CommunicationFlowRoutingManagerDefault(
+				new ActivationEncoderDefault(), new EndNodeEncoderMapping(), new RoutingResourceEncoderDefault(),
+				new RoutingEdgeEncoderNonRedundant());
 		RoutingEncoding routingEncoding = new RoutingEncodingFlexible(
 				new CommunicationRoutingManagerDefault(new OneDirectionEncoderDefault(), new CycleBreakEncoderColor(),
-						new CommunicationHierarchyEncoderDefault(), manager,
+						new CommunicationHierarchyEncoderDefault(), manager, new ProxyEncoderCompact(),
 						new AdditionalRoutingConstraintsEncoderNone()));
 		AllocationEncoding allocationEncoding = new AllocationEncodingUtilization();
 		SpecificationPreprocessor preprocessor = new SpecificationPreprocessorNone();

@@ -63,7 +63,7 @@ public class RoutingEncodingFlexible implements RoutingEncoding {
 			CommunicationRoutingEncoder encoder = routingEncoderManager.getRoutingEncoder(communicationVariable,
 					communicationFlows);
 			routingConstraints.addAll(encoder.toConstraints(communicationVariable, communicationFlows,
-					routings.get(communicationVariable.getTask()), mappingVariables));
+					routings.get(communicationVariable.getTask()), mappingVariables, applicationVariables));
 		}
 		return routingConstraints;
 	}

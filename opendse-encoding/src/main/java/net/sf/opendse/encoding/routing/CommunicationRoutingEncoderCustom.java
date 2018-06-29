@@ -12,9 +12,9 @@ public class CommunicationRoutingEncoderCustom extends CommunicationRoutingEncod
 
 	public CommunicationRoutingEncoderCustom(OneDirectionEncoder oneDirectionEncoder,
 			CycleBreakEncoder cycleBreakEncoder, CommunicationHierarchyEncoder hierarchyEncoder,
-			CommunicationFlowRoutingManager communicationFlowRoutingManager,
+			CommunicationFlowRoutingManager communicationFlowRoutingManager, ProxyEncoder proxyEncoder,
 			AdditionalRoutingConstraintsEncoder additionalConstraintsEncoder) {
-		super(oneDirectionEncoder, cycleBreakEncoder, hierarchyEncoder, communicationFlowRoutingManager,
+		super(oneDirectionEncoder, cycleBreakEncoder, hierarchyEncoder, communicationFlowRoutingManager, proxyEncoder,
 				additionalConstraintsEncoder);
 	}
 
