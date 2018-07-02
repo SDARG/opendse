@@ -6,6 +6,7 @@ import java.util.Set;
 import org.junit.Test;
 import org.opt4j.satdecoding.Constraint;
 
+import net.sf.opendse.encoding.routing.res.ProxyEncoderCompactTestRes;
 import net.sf.opendse.encoding.variables.ApplicationVariable;
 import net.sf.opendse.encoding.variables.DTT;
 import net.sf.opendse.encoding.variables.M;
@@ -19,7 +20,6 @@ import net.sf.opendse.model.Models;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
-import routing.ProxyEncoderCompactTestRes;
 import net.sf.opendse.model.Models.DirectedLink;
 import verification.ConstraintVerifier;
 

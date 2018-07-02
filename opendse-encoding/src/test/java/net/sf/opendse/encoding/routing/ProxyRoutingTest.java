@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.opt4j.satdecoding.Constraint;
 
 import net.sf.opendse.encoding.RoutingEncoding;
+import net.sf.opendse.encoding.routing.res.ProxyRoutingTestRes;
 import net.sf.opendse.encoding.variables.ApplicationVariable;
 import net.sf.opendse.encoding.variables.CLRR;
 import net.sf.opendse.encoding.variables.CR;
@@ -22,7 +23,6 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
-import routing.ProxyRoutingTestRes;
 import verification.ConstraintVerifier;
 
 public class ProxyRoutingTest {
