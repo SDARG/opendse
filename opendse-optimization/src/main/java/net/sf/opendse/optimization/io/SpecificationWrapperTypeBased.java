@@ -17,7 +17,7 @@ import net.sf.opendse.optimization.SpecificationWrapper;
  */
 public class SpecificationWrapperTypeBased extends SpecificationWrapperInstance {
 
-	static ReaderTGFF reader = new ReaderTGFF();
+	private static ReaderTGFF reader = new ReaderTGFF();
 
 	@Inject
 	public SpecificationWrapperTypeBased(
