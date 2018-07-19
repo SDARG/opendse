@@ -9,6 +9,7 @@ import net.sf.opendse.encoding.variables.M;
 import net.sf.opendse.encoding.variables.R;
 import net.sf.opendse.optimization.VariableClassOrder;
 import net.sf.opendse.optimization.encoding.Encoding;
+import net.sf.opendse.optimization.encoding.variables.EAVI;
 
 /**
  * When bound during an exploration, the {@link RoutingVariableClassOrder}
@@ -26,5 +27,6 @@ public class VariableClassOrderModular {
 		order.add(M.class);
 		order.add(CR.class);
 		order.add(CLRR.class);
+		order.add(EAVI.class);
 	}
 }

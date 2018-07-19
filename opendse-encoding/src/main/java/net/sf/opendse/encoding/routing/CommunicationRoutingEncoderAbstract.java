@@ -44,8 +44,7 @@ public abstract class CommunicationRoutingEncoderAbstract implements Communicati
 		routingConstraints.addAll(cycleBreakEncoder.toConstraints(communicationVariable, routing));
 		// Encodes the variable hierarchy.
 		routingConstraints.addAll(hierarchyEncoder.toConstraints(communicationVariable, commFlows, routing));
-		routingConstraints.addAll(proxyEncoder.toConstraints(communicationVariable.getTask(), routing, mappingVariables,
-				applicationVariables));
+		routingConstraints.addAll(proxyEncoder.toConstraints(communicationVariable.getTask(), routing, mappingVariables,applicationVariables));
 		// Gets the appropriate Encoder for each communication flow.
 		for (CommunicationFlow communicationFlow : commFlows) {
 			CommunicationFlowRoutingEncoder commFlowEncoder = communicationFlowRoutingManager
