@@ -38,24 +38,6 @@ public class ProxyEncoderCompact implements ProxyEncoder {
 		Set<Constraint> result = new HashSet<Constraint>();
 		// iterate all resources inside proxy areas
 		for (Resource res : routing) {
-			if (
-					res.getId().equals("HMI")
-					|| res.getId().equals("camera")
-					|| res.getId().equals("ecu")
-					|| res.getId().equals("ultra sound")
-					|| res.getId().equals("switch0")
-					|| res.getId().equals("switch1")
-					|| res.getId().equals("switch2")
-					|| res.getId().equals("switch3")
-					) {
-			
-			if (
-					communication.getId().equals("distance service") 
-					|| communication.getId().equals("parking service")
-					|| communication.getId().equals("visual service")
-					 || communication.getId().equals("sonic service")
-					) {
-				
 			Set<Link> upLinks = new HashSet<Link>();
 			Set<Link> downLinks = new HashSet<Link>();
 			findUpDownLinks(res, routing, upLinks, downLinks);
@@ -70,7 +52,7 @@ public class ProxyEncoderCompact implements ProxyEncoder {
 						destMappings, routing));
 				result.add(makeForbidDownOutLinksConstraint(res, communication, upLinks, downLinks, srcMappings,
 						destMappings, routing));
-			}}}
+			}
 		}
 		return result;
 	}
@@ -483,6 +465,10 @@ public class ProxyEncoderCompact implements ProxyEncoder {
 	protected Constraint makeNoPushPullConstraint(Resource node, Task communication, Set<Link> upLinks,
 			Set<Link> downLinks, Set<Variable> mappings, Architecture<Resource, Link> routing, boolean push) {
 		Constraint result = new Constraint(Operator.GE, 0);
+		if (upLinks.size() > 1) {
+			// the uplinks are not in the proxy area
+			return result;
+		}
 		for (Link upLink : upLinks) {
 			DirectedLink pushPullLink = push ? new DirectedLink(upLink, node, routing.getOpposite(node, upLink))
 					: new DirectedLink(upLink, routing.getOpposite(node, upLink), node);
