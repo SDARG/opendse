@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
 import net.sf.opendse.model.Specification;
+import net.sf.opendse.model.SpecificationWrapper;
 import net.sf.opendse.visualization.SpecificationPanel;
 
 import org.opt4j.viewer.ToolBarService;

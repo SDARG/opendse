@@ -46,16 +46,17 @@ import org.opt4j.core.problem.Creator;
 
 import com.google.inject.Inject;
 
+import net.sf.opendse.encoding.constraints.SpecificationConstraints;
 import net.sf.opendse.model.Element;
 import net.sf.opendse.model.Models;
 import net.sf.opendse.model.Specification;
+import net.sf.opendse.model.SpecificationWrapper;
 import net.sf.opendse.model.parameter.Parameter;
 import net.sf.opendse.model.parameter.ParameterRange;
 import net.sf.opendse.model.parameter.ParameterRangeDiscrete;
 import net.sf.opendse.model.parameter.ParameterReference;
 import net.sf.opendse.model.parameter.ParameterSelect;
 import net.sf.opendse.model.parameter.ParameterUniqueID;
-import net.sf.opendse.optimization.constraints.SpecificationConstraints;
 
 public class ParameterCreator implements Creator<CompositeGenotype<String, Genotype>> {
 

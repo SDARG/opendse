@@ -27,9 +27,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.sf.opendse.encoding.ImplementationEncoding;
+import net.sf.opendse.encoding.old.Encoding;
 import net.sf.opendse.model.Specification;
+import net.sf.opendse.model.SpecificationWrapper;
 import net.sf.opendse.optimization.encoding.CommunicationLearn;
-import net.sf.opendse.optimization.encoding.Encoding;
 import net.sf.opendse.optimization.encoding.RoutingFilter;
 import net.sf.opendse.optimization.encoding.common.ConstraintPreprocessing;
 
@@ -57,16 +59,16 @@ public class SATConstraints {
 	protected final ConstraintPreprocessing pp;
 	protected final boolean usePreprocessing;
 	protected boolean isInit = false;
-	protected Encoding encoding;
+	protected ImplementationEncoding encoding;
 
 	@Inject
-	public SATConstraints(SpecificationWrapper specificationWrapper, Encoding encoding, @Constant(value = "preprocessing", namespace = SATConstraints.class) boolean usePreprocessing) {
+	public SATConstraints(SpecificationWrapper specificationWrapper, ImplementationEncoding encoding, @Constant(value = "preprocessing", namespace = SATConstraints.class) boolean usePreprocessing) {
 		this(specificationWrapper, encoding, new ConstraintPreprocessing(true, true,
 				new Encoding.VariableComparator(), null, true), usePreprocessing);
 		
 	}
 
-	public SATConstraints(SpecificationWrapper specificationWrapper, Encoding encoding, ConstraintPreprocessing pp, boolean usePreprocessing) {
+	public SATConstraints(SpecificationWrapper specificationWrapper, ImplementationEncoding encoding, ConstraintPreprocessing pp, boolean usePreprocessing) {
 		super();
 		this.specificationWrapper = specificationWrapper;
 		this.encoding = encoding;

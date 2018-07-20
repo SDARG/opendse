@@ -5,13 +5,13 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import net.sf.opendse.encoding.old.variables.EAVI;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.optimization.VariableClassOrder;
-import net.sf.opendse.optimization.encoding.variables.EAVI;
 
 /**
  * Unit tests for the methods of {@link VariableClassOrder}

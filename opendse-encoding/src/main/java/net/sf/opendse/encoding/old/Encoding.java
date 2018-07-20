@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package net.sf.opendse.optimization.encoding;
+package net.sf.opendse.encoding.old;
 
 import static edu.uci.ics.jung.graph.util.EdgeType.UNDIRECTED;
 import static net.sf.opendse.model.Models.filterCommunications;
@@ -28,15 +28,21 @@ import static net.sf.opendse.model.Models.getInLinks;
 import static net.sf.opendse.model.Models.getLinks;
 import static net.sf.opendse.model.Models.getOutLinks;
 import static net.sf.opendse.model.Models.isProcess;
-import static net.sf.opendse.optimization.encoding.variables.Variables.p;
-import static net.sf.opendse.optimization.encoding.variables.Variables.var;
+import static net.sf.opendse.encoding.old.variables.Variables.p;
+import static net.sf.opendse.encoding.old.variables.Variables.var;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import net.sf.opendse.encoding.ImplementationEncoding;
+import net.sf.opendse.encoding.constraints.SpecificationConstraints;
+import net.sf.opendse.encoding.old.variables.CLRR;
+import net.sf.opendse.encoding.old.variables.CR;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Dependency;
@@ -49,9 +55,6 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
-import net.sf.opendse.optimization.constraints.SpecificationConstraints;
-import net.sf.opendse.optimization.encoding.variables.CLRR;
-import net.sf.opendse.optimization.encoding.variables.CR;
 
 import org.opt4j.satdecoding.Constraint;
 
@@ -66,7 +69,7 @@ import edu.uci.ics.jung.graph.util.Pair;
  * @author Martin Lukasiewycz
  * 
  */
-public class Encoding {
+public class Encoding implements ImplementationEncoding{
 
 	public static List<Class<?>> order = Arrays.<Class<?>>asList(Resource.class, Link.class, Mapping.class, CR.class,
 			CLRR.class);
@@ -699,7 +702,8 @@ public class Encoding {
 		}
 	}
 
-	public List<Constraint> toConstraints(Specification specification) {
+	@Override
+	public Set<Constraint> toConstraints(Specification specification) {
 		List<Constraint> constraints = new ArrayList<Constraint>();
 
 		Application<Task, Dependency> application = specification.getApplication();
@@ -844,7 +848,7 @@ public class Encoding {
 
 		specificationConstraints.doEncoding(constraints);
 
-		return constraints;
+		return new HashSet<Constraint>(constraints);
 	}
 
 }

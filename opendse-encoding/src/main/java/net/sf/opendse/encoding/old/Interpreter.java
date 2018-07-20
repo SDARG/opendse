@@ -19,18 +19,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package net.sf.opendse.optimization.encoding;
+package net.sf.opendse.encoding.old;
 
 import static edu.uci.ics.jung.graph.util.EdgeType.DIRECTED;
+import static net.sf.opendse.encoding.old.variables.Variables.var;
 import static net.sf.opendse.model.Models.filterCommunications;
 import static net.sf.opendse.model.Models.getLinks;
-import static net.sf.opendse.optimization.encoding.variables.Variables.var;
 
 import java.lang.reflect.Constructor;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import net.sf.opendse.encoding.ImplementationInterpreter;
+import net.sf.opendse.encoding.constraints.SpecificationConstraints;
+import net.sf.opendse.encoding.old.variables.Variables;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Attributes;
@@ -49,8 +52,6 @@ import net.sf.opendse.model.Task;
 import net.sf.opendse.model.Models.DirectedLink;
 import net.sf.opendse.model.parameter.ParameterReference;
 import net.sf.opendse.model.parameter.ParameterSelect;
-import net.sf.opendse.optimization.constraints.SpecificationConstraints;
-import net.sf.opendse.optimization.encoding.variables.Variables;
 
 import org.opt4j.satdecoding.Model;
 
@@ -66,7 +67,7 @@ import edu.uci.ics.jung.graph.util.Pair;
  * @author Martin Lukasiewycz
  * 
  */
-public class Interpreter {
+public class Interpreter implements ImplementationInterpreter{
 
 	@SuppressWarnings("unchecked")
 	public <E extends Element> E copy(Element element) {
@@ -101,6 +102,7 @@ public class Interpreter {
 		this.activeVariables = new HashSet<ParameterReference>(specificationConstraints.getActiveParameters());
 	}
 
+	@Override
 	public Specification toImplementation(Specification specification, Model model) {
 
 		// Boolean TRUE = new Boolean(true);

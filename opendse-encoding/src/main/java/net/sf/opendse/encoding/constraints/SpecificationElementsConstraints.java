@@ -19,9 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package net.sf.opendse.optimization.constraints;
+package net.sf.opendse.encoding.constraints;
 
-import static net.sf.opendse.optimization.encoding.variables.Variables.p;
+import static net.sf.opendse.encoding.old.variables.Variables.p;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,8 +33,8 @@ import javax.inject.Inject;
 
 import net.sf.opendse.model.Element;
 import net.sf.opendse.model.Specification;
+import net.sf.opendse.model.SpecificationWrapper;
 import net.sf.opendse.model.parameter.ParameterReference;
-import net.sf.opendse.optimization.SpecificationWrapper;
 
 import org.opt4j.satdecoding.Constraint;
 import org.opt4j.satdecoding.Model;

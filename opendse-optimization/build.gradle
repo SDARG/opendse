@@ -2,6 +2,7 @@ dependencies {
 	compile project(':opendse-model')
 	compile project(':opendse-io')
 	compile project(':opendse-visualization')
+	compile project(':opendse-encoding')
 	
 	compile group: 'org.opt4j',	name: 'opt4j-core', 		version: '3.1.4'
 	compile group: 'org.opt4j',	name: 'opt4j-satdecoding', 	version: '3.1.4'

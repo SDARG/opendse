@@ -21,6 +21,8 @@
  *******************************************************************************/
 package net.sf.opendse.optimization.test;
 
+import net.sf.opendse.encoding.constraints.ElementList;
+import net.sf.opendse.encoding.constraints.SpecificationConstraints;
 import net.sf.opendse.io.SpecificationReader;
 import net.sf.opendse.io.SpecificationWriter;
 import net.sf.opendse.model.Application;
@@ -36,8 +38,6 @@ import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.parameter.Parameters;
-import net.sf.opendse.optimization.constraints.ElementList;
-import net.sf.opendse.optimization.constraints.SpecificationConstraints;
 import net.sf.opendse.optimization.encoding.SingleImplementation;
 import net.sf.opendse.visualization.SpecificationViewer;
 

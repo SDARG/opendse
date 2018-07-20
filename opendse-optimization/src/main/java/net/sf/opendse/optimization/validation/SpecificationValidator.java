@@ -3,8 +3,8 @@ package net.sf.opendse.optimization.validation;
 import javax.inject.Inject;
 
 import net.sf.opendse.model.Specification;
+import net.sf.opendse.model.SpecificationWrapper;
 import net.sf.opendse.model.ValidSpecificationPredicate;
-import net.sf.opendse.optimization.SpecificationWrapper;
 
 /**
  * The {@link SpecificationValidator} fails fast if the {@link Specification} is

@@ -21,10 +21,10 @@
  *******************************************************************************/
 package net.sf.opendse.optimization.io;
 
-import net.sf.opendse.optimization.SpecificationWrapper;
-
 import org.opt4j.core.config.annotations.File;
 import org.opt4j.core.start.Constant;
+
+import net.sf.opendse.model.SpecificationWrapper;
 
 public class InputModule extends IOModule {
 

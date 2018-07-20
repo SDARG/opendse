@@ -19,32 +19,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package net.sf.opendse.optimization.encoding.variables;
+package net.sf.opendse.encoding.old.variables;
 
-import net.sf.opendse.model.Element;
+import net.sf.opendse.model.Edge;
+import net.sf.opendse.model.ICommunication;
+import net.sf.opendse.model.Resource;
+import net.sf.opendse.model.Task;
 
-public class EAVI extends Variable {
+public class CLRR extends Variable implements CommunicationVariable {
 
-	public EAVI(Element e, String attribute, Object value, Integer index){
-		super(e,attribute,value,index);
+	public CLRR(Task t, Edge l, Resource r0, Resource r1) {
+		super(t,l,r0,r1);
 	}
-	
-	public Element getE(){
+
+	public Task getTask() {
 		return get(0);
 	}
-	
-	public String getA(){
+
+	public Edge getLink() {
 		return get(1);
 	}
-	
-	public Object getV(){
+
+	public Resource getSource() {
 		return get(2);
 	}
-	
-	public Integer getI(){
+
+	public Resource getDest() {
 		return get(3);
 	}
 	
-	
-	
+	@Override
+	public ICommunication getCommunication() {
+		return (ICommunication)getTask();
+	}
 }

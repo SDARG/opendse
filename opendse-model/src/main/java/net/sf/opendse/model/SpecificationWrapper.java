@@ -19,9 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package net.sf.opendse.optimization;
-
-import net.sf.opendse.model.Specification;
+package net.sf.opendse.model;
 
 public interface SpecificationWrapper {
 	

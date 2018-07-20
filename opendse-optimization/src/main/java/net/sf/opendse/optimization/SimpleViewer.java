@@ -27,6 +27,7 @@ import java.util.List;
 
 import net.sf.opendse.io.SpecificationWriter;
 import net.sf.opendse.model.Specification;
+import net.sf.opendse.model.SpecificationWrapper;
 import net.sf.opendse.optimization.io.InputModule;
 import net.sf.opendse.visualization.SpecificationViewer;
 
