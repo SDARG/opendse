@@ -122,6 +122,8 @@ public class SpecificationTransformerTypeBasedTest {
 
 		Assert.assertEquals(arch.getVertex("r_type1").getType(), "type1");
 		Assert.assertEquals(arch.getEdge("l_type1").getAttribute("B1"), 2);
+
+		Assert.assertNotEquals(arch.getVertex("r_type1"), types.get("type1"));
 	}
 
 	@Test

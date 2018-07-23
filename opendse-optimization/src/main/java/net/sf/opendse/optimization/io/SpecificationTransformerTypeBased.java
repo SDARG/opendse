@@ -57,7 +57,7 @@ public class SpecificationTransformerTypeBased<T extends SpecificationTypeBased,
 	 * @param resourceTypes
 	 *            the {@link ResourceTypes}
 	 * @param linkTypes
-	 *            the {@link ResourceTypes}
+	 *            the {@link LinkTypes}
 	 * @return the architecture
 	 */
 	protected Architecture<Resource, Link> generateArchitecture(ResourceTypes<Resource> resourceTypes,
