@@ -100,9 +100,9 @@ public class SATCreatorDecoder extends AbstractSATDecoder<Genotype, Implementati
 			} else {
 				phases.put(variable, random.nextDouble() < 0.5);
 			}
-			Class<?> clazz = variable.getClass();
-			double lbv = ((double) order.indexOf(clazz)) / order.getOrderSize();
-			double ubv = ((double) (1 + order.indexOf(clazz))) / order.getOrderSize();
+
+			double lbv = ((double) order.indexOf(variable)) / order.getOrderSize();
+			double ubv = ((double) (1 + order.indexOf(variable))) / order.getOrderSize();
 			double prio = lbv + random.nextDouble() * (ubv - lbv);
 			// System.out.println(variable+" "+prio);
 			priorities.put(variable, prio);
