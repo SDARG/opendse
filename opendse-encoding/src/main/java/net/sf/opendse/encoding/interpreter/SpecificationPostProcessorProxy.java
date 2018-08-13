@@ -29,19 +29,21 @@ import net.sf.opendse.optimization.SpecificationWrapper;
  * @author Fedor Smirnov
  *
  */
-public class SpecificationPostProcessorProxy implements SpecificationPostProcessor {
+public class SpecificationPostProcessorProxy extends SpecificationPostProcessorComposable {
 
 	protected final ProxyRoutingsShortestPath proxyRoutings;
 	protected final Architecture<Resource, Link> annotatedArch;
 
 	@Inject
-	public SpecificationPostProcessorProxy(SpecificationWrapper specWrapper) {
+	public SpecificationPostProcessorProxy(SpecificationWrapper specWrapper,
+			SpecificationPostProcessorMulti postProcessorMulti) {
 		this.annotatedArch = specWrapper.getSpecification().getArchitecture();
 		this.proxyRoutings = new ProxyRoutingsShortestPath(annotatedArch);
+		postProcessorMulti.addPostProcessor(this);
 	}
 
 	@Override
-	public Specification postProcessImplementation(Specification implementation) {
+	public void postProcessImplementation(Specification implementation) {
 		Application<Task, Dependency> appl = implementation.getApplication();
 		Architecture<Resource, Link> arch = implementation.getArchitecture();
 		Mappings<Task, Resource> mappings = implementation.getMappings();
@@ -78,7 +80,7 @@ public class SpecificationPostProcessorProxy implements SpecificationPostProcess
 				}
 			}
 		}
-		return implementation;
+		return;
 	}
 
 	protected void addLinkToImplementation(DirectedLink dLink, Architecture<Resource, Link> arch,

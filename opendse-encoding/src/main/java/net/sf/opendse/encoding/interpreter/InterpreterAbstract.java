@@ -16,7 +16,8 @@ public abstract class InterpreterAbstract implements Interpreter {
 	@Override
 	public final Specification toImplementation(Specification specification, Model model) {
 		Specification decodedSpec = decodeModel(specification, model);
-		return postProcessor.postProcessImplementation(decodedSpec);
+		postProcessor.postProcessImplementation(decodedSpec);
+		return decodedSpec;
 	}
 
 	/**

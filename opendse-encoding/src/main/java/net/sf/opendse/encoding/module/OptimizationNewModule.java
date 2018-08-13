@@ -3,6 +3,9 @@ package net.sf.opendse.encoding.module;
 import net.sf.opendse.encoding.ImplementationEncodingModularDefault;
 import net.sf.opendse.encoding.ImplementationEncodingModular;
 import net.sf.opendse.encoding.interpreter.InterpreterVariable;
+import net.sf.opendse.encoding.interpreter.SpecificationPostProcessorCycleRemover;
+import net.sf.opendse.encoding.routing.CycleBreakEncoder;
+import net.sf.opendse.encoding.routing.CycleBreakEncoderNone;
 import net.sf.opendse.optimization.DesignSpaceExplorationCreator;
 import net.sf.opendse.optimization.DesignSpaceExplorationDecoder;
 import net.sf.opendse.optimization.DesignSpaceExplorationEvaluator;
@@ -45,6 +48,8 @@ public class OptimizationNewModule extends ProblemModule {
 	protected boolean stagnationRestartEnabled = true;
 
 	protected boolean useModularEncoding = false;
+	
+	protected boolean removeCyclesManually = false;
 
 	@Required(property = "stagnationRestartEnabled", elements = { "TRUE" })
 	@Constant(value = "maximalNumberStagnatingGenerations", namespace = StagnationRestart.class)
@@ -52,6 +57,14 @@ public class OptimizationNewModule extends ProblemModule {
 
 	@Constant(value = "variableorder", namespace = SATCreatorDecoder.class)
 	protected boolean useVariableOrder = true;
+
+	public boolean isRemoveCyclesManually() {
+		return removeCyclesManually;
+	}
+
+	public void setRemoveCyclesManually(boolean removeCyclesManually) {
+		this.removeCyclesManually = removeCyclesManually;
+	}
 
 	public boolean isUseModularEncoding() {
 		return useModularEncoding;
@@ -135,6 +148,11 @@ public class OptimizationNewModule extends ProblemModule {
 			bind(ImplementationEncoding.class).to(ImplementationEncodingModular.class);
 			bind(ImplementationEncodingModular.class).to(ImplementationEncodingModularDefault.class);
 			bind(VariableClassOrderModular.class).asEagerSingleton();
+		}
+		
+		if (removeCyclesManually) {
+			bind(CycleBreakEncoder.class).to(CycleBreakEncoderNone.class);
+			bind(SpecificationPostProcessorCycleRemover.class).asEagerSingleton();
 		}
 	}
 }
