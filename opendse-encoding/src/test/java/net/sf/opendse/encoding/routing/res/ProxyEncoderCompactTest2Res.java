@@ -2,6 +2,7 @@ package net.sf.opendse.encoding.routing.res;
 
 import edu.uci.ics.jung.graph.util.EdgeType;
 import net.sf.opendse.encoding.preprocessing.ProxySearch;
+import net.sf.opendse.encoding.preprocessing.SpecificationPreprocessorMulti;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Communication;
@@ -67,7 +68,7 @@ public class ProxyEncoderCompactTest2Res {
 		mappings.add(m1);
 		mappings.add(m2);
 		
-		ProxySearch proxySearch = new ProxySearch();
+		ProxySearch proxySearch = new ProxySearch(new SpecificationPreprocessorMulti());
 		Specification result = new Specification(appl, arch, mappings);
 		proxySearch.preprocessSpecification(result);
 		return result;

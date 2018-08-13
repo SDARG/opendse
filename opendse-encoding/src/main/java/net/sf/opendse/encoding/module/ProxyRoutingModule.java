@@ -6,7 +6,6 @@ import org.opt4j.core.config.annotations.Name;
 import org.opt4j.core.config.annotations.Parent;
 import org.opt4j.core.start.Opt4JModule;
 
-import net.sf.opendse.encoding.SpecificationPreprocessor;
 import net.sf.opendse.encoding.interpreter.SpecificationPostProcessor;
 import net.sf.opendse.encoding.interpreter.SpecificationPostProcessorProxy;
 import net.sf.opendse.encoding.preprocessing.ProxySearch;
@@ -41,10 +40,10 @@ public class ProxyRoutingModule extends Opt4JModule {
 	protected void config() {
 		if (!activateProxyAreas) {
 			bind(ProxyEncoder.class).to(ProxyEncoderLazy.class);
-			bind(SpecificationPreprocessor.class).to(ProxySearchReduction.class);
+			bind(ProxySearchReduction.class).asEagerSingleton();
 			bind(SpecificationPostProcessor.class).to(SpecificationPostProcessorProxy.class);
 		} else {
-			bind(SpecificationPreprocessor.class).to(ProxySearch.class);
+			bind(ProxySearch.class).asEagerSingleton();
 		}
 	}
 }

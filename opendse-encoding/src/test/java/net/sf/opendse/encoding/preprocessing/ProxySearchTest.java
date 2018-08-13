@@ -47,7 +47,7 @@ public class ProxySearchTest {
 
 		Specification spec = new Specification(new Application<Task, Dependency>(), arch,
 				new Mappings<Task, Resource>());
-		ProxySearch search = new ProxySearch();
+		ProxySearch search = new ProxySearch(new SpecificationPreprocessorMulti());
 		search.preprocessSpecification(spec);
 		Specification processedSpec = spec;
 		Architecture<Resource, Link> preprocessedArch = processedSpec.getArchitecture();

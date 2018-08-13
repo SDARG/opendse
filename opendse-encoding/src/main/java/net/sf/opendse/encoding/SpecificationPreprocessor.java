@@ -2,6 +2,7 @@ package net.sf.opendse.encoding;
 
 import com.google.inject.ImplementedBy;
 
+import net.sf.opendse.encoding.preprocessing.SpecificationPreprocessorMulti;
 import net.sf.opendse.model.Specification;
 
 /**
@@ -11,7 +12,7 @@ import net.sf.opendse.model.Specification;
  * @author Fedor Smirnov
  *
  */
-@ImplementedBy(SpecificationPreprocessorNone.class)
+@ImplementedBy(SpecificationPreprocessorMulti.class)
 public interface SpecificationPreprocessor {
 
 	/**
@@ -22,5 +23,5 @@ public interface SpecificationPreprocessor {
 	 *            the {@link Specification} provided by the user
 	 */
 	public void preprocessSpecification(Specification userSpecification);
-
+	
 }

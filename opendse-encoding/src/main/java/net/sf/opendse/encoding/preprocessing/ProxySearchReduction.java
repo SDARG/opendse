@@ -3,6 +3,8 @@ package net.sf.opendse.encoding.preprocessing;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.inject.Inject;
+
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Resource;
@@ -19,6 +21,11 @@ import net.sf.opendse.model.properties.TaskPropertyService;
  */
 public class ProxySearchReduction extends ProxySearch {
 
+	@Inject
+	public ProxySearchReduction(SpecificationPreprocessorMulti multiPreprocessor) {
+		super(multiPreprocessor);
+	}
+	
 	@Override
 	public void preprocessSpecification(Specification userSpecification) {
 		super.preprocessSpecification(userSpecification);
