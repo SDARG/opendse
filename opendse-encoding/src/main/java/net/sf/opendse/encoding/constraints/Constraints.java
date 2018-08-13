@@ -104,7 +104,7 @@ public class Constraints {
 	 */
 	public static Constraint generateNegativeImplication(Variable condition, Variable implication) {
 		Constraint result = new Constraint(Operator.LE, 0);
-		result.add(net.sf.opendse.optimization.encoding.variables.Variables.p(implication));
+		result.add(Variables.p(implication));
 		result.add(-1, Variables.p(condition));
 		return result;
 	}
@@ -123,7 +123,7 @@ public class Constraints {
 	public static <V extends Variable> Constraint generatePickExactlyNConstraint(Set<V> arguments, int n) {
 		Constraint result = new Constraint(Operator.EQ, n);
 		for (V arg : arguments) {
-			result.add(net.sf.opendse.optimization.encoding.variables.Variables.p(arg));
+			result.add(Variables.p(arg));
 		}
 		return result;
 	}
