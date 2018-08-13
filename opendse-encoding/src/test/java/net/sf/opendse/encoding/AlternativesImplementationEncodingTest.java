@@ -35,6 +35,7 @@ import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.ApplicationElementPropertyService;
 import net.sf.opendse.optimization.SpecificationWrapper;
+import net.sf.opendse.optimization.constraints.SpecificationConstraints;
 import verification.ConstraintVerifier;
 
 import static org.mockito.Mockito.mock;
@@ -138,8 +139,9 @@ public class AlternativesImplementationEncodingTest {
 						new AdditionalRoutingConstraintsEncoderNone()));
 		AllocationEncoding allocationEncoding = new AllocationEncodingUtilization();
 		SpecificationPreprocessor preprocessor = new SpecificationPreprocessorNone();
+		SpecificationConstraints mockConstraints = mock(SpecificationConstraints.class);
 		ImplementationEncodingModularDefault encoding = new ImplementationEncodingModularDefault(preprocessor,
-				applicationEncoding, mappingEncoding, routingEncoding, allocationEncoding, wrapper);
+				applicationEncoding, mappingEncoding, routingEncoding, allocationEncoding, wrapper, mockConstraints);
 		Set<Constraint> cs = encoding.toConstraints();
 		// alternative a tests
 		Set<Object> active = new HashSet<Object>();

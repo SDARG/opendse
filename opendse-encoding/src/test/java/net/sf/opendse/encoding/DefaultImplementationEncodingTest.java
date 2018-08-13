@@ -26,6 +26,7 @@ import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.optimization.SpecificationWrapper;
+import net.sf.opendse.optimization.constraints.SpecificationConstraints;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -73,8 +74,9 @@ public class DefaultImplementationEncodingTest {
 				.thenReturn(routingConstraints);
 		when(allocationEncoding.toConstraints(any(Set.class), any(Set.class), any(Architecture.class)))
 				.thenReturn(allocationConstraints);
+		SpecificationConstraints mockConstraints = mock(SpecificationConstraints.class);
 		ImplementationEncodingModularDefault encoding = new ImplementationEncodingModularDefault(preprocessor,
-				applicationEncoding, mappingEncoding, routingEncoding, allocationEncoding, wrapper);
+				applicationEncoding, mappingEncoding, routingEncoding, allocationEncoding, wrapper, mockConstraints);
 		Set<Constraint> cs = encoding.toConstraints();
 		assertEquals(4, cs.size());
 		verify(applicationEncoding).toConstraints(appl);
@@ -93,8 +95,9 @@ public class DefaultImplementationEncodingTest {
 		SpecificationPreprocessor preprocessor = new SpecificationPreprocessorNone();
 		SpecificationWrapper wrapper = mock(SpecificationWrapper.class);
 		when(wrapper.getSpecification()).thenReturn(mock(Specification.class));
+		SpecificationConstraints mockConstraints = mock(SpecificationConstraints.class);
 		ImplementationEncodingModularDefault encoding = new ImplementationEncodingModularDefault(preprocessor,
-				applicationEncoding, mappingEncoding, routingEncoding, allocationEncoding, wrapper);
+				applicationEncoding, mappingEncoding, routingEncoding, allocationEncoding, wrapper, mockConstraints);
 		T mockT = mock(T.class);
 		DTT mockDTT = mock(DTT.class);
 		M mockM = mock(M.class);

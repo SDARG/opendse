@@ -16,6 +16,7 @@ import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.optimization.SpecificationWrapper;
+import net.sf.opendse.optimization.constraints.SpecificationConstraints;
 import net.sf.opendse.encoding.application.DependencyEndPointConstraintGenerator;
 import net.sf.opendse.encoding.variables.AllocationVariable;
 import net.sf.opendse.encoding.variables.ApplicationVariable;
@@ -45,7 +46,7 @@ public abstract class ImplementationEncodingModularAbstract implements Implement
 	protected final Set<Constraint> constraints;
 
 	public ImplementationEncodingModularAbstract(SpecificationPreprocessor preprocessor, ApplicationEncoding applicationEncoding, MappingEncoding mappingEncoding,
-			RoutingEncoding routingEncoding, AllocationEncoding allocationEncoding, SpecificationWrapper specificationWrapper) {
+			RoutingEncoding routingEncoding, AllocationEncoding allocationEncoding, SpecificationWrapper specificationWrapper, SpecificationConstraints specConstraints) {
 
 		this.preprocessor = preprocessor;
 		this.applicationEncoding = applicationEncoding;
@@ -58,6 +59,7 @@ public abstract class ImplementationEncodingModularAbstract implements Implement
 		this.routingVariables = new HashSet<RoutingVariable>();
 		this.allocationVariables = new HashSet<AllocationVariable>();
 		this.constraints = generateTheConstraints(specificationWrapper.getSpecification());
+		specConstraints.doEncoding(this.constraints);
 	}
 
 	@Override

@@ -33,6 +33,8 @@ import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.optimization.SpecificationWrapper;
+import net.sf.opendse.optimization.constraints.SpecificationCapacityConstraints;
+import net.sf.opendse.optimization.constraints.SpecificationConstraints;
 
 import static org.mockito.Mockito.mock;
 
@@ -48,7 +50,8 @@ public class InterpreterTest {
 	public static InterpreterVariable getInterpreter() {
 		SpecificationPostProcessor postProcessor = new SpecificationPostProcessorMulti();
 		ImplementationEncodingModular mockEncoding = mock(ImplementationEncodingModular.class);
-		return new InterpreterVariable(postProcessor, mockEncoding);
+		SpecificationConstraints mockSpeckConstaints = mock(SpecificationConstraints.class);
+		return new InterpreterVariable(postProcessor, mockEncoding, mockSpeckConstaints);
 	}
 
 	@Test
@@ -60,7 +63,8 @@ public class InterpreterTest {
 				new Mappings<Task, Resource>());
 		when(wrapper.getSpecification()).thenReturn(s);
 		SpecificationPostProcessor postProcessor = new SpecificationPostProcessorMulti();
-		InterpreterVariable inter = new InterpreterVariable(postProcessor, encoding);
+		InterpreterVariable inter = new InterpreterVariable(postProcessor, encoding,
+				new SpecificationCapacityConstraints(wrapper));
 		Model m = new Model();
 		Specification spec = inter.toImplementation(mock(Specification.class), m);
 		assertEquals(0, spec.getApplication().getVertexCount());
@@ -444,7 +448,8 @@ public class InterpreterTest {
 		vars.add(interMock);
 		when(mockEncoding.getInterfaceVariables()).thenReturn(vars);
 		SpecificationPostProcessor postProcessor = new SpecificationPostProcessorMulti();
-		InterpreterVariable inter = new InterpreterVariable(postProcessor, mockEncoding);
+		SpecificationConstraints mockSpeckConstaints = mock(SpecificationConstraints.class);
+		InterpreterVariable inter = new InterpreterVariable(postProcessor, mockEncoding, mockSpeckConstaints);
 		inter.initializeInterfaceVariables();
 	}
 
@@ -462,7 +467,8 @@ public class InterpreterTest {
 		vars.add(allocationMock);
 		when(mockEncoding.getInterfaceVariables()).thenReturn(vars);
 		SpecificationPostProcessor postProcessor = new SpecificationPostProcessorMulti();
-		InterpreterVariable inter = new InterpreterVariable(postProcessor, mockEncoding);
+		SpecificationConstraints mockSpeckConstaints = mock(SpecificationConstraints.class);
+		InterpreterVariable inter = new InterpreterVariable(postProcessor, mockEncoding, mockSpeckConstaints);
 		assertFalse(inter.variablesInitialized);
 		inter.initializeInterfaceVariables();
 		verify(mockEncoding).getInterfaceVariables();
@@ -504,7 +510,8 @@ public class InterpreterTest {
 		when(mockVar.toString()).thenReturn("mockVar");
 		ImplementationEncodingModular mockEncoding = mock(ImplementationEncodingModular.class);
 		SpecificationPostProcessor postProcessor = new SpecificationPostProcessorMulti();
-		InterpreterVariable inter = new InterpreterVariable(postProcessor, mockEncoding);
+		SpecificationConstraints mockSpeckConstaints = mock(SpecificationConstraints.class);
+		InterpreterVariable inter = new InterpreterVariable(postProcessor, mockEncoding, mockSpeckConstaints);
 		String expected = "The variable mockVar is not encoded";
 		assertEquals(expected, inter.getNotEncodedMessage(mockVar));
 	}

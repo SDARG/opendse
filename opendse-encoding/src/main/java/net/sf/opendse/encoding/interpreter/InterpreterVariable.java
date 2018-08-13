@@ -2,6 +2,7 @@ package net.sf.opendse.encoding.interpreter;
 
 import java.lang.reflect.Constructor;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.opt4j.core.Individual;
@@ -36,10 +37,15 @@ import net.sf.opendse.model.Element;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Mappings;
+import net.sf.opendse.model.Models;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
+import net.sf.opendse.model.parameter.ParameterReference;
+import net.sf.opendse.model.parameter.ParameterSelect;
+import net.sf.opendse.optimization.constraints.SpecificationConstraints;
+import net.sf.opendse.optimization.encoding.variables.Variables;
 
 /**
  * The {@link InterpreterVariable} gets the set of {@link InterfaceVariable}s created by
@@ -58,11 +64,16 @@ public class InterpreterVariable extends InterpreterAbstract{
 	protected Set<MappingVariable> mappingVariables = new HashSet<MappingVariable>();
 	protected Set<RoutingVariable> routingVariables = new HashSet<RoutingVariable>();
 	protected Set<AllocationVariable> allocationVariables = new HashSet<AllocationVariable>();
+	
+	protected final SpecificationConstraints specificationConstraints;
+	protected final Set<ParameterReference> activeVariables;
 
 	@Inject
-	public InterpreterVariable(SpecificationPostProcessor postProcessor, ImplementationEncodingModular implementationEncoding) {
+	public InterpreterVariable(SpecificationPostProcessor postProcessor, ImplementationEncodingModular implementationEncoding, SpecificationConstraints specificationConstraints) {
 		super(postProcessor);
 		this.implementationEncoding = implementationEncoding;
+		this.specificationConstraints = specificationConstraints;
+		this.activeVariables = specificationConstraints.getActiveParameters();
 	}
 
 	@Override
@@ -78,8 +89,28 @@ public class InterpreterVariable extends InterpreterAbstract{
 				specification.getMappings(), implementationAllocation, implementationApplication);
 		Routings<Task, Resource, Link> implementationRoutings = decodeRoutings(routingVariables, model,
 				implementationApplication, implementationAllocation);
-		return new Specification(implementationApplication, implementationAllocation, implementationMappings,
+		Specification impl = new Specification(implementationApplication, implementationAllocation, implementationMappings,
 				implementationRoutings);
+		Map<String, Element> map = Models.getElementsMap(impl);
+
+		// set active parameters
+		for (ParameterReference paramRef : activeVariables) {
+			String id = paramRef.getId();
+			String attribute = paramRef.getAttribute();
+			Element element = map.get(id);
+			if (element != null) {
+				ParameterSelect parameter = (ParameterSelect) element.getAttributeParameter(attribute);
+				for (int i = 0; i < parameter.getElements().length; i++) {
+					Object v = parameter.getElements()[i];
+					Boolean b = model.get(Variables.var(element, attribute, v, i));
+					if (b) {
+						element.setAttribute(attribute, v);
+					}
+				}
+			}
+		}
+		specificationConstraints.doInterpreting(impl, model);
+		return impl;
 	}
 
 	/**

@@ -8,6 +8,7 @@ import org.opt4j.satdecoding.Constraint;
 import com.google.inject.Inject;
 
 import net.sf.opendse.optimization.SpecificationWrapper;
+import net.sf.opendse.optimization.constraints.SpecificationConstraints;
 
 /**
  * The {@link ImplementationEncodingModularDefault} performs the basic encoding
@@ -21,9 +22,9 @@ public class ImplementationEncodingModularDefault extends ImplementationEncoding
 	@Inject
 	public ImplementationEncodingModularDefault(SpecificationPreprocessor preprocessor,
 			ApplicationEncoding applicationEncoding, MappingEncoding mappingEncoding, RoutingEncoding routingEncoding,
-			AllocationEncoding allocationEncoding, SpecificationWrapper specificationWrapper) {
+			AllocationEncoding allocationEncoding, SpecificationWrapper specificationWrapper, SpecificationConstraints specConstraints) {
 		super(preprocessor, applicationEncoding, mappingEncoding, routingEncoding, allocationEncoding,
-				specificationWrapper);
+				specificationWrapper, specConstraints);
 	}
 
 	@Override
