@@ -5,9 +5,11 @@ import java.util.Collections;
 import java.util.List;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import net.sf.opendse.model.Specification;
 
+@Singleton
 public class SpecificationPostProcessorMulti implements SpecificationPostProcessor {
 
 	protected final List<SpecificationPostProcessorComposable> postProcessorList;

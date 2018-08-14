@@ -34,7 +34,7 @@ public class ProxyRoutingTest {
 		CommunicationRoutingManagerDefault routingEncoderManager = new CommunicationRoutingManagerDefault(
 				new OneDirectionEncoderDefault(), new CycleBreakEncoderColor(),
 				new CommunicationHierarchyEncoderDefault(), communicationFlowManager, new ProxyEncoderCompact(),
-				new AdditionalRoutingConstraintsEncoderNone());
+				new AdditionalRoutingConstraintsEncoderMulti());
 
 		return new RoutingEncodingFlexible(routingEncoderManager);
 	}

@@ -13,7 +13,7 @@ import static org.mockito.Mockito.mock;
 
 import java.util.Set;
 
-public class AdditionalConstraintsEncoderNoneTest {
+public class AdditionalConstraintsEncoderMultiTest {
 
 	@Test
 	public void test() {
@@ -22,7 +22,7 @@ public class AdditionalConstraintsEncoderNoneTest {
 		Set<CommunicationFlow> commFlows = mock(Set.class);
 		@SuppressWarnings("unchecked")
 		Architecture<Resource, Link> routing = mock(Architecture.class);
-		AdditionalRoutingConstraintsEncoderNone encoder = new AdditionalRoutingConstraintsEncoderNone();
+		AdditionalRoutingConstraintsEncoderMulti encoder = new AdditionalRoutingConstraintsEncoderMulti();
 		assertTrue(encoder.toConstraints(mockT, commFlows, routing).isEmpty());
 	}
 

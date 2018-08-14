@@ -10,7 +10,7 @@ import net.sf.opendse.encoding.application.ApplicationEncodingMode;
 import net.sf.opendse.encoding.mapping.MappingConstraintManagerDefault;
 import net.sf.opendse.encoding.mapping.MappingEncodingMode;
 import net.sf.opendse.encoding.routing.ActivationEncoderDefault;
-import net.sf.opendse.encoding.routing.AdditionalRoutingConstraintsEncoderNone;
+import net.sf.opendse.encoding.routing.AdditionalRoutingConstraintsEncoderMulti;
 import net.sf.opendse.encoding.routing.CommunicationFlowRoutingManager;
 import net.sf.opendse.encoding.routing.CommunicationFlowRoutingManagerDefault;
 import net.sf.opendse.encoding.routing.CommunicationHierarchyEncoderDefault;
@@ -117,7 +117,7 @@ public class AlternativesImplementationEncodingTest {
 		CommunicationRoutingManagerDefault routingEncoderManager = new CommunicationRoutingManagerDefault(
 				new OneDirectionEncoderDefault(), new CycleBreakEncoderColor(),
 				new CommunicationHierarchyEncoderDefault(), communicationFlowManager, new ProxyEncoderCompact(),
-				new AdditionalRoutingConstraintsEncoderNone());
+				new AdditionalRoutingConstraintsEncoderMulti());
 
 		return new RoutingEncodingFlexible(routingEncoderManager);
 	}
@@ -136,7 +136,7 @@ public class AlternativesImplementationEncodingTest {
 		RoutingEncoding routingEncoding = new RoutingEncodingFlexible(
 				new CommunicationRoutingManagerDefault(new OneDirectionEncoderDefault(), new CycleBreakEncoderColor(),
 						new CommunicationHierarchyEncoderDefault(), manager, new ProxyEncoderCompact(),
-						new AdditionalRoutingConstraintsEncoderNone()));
+						new AdditionalRoutingConstraintsEncoderMulti()));
 		AllocationEncoding allocationEncoding = new AllocationEncodingUtilization();
 		SpecificationPreprocessor preprocessor = new SpecificationPreprocessorNone();
 		SpecificationConstraints mockConstraints = mock(SpecificationConstraints.class);

@@ -76,7 +76,7 @@ public class EdgeEncoderRedundantTest {
 		CommunicationRoutingManager routingEncoderManager = new CommunicationRoutingManagerDefault(
 				new OneDirectionEncoderDefault(), new CycleBreakEncoderOrder(),
 				new CommunicationHierarchyEncoderDefault(), commFlowManager, new ProxyEncoderCompact(),
-				new AdditionalRoutingConstraintsEncoderNone());
+				new AdditionalRoutingConstraintsEncoderMulti());
 		RoutingEncodingFlexible routingEncoding = new RoutingEncodingFlexible(routingEncoderManager);
 
 		Set<Constraint> cs = routingEncoding.toConstraints(applicationVariables, mappingVars, routings);

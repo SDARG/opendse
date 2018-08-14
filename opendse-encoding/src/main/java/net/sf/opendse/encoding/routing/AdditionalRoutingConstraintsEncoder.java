@@ -18,7 +18,7 @@ import net.sf.opendse.model.Resource;
  * @author Fedor Smirnov
  *
  */
-@ImplementedBy(AdditionalRoutingConstraintsEncoderNone.class)
+@ImplementedBy(AdditionalRoutingConstraintsEncoderMulti.class)
 public interface AdditionalRoutingConstraintsEncoder {
 
 	/**
