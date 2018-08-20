@@ -21,8 +21,8 @@
  *******************************************************************************/
 package net.sf.opendse.optimization.encoding;
 
-import static net.sf.opendse.encoding.old.variables.Variables.n;
-import static net.sf.opendse.encoding.old.variables.Variables.p;
+import static net.sf.opendse.encoding.firm.variables.Variables.n;
+import static net.sf.opendse.encoding.firm.variables.Variables.p;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -30,7 +30,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.sf.opendse.encoding.old.variables.CommunicationVariable;
+import net.sf.opendse.encoding.firm.variables.CommunicationVariable;
 import net.sf.opendse.model.ICommunication;
 import net.sf.opendse.optimization.encoding.common.BinaryReachability;
 

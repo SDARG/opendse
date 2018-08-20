@@ -21,7 +21,7 @@
  *******************************************************************************/
 package net.sf.opendse.optimization.test;
 
-import net.sf.opendse.encoding.constraints.SpecificationConstraints;
+import net.sf.opendse.encoding.specificationconstraints.SpecificationConstraints;
 import net.sf.opendse.io.SpecificationWriter;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;

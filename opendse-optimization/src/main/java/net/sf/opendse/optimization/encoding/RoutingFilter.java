@@ -27,7 +27,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.sf.opendse.encoding.constraints.SpecificationRouterConstraints;
+import net.sf.opendse.encoding.specificationconstraints.SpecificationRouterConstraints;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Dependency;

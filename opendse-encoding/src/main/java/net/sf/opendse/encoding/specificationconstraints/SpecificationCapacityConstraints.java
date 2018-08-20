@@ -19,10 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package net.sf.opendse.encoding.constraints;
+package net.sf.opendse.encoding.specificationconstraints;
 
-import static net.sf.opendse.encoding.old.variables.Variables.p;
-import static net.sf.opendse.encoding.old.variables.Variables.var;
+import static net.sf.opendse.encoding.firm.variables.Variables.p;
+import static net.sf.opendse.encoding.firm.variables.Variables.var;
 import static net.sf.opendse.model.Models.filterCommunications;
 import static net.sf.opendse.model.Models.getLinks;
 

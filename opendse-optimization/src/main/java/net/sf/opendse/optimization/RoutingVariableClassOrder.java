@@ -2,9 +2,9 @@ package net.sf.opendse.optimization;
 
 import com.google.inject.Inject;
 
-import net.sf.opendse.encoding.old.Encoding;
-import net.sf.opendse.encoding.old.variables.CR;
-import net.sf.opendse.encoding.old.variables.EAVI;
+import net.sf.opendse.encoding.firm.Encoding;
+import net.sf.opendse.encoding.firm.variables.CR;
+import net.sf.opendse.encoding.firm.variables.EAVI;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Resource;

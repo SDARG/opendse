@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package net.sf.opendse.encoding.old.variables;
+package net.sf.opendse.encoding.firm.variables;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -19,17 +19,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package net.sf.opendse.encoding.old;
+package net.sf.opendse.encoding.firm;
 
 import static edu.uci.ics.jung.graph.util.EdgeType.UNDIRECTED;
+import static net.sf.opendse.encoding.firm.variables.Variables.p;
+import static net.sf.opendse.encoding.firm.variables.Variables.var;
 import static net.sf.opendse.model.Models.filterCommunications;
 import static net.sf.opendse.model.Models.filterProcesses;
 import static net.sf.opendse.model.Models.getInLinks;
 import static net.sf.opendse.model.Models.getLinks;
 import static net.sf.opendse.model.Models.getOutLinks;
 import static net.sf.opendse.model.Models.isProcess;
-import static net.sf.opendse.encoding.old.variables.Variables.p;
-import static net.sf.opendse.encoding.old.variables.Variables.var;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,9 +40,9 @@ import java.util.List;
 import java.util.Set;
 
 import net.sf.opendse.encoding.ImplementationEncoding;
-import net.sf.opendse.encoding.constraints.SpecificationConstraints;
-import net.sf.opendse.encoding.old.variables.CLRR;
-import net.sf.opendse.encoding.old.variables.CR;
+import net.sf.opendse.encoding.firm.variables.CLRR;
+import net.sf.opendse.encoding.firm.variables.CR;
+import net.sf.opendse.encoding.specificationconstraints.SpecificationConstraints;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Dependency;

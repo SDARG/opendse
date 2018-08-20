@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.sf.opendse.encoding.ImplementationEncoding;
-import net.sf.opendse.encoding.old.Encoding;
+import net.sf.opendse.encoding.firm.Encoding;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.SpecificationWrapper;
 import net.sf.opendse.optimization.encoding.CommunicationLearn;

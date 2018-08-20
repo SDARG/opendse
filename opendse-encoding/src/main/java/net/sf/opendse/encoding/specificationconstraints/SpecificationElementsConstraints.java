@@ -19,9 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package net.sf.opendse.encoding.constraints;
+package net.sf.opendse.encoding.specificationconstraints;
 
-import static net.sf.opendse.encoding.old.variables.Variables.p;
+import static net.sf.opendse.encoding.firm.variables.Variables.p;
 
 import java.util.Collection;
 import java.util.HashMap;

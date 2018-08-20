@@ -19,32 +19,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package net.sf.opendse.encoding.old.variables;
+package net.sf.opendse.encoding.specificationconstraints;
 
-import net.sf.opendse.model.Element;
+import java.util.Collection;
+import java.util.Set;
 
-public class EAVI extends Variable {
+import net.sf.opendse.model.Specification;
+import net.sf.opendse.model.parameter.ParameterReference;
 
-	public EAVI(Element e, String attribute, Object value, Integer index){
-		super(e,attribute,value,index);
-	}
+import org.opt4j.satdecoding.Constraint;
+import org.opt4j.satdecoding.Model;
+
+public interface SpecificationConstraints {
 	
-	public Element getE(){
-		return get(0);
-	}
+	public void doEncoding(Collection<Constraint> constraints);
 	
-	public String getA(){
-		return get(1);
-	}
+	public void doInterpreting(Specification implementation, Model model);
 	
-	public Object getV(){
-		return get(2);
-	}
+	public Set<ParameterReference> getActiveParameters();
+
+	public static String CONNECT = ":CONNECT";
+	public static String CONNECT_MAX = ":CONNECT-MAX";
+	public static String CONNECT_MIN = ":CONNECT-MIN";
 	
-	public Integer getI(){
-		return get(3);
-	}
+	public static String CAPACITY = ":CAPACITY";
+	public static String CAPACITY_MAX = ":CAPACITY-MAX";
+	public static String CAPACITY_MIN = ":CAPACITY-MIN";
+	public static String CAPACITY_SCALE = ":CAPACITY-SCALE";
+	public static String CAPACITY_ACTION = ":CAPACITY-ACTION";
+	public static String CAPACITY_VALUE = ":CAPACITY-VALUE";
+	public static String CAPACITY_RATIO = ":CAPACITY-RATIO";
 	
+	public static String ELEMENTS_EXCLUDE = "ELEMENTS_EXCLUDE";
+	public static String ELEMENTS_REQUIRE = "ELEMENTS_REQUIRE";
 	
-	
+	public static String ROUTER = "ROUTER";
+
 }

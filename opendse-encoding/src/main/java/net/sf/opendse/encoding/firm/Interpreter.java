@@ -19,10 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package net.sf.opendse.encoding.old;
+package net.sf.opendse.encoding.firm;
 
 import static edu.uci.ics.jung.graph.util.EdgeType.DIRECTED;
-import static net.sf.opendse.encoding.old.variables.Variables.var;
+import static net.sf.opendse.encoding.firm.variables.Variables.var;
 import static net.sf.opendse.model.Models.filterCommunications;
 import static net.sf.opendse.model.Models.getLinks;
 
@@ -32,8 +32,8 @@ import java.util.Map;
 import java.util.Set;
 
 import net.sf.opendse.encoding.ImplementationInterpreter;
-import net.sf.opendse.encoding.constraints.SpecificationConstraints;
-import net.sf.opendse.encoding.old.variables.Variables;
+import net.sf.opendse.encoding.firm.variables.Variables;
+import net.sf.opendse.encoding.specificationconstraints.SpecificationConstraints;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Attributes;

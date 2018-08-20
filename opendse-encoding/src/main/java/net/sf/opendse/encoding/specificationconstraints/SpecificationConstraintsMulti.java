@@ -19,9 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package net.sf.opendse.encoding.constraints;
+package net.sf.opendse.encoding.specificationconstraints;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import net.sf.opendse.model.Specification;
@@ -30,29 +31,45 @@ import net.sf.opendse.model.parameter.ParameterReference;
 import org.opt4j.satdecoding.Constraint;
 import org.opt4j.satdecoding.Model;
 
-public interface SpecificationConstraints {
-	
-	public void doEncoding(Collection<Constraint> constraints);
-	
-	public void doInterpreting(Specification implementation, Model model);
-	
-	public Set<ParameterReference> getActiveParameters();
+import com.google.inject.Inject;
 
-	public static String CONNECT = ":CONNECT";
-	public static String CONNECT_MAX = ":CONNECT-MAX";
-	public static String CONNECT_MIN = ":CONNECT-MIN";
+// TODO: Construct with "Specification"
+public class SpecificationConstraintsMulti implements SpecificationConstraints {
+
+	protected final Set<SpecificationConstraints> specificationConstraints;
 	
-	public static String CAPACITY = ":CAPACITY";
-	public static String CAPACITY_MAX = ":CAPACITY-MAX";
-	public static String CAPACITY_MIN = ":CAPACITY-MIN";
-	public static String CAPACITY_SCALE = ":CAPACITY-SCALE";
-	public static String CAPACITY_ACTION = ":CAPACITY-ACTION";
-	public static String CAPACITY_VALUE = ":CAPACITY-VALUE";
-	public static String CAPACITY_RATIO = ":CAPACITY-RATIO";
+	@Inject
+	public SpecificationConstraintsMulti(Set<SpecificationConstraints> specificationConstraints) {
+		super();
+		this.specificationConstraints = specificationConstraints;
+	}
+
+	@Override
+	public void doEncoding(Collection<Constraint> constraints) {
+		for(SpecificationConstraints sc: specificationConstraints){
+			sc.doEncoding(constraints);
+		}
+	}
+
+	@Override
+	public void doInterpreting(Specification implementation, Model model) {
+		for(SpecificationConstraints sc: specificationConstraints){
+			sc.doInterpreting(implementation, model);
+		}
+	}
+
+	@Override
+	public Set<ParameterReference> getActiveParameters() {
+		Set<ParameterReference> parameters = new HashSet<ParameterReference>();
+		for(SpecificationConstraints sc: specificationConstraints){
+			Set<ParameterReference> ap = sc.getActiveParameters();
+			if(ap != null){
+				parameters.addAll(ap);
+			}
+		}
+		return parameters;
+	}
 	
-	public static String ELEMENTS_EXCLUDE = "ELEMENTS_EXCLUDE";
-	public static String ELEMENTS_REQUIRE = "ELEMENTS_REQUIRE";
 	
-	public static String ROUTER = "ROUTER";
 
 }

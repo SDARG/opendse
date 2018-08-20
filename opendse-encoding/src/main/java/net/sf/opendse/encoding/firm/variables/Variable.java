@@ -19,37 +19,71 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package net.sf.opendse.encoding.old.variables;
+package net.sf.opendse.encoding.firm.variables;
 
-import net.sf.opendse.model.Edge;
-import net.sf.opendse.model.ICommunication;
-import net.sf.opendse.model.Resource;
-import net.sf.opendse.model.Task;
+import java.util.Arrays;
 
-public class CLRR extends Variable implements CommunicationVariable {
+public abstract class Variable {
 
-	public CLRR(Task t, Edge l, Resource r0, Resource r1) {
-		super(t,l,r0,r1);
-	}
-
-	public Task getTask() {
-		return get(0);
-	}
-
-	public Edge getLink() {
-		return get(1);
-	}
-
-	public Resource getSource() {
-		return get(2);
-	}
-
-	public Resource getDest() {
-		return get(3);
+	protected Object[] objects;
+	                 
+	public Variable(Object... objects){
+		super();
+		final int n = objects.length;
+		this.objects = new Object[n+1];
+		this.objects[0] = this.getClass();
+		System.arraycopy(objects, 0, this.objects, 1, n);
 	}
 	
-	@Override
-	public ICommunication getCommunication() {
-		return (ICommunication)getTask();
+	@SuppressWarnings("unchecked")
+	public <O> O get(int i){
+		return (O)objects[i+1];
 	}
+	                 
+	           
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return Arrays.hashCode(objects);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final Variable other = (Variable) obj;
+		return Arrays.equals(this.objects, other.objects);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		String s = "";
+		s += this.getClass().getSimpleName();
+		s += "[";
+		for(int i=1; i<objects.length; i++){
+			s += objects[i] + ",";
+		}
+		s = s.substring(0, s.length() - 1);
+		s += "]";
+		return s;
+	}
+
+
 }

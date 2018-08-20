@@ -19,28 +19,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package net.sf.opendse.encoding.old.variables;
+package net.sf.opendse.encoding.firm.variables;
 
+import net.sf.opendse.model.Edge;
 import net.sf.opendse.model.ICommunication;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 
-public class CR extends Variable implements CommunicationVariable {
+public class CLRRP extends Variable implements CommunicationVariable {
 
-	public CR(Task c, Resource r) {
-		super(c,r);
+	public CLRRP(Task t, Edge l, Resource r0, Resource r1, Task p) {
+		super(t,l,r0,r1,p);
 	}
 
-	public Task getC() {
+	public Task getTask() {
 		return get(0);
 	}
 
-	public Resource getR() {
+	public Edge getLink() {
 		return get(1);
 	}
 
+	public Resource getSource() {
+		return get(2);
+	}
+
+	public Resource getDest() {
+		return get(3);
+	}
+	
+	public Task getP(){
+		return get(4);
+	}
+	
 	@Override
 	public ICommunication getCommunication() {
-		return (ICommunication)getC();
+		return (ICommunication)getTask();
 	}
 }

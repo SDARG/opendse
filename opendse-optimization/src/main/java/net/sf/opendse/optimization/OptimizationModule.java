@@ -23,15 +23,15 @@ package net.sf.opendse.optimization;
 
 import net.sf.opendse.encoding.ImplementationEncoding;
 import net.sf.opendse.encoding.ImplementationInterpreter;
-import net.sf.opendse.encoding.constraints.SpecificationCapacityConstraints;
-import net.sf.opendse.encoding.constraints.SpecificationConnectConstraints;
-import net.sf.opendse.encoding.constraints.SpecificationConstraints;
-import net.sf.opendse.encoding.constraints.SpecificationConstraintsMulti;
-import net.sf.opendse.encoding.constraints.SpecificationElementsConstraints;
-import net.sf.opendse.encoding.constraints.SpecificationRouterConstraints;
-import net.sf.opendse.encoding.old.Encoding;
-import net.sf.opendse.encoding.old.Interpreter;
-import net.sf.opendse.encoding.old.Encoding.RoutingEncoding;
+import net.sf.opendse.encoding.firm.Encoding;
+import net.sf.opendse.encoding.firm.Interpreter;
+import net.sf.opendse.encoding.firm.Encoding.RoutingEncoding;
+import net.sf.opendse.encoding.specificationconstraints.SpecificationCapacityConstraints;
+import net.sf.opendse.encoding.specificationconstraints.SpecificationConnectConstraints;
+import net.sf.opendse.encoding.specificationconstraints.SpecificationConstraints;
+import net.sf.opendse.encoding.specificationconstraints.SpecificationConstraintsMulti;
+import net.sf.opendse.encoding.specificationconstraints.SpecificationElementsConstraints;
+import net.sf.opendse.encoding.specificationconstraints.SpecificationRouterConstraints;
 
 import org.opt4j.core.config.annotations.Parent;
 import org.opt4j.core.config.annotations.Required;

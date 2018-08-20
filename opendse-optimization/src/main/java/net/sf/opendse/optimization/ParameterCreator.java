@@ -46,7 +46,7 @@ import org.opt4j.core.problem.Creator;
 
 import com.google.inject.Inject;
 
-import net.sf.opendse.encoding.constraints.SpecificationConstraints;
+import net.sf.opendse.encoding.specificationconstraints.SpecificationConstraints;
 import net.sf.opendse.model.Element;
 import net.sf.opendse.model.Models;
 import net.sf.opendse.model.Specification;
