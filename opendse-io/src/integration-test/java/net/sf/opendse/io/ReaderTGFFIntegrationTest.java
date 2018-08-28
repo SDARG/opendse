@@ -89,8 +89,8 @@ public class ReaderTGFFIntegrationTest {
 
 		Assert.assertNotNull(resource);
 
-		Assert.assertEquals("79.0597", resource.getAttribute("price"));
-		Assert.assertEquals("0.219023", resource.getAttribute("area"));
+		Assert.assertEquals(79.0597, resource.getAttribute("price"));
+		Assert.assertEquals(0.219023, resource.getAttribute("area"));
 	}
 
 	@Test

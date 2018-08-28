@@ -433,7 +433,7 @@ public class ReaderTGFF {
 				+ "equal to required number of resource attributes";
 
 		for (int i = 0; i < resAttributes.length; i++) {
-			res.setAttribute(resAttributes[i], resValues[i]);
+			res.setAttribute(resAttributes[i], Double.valueOf(resValues[i]));
 		}
 		resourceTypes.put(id, res);
 	}
@@ -498,7 +498,7 @@ public class ReaderTGFF {
 
 						// annotate extracted attributes and values
 						for (int i = 0; i < values.length; i++) {
-							mapping.setAttribute(attributes.get(i), values[i]);
+							mapping.setAttribute(attributes.get(i), Double.valueOf(values[i]));
 						}
 						mappings.add(mapping);
 					}
@@ -548,13 +548,16 @@ public class ReaderTGFF {
 
 		while (!isClosing(currentLine = it.next())) {
 
+			if (currentLine.contains("{") || currentLine.contains("}")) {
+				// skip
+			}
 			// get attribute name
-			if (isComment(currentLine)) {
+			else if (isComment(currentLine)) {
 				property = currentLine.replace(COMMENT, "").trim();
 			}
 			// get corresponding attribute value
 			else {
-				link.setAttribute(property, currentLine);
+				link.setAttribute(property, Double.valueOf(currentLine));
 			}
 		}
 		linkTypes.put(WIRE, link);

@@ -230,7 +230,7 @@ public class ReaderTGFFTest {
 		List<String> ids = new ArrayList<String>(
 				Arrays.asList("m_t0_0_0_r0", "m_t0_1_0_r0", "m_t0_2_0_r0", "m_t0_3_0_r0", "m_t0_1_0_r1", "m_t0_2_0_r1",
 						"m_t0_3_0_r1", "m_t0_1_0_r2", "m_t0_2_0_r2", "m_t0_3_0_r2"));
-		List<String> times = new ArrayList<String>(Arrays.asList("7", "8", "9", "11", "12"));
+		List<Double> times = new ArrayList<Double>(Arrays.asList(7.0, 8.0, 9.0, 11.0, 12.0));
 
 		for (Mapping<Task, Resource> mapping : mappings) {
 			Assert.assertTrue(ids.contains(mapping.getId()));
@@ -450,8 +450,8 @@ public class ReaderTGFFTest {
 
 		Resource resource = resourceTypes.get(id);
 
-		Assert.assertEquals("79.0597", resource.getAttribute("price"));
-		Assert.assertEquals("0.219023", resource.getAttribute("area"));
+		Assert.assertEquals(79.0597, resource.getAttribute("price"));
+		Assert.assertEquals(0.219023, resource.getAttribute("area"));
 	}
 
 	/**
@@ -509,7 +509,7 @@ public class ReaderTGFFTest {
 
 		List<String> ids = new ArrayList<String>(
 				Arrays.asList("m_t0_0_0_r0", "m_t0_1_0_r0", "m_t0_2_0_r0", "m_t0_3_0_r0"));
-		List<String> times = new ArrayList<String>(Arrays.asList("7", "11"));
+		List<Double> times = new ArrayList<Double>(Arrays.asList(7.0, 11.0));
 
 		for (Mapping<Task, Resource> mapping : mappings) {
 
