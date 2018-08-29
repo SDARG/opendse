@@ -548,15 +548,12 @@ public class ReaderTGFF {
 
 		while (!isClosing(currentLine = it.next())) {
 
-			if (currentLine.contains("{") || currentLine.contains("}")) {
-				// skip
-			}
 			// get attribute name
-			else if (isComment(currentLine)) {
+			if (isComment(currentLine)) {
 				property = currentLine.replace(COMMENT, "").trim();
 			}
 			// get corresponding attribute value
-			else {
+			else if (!currentLine.contains("{") && !currentLine.contains("}")) {
 				link.setAttribute(property, Double.valueOf(currentLine));
 			}
 		}
