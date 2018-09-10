@@ -11,9 +11,9 @@ import net.sf.opendse.optimization.SpecificationWrapper;
  * 
  * @author Valentina Richthammer
  */
-public class InputModuleTypeBased extends IOModule {
+public class InputTgffModule extends IOModule {
 
-	@File
+	@File(".tgff")
 	@Constant(namespace = SpecificationWrapperTypeBased.class, value = "tgffFileName")
 	protected String tgffFileName = "";
 
