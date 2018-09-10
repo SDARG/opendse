@@ -1,0 +1,18 @@
+graph: { label: "opendse_example.vcg"
+display_edge_labels: yes
+	node: { title: "t0_0" label: "t0_0 (1)"  color: lightgreen } 
+	node: { title: "t0_1" label: "t0_1 (2)"  color: white } 
+	node: { title: "t0_2" label: "t0_2 (2)"  color: lightred } 
+	node: { title: "t0_3" label: "t0_3 (2)"  color: lightred } 
+
+	edge: { thickness: 2 sourcename:"t0_0" targetname: "t0_1"  label: "(0)" } 
+
+	edge: { thickness: 2 sourcename:"t0_1" targetname: "t0_2"  label: "(0)" } 
+
+	edge: { thickness: 2 sourcename:"t0_0" targetname: "t0_3"  label: "(1)" } 
+
+
+
+
+
+ } 
