@@ -42,7 +42,6 @@ import java.util.Set;
 import net.sf.opendse.encoding.ImplementationEncoding;
 import net.sf.opendse.encoding.firm.variables.CLRR;
 import net.sf.opendse.encoding.firm.variables.CR;
-import net.sf.opendse.encoding.specificationconstraints.SpecificationConstraints;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Dependency;
@@ -100,13 +99,11 @@ public class Encoding implements ImplementationEncoding{
 
 	}
 
-	protected final SpecificationConstraints specificationConstraints;
 	protected final RoutingEncoding routingEncoding;
 
 	@Inject
-	public Encoding(SpecificationConstraints specificationConstraints, RoutingEncoding routingEncoding) {
+	public Encoding(RoutingEncoding routingEncoding) {
 		super();
-		this.specificationConstraints = specificationConstraints;
 		this.routingEncoding = routingEncoding;
 	}
 
@@ -845,9 +842,6 @@ public class Encoding implements ImplementationEncoding{
 		}
 
 		EQ30(constraints, specification);
-
-		specificationConstraints.doEncoding(constraints);
-
 		return new HashSet<Constraint>(constraints);
 	}
 

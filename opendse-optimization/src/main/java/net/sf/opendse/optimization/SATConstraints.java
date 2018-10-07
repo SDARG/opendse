@@ -30,7 +30,7 @@ import java.util.Set;
 import net.sf.opendse.encoding.ImplementationEncoding;
 import net.sf.opendse.encoding.firm.Encoding;
 import net.sf.opendse.model.Specification;
-import net.sf.opendse.model.SpecificationWrapper;
+import net.sf.opendse.optimization.constraints.SpecificationConstraints;
 import net.sf.opendse.optimization.encoding.CommunicationLearn;
 import net.sf.opendse.optimization.encoding.RoutingFilter;
 import net.sf.opendse.optimization.encoding.common.ConstraintPreprocessing;
@@ -55,6 +55,7 @@ public class SATConstraints {
 
 	protected final SpecificationWrapper specificationWrapper;
 	protected final List<Constraint> constraints = new ArrayList<Constraint>();
+	protected final SpecificationConstraints specificationConstraints;
 	protected final List<Object> variables = new ArrayList<Object>();
 	protected final ConstraintPreprocessing pp;
 	protected final boolean usePreprocessing;
@@ -62,18 +63,22 @@ public class SATConstraints {
 	protected ImplementationEncoding encoding;
 
 	@Inject
-	public SATConstraints(SpecificationWrapper specificationWrapper, ImplementationEncoding encoding, @Constant(value = "preprocessing", namespace = SATConstraints.class) boolean usePreprocessing) {
-		this(specificationWrapper, encoding, new ConstraintPreprocessing(true, true,
-				new Encoding.VariableComparator(), null, true), usePreprocessing);
-		
+	public SATConstraints(SpecificationWrapper specificationWrapper, ImplementationEncoding encoding,
+			@Constant(value = "preprocessing", namespace = SATConstraints.class) boolean usePreprocessing,
+			SpecificationConstraints specificationConstraints) {
+		this(specificationWrapper, encoding,
+				new ConstraintPreprocessing(true, true, new Encoding.VariableComparator(), null, true),
+				usePreprocessing, specificationConstraints);
 	}
 
-	public SATConstraints(SpecificationWrapper specificationWrapper, ImplementationEncoding encoding, ConstraintPreprocessing pp, boolean usePreprocessing) {
+	public SATConstraints(SpecificationWrapper specificationWrapper, ImplementationEncoding encoding,
+			ConstraintPreprocessing pp, boolean usePreprocessing, SpecificationConstraints specificationConstraints) {
 		super();
 		this.specificationWrapper = specificationWrapper;
 		this.encoding = encoding;
 		this.pp = pp;
 		this.usePreprocessing = usePreprocessing;
+		this.specificationConstraints = specificationConstraints;
 	}
 
 	public synchronized List<Constraint> getConstraints() {
@@ -96,7 +101,7 @@ public class SATConstraints {
 			RoutingFilter.filter(specification);
 
 			Collection<Constraint> constraints = encoding.toConstraints(specification);
-
+			specificationConstraints.doEncoding(constraints);
 			CommunicationLearn clearn = new CommunicationLearn();
 			Set<Literal> learned = clearn.learn(constraints);
 			for (Literal literal : learned) {
@@ -109,8 +114,8 @@ public class SATConstraints {
 			 * System.out.println(constraint); }
 			 */
 			// this.constraints.addAll(constraints);
-			
-			if(usePreprocessing){
+
+			if (usePreprocessing) {
 				this.constraints.addAll(pp.process(constraints));
 			} else {
 				this.constraints.addAll(constraints);
@@ -132,12 +137,12 @@ public class SATConstraints {
 		if (!isInit) {
 			init();
 		}
-		
-		if(usePreprocessing){
+
+		if (usePreprocessing) {
 			return pp.decorate(model);
 		} else {
 			return model;
-		}		
+		}
 	}
 
 	public ConstraintPreprocessing getPreprocessing() {

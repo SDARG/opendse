@@ -1,6 +1,5 @@
 package net.sf.opendse.tutorial;
 
-import net.sf.opendse.encoding.specificationconstraints.SpecificationConstraints;
 import net.sf.opendse.io.SpecificationWriter;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
@@ -13,6 +12,7 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.parameter.Parameters;
+import net.sf.opendse.optimization.constraints.SpecificationConstraints;
 import net.sf.opendse.optimization.encoding.SingleImplementation;
 import net.sf.opendse.visualization.SpecificationViewer;
 

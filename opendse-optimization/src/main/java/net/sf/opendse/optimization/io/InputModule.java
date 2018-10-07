@@ -24,7 +24,7 @@ package net.sf.opendse.optimization.io;
 import org.opt4j.core.config.annotations.File;
 import org.opt4j.core.start.Constant;
 
-import net.sf.opendse.model.SpecificationWrapper;
+import net.sf.opendse.optimization.SpecificationWrapper;
 
 public class InputModule extends IOModule {
 

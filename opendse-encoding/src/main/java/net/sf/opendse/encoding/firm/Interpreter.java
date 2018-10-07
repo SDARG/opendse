@@ -27,13 +27,9 @@ import static net.sf.opendse.model.Models.filterCommunications;
 import static net.sf.opendse.model.Models.getLinks;
 
 import java.lang.reflect.Constructor;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import net.sf.opendse.encoding.ImplementationInterpreter;
-import net.sf.opendse.encoding.firm.variables.Variables;
-import net.sf.opendse.encoding.specificationconstraints.SpecificationConstraints;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Attributes;
@@ -44,18 +40,12 @@ import net.sf.opendse.model.IAttributes;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Mappings;
-import net.sf.opendse.model.Models;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.Models.DirectedLink;
-import net.sf.opendse.model.parameter.ParameterReference;
-import net.sf.opendse.model.parameter.ParameterSelect;
-
 import org.opt4j.satdecoding.Model;
-
-import com.google.inject.Inject;
 
 import edu.uci.ics.jung.algorithms.cluster.WeakComponentClusterer;
 import edu.uci.ics.jung.graph.util.Pair;
@@ -67,7 +57,7 @@ import edu.uci.ics.jung.graph.util.Pair;
  * @author Martin Lukasiewycz
  * 
  */
-public class Interpreter implements ImplementationInterpreter{
+public class Interpreter implements ImplementationInterpreter {
 
 	@SuppressWarnings("unchecked")
 	public <E extends Element> E copy(Element element) {
@@ -90,16 +80,6 @@ public class Interpreter implements ImplementationInterpreter{
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	protected final SpecificationConstraints specificationConstraints;
-	protected final Set<ParameterReference> activeVariables;
-
-	@Inject
-	public Interpreter(SpecificationConstraints specificationConstraints) {
-		super();
-		this.specificationConstraints = specificationConstraints;
-		this.activeVariables = new HashSet<ParameterReference>(specificationConstraints.getActiveParameters());
 	}
 
 	@Override
@@ -131,7 +111,7 @@ public class Interpreter implements ImplementationInterpreter{
 				iArchitecture.addEdge((Link) copy(l), source, dest, sArchitecture.getEdgeType(l));
 			}
 		}
-		
+
 		// copy application (including function attributes)
 		for (Task t : sApplication) {
 			iApplication.addVertex((Task) copy(t));
@@ -142,12 +122,12 @@ public class Interpreter implements ImplementationInterpreter{
 			Task dest = iApplication.getVertex(sApplication.getVertex(endpoints.getSecond()));
 			iApplication.addEdge((Dependency) copy(e), source, dest, sApplication.getEdgeType(e));
 		}
-		
-		for (Function<Task,Dependency> function: iApplication.getFunctions()){
+
+		for (Function<Task, Dependency> function : iApplication.getFunctions()) {
 			Task t = function.iterator().next();
-			setAttributes(function, sApplication.getFunction(t).getAttributes());			
+			setAttributes(function, sApplication.getFunction(t).getAttributes());
 		}
-		
+
 		for (Mapping<Task, Resource> m : sMappings) {
 			if (model.get(m)) {
 				Mapping<Task, Resource> copy = copy(m);
@@ -174,22 +154,23 @@ public class Interpreter implements ImplementationInterpreter{
 					Resource r1 = iRouting.getVertex(lrr.getDest());
 					iRouting.addEdge((Link) copy(l), r0, r1, DIRECTED);
 				}
-				//System.out.println(c+" "+lrr.getLink()+" "+lrr.getSource()+" "+lrr.getDest()+" "+model.get(var(c, lrr)));
+				// System.out.println(c+" "+lrr.getLink()+" "+lrr.getSource()+"
+				// "+lrr.getDest()+" "+model.get(var(c, lrr)));
 			}
-			
-			//System.out.println(sRouting+" "+iRouting);
+
+			// System.out.println(sRouting+" "+iRouting);
 
 			WeakComponentClusterer<Resource, Link> clusterer = new WeakComponentClusterer<Resource, Link>();
 			Set<Set<Resource>> cluster = clusterer.transform(iRouting);
 
 			Task sender = iApplication.getPredecessors(c).iterator().next();
-			
+
 			Set<Resource> targets = iMappings.getTargets(sender);
 
 			for (Set<Resource> set : cluster) {
 				boolean containsAny = false;
-				for(Resource target: targets){
-					if(set.contains(target)){
+				for (Resource target : targets) {
+					if (set.contains(target)) {
 						containsAny = true;
 						break;
 					}
@@ -203,44 +184,12 @@ public class Interpreter implements ImplementationInterpreter{
 
 			iRoutings.set(iApplication.getVertex(c), iRouting);
 		}
-
-		Specification impl = new Specification(iApplication, iArchitecture, iMappings, iRoutings);
-
-		Map<String, Element> map = Models.getElementsMap(impl);
-
-		// set active parameters
-		for (ParameterReference paramRef : activeVariables) {
-			String id = paramRef.getId();
-			String attribute = paramRef.getAttribute();
-
-			Element element = map.get(id);
-
-			if (element != null) {
-				ParameterSelect parameter = (ParameterSelect) element.getAttributeParameter(attribute);
-
-				for (int i = 0; i < parameter.getElements().length; i++) {
-					Object v = parameter.getElements()[i];
-					Boolean b = model.get(Variables.var(element, attribute, v, i));
-					if (b) {
-						element.setAttribute(attribute, v);
-						// System.out.println("set "+element+" attribute "+v);
-					}
-				}
-
-			}
-
-			// System.out.println(paramRef);
-		}
-
-		specificationConstraints.doInterpreting(impl, model);
-
-		return impl;
+		return new Specification(iApplication, iArchitecture, iMappings, iRoutings);
 	}
-	
+
 	protected static void setAttributes(IAttributes e, Attributes attributes) {
 		for (String name : attributes.keySet()) {
 			e.setAttribute(name, attributes.get(name));
 		}
 	}
-	
 }

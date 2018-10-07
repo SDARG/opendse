@@ -29,7 +29,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import net.sf.opendse.model.Specification;
-import net.sf.opendse.model.SpecificationWrapper;
+import net.sf.opendse.optimization.SpecificationWrapper;
 import net.sf.opendse.optimization.encoding.RoutingFilter;
 
 @Singleton

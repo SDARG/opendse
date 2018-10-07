@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package net.sf.opendse.encoding.specificationconstraints;
+package net.sf.opendse.optimization.constraints;
 
 import static net.sf.opendse.encoding.firm.variables.Variables.p;
 
@@ -32,7 +32,7 @@ import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Specification;
-import net.sf.opendse.model.SpecificationWrapper;
+import net.sf.opendse.optimization.SpecificationWrapper;
 
 import org.opt4j.satdecoding.Constraint;
 import org.opt4j.satdecoding.Model;

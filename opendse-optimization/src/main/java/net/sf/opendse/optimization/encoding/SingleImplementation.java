@@ -29,10 +29,10 @@ import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
-import net.sf.opendse.model.SpecificationWrapper;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.optimization.ImplementationWrapper;
 import net.sf.opendse.optimization.OptimizationModule;
+import net.sf.opendse.optimization.SpecificationWrapper;
 import net.sf.opendse.optimization.io.SpecificationWrapperInstance;
 
 import org.opt4j.core.Individual;
