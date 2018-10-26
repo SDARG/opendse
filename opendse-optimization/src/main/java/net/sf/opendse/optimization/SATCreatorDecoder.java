@@ -55,8 +55,8 @@ public class SATCreatorDecoder extends AbstractSATDecoder<Genotype, Implementati
 	protected final Control control;
 
 	@Inject
-	public SATCreatorDecoder(VariableClassOrder order, SATManager manager, Rand random, SATConstraints constraints, SpecificationWrapper specificationWrapper,
-			Interpreter interpreter, Control control,
+	public SATCreatorDecoder(VariableClassOrder order, SATManager manager, Rand random, SATConstraints constraints,
+			SpecificationWrapper specificationWrapper, Interpreter interpreter, Control control,
 			@Constant(value = "variableorder", namespace = SATCreatorDecoder.class) boolean useVariableOrder) {
 		super(manager, random);
 		this.order = order;
@@ -73,13 +73,10 @@ public class SATCreatorDecoder extends AbstractSATDecoder<Genotype, Implementati
 			System.err.println("No feasible implementation exists.");
 			return new ImplementationWrapper(null);
 		}
-
 		model = constraints.decorate(model);
-
 		Specification specification = specificationWrapper.getSpecification();
 		Specification implementation = interpreter.toImplementation(specification, model);
 		ImplementationWrapper wrapper = new ImplementationWrapper(implementation);
-
 		return wrapper;
 	}
 
@@ -90,30 +87,69 @@ public class SATCreatorDecoder extends AbstractSATDecoder<Genotype, Implementati
 	}
 
 	@Override
-	public void randomize(Collection<Object> variables, Map<Object, Double> lowerBounds, Map<Object, Double> upperBounds,
-			Map<Object, Double> priorities, Map<Object, Boolean> phases) {
-
+	public void randomize(Collection<Object> variables, Map<Object, Double> lowerBounds,
+			Map<Object, Double> upperBounds, Map<Object, Double> priorities, Map<Object, Boolean> phases) {
+		// Iterates the encoding variables. Without preprocessing, these are the
+		// variables used for the formulation of the SAT constraints. With
+		// activated constraint preprocessing, the set of variables iterated
+		// here is potentially smaller and may consists of simplified variables.
 		for (Object variable : variables) {
-
+			// Sets the phases of the SAT-chromosomes during the randomized
+			// individual creation. If the phase is set to true, the
+			// corresponding variable will first be assigned to 1 during the
+			// constraint resolution by the SAT solver.
 			if (variable instanceof Resource) {
+				// The phase of a resource variable is initially set to 1 in 20
+				// % of all cases
 				phases.put(variable, random.nextDouble() < 0.2);
 			} else {
+				// All other variables are set randomly, i.e., they are set to 1
+				// in 50 % of all cases
 				phases.put(variable, random.nextDouble() < 0.5);
 			}
+			// The order genes of the SAT-genotypes correspond to the activity
+			// that the SAT-solver assigns to the variables during the
+			// constraint resolution. Variables with a HIGHER activity are set
+			// FIRST. Through application of the evolutionary operators during
+			// the optimization, the
+			// activity of each variable is varied between its lower and its
+			// upper bound. Yet, in this implementation, the different variable
+			// classes
+			// specified in the order-list are assigned to non-overlapping
+			// activity intervals. So, e.g., while the relative activity of
+			// different Resource-variables can change throughout the
+			// exploration, the assignment of all Resource-variables is ALWAYS
+			// done before (after) the assignment of all Link-variables if the
+			// Resource.class has a lower (higher) index in the order-list than
+			// the Link.class.
+
+			// The activity space between 0.0 and 1.0 is divided into n
+			// intervals of equal size, with n being the size of the order list.
+			// Each variable class is assigned to the interval corresponding to
+			// its position in the list.
+			// Example: With 5 variable classes in the order-list, the variable
+			// class at list position 1 is assigned the activity interval
+			// between
+			// .2 and .4
 			double lbv = (order.getOrderSize() - order.indexOf(variable) - 1) * 1.0 / order.getOrderSize();
 			double ubv = (order.getOrderSize() - order.indexOf(variable)) * 1.0 / order.getOrderSize();
 			double prio = lbv + random.nextDouble() * (ubv - lbv);
 			priorities.put(variable, prio);
 		}
-
 	}
 
 	@Override
 	public Set<Object> ignoreVariables(Set<Object> variables) {
+		// All variable classes that are not in the order list (the
+		// indexof()-method of the order list returns -1 in these cases) are
+		// ignored.
+		// While they remain part of the constraint system and are set during
+		// the constraint resolution, they are not part of the SAT-genotype and
+		// therefore: 1) Do not contribute to the growth of the search space and
+		// 2) can not be used by the optimizer to alter individuals.
 		Set<Object> ignore = super.ignoreVariables(variables);
 		for (Object object : variables) {
 			int index = order.indexOf(object);
-
 			if (index == -1) {
 				ignore.add(object);
 			}
@@ -124,26 +160,12 @@ public class SATCreatorDecoder extends AbstractSATDecoder<Genotype, Implementati
 	@Override
 	public Map<Object, Double> getLowerBounds(Set<Object> variables) {
 		Map<Object, Double> map = super.getLowerBounds(variables);
-
-		/*
-		 * for (Object var : variables) { int index = indexOf(var); assert
-		 * (index != -1);
-		 * 
-		 * double lower = order.size() - index - 1; map.put(var, lower); }
-		 */
-
 		return map;
 	}
 
 	@Override
 	public Map<Object, Double> getUpperBounds(Set<Object> variables) {
 		Map<Object, Double> map = this.getLowerBounds(variables);
-
-		/*
-		 * for (Object var : variables) { double value = map.get(var) + 1;
-		 * map.put(var, value); }
-		 */
-
 		return map;
 	}
 
