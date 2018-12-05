@@ -10,4 +10,5 @@ dependencies {
 	compile group: 'org.opt4j',	name: 'opt4j-viewer', 		version: '3.1.4'
 
 	testCompile 'junit:junit:4.12'
+	testCompile group: 'org.mockito', name: 'mockito-core', version: '2.22.0'
 }

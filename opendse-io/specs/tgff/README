@@ -1,0 +1,10 @@
+Exemplary input and output files for Task Graphs For Free (TGFF)[1] to generate application graph and resource types database that can be parsed using ReaderTGFF.java in opendse-io. 
+
+*.tgffopt           input required by TGFF - adapt this to create new applications/architectures
+
+*.eps and *.vcg     TGFF output for visualizing generated graphs (not required for opendse import)
+*.tgff              TGFF output that can be parsed by ReaderTGFF.java. Examples from the Embedded Systems Synthesis Benchmark Suite (E3S)[2] are also available in this format and can be imported directly.
+
+
+[1] R.P. Dick, D.L. Rhodes and W.Wolf, "TGFF: task graphs for free," Proceedings of the Sixth International Workshop on Hardware/Software Codesign. (CODES/CASHE'98), Seattle, WA, USA, 1998, pp. 97-101.
+[2] http://ziyang.eecs.umich.edu/~dickrp/e3s/
