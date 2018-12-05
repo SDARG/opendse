@@ -131,11 +131,47 @@ public class SATCreatorDecoder extends AbstractSATDecoder<Genotype, Implementati
 			// class at list position 1 is assigned the activity interval
 			// between
 			// .2 and .4
-			double lbv = (order.getOrderSize() - order.indexOf(variable) - 1) * 1.0 / order.getOrderSize();
-			double ubv = (order.getOrderSize() - order.indexOf(variable)) * 1.0 / order.getOrderSize();
+			double lbv = getLowerOrderBound(order.getOrderSize(), order.indexOf(variable));
+			double ubv = getUpperOrderBound(order.getOrderSize(), order.indexOf(variable));
 			double prio = lbv + random.nextDouble() * (ubv - lbv);
 			priorities.put(variable, prio);
 		}
+	}
+
+	/**
+	 * Returns the upper bound for the order of the class on the given position of
+	 * the order list.
+	 * 
+	 * @param orderSize  the size of the order list, that is, the number of classes
+	 *                   (not object instances!) that are included in the SAT
+	 *                   genotype
+	 * @param orderIndex the position of the variable's class in the order list
+	 * @return the upper bound for the order of the class on the given position of
+	 *         the order list
+	 */
+	protected double getUpperOrderBound(int orderSize, int orderIndex) {
+		if (orderIndex == -1) {
+			throw new IllegalArgumentException("Illegal order index provided.");
+		}
+		return (orderSize - orderIndex) * 1.0 / orderSize;
+	}
+
+	/**
+	 * Returns the lower bound for the order of the class on the given position of
+	 * the order list.
+	 * 
+	 * @param orderSize  the size of the order list, that is, the number of classes
+	 *                   (not object instances!) that are included in the SAT
+	 *                   genotype
+	 * @param orderIndex the position of the variable's class in the order list
+	 * @return the lower bound for the order of the class on the given position of
+	 *         the order list
+	 */
+	protected double getLowerOrderBound(int orderSize, int orderIndex) {
+		if (orderIndex == -1) {
+			throw new IllegalArgumentException("Illegal order index provided.");
+		}
+		return (orderSize - orderIndex - 1) * 1.0 / orderSize;
 	}
 
 	@Override
