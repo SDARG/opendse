@@ -19,17 +19,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package net.sf.opendse.optimization.encoding.variables;
+package net.sf.opendse.encoding.firm.variables;
 
 import net.sf.opendse.model.Edge;
 import net.sf.opendse.model.ICommunication;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 
-public class CLRRP extends Variable implements CommunicationVariable {
+public class CLRRT extends Variable implements CommunicationVariable {
 
-	public CLRRP(Task t, Edge l, Resource r0, Resource r1, Task p) {
-		super(t,l,r0,r1,p);
+	public CLRRT(Task t, Edge l, Resource r0, Resource r1, int s) {
+		super(t,l,r0,r1,s);
 	}
 
 	public Task getTask() {
@@ -48,7 +48,7 @@ public class CLRRP extends Variable implements CommunicationVariable {
 		return get(3);
 	}
 	
-	public Task getP(){
+	public Integer getStep(){
 		return get(4);
 	}
 	

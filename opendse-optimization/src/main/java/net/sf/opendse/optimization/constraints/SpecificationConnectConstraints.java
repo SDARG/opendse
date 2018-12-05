@@ -21,7 +21,7 @@
  *******************************************************************************/
 package net.sf.opendse.optimization.constraints;
 
-import static net.sf.opendse.optimization.encoding.variables.Variables.p;
+import static net.sf.opendse.encoding.firm.variables.Variables.p;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -27,9 +27,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import net.sf.opendse.encoding.ImplementationInterpreter;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Specification;
-import net.sf.opendse.optimization.encoding.Interpreter;
+import net.sf.opendse.optimization.constraints.SpecificationConstraintInterpreter;
+
 import org.opt4j.core.Genotype;
 import org.opt4j.core.common.random.Rand;
 import org.opt4j.core.optimizer.Control;
@@ -51,19 +53,22 @@ public class SATCreatorDecoder extends AbstractSATDecoder<Genotype, Implementati
 
 	protected final SATConstraints constraints;
 	protected final SpecificationWrapper specificationWrapper;
-	protected final Interpreter interpreter;
+	protected final ImplementationInterpreter interpreter;
+	protected final SpecificationConstraintInterpreter specificationConstraintInterpreter;
 	protected final Control control;
 
+
 	@Inject
-	public SATCreatorDecoder(VariableClassOrder order, SATManager manager, Rand random, SATConstraints constraints,
-			SpecificationWrapper specificationWrapper, Interpreter interpreter, Control control,
-			@Constant(value = "variableorder", namespace = SATCreatorDecoder.class) boolean useVariableOrder) {
+	public SATCreatorDecoder(VariableClassOrder order, SATManager manager, Rand random, SATConstraints constraints, SpecificationWrapper specificationWrapper,
+			ImplementationInterpreter interpreter, Control control,
+			@Constant(value = "variableorder", namespace = SATCreatorDecoder.class) boolean useVariableOrder, SpecificationConstraintInterpreter specificationConstraintInterpreter) {
 		super(manager, random);
 		this.order = order;
 		this.constraints = constraints;
 		this.specificationWrapper = specificationWrapper;
 		this.interpreter = interpreter;
 		this.control = control;
+		this.specificationConstraintInterpreter = specificationConstraintInterpreter;
 	}
 
 	@Override
@@ -76,6 +81,7 @@ public class SATCreatorDecoder extends AbstractSATDecoder<Genotype, Implementati
 		model = constraints.decorate(model);
 		Specification specification = specificationWrapper.getSpecification();
 		Specification implementation = interpreter.toImplementation(specification, model);
+		specificationConstraintInterpreter.interpretSpecificationConstraints(implementation, model);
 		ImplementationWrapper wrapper = new ImplementationWrapper(implementation);
 		return wrapper;
 	}

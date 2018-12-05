@@ -21,8 +21,8 @@
  *******************************************************************************/
 package net.sf.opendse.optimization.constraints;
 
-import static net.sf.opendse.optimization.encoding.variables.Variables.p;
-import static net.sf.opendse.optimization.encoding.variables.Variables.var;
+import static net.sf.opendse.encoding.firm.variables.Variables.p;
+import static net.sf.opendse.encoding.firm.variables.Variables.var;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -31,7 +31,6 @@ import java.util.Set;
 import net.sf.opendse.model.Element;
 import net.sf.opendse.model.parameter.ParameterReference;
 import net.sf.opendse.model.parameter.ParameterSelect;
-import net.sf.opendse.visualization.ViewUtil;
 
 import org.opt4j.satdecoding.Constraint;
 import org.opt4j.satdecoding.Term;
@@ -99,9 +98,10 @@ public abstract class AbstractSpecificationConstraints implements SpecificationC
 		String attribute = parameter.getReference() == null ? parameterObject.getAttribute() : parameter.getReference();
 		ParameterSelect ref = (ParameterSelect) element.getAttributeParameter(attribute);
 
-		assert (ref != null) : element + " " + attribute + " " + ViewUtil.getTooltip(element);
-		assert (parameter.getElements().length == ref.getElements().length) : parameter + " " + ref;
-		assert (ref.getReference() == null);
+		// TODO check when writing unit tests
+		// assert (ref != null) : element + " " + attribute + " " + ViewUtil.getTooltip(element);
+		// assert (parameter.getElements().length == ref.getElements().length) : parameter + " " + ref;
+		// assert (ref.getReference() == null);
 
 		activeParameters.add(new ParameterReference(element, attribute));
 

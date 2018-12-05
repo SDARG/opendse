@@ -8,7 +8,6 @@ import org.opt4j.core.start.Constant;
 import com.google.inject.Inject;
 
 import net.sf.opendse.io.ReaderTGFF;
-import net.sf.opendse.optimization.SpecificationWrapper;
 
 /**
  * {@link SpecificationWrapper} for {@lińk SpecificationTypeBased}s.
@@ -23,7 +22,6 @@ public class SpecificationWrapperTypeBased extends SpecificationWrapperInstance 
 	public SpecificationWrapperTypeBased(
 			@Constant(namespace = SpecificationWrapperTypeBased.class, value = "tgffFileName") String tgffFileName)
 			throws FileNotFoundException {
-
 		super(new SpecificationTransformerTypeBased().transform((reader.read(tgffFileName))));
 	}
 

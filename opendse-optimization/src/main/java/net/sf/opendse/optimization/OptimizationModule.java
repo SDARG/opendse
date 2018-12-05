@@ -21,13 +21,17 @@
  *******************************************************************************/
 package net.sf.opendse.optimization;
 
+import net.sf.opendse.encoding.ImplementationEncoding;
+import net.sf.opendse.encoding.ImplementationInterpreter;
+import net.sf.opendse.encoding.firm.Encoding;
+import net.sf.opendse.encoding.firm.Interpreter;
+import net.sf.opendse.encoding.firm.Encoding.RoutingEncoding;
 import net.sf.opendse.optimization.constraints.SpecificationCapacityConstraints;
 import net.sf.opendse.optimization.constraints.SpecificationConnectConstraints;
 import net.sf.opendse.optimization.constraints.SpecificationConstraints;
 import net.sf.opendse.optimization.constraints.SpecificationConstraintsMulti;
 import net.sf.opendse.optimization.constraints.SpecificationElementsConstraints;
 import net.sf.opendse.optimization.constraints.SpecificationRouterConstraints;
-import net.sf.opendse.optimization.encoding.Encoding.RoutingEncoding;
 
 import org.opt4j.core.config.annotations.Parent;
 import org.opt4j.core.config.annotations.Required;
@@ -117,6 +121,8 @@ public class OptimizationModule extends ProblemModule {
 		}
 
 		bind(RoutingEncoding.class).toInstance(routingEncoding);
+		bind(ImplementationEncoding.class).to(Encoding.class);
+		bind(ImplementationInterpreter.class).to(Interpreter.class);
 
 		if (useVariableOrder) {
 			bind(RoutingVariableClassOrder.class).asEagerSingleton();
