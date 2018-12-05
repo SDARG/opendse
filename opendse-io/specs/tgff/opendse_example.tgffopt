@@ -1,0 +1,45 @@
+seed 0
+period_mul 1
+task_degree 2 2
+tg_cnt 1
+task_cnt 5 1
+
+task_type_cnt 3
+
+trans_type_cnt 2
+
+# arcs table
+table_cnt 1
+table_label COMMUN_QUANT
+table_attrib
+type_attrib quantity 10 6 1 1
+trans_write
+
+tg_write     # .tgff
+eps_write    # .eps
+vcg_write    # .vcg
+
+# task table
+table_cnt 3
+table_label CORE
+
+table_attrib price 100 30, \
+	area 0.25 0.1 1 0
+
+type_attrib valid 0.75 0.35 1 1, \
+	task_time 10 3 0.5 1
+
+pe_write
+
+# wiring table
+table_cnt 1
+table_label WIRING
+
+table_attrib max_buffer_size 500 30 1 1
+
+misc_type_cnt 0
+misc_write
+
+
+
+
