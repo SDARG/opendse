@@ -4,7 +4,7 @@ import org.opt4j.core.config.annotations.File;
 import org.opt4j.core.start.Constant;
 
 import net.sf.opendse.model.SpecificationTypeBased;
-import net.sf.opendse.model.SpecificationWrapper;
+import net.sf.opendse.optimization.SpecificationWrapper;
 
 /**
  * Input module for {@link SpecificationTypeBased}s imported from tgff-files.

@@ -31,7 +31,6 @@ import net.sf.opendse.model.Attributes;
 import net.sf.opendse.model.Element;
 import net.sf.opendse.model.Models;
 import net.sf.opendse.model.Specification;
-import net.sf.opendse.model.SpecificationWrapper;
 import net.sf.opendse.model.parameter.Parameter;
 import net.sf.opendse.model.parameter.ParameterReference;
 import net.sf.opendse.model.parameter.ParameterSelect;

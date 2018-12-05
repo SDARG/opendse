@@ -8,7 +8,7 @@ import org.opt4j.core.optimizer.Control;
 import org.opt4j.satdecoding.SATManager;
 
 import net.sf.opendse.encoding.ImplementationInterpreter;
-import net.sf.opendse.model.SpecificationWrapper;
+import net.sf.opendse.optimization.constraints.SpecificationConstraintInterpreter;
 
 import static org.mockito.Mockito.mock;
 
@@ -21,9 +21,10 @@ public class SATCreatorDecoderTest {
 		SATConstraints constraints = mock(SATConstraints.class);
 		SpecificationWrapper specificationWrapper = mock(SpecificationWrapper.class);
 		ImplementationInterpreter interpreter = mock(ImplementationInterpreter.class);
+		SpecificationConstraintInterpreter constraintInterpreter = mock(SpecificationConstraintInterpreter.class);
 		Control control = mock(Control.class);
 		SATCreatorDecoder result = new SATCreatorDecoder(order, manager, random, constraints, specificationWrapper,
-				interpreter, control, true);
+				interpreter, control, true, constraintInterpreter);
 		return result;
 	}
 

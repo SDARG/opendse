@@ -27,7 +27,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.sf.opendse.encoding.specificationconstraints.SpecificationRouterConstraints;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Dependency;
@@ -37,6 +36,7 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
+import net.sf.opendse.optimization.constraints.SpecificationRouterConstraints;
 
 /**
  * The {@code RoutingFilter} uses a simple graph-based approach to remove
