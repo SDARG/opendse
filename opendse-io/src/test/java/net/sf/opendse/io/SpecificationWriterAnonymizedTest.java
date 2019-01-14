@@ -65,10 +65,10 @@ public class SpecificationWriterAnonymizedTest {
 		Assert.assertNotNull(anonymized.getEdge("dependency0"));
 
 		Task anonymizedTask = anonymized.getVertex("task0");
-		// Assert.assertEquals(anonymizedTask.getAttribute("cost"), 25);
+		Assert.assertEquals(anonymizedTask.getAttribute("cost"), 25);
 
 		Dependency anonymizedDependency = anonymized.getEdge("dependency0");
-		// Assert.assertEquals(anonymizedDependency.getAttribute("test"), 0);
+		Assert.assertEquals(anonymizedDependency.getAttribute("test"), 0);
 
 		Assert.assertNull(anonymized.getVertex("t1"));
 		Assert.assertNull(anonymized.getVertex("t2"));
