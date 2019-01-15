@@ -8,8 +8,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -41,6 +41,7 @@ import org.opt4j.core.config.Icons;
 
 import net.sf.opendse.io.SpecificationReader;
 import net.sf.opendse.io.SpecificationWriter;
+import net.sf.opendse.io.SpecificationWriterAnonymized;
 import net.sf.opendse.model.Mappings;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Specification;
@@ -107,6 +108,29 @@ public class SpecificationPanel extends JPanel {
 					SpecificationWriter writer = new SpecificationWriter();
 					writer.write(specification, file);
 					System.out.println("Specification succesfully saved to " + file);
+				}
+
+			}
+		});
+
+		// save anonymized specification
+		JButton saveAnonymized = new JButton("Save anonymized to ...", Icons.getIcon(Icons.DISK));
+		saveAnonymized.setFocusable(false);
+		bar.add(saveAnonymized);
+
+		saveAnonymized.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+
+				int returnVal = fileChooser.showDialog(SpecificationPanel.this, "save anonymized to");
+
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+
+					File file = fileChooser.getSelectedFile();
+					SpecificationWriterAnonymized<Specification> writer = new SpecificationWriterAnonymized<Specification>();
+					writer.writeAnonymized(specification, file);
+					System.out.println("Anonymized specification succesfully saved to " + file);
 				}
 
 			}

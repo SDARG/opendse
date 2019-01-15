@@ -45,10 +45,13 @@ import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 
 /**
- * The {@code SpecificationWriter} writes an anonymized {@code Specification} to
- * a {@code File}. Anonymization includes {@code Task}, {@code Dependency},
- * {@code Resource}, {@code Link} and {@code Mapping} ids.
+ * The {@code SpecificationWriterAnonymized} writes an anonymized
+ * {@code Specification} to a {@code File}. The anonymization covers the IDs of
+ * {@code Task}, {@code Dependency}, {@code Resource}, {@code Link} and
+ * {@code Mapping}. Note that anonymization keeps all other {@code Attributes}
+ * as given in the {@code Specification}.
  *
+ * 
  * @author Valentina Richthammer
  *
  */
@@ -75,6 +78,20 @@ public class SpecificationWriterAnonymized<S extends Specification> extends Spec
 
 		Specification anonymizedSpec = transform(specification);
 		write(anonymizedSpec, new File(filename));
+	}
+
+	/**
+	 * Write the specification to a file.
+	 *
+	 * @param specification
+	 *            the specification
+	 * @param file
+	 *            the target file
+	 */
+	public void writeAnonymized(S specification, File file) {
+
+		Specification anonymizedSpec = transform(specification);
+		write(anonymizedSpec, file);
 	}
 
 	/**
