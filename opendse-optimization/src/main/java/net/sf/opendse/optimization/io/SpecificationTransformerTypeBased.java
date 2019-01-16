@@ -32,12 +32,9 @@ public class SpecificationTransformerTypeBased<T extends SpecificationTypeBased,
 	protected final String CONNECTOR = "_";
 	protected Map<Resource, List<Resource>> typeMap;
 
-	/**
-	 * Transforms a {@link SpecificationTypeBased} into a {@link Specification}.
-	 * 
-	 * @param T
-	 *            the {@link SpecificationTypeBased}
-	 * @return the {@link Specification}
+
+	/* (non-Javadoc)
+	 * @see org.apache.commons.collections15.Transformer#transform(java.lang.Object)
 	 */
 	@Override
 	public S transform(T typeBasedSpec) {

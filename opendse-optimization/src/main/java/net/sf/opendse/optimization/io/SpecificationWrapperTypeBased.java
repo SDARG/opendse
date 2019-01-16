@@ -8,10 +8,11 @@ import org.opt4j.core.start.Constant;
 import com.google.inject.Inject;
 
 import net.sf.opendse.io.ReaderTGFF;
+import net.sf.opendse.model.SpecificationTypeBased;
 import net.sf.opendse.optimization.SpecificationWrapper;
 
 /**
- * {@link SpecificationWrapper} for {@lińk SpecificationTypeBased}s.
+ * {@link SpecificationWrapper} for {@link SpecificationTypeBased}s.
  * 
  * @author Valentina Richthammer
  */

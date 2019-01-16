@@ -409,7 +409,7 @@ public class Models {
 	 * all {@link Element}s.
 	 * 
 	 * @param specification
-	 * @return
+	 * @return a copy of the specification
 	 */
 	public static Specification copy(Specification specification) {
 		Architecture<Resource, Link> sArchitecture = specification.getArchitecture();
