@@ -51,7 +51,7 @@ public class VariableClassOrder {
 	 * is not assignable from any of the classes that can be found in the order list.
 	 * 
 	 * @param object
-	 * @return
+	 * @return lowest index that is assignable or -1 if not assignable
 	 */
 	public int indexOf(Object object) {
 		for (int i = 0; i < this.order.size(); i++) {
