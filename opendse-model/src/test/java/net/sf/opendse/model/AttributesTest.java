@@ -17,8 +17,8 @@ public class AttributesTest {
 		String id = "test";
 		attributes.setAttribute(id, 1);
 
-		Assert.assertEquals(1l, (long) attributes.<Integer> getAttribute(id));
-		Assert.assertNull(attributes.<Integer> getAttribute("other"));
+		Assert.assertEquals(1l, (long) attributes.<Integer>getAttribute(id));
+		Assert.assertNull(attributes.<Integer>getAttribute("other"));
 	}
 
 	/**
@@ -31,7 +31,7 @@ public class AttributesTest {
 		Parameter parameter = new ParameterRange(1.0, 0.0, 2.0);
 		attributes.setAttribute(id, parameter);
 
-		Assert.assertEquals(1.0, attributes.getAttribute(id));
+		Assert.assertEquals(1.0, attributes.getAttribute(id), 0.0);
 	}
 
 	/**

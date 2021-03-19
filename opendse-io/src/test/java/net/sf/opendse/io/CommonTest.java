@@ -11,6 +11,9 @@ public class CommonTest {
 	public enum E1 {
 		a, b;
 	}
+	
+	// Used as the "very small number" for double comparisons
+	public static final double epsilon = .000_000_000_000_1;
 
 	@Test
 	public void enumToInstance() throws IllegalArgumentException, SecurityException, InstantiationException,

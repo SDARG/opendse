@@ -39,6 +39,8 @@ import net.sf.opendse.model.Task;
 
 public class SpecificationTransformerTypeBasedTest {
 
+	public static final double epsilon = 0.000_000_000_1;
+
 	@Test
 	public void transformTest() {
 
@@ -117,11 +119,11 @@ public class SpecificationTransformerTypeBasedTest {
 		Assert.assertNotNull(arch.getEdge("l_type1"));
 		Assert.assertNotNull(arch.getEdge("l_type2"));
 
-		Assert.assertEquals(arch.getVertex("r_type1").getAttribute("A1"), 5);
-		Assert.assertEquals(arch.getVertex("r_type1").getAttribute("A2"), 1);
+		Assert.assertEquals((int) arch.getVertex("r_type1").getAttribute("A1"), 5);
+		Assert.assertEquals((int) arch.getVertex("r_type1").getAttribute("A2"), 1);
 
 		Assert.assertEquals(arch.getVertex("r_type1").getType(), "type1");
-		Assert.assertEquals(arch.getEdge("l_type1").getAttribute("B1"), 2);
+		Assert.assertEquals((int) arch.getEdge("l_type1").getAttribute("B1"), 2);
 
 		Assert.assertNotEquals(arch.getVertex("r_type1"), types.get("type1"));
 	}
@@ -165,7 +167,7 @@ public class SpecificationTransformerTypeBasedTest {
 
 		Assert.assertEquals(mappings.get(t1).size(), 2);
 		Assert.assertEquals(mappings.get(t2).size(), 1);
-		Assert.assertEquals(mappings.get(t2).iterator().next().getAttribute("M1"), 0);
+		Assert.assertEquals((int) mappings.get(t2).iterator().next().getAttribute("M1"), 0);
 	}
 
 }

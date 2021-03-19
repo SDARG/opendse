@@ -23,13 +23,14 @@ import net.sf.opendse.model.ResourceTypes;
 import net.sf.opendse.model.SpecificationTypeBased;
 import net.sf.opendse.model.Task;
 
+import static net.sf.opendse.io.CommonTest.epsilon;
+
 public class ReaderTGFFTest {
 
 	protected static final String testFile = "specs/tgff/opendse_example.tgff";
 
 	/**
-	 * Test method for
-	 * {@link net.sf.opendse.io.ReaderTGFF#read(java.lang.String)}.
+	 * Test method for {@link net.sf.opendse.io.ReaderTGFF#read(java.lang.String)}.
 	 */
 	@Test
 	public void testReadString() {
@@ -376,7 +377,7 @@ public class ReaderTGFFTest {
 		reader.addDeadline(line, suffix, application, deadlineType);
 
 		Assert.assertNotNull(application.iterator().next().getAttribute(deadlineType));
-		Assert.assertEquals(0.0003, application.iterator().next().getAttribute(deadlineType));
+		Assert.assertEquals(0.0003, application.iterator().next().getAttribute(deadlineType), epsilon);
 	}
 
 	/**
@@ -450,8 +451,8 @@ public class ReaderTGFFTest {
 
 		Resource resource = resourceTypes.get(id);
 
-		Assert.assertEquals(79.0597, resource.getAttribute("price"));
-		Assert.assertEquals(0.219023, resource.getAttribute("area"));
+		Assert.assertEquals(79.0597, resource.getAttribute("price"), epsilon);
+		Assert.assertEquals(0.219023, resource.getAttribute("area"), epsilon);
 	}
 
 	/**
@@ -601,8 +602,7 @@ public class ReaderTGFFTest {
 	}
 
 	/**
-	 * Test method for
-	 * {@link net.sf.opendse.io.ReaderTGFF#skip(java.lang.String)}.
+	 * Test method for {@link net.sf.opendse.io.ReaderTGFF#skip(java.lang.String)}.
 	 */
 	@Test
 	public void testSkip() {
