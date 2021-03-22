@@ -3,10 +3,11 @@ dependencies {
 	compile project(':opendse-io')
 	compile project(':opendse-visualization')
 	
-	compile group: 'org.opt4j',	name: 'opt4j-core', 		version: '3.1.4'
-	compile group: 'org.opt4j',	name: 'opt4j-satdecoding', 	version: '3.1.4'
-	compile group: 'org.opt4j',	name: 'opt4j-optimizers', 	version: '3.1.4'
-	compile group: 'org.opt4j',	name: 'opt4j-viewer', 		version: '3.1.4'
+	
+	implementation 'com.github.SDARG.opt4j:opt4j-core:-SNAPSHOT'
+	implementation 'com.github.SDARG.opt4j:opt4j-satdecoding:-SNAPSHOT'
+	implementation 'com.github.SDARG.opt4j:opt4j-optimizers:-SNAPSHOT'
+	implementation 'com.github.SDARG.opt4j:opt4j-viewer:-SNAPSHOT'
 
 	testCompile 'junit:junit:4.12'
 	testCompile group: 'org.mockito', name: 'mockito-core', version: '2.22.0'
