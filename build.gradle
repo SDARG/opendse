@@ -2,6 +2,7 @@ apply plugin: 'base'
 apply plugin: 'maven'
 apply plugin: 'application'
 apply plugin: 'eclipse'
+apply plugin: 'jacoco'
 
 version = 'SNAPSHOT-' + new Date().format("yyyyMMdd")
 
@@ -21,6 +22,9 @@ allprojects {
 	repositories {
 		mavenCentral()
 		mavenLocal()
+		maven {
+			name "jitpack"
+			url 'https://jitpack.io' }
 	}
 }
 

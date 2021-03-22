@@ -4,6 +4,8 @@ import java.util.regex.*
 dependencies {	
 	compile project(':opendse-optimization')
 	compile project(':opendse-realtime')
+	
+	implementation 'com.github.SDARG.opt4j:opt4j-core:-SNAPSHOT'
 }
 
 task filterSources(type: Copy) {

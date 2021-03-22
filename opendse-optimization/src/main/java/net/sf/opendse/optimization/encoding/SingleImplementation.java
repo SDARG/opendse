@@ -80,8 +80,8 @@ public class SingleImplementation {
 
 		EvolutionaryAlgorithmModule ea = new EvolutionaryAlgorithmModule();
 		ea.setGenerations(2);
-		ea.setAlpha(1);
-		ea.setLambda(1);
+		ea.setPopulationSize(1);
+		ea.setOffspringsPerGeneration(1);
 
 		Module specModule = new Opt4JModule() {
 
