@@ -3,7 +3,6 @@
 name: OpenDSE Website
 
 on:
-  push:
   release:
     types: [published]
 
