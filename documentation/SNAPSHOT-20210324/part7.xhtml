@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<link href="tutstyle.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+<title>7. Real-time Scheduling (OpenDSE Tutorial)</title>
+</head>
+<body onload="prettyPrint()">
+
+	<h1>7. Real-time Scheduling (OpenDSE Tutorial)</h1>
+	<p>Version: SNAPSHOT-20210324 - Date: 2021-03-24</p>
+	<p>(<a href="tutorial.xhtml">Tutorial Overview</a>)</p>
+	
+	<p>The real-time scheduling module uses a Quadratic Programming approach to determine priorities for event-triggered systems such that all deadlines are satisfied. 
+	The approach is based on this <a href="http://dl.acm.org/citation.cfm?id=2485524">article</a>, but it is not a complete re-implementation as it per default allows global cycles. 
+	Per default, the approach uses the <a href="http://www.gurobi.com/">Gurobi</a> solver which has to be installed and the gurobi.jar has the be on the classpath.</p>
+	
+	<p>In the following, an example is given how to use the scheduler from Java.</p>
+
+	<pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;specification xmlns="http://opendse.sourceforge.net"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://opendse.sourceforge.net http://opendse.sourceforge.net/schema.xsd"&gt;
+  &lt;architecture&gt;
+    &lt;resource id="r2"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="TYPE" type="STRING"&gt;ECU&lt;/attribute&gt;
+        &lt;attribute name="scheduler" type="STRING"&gt;FIXEDPRIORITY_PREEMPTIVE&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/resource&gt;
+    &lt;resource id="can"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="TYPE" type="STRING"&gt;CAN&lt;/attribute&gt;
+        &lt;attribute name="scheduler" type="STRING"&gt;FIXEDPRIORITY_NONPREEMPTIVE&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/resource&gt;
+    &lt;resource id="r3"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="TYPE" type="STRING"&gt;ECU&lt;/attribute&gt;
+        &lt;attribute name="scheduler" type="STRING"&gt;FIXEDPRIORITY_PREEMPTIVE&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/resource&gt;
+    &lt;resource id="r1"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="TYPE" type="STRING"&gt;ECU&lt;/attribute&gt;
+        &lt;attribute name="scheduler" type="STRING"&gt;FIXEDPRIORITY_PREEMPTIVE&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/resource&gt;
+    &lt;link id="l1" source="r1" destination="can" orientation="UNDIRECTED"/&gt;
+    &lt;link id="l2" source="r2" destination="can" orientation="UNDIRECTED"/&gt;
+    &lt;link id="l3" source="r3" destination="can" orientation="UNDIRECTED"/&gt;
+  &lt;/architecture&gt;
+  &lt;application&gt;
+    &lt;task id="t4"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="deadline" type="DOUBLE"&gt;4.0&lt;/attribute&gt;
+        &lt;attribute name="e" type="DOUBLE"&gt;1.2&lt;/attribute&gt;
+        &lt;attribute name="h" type="DOUBLE"&gt;5.0&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/task&gt;
+    &lt;task id="t5"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="e" type="DOUBLE"&gt;0.5&lt;/attribute&gt;
+        &lt;attribute name="h" type="DOUBLE"&gt;5.0&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/task&gt;
+    &lt;task id="t8"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="e" type="DOUBLE"&gt;0.6&lt;/attribute&gt;
+        &lt;attribute name="h" type="DOUBLE"&gt;5.0&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/task&gt;
+    &lt;task id="t12"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="deadline" type="DOUBLE"&gt;5.0&lt;/attribute&gt;
+        &lt;attribute name="e" type="DOUBLE"&gt;0.8&lt;/attribute&gt;
+        &lt;attribute name="h" type="DOUBLE"&gt;5.0&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/task&gt;
+    &lt;task id="t9"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="e" type="DOUBLE"&gt;0.8&lt;/attribute&gt;
+        &lt;attribute name="h" type="DOUBLE"&gt;5.0&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/task&gt;
+    &lt;task id="t1"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="e" type="DOUBLE"&gt;0.8&lt;/attribute&gt;
+        &lt;attribute name="h" type="DOUBLE"&gt;5.0&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/task&gt;
+    &lt;task id="t3"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="deadline" type="DOUBLE"&gt;4.0&lt;/attribute&gt;
+        &lt;attribute name="e" type="DOUBLE"&gt;2.0&lt;/attribute&gt;
+        &lt;attribute name="h" type="DOUBLE"&gt;5.0&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/task&gt;
+    &lt;communication id="t6"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="e" type="DOUBLE"&gt;0.26&lt;/attribute&gt;
+        &lt;attribute name="h" type="DOUBLE"&gt;5.0&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/communication&gt;
+    &lt;communication id="t10"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="e" type="DOUBLE"&gt;0.26&lt;/attribute&gt;
+        &lt;attribute name="h" type="DOUBLE"&gt;5.0&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/communication&gt;
+    &lt;communication id="t7"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="e" type="DOUBLE"&gt;0.146&lt;/attribute&gt;
+        &lt;attribute name="h" type="DOUBLE"&gt;5.0&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/communication&gt;
+    &lt;communication id="t11"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="e" type="DOUBLE"&gt;0.146&lt;/attribute&gt;
+        &lt;attribute name="h" type="DOUBLE"&gt;5.0&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/communication&gt;
+    &lt;communication id="t2"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="e" type="DOUBLE"&gt;0.26&lt;/attribute&gt;
+        &lt;attribute name="h" type="DOUBLE"&gt;5.0&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/communication&gt;
+    &lt;dependency id="d-5-7" source="t5" destination="t7" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d-5-6" source="t5" destination="t6" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d-9-11" source="t9" destination="t11" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d-10-12" source="t10" destination="t12" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d-8-10" source="t8" destination="t10" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d-2-4" source="t2" destination="t4" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d-11-12" source="t11" destination="t12" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d-2-3" source="t2" destination="t3" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d-1-2" source="t1" destination="t2" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d-7-9" source="t7" destination="t9" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d-6-8" source="t6" destination="t8" orientation="DIRECTED"/&gt;
+    &lt;functions&gt;
+      &lt;function anchor="t4"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="ID" type="STRING"&gt;func1&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/function&gt;
+      &lt;function anchor="t5"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="ID" type="STRING"&gt;func0&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/function&gt;
+    &lt;/functions&gt;
+  &lt;/application&gt;
+  &lt;mappings&gt;
+    &lt;mapping id="m1" source="t1" target="r3"/&gt;
+    &lt;mapping id="m3" source="t3" target="r1"/&gt;
+    &lt;mapping id="m4" source="t4" target="r2"/&gt;
+    &lt;mapping id="m5" source="t5" target="r1"/&gt;
+    &lt;mapping id="m8" source="t8" target="r3"/&gt;
+    &lt;mapping id="m9" source="t9" target="r3"/&gt;
+    &lt;mapping id="m12" source="t12" target="r2"/&gt;
+  &lt;/mappings&gt;
+  &lt;routings&gt;
+    &lt;routing source="t6"&gt;
+      &lt;resource id="can"/&gt;
+      &lt;resource id="r3"/&gt;
+      &lt;resource id="r1"/&gt;
+      &lt;link id="l1" source="r1" destination="can" orientation="DIRECTED"/&gt;
+      &lt;link id="l3" source="can" destination="r3" orientation="DIRECTED"/&gt;
+    &lt;/routing&gt;
+    &lt;routing source="t10"&gt;
+      &lt;resource id="r2"/&gt;
+      &lt;resource id="can"/&gt;
+      &lt;resource id="r3"/&gt;
+      &lt;link id="l2" source="can" destination="r2" orientation="DIRECTED"/&gt;
+      &lt;link id="l3" source="r3" destination="can" orientation="DIRECTED"/&gt;
+    &lt;/routing&gt;
+    &lt;routing source="t7"&gt;
+      &lt;resource id="can"/&gt;
+      &lt;resource id="r3"/&gt;
+      &lt;resource id="r1"/&gt;
+      &lt;link id="l1" source="r1" destination="can" orientation="DIRECTED"/&gt;
+      &lt;link id="l3" source="can" destination="r3" orientation="DIRECTED"/&gt;
+    &lt;/routing&gt;
+    &lt;routing source="t11"&gt;
+      &lt;resource id="r2"/&gt;
+      &lt;resource id="can"/&gt;
+      &lt;resource id="r3"/&gt;
+      &lt;link id="l2" source="can" destination="r2" orientation="DIRECTED"/&gt;
+      &lt;link id="l3" source="r3" destination="can" orientation="DIRECTED"/&gt;
+    &lt;/routing&gt;
+    &lt;routing source="t2"&gt;
+      &lt;resource id="r2"/&gt;
+      &lt;resource id="can"/&gt;
+      &lt;resource id="r3"/&gt;
+      &lt;resource id="r1"/&gt;
+      &lt;link id="l1" source="can" destination="r1" orientation="DIRECTED"/&gt;
+      &lt;link id="l2" source="can" destination="r2" orientation="DIRECTED"/&gt;
+      &lt;link id="l3" source="r3" destination="can" orientation="DIRECTED"/&gt;
+    &lt;/routing&gt;
+  &lt;/routings&gt;
+&lt;/specification&gt;
+</pre>
+	
+	<pre class="prettyprint">public class Part7 {
+	public static void main(String[] args) throws Exception {
+		/*
+		 * The implementation contains information about the execution time of
+		 * tasks (e) and their period (h). The periods of a function have to be
+		 * all the same. Additionally, tasks have deadlines (deadlines).
+		 * Finally, based on the type of scheduler (FIXEDPRIORITY_NONPREEMPTIVE
+		 * or FIXEDPRIORITY_PREEMPTIVE) on the resources, the scheduling is
+		 * performed. Note that the deadline has to be less or equal to the
+		 * period of a task.
+		 */
+		SpecificationReader reader = new SpecificationReader();
+		Specification implementation = reader.read("specs/Implementation7.xml");
+		/*
+		 * The scheduling determines priorities for all tasks. For messages,
+		 * multiple priorities are assigned per resource it passes.
+		 */
+		PriorityScheduler scheduler = new PriorityScheduler(implementation);
+		scheduler.solve(OptimizationObjective.DELAY);
+		SpecificationViewer.view(implementation);
+	}
+}
+</pre>
+	
+	<p>The scheduling determines a feasible result (showing here the worst case delay of the tasks): </p>
+	
+	<img src="img/Implementation7.png" alt="Implementation"/>
+	
+
+</body>
+</html>
