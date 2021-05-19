@@ -5,7 +5,7 @@ dependencies {
 	compile project(':opendse-optimization')
 	compile project(':opendse-realtime')
 	
-	implementation 'com.github.SDARG.opt4j:opt4j-core:-SNAPSHOT'
+	implementation 'com.github.sdarg.opt4j:opt4j-core:v3.3.0'
 }
 
 task filterSources(type: Copy) {
