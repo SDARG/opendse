@@ -33,13 +33,11 @@ import com.google.inject.Inject;
 
 public class SpecificationWrapperFilename extends SpecificationWrapperInstance {
 
-	static SpecificationReader reader = new SpecificationReader();
-
 	@Inject
 	public SpecificationWrapperFilename(
 			@Constant(namespace = SpecificationWrapperFilename.class, value = "filename") String filename)
 			throws FileNotFoundException {
-		super(reader.read(new FileInputStream(filename)));
+		super(new SpecificationReader().read(new FileInputStream(filename)));
 	}
 
 	@Override
