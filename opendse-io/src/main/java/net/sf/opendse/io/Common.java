@@ -80,7 +80,7 @@ public class Common {
 		classMap.put("LIST", ArrayList.class);
 	}
 
-	protected static Set<Class<?>> primitives = new HashSet<Class<?>>();
+	public static Set<Class<?>> primitives = new HashSet<Class<?>>();
 
 	static {
 		primitives.add(Boolean.class);
@@ -93,7 +93,14 @@ public class Common {
 		primitives.add(Double.class);
 	}
 
-	protected static boolean isPrimitive(Class<?> cls) {
+	/**
+	 * Returns whether a {@code Class} is part of the primites.
+	 * 
+	 * @param cls
+	 *            the Class object
+	 * @return true if cls is a primitive
+	 */
+	public static boolean isPrimitive(Class<?> cls) {
 		return cls.isPrimitive() || primitives.contains(cls);
 	}
 
@@ -131,7 +138,14 @@ public class Common {
 		};
 	}
 
-	protected static String getType(Class<?> clazz) {
+	/**
+	 * Returns the (canonical) name of a {@code Class}.
+	 * 
+	 * @param clazz
+	 *            the Class object
+	 * @return the canonical name of the clazz
+	 */
+	public static String getType(Class<?> clazz) {
 		if (classMap.containsValue(clazz)) {
 			return classMap.getKey(clazz);
 		} else {
@@ -139,8 +153,17 @@ public class Common {
 		}
 	}
 
+	/**
+	 * Returns an instance of a given {@code Class}.
+	 * 
+	 * @param value
+	 * 
+	 * @param clazz
+	 *            the Class object
+	 * @return the instance of the given class
+	 */
 	@SuppressWarnings("rawtypes")
-	protected static Object toInstance(String value, Class<?> clazz) throws IllegalArgumentException,
+	public static Object toInstance(String value, Class<?> clazz) throws IllegalArgumentException,
 			SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException,
 			NoSuchMethodException {
 		if (!clazz.isEnum()) {
@@ -159,7 +182,15 @@ public class Common {
 		return null;
 	}
 
-	protected static void setAttributes(IAttributes e, Attributes attributes) {
+	/**
+	 * Sets the {@code Attributes}.
+	 * 
+	 * @param e
+	 * 			the IAttributes
+	 * @param attrbutes
+	 *            the attributes to set
+	 */
+	public static void setAttributes(IAttributes e, Attributes attributes) {
 		for (String name : attributes.keySet()) {
 			e.setAttribute(name, attributes.get(name));
 		}
