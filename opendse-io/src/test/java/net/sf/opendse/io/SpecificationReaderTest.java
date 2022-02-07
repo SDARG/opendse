@@ -1,7 +1,5 @@
 package net.sf.opendse.io;
 
-import static net.sf.opendse.io.Common.getType;
-
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
@@ -189,8 +187,9 @@ public class SpecificationReaderTest {
 		eAttr.addAttribute(new nu.xom.Attribute("name", "test"));
 
 		Resource attribute = new Resource("test");
+		ClassDictionaryDefault classDict = new ClassDictionaryDefault();
 
-		eAttr.addAttribute(new nu.xom.Attribute("type", getType(Resource.class)));
+		eAttr.addAttribute(new nu.xom.Attribute("type", classDict.getType(Resource.class)));
 		eAttr.appendChild(((Element) attribute).getId());
 
 		SpecificationReader reader = new SpecificationReader();
@@ -205,7 +204,9 @@ public class SpecificationReaderTest {
 
 		int i = 10;
 
-		eAttr.addAttribute(new nu.xom.Attribute("type", getType(Integer.class)));
+		ClassDictionaryDefault classDict = new ClassDictionaryDefault();
+
+		eAttr.addAttribute(new nu.xom.Attribute("type", classDict.getType(Integer.class)));
 		eAttr.appendChild("10");
 
 		SpecificationReader reader = new SpecificationReader();
@@ -220,7 +221,9 @@ public class SpecificationReaderTest {
 
 		String s = "10";
 
-		eAttr.addAttribute(new nu.xom.Attribute("type", getType(String.class)));
+		ClassDictionaryDefault classDict = new ClassDictionaryDefault();
+
+		eAttr.addAttribute(new nu.xom.Attribute("type", classDict.getType(String.class)));
 		eAttr.appendChild("10");
 
 		SpecificationReader reader = new SpecificationReader();
@@ -240,17 +243,19 @@ public class SpecificationReaderTest {
 		strings.add(s1);
 		strings.add(s2);
 
+		ClassDictionaryDefault classDict = new ClassDictionaryDefault();
+
 		nu.xom.Element eAttr1 = new nu.xom.Element("attribute", SpecificationWriter.NS);
 		eAttr1.addAttribute(new nu.xom.Attribute("name", "test1"));
-		eAttr1.addAttribute(new nu.xom.Attribute("type", getType(String.class)));
+		eAttr1.addAttribute(new nu.xom.Attribute("type", classDict.getType(String.class)));
 		eAttr1.appendChild(s1);
 
 		nu.xom.Element eAttr2 = new nu.xom.Element("attribute", SpecificationWriter.NS);
 		eAttr2.addAttribute(new nu.xom.Attribute("name", "test2"));
-		eAttr2.addAttribute(new nu.xom.Attribute("type", getType(String.class)));
+		eAttr2.addAttribute(new nu.xom.Attribute("type", classDict.getType(String.class)));
 		eAttr2.appendChild(s2);
 
-		eAttr.addAttribute(new nu.xom.Attribute("type", getType(HashSet.class)));
+		eAttr.addAttribute(new nu.xom.Attribute("type", classDict.getType(HashSet.class)));
 		eAttr.appendChild(eAttr1);
 		eAttr.appendChild(eAttr2);
 		System.out.println(eAttr.toXML());
@@ -273,14 +278,16 @@ public class SpecificationReaderTest {
 		strings.add(s1);
 		strings.add(s2);
 
+		ClassDictionaryDefault classDict = new ClassDictionaryDefault();
+
 		nu.xom.Element eAttr1 = new nu.xom.Element("attribute", SpecificationWriter.NS);
 		eAttr1.addAttribute(new nu.xom.Attribute("name", "test1"));
-		eAttr1.addAttribute(new nu.xom.Attribute("type", getType(String.class)));
+		eAttr1.addAttribute(new nu.xom.Attribute("type", classDict.getType(String.class)));
 		eAttr1.appendChild(s1);
 
 		nu.xom.Element eAttr2 = new nu.xom.Element("attribute", SpecificationWriter.NS);
 		eAttr2.addAttribute(new nu.xom.Attribute("name", "test2"));
-		eAttr2.addAttribute(new nu.xom.Attribute("type", getType(String.class)));
+		eAttr2.addAttribute(new nu.xom.Attribute("type", classDict.getType(String.class)));
 		eAttr2.appendChild(s2);
 
 		eAttr.addAttribute(new nu.xom.Attribute("type", "SET"));

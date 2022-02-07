@@ -21,8 +21,6 @@
  *******************************************************************************/
 package net.sf.opendse.io;
 
-import static net.sf.opendse.io.Common.getType;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -63,32 +61,32 @@ public class SpecificationWriter {
 	public static final String NS = "http://opendse.sourceforge.net";
 
 	private final boolean writeRoutings;
+	protected final ClassDictionary classDict;
 
 	/**
 	 * Constructs a new {@link SpecificationWriter} that will always export
 	 * {@link Routings}.
 	 */
 	public SpecificationWriter() {
-		this(true);
+		this(true, new ClassDictionaryDefault());
 	}
 
 	/**
 	 * Constructs a new {@link SpecificationWriter} instance.
 	 *
-	 * @param writeRoutings
-	 *            true if the routings shall be exported
+	 * @param writeRoutings true if the routings shall be exported
+	 * @param classDict     the class dictionary
 	 */
-	public SpecificationWriter(boolean writeRoutings) {
+	public SpecificationWriter(boolean writeRoutings, ClassDictionary classDict) {
 		this.writeRoutings = writeRoutings;
+		this.classDict = classDict;
 	}
 
 	/**
 	 * Write the specification to a file.
 	 *
-	 * @param specification
-	 *            the specification
-	 * @param filename
-	 *            the name of the target file
+	 * @param specification the specification
+	 * @param filename      the name of the target file
 	 */
 	public void write(Specification specification, String filename) {
 		write(specification, new File(filename));
@@ -97,10 +95,8 @@ public class SpecificationWriter {
 	/**
 	 * Write the specification to a file.
 	 *
-	 * @param specification
-	 *            the specification
-	 * @param file
-	 *            the file
+	 * @param specification the specification
+	 * @param file          the file
 	 */
 	public void write(Specification specification, File file) {
 		try {
@@ -118,10 +114,8 @@ public class SpecificationWriter {
 	/**
 	 * Write the specification to an output stream.
 	 *
-	 * @param specification
-	 *            the specification
-	 * @param out
-	 *            the output stream
+	 * @param specification the specification
+	 * @param out           the output stream
 	 */
 	public void write(Specification specification, OutputStream out) {
 
@@ -146,10 +140,8 @@ public class SpecificationWriter {
 	/**
 	 * Write a collection of specifications to an output stream.
 	 *
-	 * @param specifications
-	 *            the specifications
-	 * @param out
-	 *            the output stream
+	 * @param specifications the specifications
+	 * @param out            the output stream
 	 */
 	public void write(Collection<Specification> specifications, OutputStream out) {
 
@@ -176,8 +168,7 @@ public class SpecificationWriter {
 	/**
 	 * Transform a specification to an XML element.
 	 *
-	 * @param specification
-	 *            the specification
+	 * @param specification the specification
 	 * @return the XML element
 	 */
 	public nu.xom.Element toElement(Specification specification) {
@@ -210,7 +201,8 @@ public class SpecificationWriter {
 		return eRoutings;
 	}
 
-	protected nu.xom.Element toElement(Architecture<Resource, Link> routing, Architecture<Resource, Link> architecture) {
+	protected nu.xom.Element toElement(Architecture<Resource, Link> routing,
+			Architecture<Resource, Link> architecture) {
 		nu.xom.Element eArch = new nu.xom.Element("routing", NS);
 
 		for (Resource resource : routing) {
@@ -297,8 +289,8 @@ public class SpecificationWriter {
 	protected nu.xom.Element toElement(Mapping<Task, Resource> mapping) {
 		nu.xom.Element eMapping = new nu.xom.Element("mapping", NS);
 		eMapping.addAttribute(new nu.xom.Attribute("id", mapping.getId()));
-		if (!getType(mapping.getClass()).equals("mapping")) {
-			eMapping.addAttribute(new nu.xom.Attribute("class", getType(mapping.getClass())));
+		if (!classDict.getType(mapping.getClass()).equals("mapping")) {
+			eMapping.addAttribute(new nu.xom.Attribute("class", classDict.getType(mapping.getClass())));
 		}
 		eMapping.addAttribute(new nu.xom.Attribute("source", mapping.getSource().getId()));
 		eMapping.addAttribute(new nu.xom.Attribute("target", mapping.getTarget().getId()));
@@ -312,8 +304,8 @@ public class SpecificationWriter {
 	protected nu.xom.Element toElement(Node node, String name, boolean local) {
 		nu.xom.Element eElem = new nu.xom.Element(name, NS);
 		eElem.addAttribute(new nu.xom.Attribute("id", node.getId()));
-		if (!getType(node.getClass()).equals(name)) {
-			eElem.addAttribute(new nu.xom.Attribute("class", getType(node.getClass())));
+		if (!classDict.getType(node.getClass()).equals(name)) {
+			eElem.addAttribute(new nu.xom.Attribute("class", classDict.getType(node.getClass())));
 		}
 		nu.xom.Element eAttributes = toElement(local ? node.getLocalAttributes() : node.getAttributes());
 		if (eAttributes.getChildCount() > 0) {
@@ -322,11 +314,12 @@ public class SpecificationWriter {
 		return eElem;
 	}
 
-	protected nu.xom.Element toElement(Edge edge, String name, Node source, Node dest, EdgeType edgeType, boolean local) {
+	protected nu.xom.Element toElement(Edge edge, String name, Node source, Node dest, EdgeType edgeType,
+			boolean local) {
 		nu.xom.Element eElem = new nu.xom.Element(name, NS);
 		eElem.addAttribute(new nu.xom.Attribute("id", edge.getId()));
-		if (!getType(edge.getClass()).equals(name)) {
-			eElem.addAttribute(new nu.xom.Attribute("class", getType(edge.getClass())));
+		if (!classDict.getType(edge.getClass()).equals(name)) {
+			eElem.addAttribute(new nu.xom.Attribute("class", classDict.getType(edge.getClass())));
 		}
 		eElem.addAttribute(new nu.xom.Attribute("source", source.getId()));
 		eElem.addAttribute(new nu.xom.Attribute("destination", dest.getId()));
@@ -364,26 +357,26 @@ public class SpecificationWriter {
 
 				Parameter parameter = (Parameter) attribute;
 				eAttr.appendChild(parameter.toString());
-				eAttr.addAttribute(new nu.xom.Attribute("type", getType(cls)));
-				eAttr.addAttribute(new nu.xom.Attribute("parameter", getType(parameter.getClass())));
+				eAttr.addAttribute(new nu.xom.Attribute("type", classDict.getType(cls)));
+				eAttr.addAttribute(new nu.xom.Attribute("parameter", classDict.getType(parameter.getClass())));
 
-			} else if (Common.isPrimitive(cls) || cls.equals(String.class)) {
-				eAttr.addAttribute(new nu.xom.Attribute("type", getType(cls)));
+			} else if (classDict.isPrimitive(cls) || cls.equals(String.class)) {
+				eAttr.addAttribute(new nu.xom.Attribute("type", classDict.getType(cls)));
 				eAttr.appendChild(attribute.toString());
 
 			} else if (attribute instanceof Element) {
 
-				eAttr.addAttribute(new nu.xom.Attribute("type", getType(cls)));
+				eAttr.addAttribute(new nu.xom.Attribute("type", classDict.getType(cls)));
 				eAttr.appendChild(((Element) attribute).getId());
 
 			} else if (Collection.class.isAssignableFrom(cls)) {
-				eAttr.addAttribute(new nu.xom.Attribute("type", getType(cls)));
+				eAttr.addAttribute(new nu.xom.Attribute("type", classDict.getType(cls)));
 
 				for (Object o : (Collection) attribute) {
 					eAttr.appendChild(toElement("entry", o));
 				}
 			} else if (cls.isEnum()) {
-				eAttr.addAttribute(new nu.xom.Attribute("type", getType(cls)));
+				eAttr.addAttribute(new nu.xom.Attribute("type", classDict.getType(cls)));
 				eAttr.appendChild(((Enum) attribute).name());
 			} else if (attribute instanceof Serializable) {
 				Serializable s = (Serializable) attribute;
