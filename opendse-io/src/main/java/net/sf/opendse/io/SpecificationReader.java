@@ -16,7 +16,6 @@
  *******************************************************************************/
 package net.sf.opendse.io;
 
-import static net.sf.opendse.io.Common.classMap;
 import static net.sf.opendse.io.Common.iterable;
 import static net.sf.opendse.io.Common.setAttributes;
 import static net.sf.opendse.io.Common.toInstance;
@@ -61,7 +60,8 @@ import net.sf.opendse.model.parameter.Parameters;
 import nu.xom.Elements;
 
 /**
- * The {@code SpecificationReader} reads a {@code Specification} from an {@code InputStream} or file.
+ * The {@code SpecificationReader} reads a {@code Specification} from an
+ * {@code InputStream} or file.
  * 
  * @author Martin Lukasiewycz
  * 
@@ -69,12 +69,28 @@ import nu.xom.Elements;
 public class SpecificationReader {
 
 	protected Map<String, Element> knownElements = new HashMap<String, Element>();
+	protected final ClassDictionary classDict;
+
+	/**
+	 * Default constructor with the default class dictionary.
+	 */
+	public SpecificationReader() {
+		this(new ClassDictionaryDefault());
+	}
+
+	/**
+	 * Constructor to work with a custom class dictionary.
+	 * 
+	 * @param classDict the custom class dictionary
+	 */
+	public SpecificationReader(ClassDictionary classDict) {
+		this.classDict = classDict;
+	}
 
 	/**
 	 * Read specification from a file.
 	 * 
-	 * @param filename
-	 *            the file name
+	 * @param filename the file name
 	 * @return the specification
 	 */
 	public Specification read(String filename) {
@@ -84,8 +100,7 @@ public class SpecificationReader {
 	/**
 	 * Read specification from a file.
 	 * 
-	 * @param file
-	 *            the file
+	 * @param file the file
 	 * @return the specification
 	 */
 	public Specification read(File file) {
@@ -100,8 +115,7 @@ public class SpecificationReader {
 	/**
 	 * Read specification from an input stream.
 	 * 
-	 * @param in
-	 *            the input stream
+	 * @param in the input stream
 	 * @return the specification
 	 */
 	public Specification read(InputStream in) {
@@ -120,8 +134,7 @@ public class SpecificationReader {
 	/**
 	 * Convert an XML element to a specification
 	 * 
-	 * @param eSpecification
-	 *            the XML element
+	 * @param eSpecification the XML element
 	 * @return the specification
 	 */
 	public Specification toSpecification(nu.xom.Element eSpecification) {
@@ -341,7 +354,7 @@ public class SpecificationReader {
 		if (eElement.getAttribute("class") != null) {
 			type = (Class<C>) Class.forName(eElement.getAttributeValue("class"));
 		} else {
-			type = (Class<C>) classMap.get(eElement.getLocalName());
+			type = (Class<C>) classDict.getClass(eElement.getLocalName());
 		}
 		if (type == null) {
 			throw new RuntimeException("Unknown node type for " + eElement);
@@ -350,8 +363,8 @@ public class SpecificationReader {
 	}
 
 	protected Class<?> getClass(String name) throws ClassNotFoundException {
-		if (classMap.containsKey(name)) {
-			return classMap.get(name);
+		if (classDict.hasClassName(name)) {
+			return classDict.getClass(name);
 		} else {
 			return Class.forName(name);
 		}
@@ -487,12 +500,11 @@ public class SpecificationReader {
 	}
 
 	/**
-	 * Constructs an attribute collection that contains all passed elements and their corresponding class.
+	 * Constructs an attribute collection that contains all passed elements and
+	 * their corresponding class.
 	 * 
-	 * @param eAttribute
-	 *            the attribute element to add the collection to
-	 * @param clazz
-	 *            the class of the objects that are to create
+	 * @param eAttribute the attribute element to add the collection to
+	 * @param clazz      the class of the objects that are to create
 	 * @return the constructed collection
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -509,10 +521,8 @@ public class SpecificationReader {
 	/**
 	 * Constructs an instance of the passed class that contains the passed value.
 	 *
-	 * @param value
-	 *            the value of the object that is to create
-	 * @param clazz
-	 *            the class of the object that is to create
+	 * @param value the value of the object that is to create
+	 * @param clazz the class of the object that is to create
 	 * @return the constructed object
 	 */
 	protected Object toAttributeObject(String value, Class<?> clazz) throws InstantiationException,
@@ -544,8 +554,7 @@ public class SpecificationReader {
 	/**
 	 * Parse the {@link ParameterRange}.
 	 * 
-	 * @param value
-	 *            the string to parse
+	 * @param value the string to parse
 	 * @return the corresponding parameter
 	 */
 	protected ParameterRange getRange(String value) {
@@ -565,8 +574,7 @@ public class SpecificationReader {
 	/**
 	 * Parse the {@link ParameterRangeDiscrete}.
 	 * 
-	 * @param value
-	 *            the string to parse
+	 * @param value the string to parse
 	 * @return the corresponding parameter
 	 */
 	protected ParameterRangeDiscrete getRangeInt(String value) {
@@ -585,8 +593,7 @@ public class SpecificationReader {
 	/**
 	 * Parse the {@link ParameterSelect}.
 	 * 
-	 * @param value
-	 *            the string to parse
+	 * @param value the string to parse
 	 * @return the corresponding parameter
 	 */
 	protected ParameterSelect getSelectRefList(String type, String value) throws ClassNotFoundException,
@@ -620,8 +627,7 @@ public class SpecificationReader {
 	/**
 	 * Parse the {@link ParameterUniqueID}.
 	 * 
-	 * @param value
-	 *            the string to parse
+	 * @param value the string to parse
 	 * @return the corresponding parameter
 	 */
 	protected ParameterUniqueID getUniqueID(String value) {

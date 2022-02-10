@@ -29,26 +29,9 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
-
 import net.sf.opendse.model.Attributes;
-import net.sf.opendse.model.Communication;
-import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.IAttributes;
-import net.sf.opendse.model.Link;
-import net.sf.opendse.model.Mapping;
-import net.sf.opendse.model.Resource;
-import net.sf.opendse.model.Task;
-import net.sf.opendse.model.parameter.ParameterRange;
-import net.sf.opendse.model.parameter.ParameterRangeDiscrete;
-import net.sf.opendse.model.parameter.ParameterSelect;
-import net.sf.opendse.model.parameter.ParameterUniqueID;
-
-import org.apache.commons.collections15.BidiMap;
-import org.apache.commons.collections15.bidimap.DualHashBidiMap;
 
 /**
  * The {@code Common} class contains common methods for reading and writing a
@@ -58,44 +41,6 @@ import org.apache.commons.collections15.bidimap.DualHashBidiMap;
  * 
  */
 public class Common {
-
-	public static BidiMap<String, Class<?>> classMap = new DualHashBidiMap<String, Class<?>>();
-
-	static {
-		classMap.put("INT", Integer.class);
-		classMap.put("DOUBLE", Double.class);
-		classMap.put("STRING", String.class);
-		classMap.put("BOOL", Boolean.class);
-		classMap.put("RANGE", ParameterRange.class);
-		classMap.put("DISCRETERANGE", ParameterRangeDiscrete.class);
-		classMap.put("SELECT", ParameterSelect.class);
-		classMap.put("UID", ParameterUniqueID.class);
-		classMap.put("resource", Resource.class);
-		classMap.put("link", Link.class);
-		classMap.put("task", Task.class);
-		classMap.put("communication", Communication.class);
-		classMap.put("dependency", Dependency.class);
-		classMap.put("mapping", Mapping.class);
-		classMap.put("SET", HashSet.class);
-		classMap.put("LIST", ArrayList.class);
-	}
-
-	protected static Set<Class<?>> primitives = new HashSet<Class<?>>();
-
-	static {
-		primitives.add(Boolean.class);
-		primitives.add(Byte.class);
-		primitives.add(Integer.class);
-		primitives.add(Character.class);
-		primitives.add(Short.class);
-		primitives.add(Float.class);
-		primitives.add(Long.class);
-		primitives.add(Double.class);
-	}
-
-	protected static boolean isPrimitive(Class<?> cls) {
-		return cls.isPrimitive() || primitives.contains(cls);
-	}
 
 	/**
 	 * Transforms an {@code Elements} object into a set of iterable
@@ -131,16 +76,17 @@ public class Common {
 		};
 	}
 
-	protected static String getType(Class<?> clazz) {
-		if (classMap.containsValue(clazz)) {
-			return classMap.getKey(clazz);
-		} else {
-			return clazz.getCanonicalName().toString();
-		}
-	}
-
+	/**
+	 * Returns an instance of a given {@code Class}.
+	 * 
+	 * @param value
+	 * 
+	 * @param clazz
+	 *            the Class object
+	 * @return the instance of the given class
+	 */
 	@SuppressWarnings("rawtypes")
-	protected static Object toInstance(String value, Class<?> clazz) throws IllegalArgumentException,
+	public static Object toInstance(String value, Class<?> clazz) throws IllegalArgumentException,
 			SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException,
 			NoSuchMethodException {
 		if (!clazz.isEnum()) {
@@ -159,7 +105,15 @@ public class Common {
 		return null;
 	}
 
-	protected static void setAttributes(IAttributes e, Attributes attributes) {
+	/**
+	 * Sets the {@code Attributes}.
+	 * 
+	 * @param e
+	 * 			the IAttributes
+	 * @param attrbutes
+	 *            the attributes to set
+	 */
+	public static void setAttributes(IAttributes e, Attributes attributes) {
 		for (String name : attributes.keySet()) {
 			e.setAttribute(name, attributes.get(name));
 		}
@@ -202,5 +156,4 @@ public class Common {
 		return new String(Base64Coder.encode(baos.toByteArray()));
 
 	}
-
 }

@@ -63,16 +63,14 @@ public class SpecificationWriterAnonymized<S extends Specification> extends Spec
 	 * export {@link Routings}.
 	 */
 	public SpecificationWriterAnonymized() {
-		super(true);
+		super(true, new ClassDictionaryDefault());
 	}
 
 	/**
 	 * Write the specification to a file.
 	 *
-	 * @param specification
-	 *            the specification
-	 * @param filename
-	 *            the name of the target file
+	 * @param specification the specification
+	 * @param filename      the name of the target file
 	 */
 	public void writeAnonymized(S specification, String filename) {
 
@@ -83,10 +81,8 @@ public class SpecificationWriterAnonymized<S extends Specification> extends Spec
 	/**
 	 * Write the specification to a file.
 	 *
-	 * @param specification
-	 *            the specification
-	 * @param file
-	 *            the target file
+	 * @param specification the specification
+	 * @param file          the target file
 	 */
 	public void writeAnonymized(S specification, File file) {
 
@@ -115,11 +111,9 @@ public class SpecificationWriterAnonymized<S extends Specification> extends Spec
 	/**
 	 * Anonymizes the ids of an {@code Application}.
 	 * 
-	 * @param app
-	 *            the application
-	 * @param taskMap
-	 *            {@code Task} map to store anonymized ids (for anonymizing the
-	 *            {@code Mappings})
+	 * @param app     the application
+	 * @param taskMap {@code Task} map to store anonymized ids (for anonymizing the
+	 *                {@code Mappings})
 	 * @return the anonymized {@code Application}
 	 */
 	protected Application<Task, Dependency> anonymizeApplication(Application<Task, Dependency> app,
@@ -183,11 +177,9 @@ public class SpecificationWriterAnonymized<S extends Specification> extends Spec
 	/**
 	 * Anonymizes the ids of an {@code Architecture}.
 	 * 
-	 * @param architecture
-	 *            the architecture
-	 * @param resourceMap
-	 *            {@code Resource} map to store anonymized ids (for anonymizing
-	 *            the {@code Mappings})
+	 * @param architecture the architecture
+	 * @param resourceMap  {@code Resource} map to store anonymized ids (for
+	 *                     anonymizing the {@code Mappings})
 	 * @return the anonymized {@code Architecture}
 	 */
 	protected Architecture<Resource, Link> anonymizeArchitecture(Architecture<Resource, Link> architecture,
@@ -255,12 +247,9 @@ public class SpecificationWriterAnonymized<S extends Specification> extends Spec
 	/**
 	 * /** Anonymizes the ids of the {@code Mappings}.
 	 * 
-	 * @param mappings
-	 *            the mappings
-	 * @param taskMap
-	 *            {@code Task} map storing anonymized ids
-	 * @param resourceMap
-	 *            {@code Resource} map storing anonymized ids
+	 * @param mappings    the mappings
+	 * @param taskMap     {@code Task} map storing anonymized ids
+	 * @param resourceMap {@code Resource} map storing anonymized ids
 	 * @return the anonymized {@code Mappings}
 	 */
 	protected Mappings<Task, Resource> anonymizeMappings(Mappings<Task, Resource> mappings, Map<Task, Task> taskMap,
