@@ -32,8 +32,11 @@ import net.sf.opendse.model.parameter.Parameter;
  * @author Martin Lukasiewycz
  * 
  */
-public class Specification implements IAttributes {
+public class Specification extends Element {
 
+	// the unique id of the specification element; no other element must have this id
+	public static final String SPECIFICATION_ELEMENT_ID = "specificationElementId";
+	
 	protected Architecture<?, ?> architecture = null;
 	protected Application<?, ?> application = null;
 	protected Mappings<?, ?> mappings = null;
@@ -91,7 +94,7 @@ public class Specification implements IAttributes {
 	 */
 	public Specification(Application<?, ?> application, Architecture<?, ?> architecture, Mappings<?, ?> mappings,
 			Routings<?, ?, ?> routings) {
-		super();
+		super(SPECIFICATION_ELEMENT_ID);
 		this.architecture = architecture;
 		this.application = application;
 		this.mappings = mappings;
