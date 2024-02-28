@@ -1,8 +1,6 @@
 dependencies {	
-
-	implementation group: 'net.sf.jung',	name: 'jung-api', 				version: '2.0.1'
-	implementation group: 'net.sf.jung',	name: 'jung-graph-impl', 		version: '2.0.1'
-	implementation group: 'net.sf.jung',	name: 'jung-algorithms', 		version: '2.0.1'
+	implementation group: 'net.sf.jung',	name: 'jung-graph-impl', 		version: project.jungVersion
 
 	implementation project(':opendse-model')
+
 }

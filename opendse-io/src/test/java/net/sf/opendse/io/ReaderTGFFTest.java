@@ -9,8 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Dependency;
@@ -24,6 +24,7 @@ import net.sf.opendse.model.SpecificationTypeBased;
 import net.sf.opendse.model.Task;
 
 import static net.sf.opendse.io.CommonTest.epsilon;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ReaderTGFFTest {
 
@@ -38,7 +39,7 @@ public class ReaderTGFFTest {
 		ReaderTGFF reader = new ReaderTGFF();
 		SpecificationTypeBased spec = reader.read(testFile);
 
-		Assert.assertNotNull(spec);
+		Assertions.assertNotNull(spec);
 	}
 
 	/**
@@ -51,7 +52,7 @@ public class ReaderTGFFTest {
 		File file = new File(testFile);
 		SpecificationTypeBased spec = reader.read(file);
 
-		Assert.assertNotNull(spec);
+		Assertions.assertNotNull(spec);
 	}
 
 	/**
@@ -70,7 +71,7 @@ public class ReaderTGFFTest {
 			e.printStackTrace();
 		}
 
-		Assert.assertNotNull(spec);
+		Assertions.assertNotNull(spec);
 	}
 
 	/**
@@ -104,11 +105,11 @@ public class ReaderTGFFTest {
 
 		SpecificationTypeBased spec = new ReaderTGFF().toSpecification(in);
 
-		Assert.assertNotNull(spec);
-		Assert.assertNotNull(spec.getApplication());
-		Assert.assertNotNull(spec.getResourceTypes());
-		Assert.assertNotNull(spec.getLinkTypes());
-		Assert.assertNotNull(spec.getMappings());
+		Assertions.assertNotNull(spec);
+		Assertions.assertNotNull(spec.getApplication());
+		Assertions.assertNotNull(spec.getResourceTypes());
+		Assertions.assertNotNull(spec.getLinkTypes());
+		Assertions.assertNotNull(spec.getMappings());
 	}
 
 	/**
@@ -132,23 +133,23 @@ public class ReaderTGFFTest {
 
 		Application<Task, Dependency> application = new ReaderTGFF().toApplication(in);
 
-		Assert.assertNotNull(application);
+		Assertions.assertNotNull(application);
 
-		Assert.assertEquals(7, application.getVertexCount());
-		Assert.assertEquals(6, application.getEdgeCount());
+		Assertions.assertEquals(7, application.getVertexCount());
+		Assertions.assertEquals(6, application.getEdgeCount());
 
 		List<String> ids = new ArrayList<String>(
 				Arrays.asList("t0_0_0", "t0_1_0", "t0_2_0", "t0_3_0", "a0_0", "a0_1", "a0_2"));
 
 		for (Task task : application.getVertices()) {
-			Assert.assertTrue(ids.contains(task.getId()));
+			Assertions.assertTrue(ids.contains(task.getId()));
 		}
 
 		List<String> edges = new ArrayList<String>(
 				Arrays.asList("a0_0_0", "a0_0_1", "a0_1_0", "a0_1_1", "a0_2_0", "a0_2_1"));
 
 		for (Dependency edge : application.getEdges()) {
-			Assert.assertTrue(edges.contains(edge.getId()));
+			Assertions.assertTrue(edges.contains(edge.getId()));
 		}
 	}
 
@@ -184,10 +185,10 @@ public class ReaderTGFFTest {
 		ReaderTGFF reader = new ReaderTGFF();
 		ResourceTypes<Resource> resourceTypes = reader.toResourceTypes(in);
 
-		Assert.assertEquals(3, resourceTypes.values().size());
+		Assertions.assertEquals(3, resourceTypes.values().size());
 
 		for (int i = 0; i < 3; i++) {
-			Assert.assertTrue(resourceTypes.containsKey("r" + i));
+			Assertions.assertTrue(resourceTypes.containsKey("r" + i));
 		}
 	}
 
@@ -226,7 +227,7 @@ public class ReaderTGFFTest {
 
 		Mappings<Task, Resource> mappings = reader.toMappings(in, resourceTypes);
 
-		Assert.assertEquals(10, mappings.size());
+		Assertions.assertEquals(10, mappings.size());
 
 		List<String> ids = new ArrayList<String>(
 				Arrays.asList("m_t0_0_0_r0", "m_t0_1_0_r0", "m_t0_2_0_r0", "m_t0_3_0_r0", "m_t0_1_0_r1", "m_t0_2_0_r1",
@@ -234,8 +235,8 @@ public class ReaderTGFFTest {
 		List<Double> times = new ArrayList<Double>(Arrays.asList(7.0, 8.0, 9.0, 11.0, 12.0));
 
 		for (Mapping<Task, Resource> mapping : mappings) {
-			Assert.assertTrue(ids.contains(mapping.getId()));
-			Assert.assertTrue(times.contains(mapping.getAttribute("task_time")));
+			Assertions.assertTrue(ids.contains(mapping.getId()));
+			Assertions.assertTrue(times.contains(mapping.getAttribute("task_time")));
 		}
 	}
 
@@ -249,9 +250,9 @@ public class ReaderTGFFTest {
 		List<String> in = Arrays.asList("@WIRING 0", "{", "# max_buffer_size", "491", "}");
 		LinkTypes<Link> linkTypes = new ReaderTGFF().toLinkTypes(in);
 
-		Assert.assertEquals(1, linkTypes.size());
-		Assert.assertTrue(linkTypes.containsKey(ReaderTGFF.WIRE));
-		Assert.assertNotNull(linkTypes.get(ReaderTGFF.WIRE).getAttribute("max_buffer_size"));
+		Assertions.assertEquals(1, linkTypes.size());
+		Assertions.assertTrue(linkTypes.containsKey(ReaderTGFF.WIRE));
+		Assertions.assertNotNull(linkTypes.get(ReaderTGFF.WIRE).getAttribute("max_buffer_size"));
 	}
 
 	/**
@@ -277,23 +278,23 @@ public class ReaderTGFFTest {
 
 		new ReaderTGFF().importTaskGraph(line, it, application);
 
-		Assert.assertNotNull(application);
+		Assertions.assertNotNull(application);
 
-		Assert.assertEquals(7, application.getVertexCount());
-		Assert.assertEquals(6, application.getEdgeCount());
+		Assertions.assertEquals(7, application.getVertexCount());
+		Assertions.assertEquals(6, application.getEdgeCount());
 
 		List<String> ids = new ArrayList<String>(
 				Arrays.asList("t0_0_0", "t0_1_0", "t0_2_0", "t0_3_0", "a0_0", "a0_1", "a0_2"));
 
 		for (Task task : application.getVertices()) {
-			Assert.assertTrue(ids.contains(task.getId()));
+			Assertions.assertTrue(ids.contains(task.getId()));
 		}
 
 		List<String> edges = new ArrayList<String>(
 				Arrays.asList("a0_0_0", "a0_0_1", "a0_1_0", "a0_1_1", "a0_2_0", "a0_2_1"));
 
 		for (Dependency edge : application.getEdges()) {
-			Assert.assertTrue(edges.contains(edge.getId()));
+			Assertions.assertTrue(edges.contains(edge.getId()));
 		}
 	}
 
@@ -315,8 +316,8 @@ public class ReaderTGFFTest {
 
 		String id = "test0_0_0";
 
-		Assert.assertEquals(1, application.getVertexCount());
-		Assert.assertEquals(id, application.iterator().next().getId());
+		Assertions.assertEquals(1, application.getVertexCount());
+		Assertions.assertEquals(id, application.iterator().next().getId());
 	}
 
 	/**
@@ -348,12 +349,12 @@ public class ReaderTGFFTest {
 
 		String comm = "a0_0";
 
-		Assert.assertEquals(3, application.getVertexCount());
-		Assert.assertNotNull(application.getVertex(comm));
+		Assertions.assertEquals(3, application.getVertexCount());
+		Assertions.assertNotNull(application.getVertex(comm));
 
-		Assert.assertEquals(2, application.getEdgeCount());
-		Assert.assertNotNull(application.getEdge(comm + "_0"));
-		Assert.assertNotNull(application.getEdge(comm + "_1"));
+		Assertions.assertEquals(2, application.getEdgeCount());
+		Assertions.assertNotNull(application.getEdge(comm + "_0"));
+		Assertions.assertNotNull(application.getEdge(comm + "_1"));
 	}
 
 	/**
@@ -376,44 +377,46 @@ public class ReaderTGFFTest {
 		ReaderTGFF reader = new ReaderTGFF();
 		reader.addDeadline(line, suffix, application, deadlineType);
 
-		Assert.assertNotNull(application.iterator().next().getAttribute(deadlineType));
-		Assert.assertEquals(0.0003, application.iterator().next().getAttribute(deadlineType), epsilon);
+		Assertions.assertNotNull(application.iterator().next().getAttribute(deadlineType));
+		Assertions.assertEquals(0.0003, application.iterator().next().getAttribute(deadlineType), epsilon);
 	}
 
 	/**
 	 * Test method for invalid input for
 	 * {@link net.sf.opendse.io.ReaderTGFF#addDeadline(java.lang.String, java.lang.String, net.sf.opendse.model.Application, java.lang.String)}.
 	 */
-	@Test(expected = AssertionError.class)
+	@Test
 	public void testAddDeadlineInvalid() {
+		assertThrows(AssertionError.class, () -> {
+			String line = "HARD_DEADLINE d0_0 ON sink AT 0.0003 wrong_number_of_entries";
+			String suffix = "_0";
 
-		String line = "HARD_DEADLINE d0_0 ON sink AT 0.0003 wrong_number_of_entries";
-		String suffix = "_0";
+			Task task0 = new Task("sink_0");
 
-		Task task0 = new Task("sink_0");
+			Application<Task, Dependency> application = new Application<Task, Dependency>();
+			application.addVertex(task0);
 
-		Application<Task, Dependency> application = new Application<Task, Dependency>();
-		application.addVertex(task0);
+			String deadlineType = ReaderTGFF.HARD_DEADLINE;
 
-		String deadlineType = ReaderTGFF.HARD_DEADLINE;
-
-		ReaderTGFF reader = new ReaderTGFF();
-		reader.addDeadline(line, suffix, application, deadlineType);
+			ReaderTGFF reader = new ReaderTGFF();
+			reader.addDeadline(line, suffix, application, deadlineType);
+		});	
 	}
 
 	/**
 	 * Test method for
 	 * {@link net.sf.opendse.io.ReaderTGFF#addDeadline(java.lang.String, java.lang.String, net.sf.opendse.model.Application, java.lang.String)}.
 	 */
-	@Test(expected = AssertionError.class)
+	@Test
 	public void testAddDeadlineToNonExistantTask() {
+		assertThrows(AssertionError.class, () -> {
+			String line = "HARD_DEADLINE d0_0 ON sink AT 0.0003";
+			String suffix = "_0";
 
-		String line = "HARD_DEADLINE d0_0 ON sink AT 0.0003";
-		String suffix = "_0";
+			Application<Task, Dependency> application = new Application<Task, Dependency>();
 
-		Application<Task, Dependency> application = new Application<Task, Dependency>();
-
-		new ReaderTGFF().addDeadline(line, suffix, application, ReaderTGFF.HARD_DEADLINE);
+			new ReaderTGFF().addDeadline(line, suffix, application, ReaderTGFF.HARD_DEADLINE);
+		});
 	}
 
 	/**
@@ -446,13 +449,13 @@ public class ReaderTGFFTest {
 
 		String id = "r0";
 
-		Assert.assertEquals(1, resourceTypes.size());
-		Assert.assertTrue(resourceTypes.containsKey(id));
+		Assertions.assertEquals(1, resourceTypes.size());
+		Assertions.assertTrue(resourceTypes.containsKey(id));
 
 		Resource resource = resourceTypes.get(id);
 
-		Assert.assertEquals(79.0597, resource.getAttribute("price"), epsilon);
-		Assert.assertEquals(0.219023, resource.getAttribute("area"), epsilon);
+		Assertions.assertEquals(79.0597, resource.getAttribute("price"), epsilon);
+		Assertions.assertEquals(0.219023, resource.getAttribute("area"), epsilon);
 	}
 
 	/**
@@ -506,7 +509,7 @@ public class ReaderTGFFTest {
 		String name = "@CORE 0 test";
 		reader.importMappings(name, it, resourceTypes, mappings);
 
-		Assert.assertEquals(4, mappings.size());
+		Assertions.assertEquals(4, mappings.size());
 
 		List<String> ids = new ArrayList<String>(
 				Arrays.asList("m_t0_0_0_r0", "m_t0_1_0_r0", "m_t0_2_0_r0", "m_t0_3_0_r0"));
@@ -514,8 +517,8 @@ public class ReaderTGFFTest {
 
 		for (Mapping<Task, Resource> mapping : mappings) {
 
-			Assert.assertTrue(ids.contains(mapping.getId()));
-			Assert.assertTrue(times.contains(mapping.getAttribute("task_time")));
+			Assertions.assertTrue(ids.contains(mapping.getId()));
+			Assertions.assertTrue(times.contains(mapping.getAttribute("task_time")));
 		}
 	}
 
@@ -533,13 +536,13 @@ public class ReaderTGFFTest {
 
 		Map<String, Double> messageSizes = reader.importMessageSizes(it);
 
-		Assert.assertEquals(2, messageSizes.size());
+		Assertions.assertEquals(2, messageSizes.size());
 
-		Assert.assertTrue(messageSizes.keySet().contains("0"));
-		Assert.assertTrue(messageSizes.keySet().contains("1"));
+		Assertions.assertTrue(messageSizes.keySet().contains("0"));
+		Assertions.assertTrue(messageSizes.keySet().contains("1"));
 
-		Assert.assertEquals(5l, messageSizes.get("0").longValue());
-		Assert.assertEquals(6l, messageSizes.get("1").longValue());
+		Assertions.assertEquals(5l, messageSizes.get("0").longValue());
+		Assertions.assertEquals(6l, messageSizes.get("1").longValue());
 	}
 
 	/**
@@ -557,9 +560,9 @@ public class ReaderTGFFTest {
 
 		new ReaderTGFF().importLink(it, linkTypes);
 
-		Assert.assertEquals(1, linkTypes.size());
-		Assert.assertTrue(linkTypes.containsKey(ReaderTGFF.WIRE));
-		Assert.assertNotNull(linkTypes.get(ReaderTGFF.WIRE).getAttribute("max_buffer_size"));
+		Assertions.assertEquals(1, linkTypes.size());
+		Assertions.assertTrue(linkTypes.containsKey(ReaderTGFF.WIRE));
+		Assertions.assertNotNull(linkTypes.get(ReaderTGFF.WIRE).getAttribute("max_buffer_size"));
 	}
 
 	/**
@@ -572,7 +575,7 @@ public class ReaderTGFFTest {
 		String line = "@HYPERPERIOD 300";
 		Double hyperperiod = new ReaderTGFF().importHyperperiod(line);
 
-		Assert.assertEquals(300l, hyperperiod.longValue());
+		Assertions.assertEquals(300l, hyperperiod.longValue());
 	}
 
 	/**
@@ -584,8 +587,8 @@ public class ReaderTGFFTest {
 
 		ReaderTGFF reader = new ReaderTGFF();
 
-		Assert.assertTrue(reader.isComment("# a comment"));
-		Assert.assertFalse(reader.isComment("not a comment"));
+		Assertions.assertTrue(reader.isComment("# a comment"));
+		Assertions.assertFalse(reader.isComment("not a comment"));
 	}
 
 	/**
@@ -597,8 +600,8 @@ public class ReaderTGFFTest {
 
 		ReaderTGFF reader = new ReaderTGFF();
 
-		Assert.assertTrue(reader.isClosing("closing line: }"));
-		Assert.assertFalse(reader.isClosing("# non-closing line..."));
+		Assertions.assertTrue(reader.isClosing("closing line: }"));
+		Assertions.assertFalse(reader.isClosing("# non-closing line..."));
 	}
 
 	/**
@@ -609,7 +612,7 @@ public class ReaderTGFFTest {
 
 		ReaderTGFF reader = new ReaderTGFF();
 
-		Assert.assertTrue(reader.skip("line to be skipped"));
-		Assert.assertFalse(reader.skip(ReaderTGFF.HEADER));
+		Assertions.assertTrue(reader.skip("line to be skipped"));
+		Assertions.assertFalse(reader.skip(ReaderTGFF.HEADER));
 	}
 }

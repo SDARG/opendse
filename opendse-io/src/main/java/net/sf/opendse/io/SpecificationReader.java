@@ -561,10 +561,10 @@ public class SpecificationReader {
 		Scanner scanner = new Scanner(value);
 		scanner.useDelimiter("[\\s+,()]+");
 
-		double v = new Double(scanner.next());
-		double lb = new Double(scanner.next());
-		double ub = new Double(scanner.next());
-		double gr = new Double(scanner.next());
+		double v = Double.valueOf(scanner.next());
+		double lb = Double.valueOf(scanner.next());
+		double ub = Double.valueOf(scanner.next());
+		double gr = Double.valueOf(scanner.next());
 
 		scanner.close();
 
@@ -581,9 +581,9 @@ public class SpecificationReader {
 		Scanner scanner = new Scanner(value);
 		scanner.useDelimiter("[\\s+,()]+");
 
-		int v = new Integer(scanner.next());
-		int lb = new Integer(scanner.next());
-		int ub = new Integer(scanner.next());
+		int v = Integer.valueOf(scanner.next());
+		int lb = Integer.valueOf(scanner.next());
+		int ub = Integer.valueOf(scanner.next());
 
 		scanner.close();
 
@@ -635,7 +635,7 @@ public class SpecificationReader {
 		scanner.findInLine("(\\w+) \\[UID:(\\w+)\\]");
 
 		MatchResult result = scanner.match();
-		int def = new Integer(result.group(1));
+		int def = Integer.valueOf(result.group(1));
 		String identifier = result.group(2);
 
 		scanner.close();

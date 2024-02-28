@@ -110,7 +110,7 @@ public class Common {
 	 * 
 	 * @param e
 	 * 			the IAttributes
-	 * @param attrbutes
+	 * @param attributes
 	 *            the attributes to set
 	 */
 	public static void setAttributes(IAttributes e, Attributes attributes) {

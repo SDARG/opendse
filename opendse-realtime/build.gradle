@@ -1,9 +1,7 @@
 dependencies {	
 
-	implementation group: 'net.sf.jung',	name: 'jung-api', 				version: '2.0.1'
-	implementation group: 'net.sf.jung',	name: 'jung-graph-impl', 		version: '2.0.1'
-	implementation group: 'net.sf.jung',	name: 'jung-algorithms', 		version: '2.0.1'
-	implementation group: 'net.sf.jung',	name: 'jung-visualization', 	version: '2.0.1'
+	implementation group: 'net.sf.jung',	name: 'jung-graph-impl', 		version: project.jungVersion
+	implementation group: 'net.sf.jung',	name: 'jung-visualization', 	version: project.jungVersion
 
 	implementation 'net.sf.jmpi:jmpi-main:0.6'
 	implementation 'net.sf.jmpi:jmpi-solver-gurobi:0.6'

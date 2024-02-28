@@ -2,10 +2,11 @@ package net.sf.opendse.io;
 
 import java.lang.reflect.InvocationTargetException;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import net.sf.opendse.model.Resource;
 
-import org.junit.Assert;
-import org.junit.Test;
 
 public class CommonTest {
 	public enum E1 {
@@ -19,15 +20,15 @@ public class CommonTest {
 	public void enumToInstance() throws IllegalArgumentException, SecurityException, InstantiationException,
 			IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		Object o = Common.toInstance("a", E1.class);
-		Assert.assertEquals(E1.a, o);
-		Assert.assertNotEquals(E1.b, o);
+		Assertions.assertEquals(E1.a, o);
+		Assertions.assertNotEquals(E1.b, o);
 	}
 
 	@Test
 	public void resourceToInstance() throws IllegalArgumentException, SecurityException, InstantiationException,
 			IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		Object o = Common.toInstance("a", Resource.class);
-		Assert.assertEquals(new Resource("a"), o);
-		Assert.assertNotEquals(new Resource("b"), o);
+		Assertions.assertEquals(new Resource("a"), o);
+		Assertions.assertNotEquals(new Resource("b"), o);
 	}
 }

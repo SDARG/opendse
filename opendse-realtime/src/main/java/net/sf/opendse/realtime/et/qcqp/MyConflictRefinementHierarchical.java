@@ -81,7 +81,6 @@ public class MyConflictRefinementHierarchical implements MyConflictRefinement {
 		}
 		
 		Map<TimingDependencyPriority, Pair<TimingElement>> removed = new HashMap<TimingDependencyPriority, Pair<TimingElement>>();
-		Double lastE = 0.0;
 
 		for (Set<TimingElement> teSet : teList) {
 			System.out.print("conflict refinement " + teSet);

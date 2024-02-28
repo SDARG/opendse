@@ -25,8 +25,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
@@ -60,19 +60,19 @@ public class SpecificationWriterAnonymizedTest {
 		SpecificationWriterAnonymized<Specification> anonymizer = new SpecificationWriterAnonymized<Specification>();
 		Application<Task, Dependency> anonymized = anonymizer.anonymizeApplication(app, new HashMap<Task, Task>());
 
-		Assert.assertNotNull(anonymized.getVertex("task0"));
-		Assert.assertNotNull(anonymized.getVertex("task1"));
-		Assert.assertNotNull(anonymized.getEdge("dependency0"));
+		Assertions.assertNotNull(anonymized.getVertex("task0"));
+		Assertions.assertNotNull(anonymized.getVertex("task1"));
+		Assertions.assertNotNull(anonymized.getEdge("dependency0"));
 
 		Task anonymizedTask = anonymized.getVertex("task0");
-		Assert.assertEquals((int) anonymizedTask.getAttribute("cost"), 25);
+		Assertions.assertEquals((int) anonymizedTask.getAttribute("cost"), 25);
 
 		Dependency anonymizedDependency = anonymized.getEdge("dependency0");
-		Assert.assertEquals((int) anonymizedDependency.getAttribute("test"), 0);
+		Assertions.assertEquals((int) anonymizedDependency.getAttribute("test"), 0);
 
-		Assert.assertNull(anonymized.getVertex("t1"));
-		Assert.assertNull(anonymized.getVertex("t2"));
-		Assert.assertNull(anonymized.getEdge("dep"));
+		Assertions.assertNull(anonymized.getVertex("t1"));
+		Assertions.assertNull(anonymized.getVertex("t2"));
+		Assertions.assertNull(anonymized.getEdge("dep"));
 	}
 
 	@Test
@@ -96,19 +96,19 @@ public class SpecificationWriterAnonymizedTest {
 		Architecture<Resource, Link> anonymized = anonymizer.anonymizeArchitecture(architecture,
 				new HashMap<Resource, Resource>());
 
-		Assert.assertNotNull(anonymized.getVertex("resource0"));
-		Assert.assertNotNull(anonymized.getVertex("resource1"));
-		Assert.assertNotNull(anonymized.getEdge("link0"));
+		Assertions.assertNotNull(anonymized.getVertex("resource0"));
+		Assertions.assertNotNull(anonymized.getVertex("resource1"));
+		Assertions.assertNotNull(anonymized.getEdge("link0"));
 
 		Resource anonymizedResource = anonymized.getVertex("resource0");
-		Assert.assertEquals((int) anonymizedResource.getAttribute("cost"), 25);
+		Assertions.assertEquals((int) anonymizedResource.getAttribute("cost"), 25);
 
 		Link anonymizedLink = anonymized.getEdge("link0");
-		Assert.assertEquals((int) anonymizedLink.getAttribute("test"), 0);
+		Assertions.assertEquals((int) anonymizedLink.getAttribute("test"), 0);
 
-		Assert.assertNull(anonymized.getVertex("r1"));
-		Assert.assertNull(anonymized.getVertex("r2"));
-		Assert.assertNull(anonymized.getEdge("link"));
+		Assertions.assertNull(anonymized.getVertex("r1"));
+		Assertions.assertNull(anonymized.getVertex("r2"));
+		Assertions.assertNull(anonymized.getEdge("link"));
 	}
 
 	@Test
@@ -143,11 +143,11 @@ public class SpecificationWriterAnonymizedTest {
 		Mappings<Task, Resource> anonymized = anonymizer.anonymizeMappings(mappings, taskMap, resourceMap);
 
 		Set<Mapping<Task, Resource>> anonymizedMappings = anonymized.getAll();
-		Assert.assertNotNull(anonymizedMappings);
-		Assert.assertEquals(anonymizedMappings.size(), 3);
+		Assertions.assertNotNull(anonymizedMappings);
+		Assertions.assertEquals(anonymizedMappings.size(), 3);
 
-		Assert.assertFalse(anonymizedMappings.contains(m1));
-		Assert.assertFalse(anonymizedMappings.contains(m2));
-		Assert.assertFalse(anonymizedMappings.contains(m3));
+		Assertions.assertFalse(anonymizedMappings.contains(m1));
+		Assertions.assertFalse(anonymizedMappings.contains(m2));
+		Assertions.assertFalse(anonymizedMappings.contains(m3));
 	}
 }

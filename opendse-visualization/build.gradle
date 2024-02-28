@@ -2,16 +2,14 @@ dependencies {
 	implementation project(':opendse-model')
 	implementation project(':opendse-io')
 	
-	implementation group: 'net.sf.jung',	name: 'jung-visualization', 	version: '2.0.1'
+	implementation group: 'net.sf.jung',	name: 'jung-visualization', 	version: project.jungVersion
 	
 	implementation group: 'com.google.inject', name: 'guice', version: project.guiceVersion
 	
-	implementation group: 'net.sf.jung',	name: 'jung-api', 				version: '2.0.1'
-	implementation group: 'net.sf.jung',	name: 'jung-graph-impl', 		version: '2.0.1'
-	implementation group: 'net.sf.jung',	name: 'jung-algorithms', 		version: '2.0.1'
+	implementation group: 'net.sf.jung',	name: 'jung-graph-impl', 		version: project.jungVersion
 
-	//implementation group: 'net.java.dev.glazedlists', name: 'glazedlists_java16', version: '1.10.0
-	implementation group: 'net.java.dev.glazedlists',	name: 'glazedlists_java15', 		version: '1.9.0'
+	implementation group: 'net.java.dev.glazedlists', name: 'glazedlists_java16', version: project.glazedListsVersion
 	
-	implementation 'com.github.SDARG.opt4j:opt4j-core:88-version-bump-to-java-21-lts-SNAPSHOT'//-SNAPSHOT'
+	implementation 'com.github.SDARG.opt4j:opt4j-core:88-version-bump-to-java-21-lts-SNAPSHOT'
+
 }

@@ -3,8 +3,10 @@ package net.sf.opendse.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+
 
 public class ModelsTest {
 	@Test
@@ -17,12 +19,12 @@ public class ModelsTest {
 
 		boolean visited = false;
 		for (Task t : Models.filterCommunications(tasks)) {
-			Assert.assertFalse(visited);
-			Assert.assertEquals(c, t);
-			Assert.assertNotEquals(task, t);
+			Assertions.assertFalse(visited);
+			Assertions.assertEquals(c, t);
+			Assertions.assertNotEquals(task, t);
 			visited = true;
 		}
-		Assert.assertTrue(visited);
+		Assertions.assertTrue(visited);
 	}
 
 	@Test
@@ -35,12 +37,12 @@ public class ModelsTest {
 
 		boolean visited = false;
 		for (Task t : Models.filterProcesses(tasks)) {
-			Assert.assertFalse(visited);
-			Assert.assertNotEquals(c, t);
-			Assert.assertEquals(task, t);
+			Assertions.assertFalse(visited);
+			Assertions.assertNotEquals(c, t);
+			Assertions.assertEquals(task, t);
 			visited = true;
 		}
-		Assert.assertTrue(visited);
+		Assertions.assertTrue(visited);
 	}
 
 	@Test
@@ -48,8 +50,8 @@ public class ModelsTest {
 		Communication communication = new Communication("c");
 		Task task = new Task("t");
 
-		Assert.assertFalse(Models.isProcess(communication));
-		Assert.assertTrue(Models.isProcess(task));
+		Assertions.assertFalse(Models.isProcess(communication));
+		Assertions.assertTrue(Models.isProcess(task));
 	}
 
 	@Test
@@ -57,8 +59,8 @@ public class ModelsTest {
 		Communication communication = new Communication("c");
 		Task task = new Task("t");
 
-		Assert.assertTrue(Models.isCommunication(communication));
-		Assert.assertFalse(Models.isCommunication(task));
+		Assertions.assertTrue(Models.isCommunication(communication));
+		Assertions.assertFalse(Models.isCommunication(task));
 	}
 
 	@Test
@@ -78,15 +80,15 @@ public class ModelsTest {
 		Specification spec = new Specification(app, arch, mappings);
 		Specification spec2 = Models.copy(spec);
 
-		Assert.assertEquals(1, spec2.getApplication().getVertexCount());
-		Assert.assertTrue(spec2.getApplication().containsVertex(task));
+		Assertions.assertEquals(1, spec2.getApplication().getVertexCount());
+		Assertions.assertTrue(spec2.getApplication().containsVertex(task));
 
-		Assert.assertEquals(1, spec2.getArchitecture().getVertexCount());
-		Assert.assertTrue(spec2.getArchitecture().containsVertex(resource));
+		Assertions.assertEquals(1, spec2.getArchitecture().getVertexCount());
+		Assertions.assertTrue(spec2.getArchitecture().containsVertex(resource));
 
-		Assert.assertEquals(1, spec2.getMappings().size());
-		Assert.assertEquals(mapping, spec2.getMappings().get(task).iterator().next());
-		Assert.assertEquals(mapping, spec2.getMappings().get(resource).iterator().next());
+		Assertions.assertEquals(1, spec2.getMappings().size());
+		Assertions.assertEquals(mapping, spec2.getMappings().get(task).iterator().next());
+		Assertions.assertEquals(mapping, spec2.getMappings().get(resource).iterator().next());
 	}
 
 	@Test
@@ -106,10 +108,10 @@ public class ModelsTest {
 		Specification spec = new Specification(app, arch, mappings);
 		Specification spec2 = Models.copy(spec);
 
-		Assert.assertEquals(2, spec2.getApplication().getVertexCount());
-		Assert.assertTrue(spec2.getApplication().containsVertex(task1));
-		Assert.assertTrue(spec2.getApplication().containsVertex(task2));
-		Assert.assertTrue(spec2.getApplication().isNeighbor(task1, task2));
+		Assertions.assertEquals(2, spec2.getApplication().getVertexCount());
+		Assertions.assertTrue(spec2.getApplication().containsVertex(task1));
+		Assertions.assertTrue(spec2.getApplication().containsVertex(task2));
+		Assertions.assertTrue(spec2.getApplication().isNeighbor(task1, task2));
 	}
 
 	@Test
@@ -129,8 +131,8 @@ public class ModelsTest {
 		Specification spec = new Specification(app, arch, mappings);
 		Specification spec2 = Models.copy(spec);
 
-		Assert.assertEquals(2, spec2.getArchitecture().getVertexCount());
-		Assert.assertTrue(spec2.getArchitecture().isNeighbor(resource1, resource2));
+		Assertions.assertEquals(2, spec2.getArchitecture().getVertexCount());
+		Assertions.assertTrue(spec2.getArchitecture().isNeighbor(resource1, resource2));
 
 	}
 
@@ -145,13 +147,13 @@ public class ModelsTest {
 		app.addEdge(dependency, task1, task2);
 
 		Application<Task, Dependency> app2 = Models.clone(app);
-		Assert.assertEquals(2, app2.getVertexCount());
-		Assert.assertTrue(app2.containsVertex(task1));
-		Assert.assertTrue(app2.getVertex(task1) == task1);
-		Assert.assertTrue(app2.containsVertex(task2));
-		Assert.assertTrue(app2.isNeighbor(task1, task2));
-		Assert.assertTrue(app2.getSuccessors(task1).iterator().hasNext());
-		Assert.assertTrue(app2.getOutEdges(task1).iterator().hasNext());
-		Assert.assertTrue(app2.getOutEdges(task1).iterator().next() == dependency);
+		Assertions.assertEquals(2, app2.getVertexCount());
+		Assertions.assertTrue(app2.containsVertex(task1));
+		Assertions.assertTrue(app2.getVertex(task1) == task1);
+		Assertions.assertTrue(app2.containsVertex(task2));
+		Assertions.assertTrue(app2.isNeighbor(task1, task2));
+		Assertions.assertTrue(app2.getSuccessors(task1).iterator().hasNext());
+		Assertions.assertTrue(app2.getOutEdges(task1).iterator().hasNext());
+		Assertions.assertTrue(app2.getOutEdges(task1).iterator().next() == dependency);
 	}
 }

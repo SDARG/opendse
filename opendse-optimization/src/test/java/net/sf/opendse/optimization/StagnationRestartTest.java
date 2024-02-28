@@ -1,8 +1,8 @@
 package net.sf.opendse.optimization;
 
-import static org.junit.Assert.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.opt4j.core.Individual;
 import org.opt4j.core.Objectives;
 import org.opt4j.core.optimizer.Population;
@@ -44,11 +44,11 @@ public class StagnationRestartTest {
 		StagnationRestart restart = new StagnationRestart(population, 20);
 		restart.archive.add(indi1);
 		restart.archive.add(indi2);
-		assertEquals(0, restart.lastUpdate);
+		Assertions.assertEquals(0, restart.lastUpdate);
 		restart.iterationComplete(21);
-		assertEquals(21, restart.lastUpdate);
-		assertFalse(population.isEmpty());
-		assertFalse(restart.archive.isEmpty());
+		Assertions.assertEquals(21, restart.lastUpdate);
+		Assertions.assertFalse(population.isEmpty());
+		Assertions.assertFalse(restart.archive.isEmpty());
 	}
 
 	@Test
@@ -61,15 +61,15 @@ public class StagnationRestartTest {
 		StagnationRestart restart = new StagnationRestart(population, 20);
 		restart.archive.add(indi1);
 		restart.archive.add(indi2);
-		assertEquals(0, restart.lastUpdate);
+		Assertions.assertEquals(0, restart.lastUpdate);
 		restart.iterationComplete(5);
-		assertEquals(0, restart.lastUpdate);
-		assertFalse(population.isEmpty());
-		assertFalse(restart.archive.isEmpty());
+		Assertions.assertEquals(0, restart.lastUpdate);
+		Assertions.assertFalse(population.isEmpty());
+		Assertions.assertFalse(restart.archive.isEmpty());
 		restart.iterationComplete(21);
-		assertEquals(21, restart.lastUpdate);
-		assertTrue(population.isEmpty());
-		assertTrue(restart.archive.isEmpty());
+		Assertions.assertEquals(21, restart.lastUpdate);
+		Assertions.assertTrue(population.isEmpty());
+		Assertions.assertTrue(restart.archive.isEmpty());
 	}
 
 }

@@ -1,7 +1,11 @@
 package net.sf.opendse.model;
 
-import org.junit.Assert;
-import org.junit.Test;
+
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import net.sf.opendse.model.parameter.Parameter;
 import net.sf.opendse.model.parameter.ParameterRange;
@@ -22,8 +26,8 @@ public class ElementTest {
 		String id = "attribute name";
 		element.setAttribute(id, 0);
 
-		Assert.assertEquals(0, (int) element.<Integer> getAttribute(id));
-		Assert.assertNull(element.getAttribute("other"));
+		Assertions.assertEquals(0, (int) element.<Integer> getAttribute(id));
+		Assertions.assertNull(element.getAttribute("other"));
 	}
 
 	/**
@@ -36,7 +40,7 @@ public class ElementTest {
 		String id = "y";
 
 		parent.setAttribute(id, 0);
-		Assert.assertEquals(0, (int) element.<Integer> getAttribute(id));
+		Assertions.assertEquals(0, (int) element.<Integer> getAttribute(id));
 	}
 
 	/**
@@ -47,8 +51,8 @@ public class ElementTest {
 		Element parent = new Element("id");
 		Element element = new Element(parent);
 
-		Assert.assertTrue(parent == element.getParent());
-		Assert.assertFalse(element == element.getParent());
+		Assertions.assertTrue(parent == element.getParent());
+		Assertions.assertFalse(element == element.getParent());
 	}
 
 	/**
@@ -60,18 +64,20 @@ public class ElementTest {
 		Element element = new Element("other id");
 		element.setParent(parent);
 
-		Assert.assertTrue(parent == element.getParent());
-		Assert.assertFalse(element == element.getParent());
+		Assertions.assertTrue(parent == element.getParent());
+		Assertions.assertFalse(element == element.getParent());
 	}
 
 	/**
 	 * Tests, if {@link Element#setParent(Element)} throws {@link IllegalStateException} if parent is already defined.
 	 */
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void testSetParentIfNotExisting() {
-		Element parent = new Element("id");
-		Element element = new Element(parent);
-		element.setParent(parent);
+		assertThrows(IllegalStateException.class, () -> {
+			Element parent = new Element("id");
+			Element element = new Element(parent);
+			element.setParent(parent);
+		});
 	}
 
 	/**
@@ -83,8 +89,8 @@ public class ElementTest {
 		String id = "attribute name";
 		element.setAttribute(id, 0);
 
-		Assert.assertEquals(1, element.getAttributeNames().size());
-		Assert.assertTrue(element.getAttributeNames().contains(id));
+		Assertions.assertEquals(1, element.getAttributeNames().size());
+		Assertions.assertTrue(element.getAttributeNames().contains(id));
 	}
 
 	/**
@@ -97,8 +103,8 @@ public class ElementTest {
 		parent.setAttribute(id, 0);
 		Element element = new Element(parent);
 
-		Assert.assertEquals(1, element.getAttributeNames().size());
-		Assert.assertTrue(element.getAttributeNames().contains(id));
+		Assertions.assertEquals(1, element.getAttributeNames().size());
+		Assertions.assertTrue(element.getAttributeNames().contains(id));
 	}
 
 	/**
@@ -113,9 +119,9 @@ public class ElementTest {
 		String id2 = "y";
 		element.setAttribute(id2, 0);
 
-		Assert.assertEquals(1, element.getLocalAttributeNames().size());
-		Assert.assertFalse(element.getLocalAttributeNames().contains(id1));
-		Assert.assertTrue(element.getLocalAttributeNames().contains(id2));
+		Assertions.assertEquals(1, element.getLocalAttributeNames().size());
+		Assertions.assertFalse(element.getLocalAttributeNames().contains(id1));
+		Assertions.assertTrue(element.getLocalAttributeNames().contains(id2));
 	}
 
 	/**
@@ -126,7 +132,7 @@ public class ElementTest {
 		String id = "id";
 		Element element = new Element(id);
 
-		Assert.assertEquals(id, element.toString());
+		Assertions.assertEquals(id, element.toString());
 	}
 
 	/**
@@ -142,9 +148,9 @@ public class ElementTest {
 		String attribute = "b";
 		element.setAttribute(attribute, 1);
 
-		Assert.assertTrue(element.isDefined(attribute));
-		Assert.assertTrue(element.isDefined(parentattribute));
-		Assert.assertFalse(element.isDefined("c"));
+		Assertions.assertTrue(element.isDefined(attribute));
+		Assertions.assertTrue(element.isDefined(parentattribute));
+		Assertions.assertFalse(element.isDefined("c"));
 	}
 
 	/**
@@ -160,8 +166,8 @@ public class ElementTest {
 		String attribute = "b";
 		element.setAttribute(attribute, 1);
 
-		Assert.assertTrue(element.getAttributes().isDefined(parentattribute));
-		Assert.assertTrue(element.getAttributes().isDefined(attribute));
+		Assertions.assertTrue(element.getAttributes().isDefined(parentattribute));
+		Assertions.assertTrue(element.getAttributes().isDefined(attribute));
 	}
 
 	/**
@@ -177,8 +183,8 @@ public class ElementTest {
 		String attribute = "b";
 		element.setAttribute(attribute, 1);
 
-		Assert.assertFalse(element.getLocalAttributes().isDefined(parentattribute));
-		Assert.assertTrue(element.getLocalAttributes().isDefined(attribute));
+		Assertions.assertFalse(element.getLocalAttributes().isDefined(parentattribute));
+		Assertions.assertTrue(element.getLocalAttributes().isDefined(attribute));
 	}
 
 	@Test
@@ -186,7 +192,7 @@ public class ElementTest {
 		Element element = new Element("id");
 		String type = "my type";
 		element.setType(type);
-		Assert.assertEquals(type, element.getType());
+		Assertions.assertEquals(type, element.getType());
 	}
 
 	/**
@@ -199,8 +205,8 @@ public class ElementTest {
 		Parameter parameter = new ParameterRange(1.0, 0.0, 2.0);
 		element.setAttribute("parameter", parameter);
 
-		Assert.assertEquals(parameter, element.getAttributeParameter("parameter"));
-		Assert.assertNull(element.getAttributeParameter("normal attribute"));
+		Assertions.assertEquals(parameter, element.getAttributeParameter("parameter"));
+		Assertions.assertNull(element.getAttributeParameter("normal attribute"));
 	}
 
 	/**
@@ -214,8 +220,8 @@ public class ElementTest {
 
 		Element element = new Element(parent);
 
-		Assert.assertEquals(parameter, element.getAttributeParameter("parameter"));
-		Assert.assertNull(element.getAttributeParameter("other"));
+		Assertions.assertEquals(parameter, element.getAttributeParameter("parameter"));
+		Assertions.assertNull(element.getAttributeParameter("other"));
 	}
 
 	/**
@@ -226,8 +232,8 @@ public class ElementTest {
 		Element parent = new Element("id");
 		Element element = new Element(parent);
 
-		Assert.assertEquals(element, element);
-		Assert.assertNotEquals(element, null);
-		Assert.assertEquals(element, parent);
+		Assertions.assertEquals(element, element);
+		Assertions.assertNotEquals(element, null);
+		Assertions.assertEquals(element, parent);
 	}
 }

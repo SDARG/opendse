@@ -24,6 +24,7 @@ package net.sf.opendse.optimization.evaluator;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.StringTokenizer;
 
 import net.sf.opendse.io.SpecificationWriter;
 import net.sf.opendse.model.Specification;
@@ -43,7 +44,18 @@ public class ExternalEvaluatorStream extends AbstractExternalEvaluator implement
 	private synchronized void init() {
 		if (!isInit) {
 			try {
-				Process process = Runtime.getRuntime().exec(command);
+				
+				//breaking command string into tokens for using the recommended exec function which needs a string[]
+				String temp = command;
+				StringTokenizer tokenizer = new StringTokenizer(temp);
+				String[] commandArray = new String[tokenizer.countTokens()];
+				int counter = 0;
+				while(tokenizer.hasMoreTokens()) {
+					commandArray[counter] = tokenizer.nextToken();
+					counter++;
+				}
+				
+				Process process = Runtime.getRuntime().exec(commandArray);
 
 				final InputStream in = process.getInputStream();
 				final InputStream err = process.getErrorStream();
@@ -73,7 +85,17 @@ public class ExternalEvaluatorStream extends AbstractExternalEvaluator implement
 		}
 
 		try {
-			Process process = Runtime.getRuntime().exec(command);
+			//breaking command string into tokens for using the recommended exec function which needs a string[]
+			String temp = command;
+			StringTokenizer tokenizer = new StringTokenizer(temp);
+			String[] commandArray = new String[tokenizer.countTokens()];
+			int counter = 0;
+			while(tokenizer.hasMoreTokens()) {
+				commandArray[counter] = tokenizer.nextToken();
+				counter++;
+			}
+			
+			Process process = Runtime.getRuntime().exec(commandArray);
 			final InputStream in = process.getInputStream();
 			final InputStream err = process.getErrorStream();
 			final OutputStream out = process.getOutputStream();

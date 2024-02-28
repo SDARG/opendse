@@ -30,10 +30,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import net.sf.jmpi.main.MpProblem;
-import net.sf.jmpi.main.MpResult;
-import net.sf.jmpi.main.MpSolver;
-import net.sf.jmpi.solver.gurobi.SolverGurobi;
+import edu.uci.ics.jung.algorithms.shortestpath.DijkstraDistance;
 import net.sf.opendse.generator.ApplicationGenerator;
 import net.sf.opendse.generator.ArchitectureGenerator;
 import net.sf.opendse.generator.MappingGenerator;
@@ -57,25 +54,7 @@ import net.sf.opendse.optimization.encoding.RoutingFilter;
 import net.sf.opendse.optimization.encoding.RoutingGenerator;
 import net.sf.opendse.optimization.encoding.SingleImplementation;
 import net.sf.opendse.realtime.et.PriorityScheduler;
-import net.sf.opendse.realtime.et.SolverProvider;
-import net.sf.opendse.realtime.et.TimingGraphViewer;
-import net.sf.opendse.realtime.et.graph.ApplicationDependencyInterferencePredicate;
-import net.sf.opendse.realtime.et.graph.ApplicationPriorityCyclesPredicate;
-import net.sf.opendse.realtime.et.graph.DelaySchedulerEdgePredicate;
-import net.sf.opendse.realtime.et.graph.RateMonotonicEdgeFilterPredicate;
-import net.sf.opendse.realtime.et.graph.SourceTargetCommunicationPredicate;
-import net.sf.opendse.realtime.et.graph.TimingElement;
-import net.sf.opendse.realtime.et.graph.TimingGraph;
-import net.sf.opendse.realtime.et.graph.TimingGraphBuilder;
-import net.sf.opendse.realtime.et.graph.TimingGraphModifierFilterEdge;
-import net.sf.opendse.realtime.et.graph.TimingGraphModifierFilterVertex;
-import net.sf.opendse.realtime.et.qcqp.MyConflictRefinementDeletion;
-import net.sf.opendse.realtime.et.qcqp.MyEncoder;
-import net.sf.opendse.realtime.et.qcqp.MyEncoder.OptimizationObjective;
-import net.sf.opendse.realtime.et.qcqp.MyInterpreter;
-import net.sf.opendse.realtime.et.qcqp.MyTimingPropertyAnnotater;
 import net.sf.opendse.visualization.SpecificationViewer;
-import edu.uci.ics.jung.algorithms.shortestpath.DijkstraDistance;
 
 public class TimingTester {
 
@@ -174,7 +153,6 @@ public class TimingTester {
 	public static Specification getImplementationScalabilityGateway() {
 		ArchitectureGenerator architectureGenerator = new ArchitectureGenerator(0);
 		ApplicationGenerator applicationGenerator = new ApplicationGenerator(0);
-		MappingGenerator mappingGenerator = new MappingGenerator(0);
 		RoutingGenerator routingGenerator = new RoutingGenerator();
 
 		Architecture<Resource, Link> architecture = new Architecture<Resource, Link>();

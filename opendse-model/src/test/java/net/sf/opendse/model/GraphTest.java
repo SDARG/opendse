@@ -2,8 +2,10 @@ package net.sf.opendse.model;
 
 import java.util.Collections;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+
 
 public class GraphTest {
 
@@ -13,7 +15,7 @@ public class GraphTest {
 		Task task = new Task("x");
 		app.addVertex(task);
 
-		Assert.assertTrue(app.containsVertex(task));
+		Assertions.assertTrue(app.containsVertex(task));
 	}
 
 	@Test
@@ -22,7 +24,7 @@ public class GraphTest {
 		Task task = new Task("x");
 		app.addVertex(task);
 
-		Assert.assertEquals(task, app.getVertex(task));
+		Assertions.assertEquals(task, app.getVertex(task));
 	}
 
 	@Test
@@ -31,13 +33,13 @@ public class GraphTest {
 		Task task = new Task("x");
 		app.addVertex(task);
 
-		Assert.assertEquals(task, app.getVertex("x"));
+		Assertions.assertEquals(task, app.getVertex("x"));
 	}
 
 	@Test
 	public void getVertexUnkownId() {
 		Graph<Task, Dependency> app = new Graph<Task, Dependency>();
-		Assert.assertNull(app.getVertex("y"));
+		Assertions.assertNull(app.getVertex("y"));
 	}
 
 	@Test
@@ -48,9 +50,9 @@ public class GraphTest {
 		Dependency e = new Dependency("e");
 		app.addEdge(e, task, task2);
 
-		Assert.assertEquals(e, app.getEdge(e));
-		Assert.assertTrue(app.containsVertex(task));
-		Assert.assertTrue(app.containsVertex(task2));
+		Assertions.assertEquals(e, app.getEdge(e));
+		Assertions.assertTrue(app.containsVertex(task));
+		Assertions.assertTrue(app.containsVertex(task2));
 	}
 
 	@Test
@@ -63,13 +65,13 @@ public class GraphTest {
 		app.addVertex(task2);
 		app.addEdge(e, task, task2);
 
-		Assert.assertEquals(e, app.getEdge("e"));
+		Assertions.assertEquals(e, app.getEdge("e"));
 	}
 
 	@Test
 	public void getEdgeUnkownId() {
 		Graph<Task, Dependency> app = new Graph<Task, Dependency>();
-		Assert.assertNull(app.getEdge("y"));
+		Assertions.assertNull(app.getEdge("y"));
 	}
 
 	@Test
@@ -78,7 +80,7 @@ public class GraphTest {
 		Task task = new Task("x");
 		app.addVertex(task);
 
-		Assert.assertTrue(app.removeVertices(Collections.singleton(task)));
-		Assert.assertEquals(0, app.getVertexCount());
+		Assertions.assertTrue(app.removeVertices(Collections.singleton(task)));
+		Assertions.assertEquals(0, app.getVertexCount());
 	}
 }
