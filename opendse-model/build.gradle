@@ -1,7 +1,7 @@
 dependencies {	
-	compile group: 'net.sf.jung',	name: 'jung-api', 				version: '2.0.1'
-	compile group: 'net.sf.jung',	name: 'jung-graph-impl', 		version: '2.0.1'
-	compile group: 'net.sf.jung',	name: 'jung-algorithms', 		version: '2.0.1'
+	implementation group: 'net.sf.jung',	name: 'jung-api', 				version: '2.0.1'
+	implementation group: 'net.sf.jung',	name: 'jung-graph-impl', 		version: '2.0.1'
+	implementation group: 'net.sf.jung',	name: 'jung-algorithms', 		version: '2.0.1'
 
-	testCompile 'junit:junit:4.12'
+	testImplementation 'junit:junit:4.12'
 }

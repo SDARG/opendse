@@ -1,8 +1,39 @@
-apply plugin: 'base'
-apply plugin: 'maven'
-apply plugin: 'application'
-apply plugin: 'eclipse'
-apply plugin: 'jacoco'
+plugins{
+	id 'java'
+	id 'jacoco-report-aggregation'
+	id 'eclipse'
+	id 'application'
+	id 'base'
+}
+
+/*
+ * define global parameters here, e.g. versions numbers of tools which need to be consistent for all subprojects
+ * they are all accesible via project.parametername e.g. project.opt4jJavaVersion to get the used java version for Opt4J
+ */
+ext{
+	openDseJavaVersion = "21"
+	guiceVersion = "7.0.0"
+	sat4jVersion = "2.3.6"
+	junitVersion = "5.10.2"
+	mockitoVersion = "5.10.0"
+	jacocoVersion = "0.8.11"
+	xomVersion = "1.3.9"
+	glazedListsVersion = "1.10.0"
+}
+
+jacoco{
+	toolVersion = project.jacocoVersion
+}
+
+
+java {
+	sourceCompatibility = project.openDseJavaVersion
+	targetCompatibility = project.openDseJavaVersion
+    toolchain {
+    	languageVersion.set(JavaLanguageVersion.of(project.openDseJavaVersion))
+    }
+}
+
 
 version = 'SNAPSHOT-' + new Date().format("yyyyMMdd")
 
@@ -30,7 +61,6 @@ allprojects {
 
 subprojects {
 	apply plugin: 'java'
-	apply plugin: 'maven'
 	apply plugin: 'eclipse'
 	apply plugin: 'jacoco'
 
@@ -39,14 +69,56 @@ subprojects {
 
 	task sourcesJar(type: Jar, dependsOn:classes) {
 		from sourceSets.main.allSource
-		classifier = 'sources'
+		archiveClassifier.set('sources')
 	}
 
 	task javadocJar(type: Jar, dependsOn:javadoc) {
 		from javadoc.destinationDir
-		classifier = 'javadoc'
+		archiveClassifier.set('javadoc')
+	}
+	
+	java {
+		sourceCompatibility = project.openDseJavaVersion
+		targetCompatibility = project.openDseJavaVersion
+    	toolchain {
+    		languageVersion.set(JavaLanguageVersion.of(project.openDseJavaVersion))
+    	}
+    }
+ 	
+ 	test {
+	    // Enable JUnit 5 (Gradle 4.6+).
+/************************************************
+		activate this after change to junit5!!!
+	    useJUnitPlatform()
+*/
+
+	    // Always run tests, even when nothing changed.
+	    dependsOn 'cleanTest'
+
+	    // Show test results.
+	    testLogging {
+	        events "passed", "skipped", "failed"
+		}
+	}
+ 	
+
+	jacoco {
+		toolVersion = project.jacocoVersion
+	}
+
+	jacocoTestReport {
+		getAdditionalSourceDirs().setFrom(sourceSets.main.allSource.srcDirs)
+		getSourceDirectories().setFrom(sourceSets.main.allSource.srcDirs)
+		getClassDirectories().setFrom(sourceSets.main.output)
+		reports {
+			html.required = true
+			csv.required = true
+			xml.required = true
+		}
 	}
 }
+
+
 
 /* for now ignore all javadoc errors in case of Java 8 */
 if (JavaVersion.current().isJava8Compatible()) {
@@ -66,7 +138,7 @@ ext {
 mainClassName = 'org.opt4j.core.start.Opt4J'
 
 task fatjar(dependsOn: subprojects.jar, type: Jar) {
-	destinationDir = new File(project.buildDir, 'fatjar')
+	destinationDirectory = new File(project.buildDir, 'fatjar')
 	from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it)
 		} }
 	manifest {
@@ -75,11 +147,11 @@ task fatjar(dependsOn: subprojects.jar, type: Jar) {
 }
 
 dependencies {
-	runtime project(':opendse-model')
-	runtime project(':opendse-io')
-	runtime project(':opendse-visualization')
-	runtime project(':opendse-optimization')
-	runtime project(':opendse-realtime')
+	implementation project(':opendse-model')
+	implementation project(':opendse-io')
+	implementation project(':opendse-visualization')
+	implementation project(':opendse-optimization')
+	implementation project(':opendse-realtime')
 }
 
 jar {
@@ -138,17 +210,14 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
 	getAdditionalSourceDirs().setFrom(subprojects.sourceSets.main.allSource.srcDirs)
 	getSourceDirectories().setFrom(subprojects.sourceSets.main.allSource.srcDirs)
 	getClassDirectories().setFrom(subprojects.sourceSets.main.output)
-	getExecutionData().setFrom(subprojects.jacocoTestReport.executionData)
-	getExecutionData().setFrom(executionData.findAll {
-		it.exists()
-	})
+	executionData.from = files(subprojects.jacocoTestReport.executionData)
 	reports {
-		html.enabled true
-		html.destination(file("${buildDir}/reports/jacoco"))
-		xml.enabled = true
-		xml.destination(file("${buildDir}/reports/jacoco/rootReport.xml"))
-		csv.enabled = true
-		csv.destination(file("${buildDir}/reports/jacoco/rootReport.csv"))
+		xml.required = true
+		xml.outputLocation = file("${buildDir}/reports/jacoco/rootReport.xml")
+		html.required = true
+		html.outputLocation = file("${buildDir}/reports/jacoco")
+		csv.required = true
+		csv.outputLocation = file("${buildDir}/reports/jacoco/rootReport.csv")
 	}
 	onlyIf = {
 		true

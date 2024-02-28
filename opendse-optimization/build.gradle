@@ -1,14 +1,23 @@
 dependencies {	
-	compile project(':opendse-model')
-	compile project(':opendse-io')
-	compile project(':opendse-visualization')
+	implementation project(':opendse-model')
+	implementation project(':opendse-io')
+	implementation project(':opendse-visualization')
 	
 	
-	implementation 'com.github.SDARG.opt4j:opt4j-core:-SNAPSHOT'
-	implementation 'com.github.SDARG.opt4j:opt4j-satdecoding:-SNAPSHOT'
-	implementation 'com.github.SDARG.opt4j:opt4j-optimizers:-SNAPSHOT'
-	implementation 'com.github.SDARG.opt4j:opt4j-viewer:-SNAPSHOT'
+	implementation 'com.github.SDARG.opt4j:opt4j-core:88-version-bump-to-java-21-lts-SNAPSHOT'//-SNAPSHOT'
+	implementation 'com.github.SDARG.opt4j:opt4j-satdecoding:88-version-bump-to-java-21-lts-SNAPSHOT'//-SNAPSHOT'
+	implementation 'com.github.SDARG.opt4j:opt4j-optimizers:88-version-bump-to-java-21-lts-SNAPSHOT'//-SNAPSHOT'
+	implementation 'com.github.SDARG.opt4j:opt4j-viewer:88-version-bump-to-java-21-lts-SNAPSHOT'//-SNAPSHOT'
+	
+	//this is now new since the version bump, don't know why. Needs some looking into it.
+	implementation group: 'com.google.inject', name: 'guice', version: project.guiceVersion
+	implementation 'com.github.SDARG.opt4j:opt4j-operators:88-version-bump-to-java-21-lts-SNAPSHOT'
+	
+	implementation group: 'xom',	name: 'xom', 		version: project.xomVersion//'1.2.5'
+	implementation group: 'net.sf.jung',	name: 'jung-api', 				version: '2.0.1'
+	implementation group: 'net.sf.jung',	name: 'jung-graph-impl', 		version: '2.0.1'
+	implementation group: 'net.sf.jung',	name: 'jung-algorithms', 		version: '2.0.1'
 
-	testCompile 'junit:junit:4.12'
-	testCompile group: 'org.mockito', name: 'mockito-core', version: '2.22.0'
+	testImplementation 'junit:junit:4.12'
+	testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.22.0'
 }

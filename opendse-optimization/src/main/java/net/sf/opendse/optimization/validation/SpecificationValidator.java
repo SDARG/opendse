@@ -1,6 +1,6 @@
 package net.sf.opendse.optimization.validation;
 
-import javax.inject.Inject;
+import com.google.inject.Inject;
 
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.ValidSpecificationPredicate;
