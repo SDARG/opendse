@@ -3,12 +3,12 @@ dependencies {
 
 	implementation group: 'xom',	name: 'xom', 		version: project.xomVersion
 	
-	implementation group: 'net.sf.jung',	name: 'jung-graph-impl', 		version: project.jungVersion
-	
 	testImplementation platform(group: 'org.junit', name: 'junit-bom', version: project.junitVersion)
 	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter'
 	testImplementation group: 'org.junit.platform', name: 'junit-platform-launcher'
 	testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: project.mockitoVersion
+	
+	implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: '4.01'
 	
 }
 

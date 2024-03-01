@@ -1,6 +1,6 @@
 dependencies {	
-	implementation group: 'net.sf.jung',	name: 'jung-graph-impl', 		version: project.jungVersion
-
+	
 	implementation project(':opendse-model')
+	implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: '4.01'
 
 }

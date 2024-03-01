@@ -3,24 +3,18 @@ dependencies {
 	implementation project(':opendse-io')
 	implementation project(':opendse-visualization')
 	
-	
-	implementation 'com.github.SDARG.opt4j:opt4j-core:88-version-bump-to-java-21-lts-SNAPSHOT'
 	implementation 'com.github.SDARG.opt4j:opt4j-satdecoding:88-version-bump-to-java-21-lts-SNAPSHOT'
 	implementation 'com.github.SDARG.opt4j:opt4j-optimizers:88-version-bump-to-java-21-lts-SNAPSHOT'
 	implementation 'com.github.SDARG.opt4j:opt4j-viewer:88-version-bump-to-java-21-lts-SNAPSHOT'
-	
-	//this is now new since the version bump, don't know why. Needs some looking into it.
-	implementation group: 'com.google.inject', name: 'guice', version: project.guiceVersion
 	implementation 'com.github.SDARG.opt4j:opt4j-operators:88-version-bump-to-java-21-lts-SNAPSHOT'
 	
 	implementation group: 'xom',	name: 'xom', 		version: project.xomVersion
 	
-	implementation group: 'net.sf.jung',	name: 'jung-graph-impl', 		version: project.jungVersion
-	implementation group: 'net.sf.jung',	name: 'jung-algorithms', 		version: project.jungVersion
-
 	testImplementation platform(group: 'org.junit', name: 'junit-bom', version: project.junitVersion)
 	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter'
 	testImplementation group: 'org.junit.platform', name: 'junit-platform-launcher'
 	testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: project.mockitoVersion
+	
+	implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: '4.01'
 	
 }

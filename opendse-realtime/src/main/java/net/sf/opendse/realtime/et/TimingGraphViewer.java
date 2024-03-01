@@ -35,6 +35,8 @@ import net.sf.opendse.visualization.algorithm.DistanceFlowLayout;
 
 import org.apache.commons.collections15.Transformer;
 
+import com.google.common.base.Function;
+
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.visualization.DefaultVisualizationModel;
 import edu.uci.ics.jung.visualization.GraphZoomScrollPane;
@@ -65,15 +67,16 @@ public class TimingGraphViewer {
 
 		RenderContext<TimingElement, TimingDependency> ctx = vv.getRenderContext();
 
-		ctx.setVertexLabelTransformer(new Transformer<TimingElement, String>() {
-			public String transform(TimingElement timingEntity) {
+		//ctx.setVertexLabelTransformer(new Function<TimingElement, String>() {
+		ctx.setVertexLabelTransformer(new Function<TimingElement, String>() {
+			public String apply(TimingElement timingEntity) {
 				return timingEntity.toString();
 			}
 		});
 
-		ctx.setVertexFillPaintTransformer(new Transformer<TimingElement, Paint>() {
+		ctx.setVertexFillPaintTransformer(new Function<TimingElement, Paint>() {
 			@Override
-			public Paint transform(TimingElement entity) {
+			public Paint apply(TimingElement entity) {
 				//if (entity.isCommunication()) {
 					return Graphics.ALICEBLUE;
 				//} else {
@@ -82,9 +85,9 @@ public class TimingGraphViewer {
 			}
 		});
 		
-		ctx.setEdgeDrawPaintTransformer(new Transformer<TimingDependency, Paint>() {
+		ctx.setEdgeDrawPaintTransformer(new Function<TimingDependency, Paint>() {
 			@Override
-			public Paint transform(TimingDependency td) {
+			public Paint apply(TimingDependency td) {
 				if(td instanceof TimingDependencyTrigger){
 					return Graphics.BLACK;
 				} else {
@@ -103,16 +106,16 @@ public class TimingGraphViewer {
 
 	}
 
-	protected static class VertexSizeTransformer implements Transformer<TimingElement, Integer> {
+	protected static class VertexSizeTransformer implements Function<TimingElement, Integer> {
 		@Override
-		public Integer transform(TimingElement vertex) {
+		public Integer apply(TimingElement vertex) {
 			return 10;
 		}
 	}
 
-	protected static class VertexRatioTransformer implements Transformer<TimingElement, Float> {
+	protected static class VertexRatioTransformer implements Function<TimingElement, Float> {
 		@Override
-		public Float transform(TimingElement vertex) {
+		public Float apply(TimingElement vertex) {
 			return 1.0f;
 		}
 	}

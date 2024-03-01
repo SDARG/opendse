@@ -3,13 +3,11 @@ dependencies {
 	implementation project(':opendse-io')
 	
 	implementation group: 'net.sf.jung',	name: 'jung-visualization', 	version: project.jungVersion
-	
-	implementation group: 'com.google.inject', name: 'guice', version: project.guiceVersion
-	
-	implementation group: 'net.sf.jung',	name: 'jung-graph-impl', 		version: project.jungVersion
 
 	implementation group: 'net.java.dev.glazedlists', name: 'glazedlists_java16', version: project.glazedListsVersion
 	
 	implementation 'com.github.SDARG.opt4j:opt4j-core:88-version-bump-to-java-21-lts-SNAPSHOT'
+	
+	implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: '4.01'
 
 }
