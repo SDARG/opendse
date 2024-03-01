@@ -77,6 +77,7 @@ import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.GraphMouseListener;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import edu.uci.ics.jung.visualization.decorators.EdgeShape;
+import edu.uci.ics.jung.visualization.decorators.EdgeShape.Line;
 import edu.uci.ics.jung.visualization.decorators.EdgeShape.QuadCurve;
 import edu.uci.ics.jung.visualization.renderers.BasicVertexLabelRenderer;
 import edu.uci.ics.jung.visualization.renderers.BasicVertexRenderer;
@@ -550,7 +551,7 @@ public class GraphPanel extends JPanel implements ElementSelectionListener {
 		//ctx.setEdgeShapeTransformer(EdgeShape.quadCurve(graph));
 
 		@SuppressWarnings("rawtypes")
-		QuadCurve curve = EdgeShape.quadCurve(graph);
+		Line curve = EdgeShape.line(graph);
 		
 		//ctx.setEdgeShapeTransformer(curve);
 		
