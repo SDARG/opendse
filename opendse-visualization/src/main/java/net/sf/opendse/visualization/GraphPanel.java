@@ -75,11 +75,10 @@ import edu.uci.ics.jung.visualization.Layer;
 import edu.uci.ics.jung.visualization.RenderContext;
 import edu.uci.ics.jung.visualization.VisualizationModel;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
+import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.GraphMouseListener;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import edu.uci.ics.jung.visualization.decorators.EdgeShape;
-import edu.uci.ics.jung.visualization.decorators.EdgeShape.Line;
-import edu.uci.ics.jung.visualization.decorators.EdgeShape.QuadCurve;
 import edu.uci.ics.jung.visualization.renderers.BasicVertexLabelRenderer;
 import edu.uci.ics.jung.visualization.renderers.BasicVertexRenderer;
 import edu.uci.ics.jung.visualization.renderers.DefaultEdgeLabelRenderer;
@@ -393,7 +392,6 @@ public class GraphPanel extends JPanel implements ElementSelectionListener {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void init() {
 		setLayout(new BorderLayout());
 
@@ -508,48 +506,10 @@ public class GraphPanel extends JPanel implements ElementSelectionListener {
 			}
 		};
 
-
 		
-//		class MyCurve implements Function <LocalEdge, Shape> {
-//			
-//			Context<edu.uci.ics.jung.graph.Graph<Node, LocalEdge>, LocalEdge> context;
-//			private final QuadCurve2D instance = new QuadCurve2D.Float();
-//
-//			
-//			public MyCurve(Context<edu.uci.ics.jung.graph.Graph<Node, LocalEdge>, LocalEdge> context) {
-//				this.context = context;
-//			}
-//			
-//			@Override
-//			public Shape apply(LocalEdge edge) {
-//				// parallelEdgeIndexTransformer = edgeIndexFunction;
-//
-//				edu.uci.ics.jung.graph.Graph<Node, LocalEdge> graph = context.graph;
-//				LocalEdge e = context.element;
-//				Pair<Node> endpoints = graph.getEndpoints(e);
-//				if (endpoints != null) {
-//					boolean isLoop = endpoints.getFirst().equals(endpoints.getSecond());
-//					if (isLoop) {
-//						return EdgeShape.line(context.graph);
-//					}
-//				}
-//
-//				int index = 1;
-//				if (edgeIndexFunction != null) {
-//					index = edgeIndexFunction.getIndex(graph, e);
-//				}
-//
-//				float controlY = control_offset_increment * index;
-//
-//				instance.setCurve(0.0f, 0.0f, 0.5f, controlY, 1.0f, 0.0f);
-//				return (Shape) instance;
-//			}
-//			
-//		}
+		EdgeShape<Node,LocalEdge> edgeShape = new EdgeShape<Node,LocalEdge>((edu.uci.ics.jung.graph.Graph<Node, LocalEdge>)localGraph);
 		
-		EdgeShape<Node,LocalEdge> test = new EdgeShape<Node,LocalEdge>((edu.uci.ics.jung.graph.Graph<Node, LocalEdge>)localGraph);
-		
-		final Function<LocalEdge, Shape> curve = test.new QuadCurve() {
+		final Function<LocalEdge, Shape> curve = edgeShape.new QuadCurve() {
 			private final QuadCurve2D instance = new QuadCurve2D.Float();
 			
 			@Override
@@ -572,44 +532,11 @@ public class GraphPanel extends JPanel implements ElementSelectionListener {
 				instance.setCurve(0.0f, 0.0f, 0.5f, controlY, 1.0f, 0.0f);
 				return instance;
 			}
-
-//			@Override
-//			public Shape apply(Edge edge) {
-//				parallelEdgeIndexFunction = edgeIndexFunction;
-//
-//				edu.uci.ics.jung.graph.Graph<Node, LocalEdge> graph = context.graph;
-//				LocalEdge e = context.element;
-//				Pair<Node> endpoints = graph.getEndpoints(e);
-//				if (endpoints != null) {
-//					boolean isLoop = endpoints.getFirst().equals(endpoints.getSecond());
-//					if (isLoop) {
-//						return super.transform(context);
-//					}
-//				}
-//
-//				int index = 1;
-//				if (parallelEdgeIndexFunction != null) {
-//					index = parallelEdgeIndexFunction.getIndex(graph, e);
-//				}
-//
-//				float controlY = control_offset_increment * index;
-//
-//				instance.setCurve(0.0f, 0.0f, 0.5f, controlY, 1.0f, 0.0f);
-//				return instance;
-//			}
 		};
 		
 		((EdgeShape<Node, LocalEdge>.QuadCurve) curve).setEdgeIndexFunction(edgeIndexFunction);
 
 		ctx.setEdgeShapeTransformer(curve);
-
-		//@SuppressWarnings("rawtypes")
-		//Line curve = EdgeShape.line(graph);
-		
-		//Context<edu.uci.ics.jung.graph.Graph<Node, LocalEdge>, LocalEdge> context;
-		//context.getInstance(graph, e);
-		
-		//ctx.setEdgeShapeTransformer(curve);
 		
 		ctx.setVertexLabelTransformer(new Function<Node, String>() {
 			@Override
@@ -659,9 +586,9 @@ public class GraphPanel extends JPanel implements ElementSelectionListener {
 					}
 				});
 
-		ModalGraphMouse mouse = new CustomModalGraphMouse<Node, Edge>();
-
-		vv.setGraphMouse(mouse);
+		
+		
+		
 
 		vv.addGraphMouseListener(new GraphMouseListener<Node>() {
 			@Override
@@ -674,6 +601,7 @@ public class GraphPanel extends JPanel implements ElementSelectionListener {
 					}
 				}
 			}
+			
 
 			@Override
 			public void graphPressed(Node node, MouseEvent me) {
@@ -683,6 +611,7 @@ public class GraphPanel extends JPanel implements ElementSelectionListener {
 			public void graphReleased(Node node, MouseEvent me) {
 			}
 		});
+		
 
 		JPanel panel = new JPanel(new BorderLayout());
 
@@ -690,11 +619,16 @@ public class GraphPanel extends JPanel implements ElementSelectionListener {
 		panel.add(BorderLayout.NORTH, new SelectionPanel());
 		panel.add(BorderLayout.CENTER, scrollPane);
 		add(panel);
+		
+		ModalGraphMouse mouse = new DefaultModalGraphMouse<Node, Edge>();
+		mouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
+		vv.setGraphMouse(mouse);
+		
 	}
 
 	@Override
 	public void selectionChanged(ElementSelection selection) {
 		repaint();
 	}
-
+	
 }
