@@ -41,6 +41,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -546,12 +547,67 @@ public class GraphPanel extends JPanel implements ElementSelectionListener {
 //			
 //		}
 		
-		//curve.setEdgeIndexFunction(edgeIndexFunction);
+		EdgeShape<Node,LocalEdge> test = new EdgeShape<Node,LocalEdge>((edu.uci.ics.jung.graph.Graph<Node, LocalEdge>)localGraph);
+		
+		final Function<LocalEdge, Shape> curve = test.new QuadCurve() {
+			private final QuadCurve2D instance = new QuadCurve2D.Float();
+			
+			@Override
+			public Shape apply(LocalEdge e) {
+				Pair<Node> endpoints = ((edu.uci.ics.jung.graph.Graph<Node, LocalEdge>)localGraph).getEndpoints(e);
+				if (endpoints != null) {
+					boolean isLoop = endpoints.getFirst().equals(endpoints.getSecond());
+					if (isLoop) {
+						return super.apply(e);
+					}
+				}
 
-		//ctx.setEdgeShapeTransformer(EdgeShape.quadCurve(graph));
+				int index = 1;
+				if (edgeIndexFunction != null) {
+					index = edgeIndexFunction.getIndex((edu.uci.ics.jung.graph.Graph<Node, LocalEdge>)localGraph, e);
+				}
 
-		@SuppressWarnings("rawtypes")
-		Line curve = EdgeShape.line(graph);
+				float controlY = control_offset_increment * index;
+
+				instance.setCurve(0.0f, 0.0f, 0.5f, controlY, 1.0f, 0.0f);
+				return instance;
+			}
+
+//			@Override
+//			public Shape apply(Edge edge) {
+//				parallelEdgeIndexFunction = edgeIndexFunction;
+//
+//				edu.uci.ics.jung.graph.Graph<Node, LocalEdge> graph = context.graph;
+//				LocalEdge e = context.element;
+//				Pair<Node> endpoints = graph.getEndpoints(e);
+//				if (endpoints != null) {
+//					boolean isLoop = endpoints.getFirst().equals(endpoints.getSecond());
+//					if (isLoop) {
+//						return super.transform(context);
+//					}
+//				}
+//
+//				int index = 1;
+//				if (parallelEdgeIndexFunction != null) {
+//					index = parallelEdgeIndexFunction.getIndex(graph, e);
+//				}
+//
+//				float controlY = control_offset_increment * index;
+//
+//				instance.setCurve(0.0f, 0.0f, 0.5f, controlY, 1.0f, 0.0f);
+//				return instance;
+//			}
+		};
+		
+		((EdgeShape<Node, LocalEdge>.QuadCurve) curve).setEdgeIndexFunction(edgeIndexFunction);
+
+		ctx.setEdgeShapeTransformer(curve);
+
+		//@SuppressWarnings("rawtypes")
+		//Line curve = EdgeShape.line(graph);
+		
+		//Context<edu.uci.ics.jung.graph.Graph<Node, LocalEdge>, LocalEdge> context;
+		//context.getInstance(graph, e);
 		
 		//ctx.setEdgeShapeTransformer(curve);
 		
