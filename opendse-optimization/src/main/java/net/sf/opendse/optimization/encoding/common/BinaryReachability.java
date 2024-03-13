@@ -51,6 +51,7 @@ public class BinaryReachability {
 			for (Constraint constraint : constraints) {
 				solver.addConstraint(constraint);
 			}
+			System.out.println("###################"+solver);
 
 			while (candidates.size() > 0) {
 				Constraint constraint = new Constraint(">=", 1);
@@ -87,7 +88,7 @@ public class BinaryReachability {
 		for(Literal candidate: candidates){
 			lits.add(candidate.negate());
 		}
-
+		System.out.println("### Literals from BinaryReachability: "+lits);
 		return lits;
 	}
 

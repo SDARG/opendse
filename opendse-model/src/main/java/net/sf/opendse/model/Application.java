@@ -102,7 +102,7 @@ public class Application<T extends Task, D extends Dependency> extends Graph<T, 
 
 	public Set<Function<T, D>> getFunctions() {
 		WeakComponentClusterer<T, D> wcc = new WeakComponentClusterer<T, D>();
-		Set<Set<T>> cluster =wcc.apply(this);
+		Set<Set<T>> cluster =wcc.transform(this);
 		//Set<Set<T>> cluster = wcc.transform(this);
 
 		Set<Function<T, D>> functions = new HashSet<Function<T, D>>();

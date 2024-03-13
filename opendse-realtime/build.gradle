@@ -13,5 +13,5 @@ dependencies {
 	testImplementation project(':opendse-generator')
 	testImplementation project(':opendse-optimization')
 	
-	implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: '4.01'
+	//implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: '4.01'
 }

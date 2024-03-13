@@ -124,7 +124,7 @@ public class MyInterpreter {
 
 		if (considerPriorities) {
 			WeakComponentClusterer<TimingElement, TimingDependency> clusterer = new WeakComponentClusterer<TimingElement, TimingDependency>();
-			Set<Set<TimingElement>> clusters = clusterer.apply(rtg);
+			Set<Set<TimingElement>> clusters = clusterer.transform(rtg);
 
 			for (Set<TimingElement> cluster : clusters) {
 				TimingGraph clusterGraph = new TimingGraph();

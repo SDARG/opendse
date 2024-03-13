@@ -88,6 +88,20 @@ public class SATConstraints {
 		return variables;
 	}
 
+	private Constraint checkForDoubleConstraintsInverseSigns(Constraint constraint, Collection<Constraint> constraints) {
+		for(Constraint c : constraints) {
+			boolean sameLiteral = c.get(0).getLiteral().variable() == constraint.get(0).getLiteral().variable();
+			boolean sameRhs = c.getRhs() == constraint.getRhs();
+			boolean unitClause = (c.size() == 1) && (constraint.size() == 1);
+			boolean inverseSigns = (c.get(0).getLiteral().phase()) != (constraint.get(0).getLiteral().phase());
+			boolean sameOperator = c.getOperator().equals(constraint.getOperator());
+			if(sameLiteral && sameOperator && sameRhs && unitClause && inverseSigns) {
+				return c;
+			}
+		}
+		return null;
+	}
+	
 	public synchronized void init() {
 		if (!isInit) {
 			Specification specification = specificationWrapper.getSpecification();
@@ -95,6 +109,26 @@ public class SATConstraints {
 
 			Collection<Constraint> constraints = encoding.toConstraints(specification);
 
+			System.out.println("number of constraints from spec: "+constraints.size());
+			assert(constraints.size()==307);
+			int emptyConstraints = 0;
+			int contradictingConstraints = 0;
+			System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+			for(Constraint c : constraints) {
+				if(!c.getLiterals().iterator().hasNext()) {
+					emptyConstraints++;
+					System.out.println("empty constraint: "+c);
+				}
+				Constraint temp = checkForDoubleConstraintsInverseSigns(c, constraints);
+				if(temp != null) {
+					System.out.println("contradicting constraints "+temp+"  "+c);
+					contradictingConstraints++;
+				}
+			}
+			System.out.println("#empty constraints from spec: "+emptyConstraints);
+			System.out.println("#contradicting constraints from spec: "+contradictingConstraints);
+			
+			
 			CommunicationLearn clearn = new CommunicationLearn();
 			Set<Literal> learned = clearn.learn(constraints);
 			for (Literal literal : learned) {
@@ -102,6 +136,24 @@ public class SATConstraints {
 				constraint.add(literal);
 				constraints.add(constraint);
 			}
+			
+			emptyConstraints = 0;
+			contradictingConstraints = 0;
+			System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+			for(Constraint c : constraints) {
+				if(!c.getLiterals().iterator().hasNext()) {
+					emptyConstraints++;
+					System.out.println("empty constraint: "+c);
+				}
+				Constraint temp = checkForDoubleConstraintsInverseSigns(c, constraints);
+				if(temp != null) {
+					System.out.println("contradicting constraints "+temp+"  "+c);
+					contradictingConstraints++;
+				}
+			}
+			System.out.println("#empty constraints from communication learn: "+emptyConstraints);
+			System.out.println("#contradicting constraints from communication learn: "+contradictingConstraints);
+			System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 			/*
 			 * for (Constraint constraint : constraints) {
 			 * System.out.println(constraint); }
@@ -113,7 +165,12 @@ public class SATConstraints {
 			} else {
 				this.constraints.addAll(constraints);
 			}
-
+try {
+	Thread.sleep(5000);
+} catch (InterruptedException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+}
 			Set<Object> variables = new HashSet<Object>();
 			for (Constraint constraint : this.constraints) {
 				for (Literal literal : constraint.getLiterals()) {

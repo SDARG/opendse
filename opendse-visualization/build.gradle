@@ -8,6 +8,6 @@ dependencies {
 	
 	implementation 'com.github.SDARG.opt4j:opt4j-core:88-version-bump-to-java-21-lts-SNAPSHOT'
 	
-	implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: '4.01'
+	//implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: '4.01'
 
 }

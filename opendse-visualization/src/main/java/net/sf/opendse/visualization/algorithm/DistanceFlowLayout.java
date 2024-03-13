@@ -96,7 +96,7 @@ public class DistanceFlowLayout<V, E> implements Layout<V, E> {
 	}
 
 	@Override
-	public void setInitializer(com.google.common.base.Function<V, Point2D> arg0) {
+	public void setInitializer(Transformer<V, Point2D> arg0) {
 	}
 
 	@Override
@@ -109,13 +109,13 @@ public class DistanceFlowLayout<V, E> implements Layout<V, E> {
 	}
 
 	@Override
-	public Point2D apply(V vertex) {
+	public Point2D transform(V vertex) {
 		return locations.get(vertex);
 	}
 
 	protected void doLayout() {
 		WeakComponentClusterer<V, E> clusterer = new WeakComponentClusterer<V, E>();
-		Set<Set<V>> sets = clusterer.apply(graph);
+		Set<Set<V>> sets = clusterer.transform(graph);
 
 		Set<DirectedGraph<V, E>> graphs = new HashSet<DirectedGraph<V, E>>();
 		for (Set<V> set : sets) {
@@ -190,14 +190,14 @@ public class DistanceFlowLayout<V, E> implements Layout<V, E> {
 			}
 
 			for (V vertex : graph.getVertices()) {
-				xOffset = Math.max(xOffset, (int) apply(vertex).getX());
+				xOffset = Math.max(xOffset, (int) transform(vertex).getX());
 			}
 
 			xOffset += ox;
 		}
 
 		for (V v : graph.getVertices()) {
-			Point2D location = apply(v);
+			Point2D location = transform(v);
 			maxX = Math.max(maxX, (int) location.getX());
 			maxY = Math.max(maxY, (int) location.getY());
 		}

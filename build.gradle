@@ -20,7 +20,7 @@ ext{
 	jacocoVersion = "0.8.11"
 	xomVersion = "1.3.9"
 	glazedListsVersion = "1.10.0"
-	jungVersion = "2.1.1"//upgrade to 2.1.1 possible but problem with the appache.commons.collections15 which causes many errors and require rewriting big part of code
+	jungVersion = "2.0.1"//upgrade to 2.1.1 possible but problem with the appache.commons.collections15 which causes many errors and require rewriting big part of code
 }
 
 jacoco{
@@ -158,7 +158,7 @@ dependencies {
 	implementation project(':opendse-optimization')
 	implementation project(':opendse-realtime')
 	
-	implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: '4.01'
+	//implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: '4.01'
 }
 
 jar {

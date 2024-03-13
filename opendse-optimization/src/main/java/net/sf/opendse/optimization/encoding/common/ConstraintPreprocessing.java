@@ -49,7 +49,7 @@ import org.opt4j.satdecoding.Term;
  * 
  */
 public class ConstraintPreprocessing {
-
+	
 	protected final boolean verbose;
 	protected final boolean searchUnits;
 	protected final boolean searchEqualities;
@@ -138,6 +138,11 @@ public class ConstraintPreprocessing {
 		}
 		return variables;
 	}
+	
+	//check if constraint has empty left hand side and right hand side is >0 => contradiction
+	private boolean faultyConstraint(Constraint constraint) {
+		return (!(constraint.getLiterals().iterator().hasNext()))&&(constraint.getRhs()>0);
+	}
 
 	public Collection<Constraint> process(Collection<Constraint> constraints) {
 		close();
@@ -150,6 +155,16 @@ public class ConstraintPreprocessing {
 		}
 
 		for (Constraint constraint : constraints) {
+			if(faultyConstraint(constraint)) {
+				System.out.println("faulty Constraint: "+constraint);
+			}
+			Constraint temp = checkForDoubleConstraintsInverseSigns(constraint, this.constraints);
+			if(temp != null) {
+				System.out.println("******************************************** "+temp+"  "+constraint);
+			}
+			
+			
+			//System.out.println("*************** "+constraint.toString());
 			if (constraint.getOperator() == Operator.EQ) {
 				Pair<Constraint> pair = split(constraint);
 				add(pair.getFirst());
@@ -408,7 +423,18 @@ public class ConstraintPreprocessing {
 			assert (constraint.getRhs() == 1);
 
 			Literal lit = term.getLiteral();
+			System.out.println("Term in learn Unit: "+term);
+			System.out.println("lit in term in learn Unit before addUnits: "+term.getLiteral());
+			System.out.println("lit in term in learn Unit before addUnits2: "+lit);
 			addUnits(lit);
+			System.out.println("lit in term in learn Unit after addUnits: "+lit);
+			System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			Object var = lit.variable();
+			Set<Constraint> constraints = variables.get(var);
+			for(Constraint c : constraints) {
+				System.out.println(c);
+			}
+			System.out.println("#########################################################");
 			set.addAll(propagateUnit(lit));
 		}
 
@@ -426,6 +452,9 @@ public class ConstraintPreprocessing {
 
 		for (Constraint constraint : constraints) {
 			remove(constraint);
+			
+			Constraint temp = constraint.copy();
+			
 
 			int rhs = constraint.getRhs();
 			for (int i = 0; i < constraint.size(); i++) {
@@ -440,6 +469,32 @@ public class ConstraintPreprocessing {
 			}
 			constraint.setRhs(rhs);
 
+			if(faultyConstraint(constraint)) {
+				int tempRhs = temp.getRhs();
+				System.out.println("faulty constraint in propagate unit before: "+temp);
+				System.out.println("Literal lit: "+lit);
+				for(int i = 0;i < temp.size(); i++) {
+					Term term = temp.get(i);
+					System.out.println("Term beginning:"+term);
+					if (term.getLiteral().equals(lit)) {
+						System.out.println("Term :"+term);
+						System.out.println("lit from Term :"+term.getLiteral().toString());
+						temp.remove(term);
+						tempRhs -= term.getCoefficient();
+						System.out.println("temp after removal of term:"+temp);
+						System.out.println("temp rhs after removal of term:"+tempRhs);
+					} else if (term.getLiteral().equals(lit.negate())) {
+						System.out.println("Term :"+term);
+						System.out.println("lit from Term :"+term.getLiteral().toString());
+						temp.remove(term);
+						System.out.println("temp after removal of term and no reduction of rhs:"+temp);
+					}
+				}
+				temp.setRhs(tempRhs);
+				System.out.println("temp constraint in propagate unit after: "+temp);
+				System.out.println("faulty constraint in propagate unit after: "+constraint);
+			}
+			
 			if (add(constraint)) {
 				added.add(constraint);
 			}
@@ -563,7 +618,13 @@ public class ConstraintPreprocessing {
 	}
 
 	protected boolean add(Constraint constraint) {
+		if(faultyConstraint(constraint)) {
+			System.out.println("vbefore***********"+constraint);
+		}
 		normalization.normalize(constraint);
+		if(faultyConstraint(constraint)) {
+			System.out.println("after***********"+constraint);
+		}
 		int rhs = constraint.getRhs();
 
 		if (constraint.getRhs() > 0) {
@@ -572,7 +633,7 @@ public class ConstraintPreprocessing {
 				sum += coeff;
 			}
 			if (sum < rhs) {
-				System.err.println("contradiction " + constraint);
+				System.err.println("contradiction2  ********* " + constraint.toString() + " lhs " + constraint.getLiterals() + " rhs " + constraint.getRhs()); 
 				throw new ContradictionException();
 			} else {
 				constraints.add(constraint);
@@ -582,6 +643,14 @@ public class ConstraintPreprocessing {
 					if (!variables.containsKey(var)) {
 						variables.put(var, new HashSet<Constraint>());
 					}
+					Set<Constraint> tempConstraints = variables.get(var);
+					Constraint problemCase = checkForDoubleConstraintsInverseSigns(constraint, tempConstraints);
+					if(problemCase != null) {
+						System.out.println("////////////////////////////////////////////");
+						System.out.println("already present constraint: "+problemCase);
+						System.out.println("constraint to add with the problem "+constraint);
+						System.out.println("??????????????????????????????????????????????");
+					}
 					variables.get(var).add(constraint);
 				}
 				return true;
@@ -589,6 +658,20 @@ public class ConstraintPreprocessing {
 
 		} // else trivially satisfied, do not add
 		return false;
+	}
+	
+	private Constraint checkForDoubleConstraintsInverseSigns(Constraint constraint, Collection<Constraint> constraints) {
+		for(Constraint c : constraints) {
+			boolean sameLiteral = c.get(0).getLiteral().variable() == constraint.get(0).getLiteral().variable();
+			boolean sameRhs = c.getRhs() == constraint.getRhs();
+			boolean unitClause = (c.size() == 1) && (constraint.size() == 1);
+			boolean inverseSigns = (c.get(0).getLiteral().phase()) != (constraint.get(0).getLiteral().phase());
+			boolean sameOperator = c.getOperator().equals(constraint.getOperator());
+			if(sameLiteral && sameOperator && sameRhs && unitClause && inverseSigns) {
+				return c;
+			}
+		}
+		return null;
 	}
 
 	protected void add(Collection<Constraint> constraints) {

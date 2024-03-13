@@ -114,7 +114,7 @@ public class ValidImplementationPredicate implements Predicate<Specification> {
 			boolean isTree = true;
 
 			WeakComponentClusterer<Resource, Link> clusterer = new WeakComponentClusterer<Resource, Link>();
-			Set<Set<Resource>> cluster = clusterer.apply(routing);
+			Set<Set<Resource>> cluster = clusterer.transform(routing);
 
 			if (cluster.size() != 1) {
 				isTree = false;

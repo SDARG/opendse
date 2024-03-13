@@ -25,12 +25,13 @@ import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.Shape;
 
-import com.google.common.base.Function;
+import net.sf.opendse.model.Edge;
+import net.sf.opendse.model.Node;
+
+import org.apache.commons.collections15.Transformer;
 
 import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 import edu.uci.ics.jung.visualization.util.VertexShapeFactory;
-import net.sf.opendse.model.Edge;
-import net.sf.opendse.model.Node;
 
 public abstract class AbstractGraphPanelFormat implements GraphPanelFormat {
 	protected ColorModel colorModel = null;
@@ -55,22 +56,22 @@ public abstract class AbstractGraphPanelFormat implements GraphPanelFormat {
 	protected class CustomVertexShapeFactory extends VertexShapeFactory<Node> {
 
 		public CustomVertexShapeFactory() {
-			super(new Function<Node, Integer>() {
+			super(new Transformer<Node, Integer>() {
 				@Override
-				public Integer apply(Node node) {
+				public Integer transform(Node node) {
 					return getSize(node);
 				}
 
-			}, new Function<Node, Float>() {
+			}, new Transformer<Node, Float>() {
 				@Override
-				public Float apply(Node arg0) {
+				public Float transform(Node arg0) {
 					return 1.0f;
 				}
 			});
 		}
 
 		public Shape getInnerOut(Node node) {
-			int s = vsf.apply(node) / 2;
+			int s = vsf.transform(node) / 2;
 			Polygon poly = new Polygon();
 			poly.addPoint(s / 2, 0);
 			poly.addPoint(-s / 3, -2 * s / 3);
@@ -79,7 +80,7 @@ public abstract class AbstractGraphPanelFormat implements GraphPanelFormat {
 		}
 
 		public Shape getInnerIn(Node node) {
-			int s = vsf.apply(node) / 4;
+			int s = vsf.transform(node) / 4;
 			Polygon poly = new Polygon();
 			poly.addPoint(0, 0);
 			poly.addPoint(-s, -s);

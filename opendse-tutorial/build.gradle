@@ -9,9 +9,9 @@ dependencies {
 	implementation project(':opendse-visualization')
 	implementation project(':opendse-model')
 	
-	implementation 'com.github.SDARG.opt4j:opt4j-core:88-version-bump-to-java-21-lts-SNAPSHOT'
+	implementation 'com.github.SDARG.opt4j:opt4j-core:95-debugging-opendse-SNAPSHOT'
 	
-	implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: '4.01'
+	//implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: '4.01'
 }
 
 task filterSources(type: Copy) {

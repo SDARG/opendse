@@ -8,7 +8,7 @@ dependencies {
 	testImplementation group: 'org.junit.platform', name: 'junit-platform-launcher'
 	testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: project.mockitoVersion
 	
-	implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: '4.01'
+	//implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: '4.01'
 	
 }
 
