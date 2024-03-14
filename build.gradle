@@ -14,7 +14,7 @@ plugins{
 ext{
 	openDseJavaVersion = "21"
 	guiceVersion = "7.0.0"
-	sat4jVersion = "2.3.6"
+	sat4jVersion = "2.3.5"
 	junitVersion = "5.10.2"
 	mockitoVersion = "5.10.0"
 	jacocoVersion = "0.8.11"
