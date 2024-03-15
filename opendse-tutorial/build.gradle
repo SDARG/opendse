@@ -12,6 +12,7 @@ dependencies {
 	implementation "com.github.SDARG.opt4j:opt4j-core:${project.opt4jVersion}"
 	
 	implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: project.collectionsVersion
+
 }
 
 task filterSources(type: Copy) {
