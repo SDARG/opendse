@@ -1,6 +1,6 @@
 [![OpenDSE Build & Test](https://github.com/SDARG/opendse/actions/workflows/gradle.yml/badge.svg)](https://github.com/SDARG/opendse/actions/workflows/gradle.yml)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/fd2e81e87d924e2baf0331dea12b7d17)](https://www.codacy.com/gh/SDARG/opendse/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SDARG/opendse&amp;utm_campaign=Badge_Grade)
-[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/fd2e81e87d924e2baf0331dea12b7d17)](https://www.codacy.com/gh/SDARG/opendse/dashboard?utm_source=github.com&utm_medium=referral&utm_content=SDARG/opendse&utm_campaign=Badge_Coverage)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/fd2e81e87d924e2baf0331dea12b7d17)](https://app.codacy.com/gh/SDARG/opendse/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/fd2e81e87d924e2baf0331dea12b7d17)](https://app.codacy.com/gh/SDARG/opendse/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
 [![](https://jitpack.io/v/sdarg/opendse.svg)](https://jitpack.io/#sdarg/opendse)
 
 # OpenDSE - Open Design Space Exploration Framework
