@@ -22,6 +22,7 @@ ext{
 	glazedListsVersion = "1.10.0"
 	jungVersion = "2.1.1"
 	opt4jVersion = "v3.4.0"
+	opt4jVersionDoc = "3.4.0"
 	collectionsVersion = "4.01"
 	coltVersion = "1.2.0"
 	
@@ -175,7 +176,10 @@ task alldocs(type: Javadoc) {
 
 	
 	options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PUBLIC
-	options.links "https://docs.oracle.com/en/java/javase/${project.openDseJavaVersion}/docs/api/","http://google.github.io/guice/api-docs/${project.guiceVersion}/javadoc/"
+	options.links "https://docs.oracle.com/en/java/javase/${project.openDseJavaVersion}/docs/api/","http://google.github.io/guice/api-docs/${project.guiceVersion}/javadoc/",
+				"https://sdarg.github.io/opt4j/javadoc/${project.opt4jVersionDoc}/","https://javadoc.io/doc/net.sf.jung/jung-algorithms/${project.jungVersion}/",
+				"https://javadoc.io/doc/net.sf.jung/jung-api/${project.jungVersion}/","https://javadoc.io/doc/net.sf.jung/jung-graph-impl/${project.jungVersion}/",
+				"https://javadoc.io/doc/net.sf.jung/jung-visualization/${project.jungVersion}/"
 
 	subprojects.each {subproject ->
 		source subproject.sourceSets.main.java
