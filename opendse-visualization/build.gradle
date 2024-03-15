@@ -6,8 +6,8 @@ dependencies {
 
 	implementation group: 'net.java.dev.glazedlists', name: 'glazedlists_java16', version: project.glazedListsVersion
 	
-	implementation 'com.github.SDARG.opt4j:opt4j-core:88-version-bump-to-java-21-lts-SNAPSHOT'
+	implementation "com.github.SDARG.opt4j:opt4j-core:${project.opt4jVersion}"
 	
-	implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: '4.01'
+	implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: project.collectionsVersion
 
 }
