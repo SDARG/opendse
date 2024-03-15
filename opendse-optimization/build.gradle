@@ -4,10 +4,10 @@ dependencies {
 	compile project(':opendse-visualization')
 	
 	
-	implementation 'com.github.SDARG.opt4j:opt4j-core:-SNAPSHOT'
-	implementation 'com.github.SDARG.opt4j:opt4j-satdecoding:-SNAPSHOT'
-	implementation 'com.github.SDARG.opt4j:opt4j-optimizers:-SNAPSHOT'
-	implementation 'com.github.SDARG.opt4j:opt4j-viewer:-SNAPSHOT'
+	implementation 'com.github.SDARG.opt4j:opt4j-core:v3.3.0'
+	implementation 'com.github.SDARG.opt4j:opt4j-satdecoding:v3.3.0'
+	implementation 'com.github.SDARG.opt4j:opt4j-optimizers:v3.3.0'
+	implementation 'com.github.SDARG.opt4j:opt4j-viewer:v3.3.0'
 
 	testCompile 'junit:junit:4.12'
 	testCompile group: 'org.mockito', name: 'mockito-core', version: '2.22.0'

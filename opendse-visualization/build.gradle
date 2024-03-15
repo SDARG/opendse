@@ -6,5 +6,5 @@ dependencies {
 
 	compile group: 'net.java.dev.glazedlists',	name: 'glazedlists_java15', 		version: '1.9.0'
 	
-	implementation 'com.github.SDARG.opt4j:opt4j-core:-SNAPSHOT'
+	implementation 'com.github.SDARG.opt4j:opt4j-core:v3.3.0'
 }
