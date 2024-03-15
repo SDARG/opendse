@@ -42,7 +42,25 @@ java {
 }
 
 
-version = 'SNAPSHOT-' + new Date().format("yyyyMMdd")
+/*
+ * Gets the version name from the latest Git tag
+ */
+def getVersionName = {
+	->
+	def stdout = new ByteArrayOutputStream()
+	exec {
+		commandLine 'git', 'describe', '--tags', '--first-parent'
+		standardOutput = stdout
+		ignoreExitValue true
+	}
+	version=stdout.toString().trim()
+	if (version.count('-') > 1 || version.isEmpty())
+		version += '-SNAPSHOT'
+	if (version.getAt(0) == 'v')
+		version = version.substring(1)
+	return version
+}
+version=getVersionName()
 
 def descriptions = [
 	'opendse-generator' : 'The test case generator module of OpenDSE',
