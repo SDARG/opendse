@@ -203,7 +203,7 @@ public class Interpreter {
 		}
 
 		Specification impl = new Specification(iApplication, iArchitecture, iMappings, iRoutings);
-
+		impl.setParent(specification);
 		Map<String, Element> map = Models.getElementsMap(impl);
 
 		// set active parameters
