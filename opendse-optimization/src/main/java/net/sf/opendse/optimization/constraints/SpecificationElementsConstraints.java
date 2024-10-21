@@ -29,7 +29,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Inject;
 
 import net.sf.opendse.model.Element;
 import net.sf.opendse.model.Specification;
@@ -38,6 +37,8 @@ import net.sf.opendse.optimization.SpecificationWrapper;
 
 import org.opt4j.satdecoding.Constraint;
 import org.opt4j.satdecoding.Model;
+
+import com.google.inject.Inject;
 
 public class SpecificationElementsConstraints implements SpecificationConstraints {
 

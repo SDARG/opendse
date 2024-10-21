@@ -1,3 +1,6 @@
 dependencies {	
-	compile project(':opendse-model')
+	
+	implementation project(':opendse-model')
+	implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: project.collectionsVersion
+
 }

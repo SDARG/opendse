@@ -206,7 +206,7 @@ public abstract class AbstractExternalEvaluator implements ImplementationEvaluat
 		String valueString = eObjective.getValue();
 
 		if (valueString != null && !valueString.equals("")) {
-			value = new Double(valueString);
+			value = Double.valueOf(valueString);
 		}
 
 		return new ObjectiveElement(sign, name, value);

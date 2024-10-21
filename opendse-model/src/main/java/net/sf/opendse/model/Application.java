@@ -38,10 +38,8 @@ import edu.uci.ics.jung.graph.util.Pair;
  * 
  * @author Martin Lukasiewycz
  * 
- * @param <T>
- *            the type of vertices
- * @param <D>
- *            the type of edges
+ * @param <T> the type of vertices
+ * @param <D> the type of edges
  */
 public class Application<T extends Task, D extends Dependency> extends Graph<T, D> {
 
@@ -104,7 +102,8 @@ public class Application<T extends Task, D extends Dependency> extends Graph<T, 
 
 	public Set<Function<T, D>> getFunctions() {
 		WeakComponentClusterer<T, D> wcc = new WeakComponentClusterer<T, D>();
-		Set<Set<T>> cluster = wcc.transform(this);
+		Set<Set<T>> cluster =wcc.apply(this);
+		//Set<Set<T>> cluster = wcc.transform(this);
 
 		Set<Function<T, D>> functions = new HashSet<Function<T, D>>();
 		for (Set<T> tasks : cluster) {
@@ -135,7 +134,7 @@ public class Application<T extends Task, D extends Dependency> extends Graph<T, 
 
 	protected Function<T, D> buildFunction(Set<T> tasks) {
 		Attributes attributes = getAttributes(tasks);
-		
+
 		if (attributes.getAttribute("ID") == null) {
 			attributes.setAttribute("ID", nextFunctionId());
 		}

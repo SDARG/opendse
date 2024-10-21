@@ -26,10 +26,10 @@ import static net.sf.opendse.model.Models.isProcess;
 import static net.sf.opendse.realtime.et.PriorityScheduler.DELAY;
 import static net.sf.opendse.realtime.et.PriorityScheduler.JITTER;
 import static net.sf.opendse.realtime.et.PriorityScheduler.RESPONSE;
+
 import net.sf.opendse.model.Node;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
-import net.sf.opendse.realtime.et.PriorityScheduler;
 import net.sf.opendse.realtime.et.graph.TimingElement;
 import net.sf.opendse.realtime.et.graph.TimingGraph;
 
@@ -54,8 +54,6 @@ public class MyTimingPropertyAnnotater {
 
 			// Resource resource = te.getResource();
 
-			Double executionTime = te.getAttribute("e");
-			Double jitterIn = te.getAttribute("jitter[in]");
 			Double jitterOut = te.getAttribute("jitter[out]");
 			Double delay = te.getAttribute("delay");
 			Double responseTime = te.getAttribute("response");

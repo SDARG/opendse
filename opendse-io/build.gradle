@@ -1,9 +1,15 @@
 dependencies {	
-	compile project(':opendse-model')
+	implementation project(':opendse-model')
 
-	compile group: 'xom',	name: 'xom', 		version: '1.2.5'
+	implementation group: 'xom',	name: 'xom', 		version: project.xomVersion
 	
-	testCompile group: 'junit', name: 'junit', version: '4.12'
+	testImplementation platform(group: 'org.junit', name: 'junit-bom', version: project.junitVersion)
+	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter'
+	testImplementation group: 'org.junit.platform', name: 'junit-platform-launcher'
+	testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: project.mockitoVersion
+	
+	implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: project.collectionsVersion
+	
 }
 
 task copyWebsite(type: Copy){

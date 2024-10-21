@@ -21,8 +21,10 @@
  *******************************************************************************/
 package net.sf.opendse.optimization.io;
 
-import org.junit.Assert;
-import org.junit.Test;
+
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Architecture;
@@ -80,9 +82,9 @@ public class SpecificationTransformerTypeBasedTest {
 		SpecificationTransformerTypeBased<SpecificationTypeBased, Specification> transformer = new SpecificationTransformerTypeBased<SpecificationTypeBased, Specification>();
 		Specification spec = transformer.transform(specTB);
 
-		Assert.assertNotNull(spec.getApplication());
-		Assert.assertNotNull(spec.getArchitecture());
-		Assert.assertNotNull(spec.getMappings());
+		Assertions.assertNotNull(spec.getApplication());
+		Assertions.assertNotNull(spec.getArchitecture());
+		Assertions.assertNotNull(spec.getMappings());
 	}
 
 	@Test
@@ -109,23 +111,23 @@ public class SpecificationTransformerTypeBasedTest {
 
 		Architecture<Resource, Link> arch = transformer.generateArchitecture(types, linkTypes);
 
-		Assert.assertNotNull(arch);
-		Assert.assertEquals(arch.getVertexCount(), 3);
+		Assertions.assertNotNull(arch);
+		Assertions.assertEquals(arch.getVertexCount(), 3);
 
-		Assert.assertNotNull(arch.getVertex("r_type1"));
-		Assert.assertNotNull(arch.getVertex("r_type2"));
-		Assert.assertNotNull(arch.getVertex("bus"));
+		Assertions.assertNotNull(arch.getVertex("r_type1"));
+		Assertions.assertNotNull(arch.getVertex("r_type2"));
+		Assertions.assertNotNull(arch.getVertex("bus"));
 
-		Assert.assertNotNull(arch.getEdge("l_type1"));
-		Assert.assertNotNull(arch.getEdge("l_type2"));
+		Assertions.assertNotNull(arch.getEdge("l_type1"));
+		Assertions.assertNotNull(arch.getEdge("l_type2"));
 
-		Assert.assertEquals((int) arch.getVertex("r_type1").getAttribute("A1"), 5);
-		Assert.assertEquals((int) arch.getVertex("r_type1").getAttribute("A2"), 1);
+		Assertions.assertEquals((int) arch.getVertex("r_type1").getAttribute("A1"), 5);
+		Assertions.assertEquals((int) arch.getVertex("r_type1").getAttribute("A2"), 1);
 
-		Assert.assertEquals(arch.getVertex("r_type1").getType(), "type1");
-		Assert.assertEquals((int) arch.getEdge("l_type1").getAttribute("B1"), 2);
+		Assertions.assertEquals(arch.getVertex("r_type1").getType(), "type1");
+		Assertions.assertEquals((int) arch.getEdge("l_type1").getAttribute("B1"), 2);
 
-		Assert.assertNotEquals(arch.getVertex("r_type1"), types.get("type1"));
+		Assertions.assertNotEquals(arch.getVertex("r_type1"), types.get("type1"));
 	}
 
 	@Test
@@ -162,12 +164,12 @@ public class SpecificationTransformerTypeBasedTest {
 
 		Mappings<Task, Resource> mappings = transformer.generateMappings(typeMappings, arch);
 
-		Assert.assertNotNull(mappings);
-		Assert.assertEquals(mappings.size(), 3);
+		Assertions.assertNotNull(mappings);
+		Assertions.assertEquals(mappings.size(), 3);
 
-		Assert.assertEquals(mappings.get(t1).size(), 2);
-		Assert.assertEquals(mappings.get(t2).size(), 1);
-		Assert.assertEquals((int) mappings.get(t2).iterator().next().getAttribute("M1"), 0);
+		Assertions.assertEquals(mappings.get(t1).size(), 2);
+		Assertions.assertEquals(mappings.get(t2).size(), 1);
+		Assertions.assertEquals((int) mappings.get(t2).iterator().next().getAttribute("M1"), 0);
 	}
 
 }

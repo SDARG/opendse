@@ -37,6 +37,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections15.Transformer;
+
+import edu.uci.ics.jung.algorithms.cluster.WeakComponentClusterer;
 import net.sf.jmpi.main.MpProblem;
 import net.sf.jmpi.main.MpResult;
 import net.sf.jmpi.main.MpSolver;
@@ -45,20 +48,14 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.realtime.et.SolverProvider;
-import net.sf.opendse.realtime.et.TimingGraphViewer;
 import net.sf.opendse.realtime.et.graph.TimingDependency;
 import net.sf.opendse.realtime.et.graph.TimingDependencyPriority;
-import net.sf.opendse.realtime.et.graph.TimingDependencyTrigger;
 import net.sf.opendse.realtime.et.graph.TimingElement;
 import net.sf.opendse.realtime.et.graph.TimingGraph;
 import net.sf.opendse.realtime.et.qcqp.MyEncoder.OptimizationObjective;
 import net.sf.opendse.realtime.et.qcqp.vars.Vars;
 import net.sf.opendse.visualization.algorithm.BellmanFord;
 import net.sf.opendse.visualization.algorithm.CycleBreakFilter;
-
-import org.apache.commons.collections15.Transformer;
-
-import edu.uci.ics.jung.algorithms.cluster.WeakComponentClusterer;
 
 public class MyInterpreter {
 
@@ -127,7 +124,7 @@ public class MyInterpreter {
 
 		if (considerPriorities) {
 			WeakComponentClusterer<TimingElement, TimingDependency> clusterer = new WeakComponentClusterer<TimingElement, TimingDependency>();
-			Set<Set<TimingElement>> clusters = clusterer.transform(rtg);
+			Set<Set<TimingElement>> clusters = clusterer.apply(rtg);
 
 			for (Set<TimingElement> cluster : clusters) {
 				TimingGraph clusterGraph = new TimingGraph();

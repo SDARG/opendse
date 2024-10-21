@@ -1,12 +1,14 @@
 package net.sf.opendse.io;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import net.sf.opendse.io.CommonTest.E1;
 import net.sf.opendse.model.Application;
@@ -42,9 +44,9 @@ public class SpecificationReaderTest {
 		SpecificationReader r = new SpecificationReader();
 		Application<Task, Dependency> application = r.toApplication(eApp);
 
-		Assert.assertNotNull(application.getVertex("r1"));
-		Assert.assertNotNull(application.getVertex("r2"));
-		Assert.assertNotNull(application.getEdge("l"));
+		Assertions.assertNotNull(application.getVertex("r1"));
+		Assertions.assertNotNull(application.getVertex("r2"));
+		Assertions.assertNotNull(application.getEdge("l"));
 	}
 
 	@Test
@@ -66,9 +68,9 @@ public class SpecificationReaderTest {
 		SpecificationReader r = new SpecificationReader();
 		Architecture<Resource, Link> architecture = r.toArchitecture(eArch);
 
-		Assert.assertNotNull(architecture.getVertex("r1"));
-		Assert.assertNotNull(architecture.getVertex("r2"));
-		Assert.assertNotNull(architecture.getEdge("l"));
+		Assertions.assertNotNull(architecture.getVertex("r1"));
+		Assertions.assertNotNull(architecture.getVertex("r2"));
+		Assertions.assertNotNull(architecture.getEdge("l"));
 	}
 
 	@Test
@@ -86,37 +88,41 @@ public class SpecificationReaderTest {
 		SpecificationReader r = new SpecificationReader();
 		r.parseDependency(eLink, application);
 
-		Assert.assertTrue(application.isSuccessor(d1, d2));
+		Assertions.assertTrue(application.isSuccessor(d1, d2));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void parseDependencySrcMissingTest()
 			throws ValidityException, ParsingException, IOException, ClassNotFoundException, InstantiationException,
 			IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		nu.xom.Element eLink = new Builder()
-				.build("<dependency id='d1' source='t1' destination='c1' orientation='DIRECTED'/>", "")
-				.getRootElement();
-		Application<Task, Dependency> application = new Application<Task, Dependency>();
-		Task d2 = new Task("c1");
-		application.addVertex(d2);
+		assertThrows(IllegalArgumentException.class, () -> {
+			nu.xom.Element eLink = new Builder()
+					.build("<dependency id='d1' source='t1' destination='c1' orientation='DIRECTED'/>", "")
+					.getRootElement();
+			Application<Task, Dependency> application = new Application<Task, Dependency>();
+			Task d2 = new Task("c1");
+			application.addVertex(d2);
 
-		SpecificationReader r = new SpecificationReader();
-		r.parseDependency(eLink, application);
+			SpecificationReader r = new SpecificationReader();
+			r.parseDependency(eLink, application);
+		});
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void parseDependencyDstMissingTest()
 			throws ValidityException, ParsingException, IOException, ClassNotFoundException, InstantiationException,
 			IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		nu.xom.Element eLink = new Builder()
-				.build("<dependency id='d1' source='t1' destination='c1' orientation='DIRECTED'/>", "")
-				.getRootElement();
-		Application<Task, Dependency> application = new Application<Task, Dependency>();
-		Task d1 = new Task("t1");
-		application.addVertex(d1);
+		assertThrows(IllegalArgumentException.class, () -> {
+			nu.xom.Element eLink = new Builder()
+					.build("<dependency id='d1' source='t1' destination='c1' orientation='DIRECTED'/>", "")
+					.getRootElement();
+			Application<Task, Dependency> application = new Application<Task, Dependency>();
+			Task d1 = new Task("t1");
+			application.addVertex(d1);
 
-		SpecificationReader r = new SpecificationReader();
-		r.parseDependency(eLink, application);
+			SpecificationReader r = new SpecificationReader();
+			r.parseDependency(eLink, application);
+		});
 	}
 
 	@Test
@@ -133,35 +139,39 @@ public class SpecificationReaderTest {
 		SpecificationReader r = new SpecificationReader();
 		r.parseLink(eLink, architecture);
 
-		Assert.assertTrue(architecture.isNeighbor(r1, r2));
+		Assertions.assertTrue(architecture.isNeighbor(r1, r2));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void parseLinkMissingSrcResourceTest()
 			throws ValidityException, ParsingException, IOException, ClassNotFoundException, InstantiationException,
 			IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		nu.xom.Element eLink = new Builder()
-				.build("<link id='l2' source='bus' destination='r2' orientation='UNDIRECTED'/>", "").getRootElement();
-		Architecture<Resource, Link> architecture = new Architecture<Resource, Link>();
-		Resource r1 = new Resource("bus");
-		architecture.addVertex(r1);
+		assertThrows(IllegalArgumentException.class, () -> {
+			nu.xom.Element eLink = new Builder()
+					.build("<link id='l2' source='bus' destination='r2' orientation='UNDIRECTED'/>", "").getRootElement();
+			Architecture<Resource, Link> architecture = new Architecture<Resource, Link>();
+			Resource r1 = new Resource("bus");
+			architecture.addVertex(r1);
 
-		SpecificationReader r = new SpecificationReader();
-		r.parseLink(eLink, architecture);
+			SpecificationReader r = new SpecificationReader();
+			r.parseLink(eLink, architecture);
+		});
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void parseLinkMissingDstResourceTest()
 			throws ValidityException, ParsingException, IOException, ClassNotFoundException, InstantiationException,
 			IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		nu.xom.Element eLink = new Builder()
-				.build("<link id='l2' source='bus' destination='r2' orientation='UNDIRECTED'/>", "").getRootElement();
-		Architecture<Resource, Link> architecture = new Architecture<Resource, Link>();
-		Resource r1 = new Resource("r2");
-		architecture.addVertex(r1);
+		assertThrows(IllegalArgumentException.class, () -> {
+			nu.xom.Element eLink = new Builder()
+					.build("<link id='l2' source='bus' destination='r2' orientation='UNDIRECTED'/>", "").getRootElement();
+			Architecture<Resource, Link> architecture = new Architecture<Resource, Link>();
+			Resource r1 = new Resource("r2");
+			architecture.addVertex(r1);
 
-		SpecificationReader r = new SpecificationReader();
-		r.parseLink(eLink, architecture);
+			SpecificationReader r = new SpecificationReader();
+			r.parseLink(eLink, architecture);
+		});
 	}
 
 	@Test
@@ -176,8 +186,8 @@ public class SpecificationReaderTest {
 
 		SpecificationReader reader = new SpecificationReader();
 		E1 e = (E1) reader.toAttribute(eAttr);
-		Assert.assertEquals(E1.a, e);
-		Assert.assertNotEquals(E1.b, e);
+		Assertions.assertEquals(E1.a, e);
+		Assertions.assertNotEquals(E1.b, e);
 	}
 
 	@Test
@@ -193,7 +203,7 @@ public class SpecificationReaderTest {
 		eAttr.appendChild(((Element) attribute).getId());
 
 		SpecificationReader reader = new SpecificationReader();
-		Assert.assertEquals(attribute, reader.toAttribute(eAttr));
+		Assertions.assertEquals(attribute, reader.toAttribute(eAttr));
 	}
 
 	@Test
@@ -210,7 +220,7 @@ public class SpecificationReaderTest {
 		eAttr.appendChild("10");
 
 		SpecificationReader reader = new SpecificationReader();
-		Assert.assertEquals(i, reader.toAttribute(eAttr));
+		Assertions.assertEquals(i, reader.toAttribute(eAttr));
 	}
 
 	@Test
@@ -227,7 +237,7 @@ public class SpecificationReaderTest {
 		eAttr.appendChild("10");
 
 		SpecificationReader reader = new SpecificationReader();
-		Assert.assertEquals(s, reader.toAttribute(eAttr));
+		Assertions.assertEquals(s, reader.toAttribute(eAttr));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -262,7 +272,7 @@ public class SpecificationReaderTest {
 
 		SpecificationReader reader = new SpecificationReader();
 		Set<String> strings2 = (Set<String>) reader.toAttribute(eAttr);
-		Assert.assertEquals(strings, strings2);
+		Assertions.assertEquals(strings, strings2);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -297,7 +307,7 @@ public class SpecificationReaderTest {
 
 		SpecificationReader reader = new SpecificationReader();
 		Set<String> strings2 = (Set<String>) reader.toAttribute(eAttr);
-		Assert.assertEquals(strings, strings2);
+		Assertions.assertEquals(strings, strings2);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -314,7 +324,7 @@ public class SpecificationReaderTest {
 
 		SpecificationReader reader = new SpecificationReader();
 		Set<String> strings2 = (Set<String>) reader.toAttribute(eAttr);
-		Assert.assertEquals(strings, strings2);
+		Assertions.assertEquals(strings, strings2);
 	}
 
 	@Test
@@ -322,9 +332,9 @@ public class SpecificationReaderTest {
 		SpecificationReader reader = new SpecificationReader();
 		String xmlValue = "5 (3, 9)";
 		ParameterRangeDiscrete parameter = reader.getRangeInt(xmlValue);
-		Assert.assertEquals(3, parameter.getLowerBound());
-		Assert.assertEquals(9, parameter.getUpperBound());
-		Assert.assertEquals((Integer) 5, parameter.getValue());
+		Assertions.assertEquals(3, parameter.getLowerBound());
+		Assertions.assertEquals(9, parameter.getUpperBound());
+		Assertions.assertEquals((Integer) 5, parameter.getValue());
 	}
 
 	@Test
@@ -334,13 +344,13 @@ public class SpecificationReaderTest {
 
 		SpecificationWriter specificationWriter = new SpecificationWriter();
 		nu.xom.Element element = specificationWriter.toElement("test", parameter);
-		Assert.assertNotNull(element);
+		Assertions.assertNotNull(element);
 
 		SpecificationReader specificationReader = new SpecificationReader();
 		ParameterRangeDiscrete parameter2 = (ParameterRangeDiscrete) specificationReader.toAttribute(element);
 
-		Assert.assertEquals(parameter.getLowerBound(), parameter2.getLowerBound());
-		Assert.assertEquals(parameter.getUpperBound(), parameter2.getUpperBound());
-		Assert.assertEquals(parameter.getValue(), parameter2.getValue());
+		Assertions.assertEquals(parameter.getLowerBound(), parameter2.getLowerBound());
+		Assertions.assertEquals(parameter.getUpperBound(), parameter2.getUpperBound());
+		Assertions.assertEquals(parameter.getValue(), parameter2.getValue());
 	}
 }

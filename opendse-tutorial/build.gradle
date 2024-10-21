@@ -2,10 +2,17 @@ import org.apache.tools.ant.filters.*
 import java.util.regex.*
 
 dependencies {	
-	compile project(':opendse-optimization')
-	compile project(':opendse-realtime')
+	implementation project(':opendse-optimization')
+	implementation project(':opendse-realtime')
+	implementation project(':opendse-io')
+	implementation project(':opendse-generator')
+	implementation project(':opendse-visualization')
+	implementation project(':opendse-model')
 	
-	implementation 'com.github.SDARG.opt4j:opt4j-core:v3.3.0'
+	implementation "com.github.SDARG.opt4j:opt4j-core:${project.opt4jVersion}"
+	
+	implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: project.collectionsVersion
+
 }
 
 task filterSources(type: Copy) {

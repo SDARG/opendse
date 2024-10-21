@@ -30,6 +30,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.collections15.Transformer;
+
+import edu.uci.ics.jung.graph.util.EdgeType;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Link;
@@ -39,12 +42,7 @@ import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.ValidImplementationPredicate;
-import net.sf.opendse.realtime.et.PriorityScheduler;
 import net.sf.opendse.visualization.algorithm.BellmanFord;
-
-import org.apache.commons.collections15.Transformer;
-
-import edu.uci.ics.jung.graph.util.EdgeType;
 
 public class TimingGraphBuilder {
 

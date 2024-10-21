@@ -15,12 +15,15 @@
 
 	<p>
 	For each specification, an optimization can be carried out.
-	The optimization can be started by running the main method of the Opt4J class:</p>
+	The optimization can be started by running the main method of the Opt4J class or by simply evoking the run task via gradle:</p>
+	<pre class="prettyprint">opendse> ./gradlew run</pre>
 	<img src="img/Optimization6.png" alt="Implementation"/>
 	
-	<p>The optimization has to be properly configured by selecting the modules as illustrated. 
-	Additionally, it is necessary to select an input file which we set to <a href="#optimizationfile">this file</a>.
-	We optimize a single objective which are the costs.
+	<p>The optimization has to be properly configured by selecting modules for your input specification, the preferred optimizer, as well as design objectives as illustrated exemplary in the figure.
+	For convenience, we provide a sample optimization-config.xml in</p>
+	<p>./opendse-tutorial/optimization-config.xml</p>
+	<p>that can be loaded via the Load button in the Opt4J configurator.
+	In this example, we optimize a single objective which are the costs.
 	It is possible to implement any kind of evaluator, including non-linear objectives. 
 	Furthermore, it is possible to use external evaluators, i.e., programs that receive the respective implementation as XML and return their result as XML. </p>
 	

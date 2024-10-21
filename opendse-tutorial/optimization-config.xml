@@ -1,0 +1,28 @@
+<configuration>
+  <module class="net.sf.opendse.optimization.OptimizationModule">
+    <property name="routingEncoding">FLOW</property>
+    <property name="stagnationRestartEnabled">true</property>
+    <property name="maximalNumberStagnatingGenerations">20</property>
+    <property name="usePreprocessing">true</property>
+    <property name="useVariableOrder">true</property>
+  </module>
+  <module class="net.sf.opendse.optimization.evaluator.SumEvaluatorModule">
+    <property name="sum">costs</property>
+    <property name="type">MIN</property>
+    <property name="priority">0</property>
+  </module>
+  <module class="net.sf.opendse.optimization.io.InputModule">
+    <property name="filename">./opendse-tutorial/specs/Specification5.xml</property>
+  </module>
+  <module class="org.opt4j.optimizers.ea.EvolutionaryAlgorithmModule">
+    <property name="generations">1000</property>
+    <property name="populationSize">100</property>
+    <property name="parentsPerGeneration">25</property>
+    <property name="offspringsPerGeneration">25</property>
+    <property name="crossoverRate">0.95</property>
+  </module>
+  <module class="org.opt4j.viewer.ViewerModule">
+    <property name="closeEvent">STOP</property>
+    <property name="closeOnStop">false</property>
+  </module>
+</configuration>

@@ -23,6 +23,7 @@ package net.sf.opendse.optimization.evaluator;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.StringTokenizer;
 
 import net.sf.opendse.io.SpecificationWriter;
 import net.sf.opendse.model.Specification;
@@ -40,7 +41,17 @@ public class ExternalEvaluatorFile extends AbstractExternalEvaluator {
 			File file = File.createTempFile("eval", ".xml");
 			File result = File.createTempFile("result", ".xml");
 			
-			Process process = Runtime.getRuntime().exec(command+" "+file.getAbsolutePath()+" "+result.getAbsolutePath());
+			//breaking command string into tokens for using the recommended exec function which needs a string[]
+			String temp = command+" "+file.getAbsolutePath()+" "+result.getAbsolutePath();
+			StringTokenizer tokenizer = new StringTokenizer(temp);
+			String[] commandArray = new String[tokenizer.countTokens()];
+			int counter = 0;
+			while(tokenizer.hasMoreTokens()) {
+				commandArray[counter] = tokenizer.nextToken();
+				counter++;
+			}
+			
+			Process process = Runtime.getRuntime().exec(commandArray);
 			process.waitFor();
 			
 			ResultElement resultElement = getResultElement(result);
@@ -68,7 +79,17 @@ public class ExternalEvaluatorFile extends AbstractExternalEvaluator {
 			SpecificationWriter writer = new SpecificationWriter();
 			writer.write(implementation, file);
 			
-			Process process = Runtime.getRuntime().exec(command+" "+file.getAbsolutePath()+" "+result.getAbsolutePath());
+			//breaking command string into tokens for using the recommended exec function which needs a string[]
+			String temp = command+" "+file.getAbsolutePath()+" "+result.getAbsolutePath();
+			StringTokenizer tokenizer = new StringTokenizer(temp);
+			String[] commandArray = new String[tokenizer.countTokens()];
+			int counter = 0;
+			while(tokenizer.hasMoreTokens()) {
+				commandArray[counter] = tokenizer.nextToken();
+				counter++;
+			}
+			
+			Process process = Runtime.getRuntime().exec(commandArray);
 			try {
 				process.waitFor();
 			} catch (InterruptedException e) {

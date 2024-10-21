@@ -21,6 +21,7 @@
  *******************************************************************************/
 package net.sf.opendse.optimization;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -119,11 +120,19 @@ public class SimpleViewer {
 					}
 					Module module = null;
 					try {
-						module = class2.newInstance();
+						module = class2.getDeclaredConstructor().newInstance();
 					} catch (InstantiationException e) {
 						throw new IllegalArgumentException("cannot instantiate module: " + classname, e);
 					} catch (IllegalAccessException e) {
 						throw new IllegalArgumentException("module inaccessible: " + classname, e);
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
+					} catch (NoSuchMethodException e) {
+						e.printStackTrace();
+					} catch (SecurityException e) {
+						e.printStackTrace();
 					}
 					simpleViewer.addModules(module);
 				}

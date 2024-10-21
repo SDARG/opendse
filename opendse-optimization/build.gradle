@@ -1,14 +1,20 @@
 dependencies {	
-	compile project(':opendse-model')
-	compile project(':opendse-io')
-	compile project(':opendse-visualization')
+	implementation project(':opendse-model')
+	implementation project(':opendse-io')
+	implementation project(':opendse-visualization')
 	
+	implementation "com.github.SDARG.opt4j:opt4j-satdecoding:${project.opt4jVersion}"
+	implementation "com.github.SDARG.opt4j:opt4j-optimizers:${project.opt4jVersion}"
+	implementation "com.github.SDARG.opt4j:opt4j-viewer:${project.opt4jVersion}"
+	implementation "com.github.SDARG.opt4j:opt4j-operators:${project.opt4jVersion}"
 	
-	implementation 'com.github.SDARG.opt4j:opt4j-core:v3.3.0'
-	implementation 'com.github.SDARG.opt4j:opt4j-satdecoding:v3.3.0'
-	implementation 'com.github.SDARG.opt4j:opt4j-optimizers:v3.3.0'
-	implementation 'com.github.SDARG.opt4j:opt4j-viewer:v3.3.0'
-
-	testCompile 'junit:junit:4.12'
-	testCompile group: 'org.mockito', name: 'mockito-core', version: '2.22.0'
+	implementation group: 'xom',	name: 'xom', 		version: project.xomVersion
+	
+	testImplementation platform(group: 'org.junit', name: 'junit-bom', version: project.junitVersion)
+	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter'
+	testImplementation group: 'org.junit.platform', name: 'junit-platform-launcher'
+	testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: project.mockitoVersion
+	
+	implementation group: 'net.sourceforge.collections', name: 'collections-generic', version: project.collectionsVersion
+	
 }

@@ -34,6 +34,10 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import edu.uci.ics.jung.algorithms.layout.FRLayout;
+import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.graph.DirectedGraph;
+import edu.uci.ics.jung.graph.util.Pair;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Edge;
@@ -50,13 +54,6 @@ import net.sf.opendse.model.Routings;
 import net.sf.opendse.model.Specification;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.visualization.GraphPanelFormatApplication.FunctionTask;
-
-import org.apache.commons.collections15.Transformer;
-
-import edu.uci.ics.jung.algorithms.layout.FRLayout;
-import edu.uci.ics.jung.algorithms.layout.Layout;
-import edu.uci.ics.jung.graph.DirectedGraph;
-import edu.uci.ics.jung.graph.util.Pair;
 
 public class GraphPanelFormatArchitecture extends AbstractGraphPanelFormat {
 
@@ -92,11 +89,11 @@ public class GraphPanelFormatArchitecture extends AbstractGraphPanelFormat {
 		final Dimension size = layout.getSize();
 		final Random random = new Random(0);
 
-		layout.setInitializer(new Transformer<Node, Point2D>() {
+		layout.setInitializer(new com.google.common.base.Function<Node, Point2D>() {
 			@Override
-			public Point2D transform(Node arg0) {
-				return new Point2D.Double(size.getWidth() / 2 + random.nextDouble(), size.getHeight() / 2
-						+ random.nextDouble());
+			public Point2D apply(Node arg0) {
+				return new Point2D.Double(size.getWidth() / 2 + random.nextDouble(),
+						size.getHeight() / 2 + random.nextDouble());
 			}
 		});
 		return layout;

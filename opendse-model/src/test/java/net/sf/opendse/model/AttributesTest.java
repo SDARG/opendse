@@ -1,7 +1,9 @@
 package net.sf.opendse.model;
 
-import org.junit.Assert;
-import org.junit.Test;
+
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import net.sf.opendse.model.parameter.Parameter;
 import net.sf.opendse.model.parameter.ParameterRange;
@@ -17,8 +19,8 @@ public class AttributesTest {
 		String id = "test";
 		attributes.setAttribute(id, 1);
 
-		Assert.assertEquals(1l, (long) attributes.<Integer>getAttribute(id));
-		Assert.assertNull(attributes.<Integer>getAttribute("other"));
+		Assertions.assertEquals(1l, (long) attributes.<Integer>getAttribute(id));
+		Assertions.assertNull(attributes.<Integer>getAttribute("other"));
 	}
 
 	/**
@@ -31,7 +33,7 @@ public class AttributesTest {
 		Parameter parameter = new ParameterRange(1.0, 0.0, 2.0);
 		attributes.setAttribute(id, parameter);
 
-		Assert.assertEquals(1.0, attributes.getAttribute(id), 0.0);
+		Assertions.assertEquals(1.0, attributes.getAttribute(id), 0.0);
 	}
 
 	/**
@@ -40,7 +42,7 @@ public class AttributesTest {
 	@Test
 	public void testGetAttributes() {
 		Attributes attributes = new Attributes();
-		Assert.assertEquals(attributes, attributes.getAttributes());
+		Assertions.assertEquals(attributes, attributes.getAttributes());
 	}
 
 	/**
@@ -55,8 +57,8 @@ public class AttributesTest {
 		attributes.setAttribute(id, parameter);
 		attributes.setAttribute(id2, 2);
 
-		Assert.assertEquals(parameter, attributes.getAttributeParameter(id));
-		Assert.assertNull(attributes.getAttributeParameter(id2));
+		Assertions.assertEquals(parameter, attributes.getAttributeParameter(id));
+		Assertions.assertNull(attributes.getAttributeParameter(id2));
 	}
 
 	/**
@@ -67,9 +69,9 @@ public class AttributesTest {
 		Attributes attributes = new Attributes();
 		String id = "test";
 		attributes.setAttribute(id, 2);
-		Assert.assertFalse(attributes.getAttributeNames().isEmpty());
-		Assert.assertTrue(attributes.getAttributeNames().contains(id));
-		Assert.assertEquals(1, attributes.getAttributeNames().size());
+		Assertions.assertFalse(attributes.getAttributeNames().isEmpty());
+		Assertions.assertTrue(attributes.getAttributeNames().contains(id));
+		Assertions.assertEquals(1, attributes.getAttributeNames().size());
 	}
 
 	/**
@@ -80,7 +82,7 @@ public class AttributesTest {
 		Attributes attributes = new Attributes();
 		String id = "test";
 		attributes.setAttribute(id, 2);
-		Assert.assertTrue(attributes.isDefined(id));
-		Assert.assertFalse(attributes.isDefined("other"));
+		Assertions.assertTrue(attributes.isDefined(id));
+		Assertions.assertFalse(attributes.isDefined("other"));
 	}
 }
