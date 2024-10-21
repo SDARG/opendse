@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<link href="tutstyle.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+<title>1. Basic Specification (OpenDSE Tutorial)</title>
+</head>
+<body onload="prettyPrint()">
+
+	<h1>1. Basic Specification (OpenDSE Tutorial)</h1>
+	<p>Version: 1.0.0 - Date: 2024-10-21</p>
+	<p>(<a href="tutorial.xhtml">Tutorial Overview</a>)</p>
+
+	<p>In the following, it is shown how to model specifications in Java and XML.
+	A specification consists of an application, the architecture, and the mappings. 
+	In Java, a basic implementation can be defined as follows:</p>
+	
+	<pre class="prettyprint">public class Part1 {
+	public static void main(String[] args) {
+		/*
+		 * The application is defined by data-dependent tasks. In general, two
+		 * tasks have to be implemented either on the same or adjacent
+		 * resources.
+		 */
+		Application&lt;Task, Dependency&gt; application = new Application&lt;Task, Dependency&gt;();
+		Task t1 = new Task("t1");
+		Task t2 = new Task("t2");
+		application.addVertex(t1);
+		application.addVertex(t2);
+		application.addEdge(new Dependency("d1"), t1, t2);
+		/*
+		 * The architecture is defined by resources that can be linked (linked
+		 * resources are considered to have a way to communicate). Note that it
+		 * is possible to set attributes to each resources like the costs inthis
+		 * case. Attributes might be integers, doubles, or strings. It is also
+		 * possible to set attributes of tasks, mappings, etc.
+		 */
+		Architecture&lt;Resource, Link&gt; architecture = new Architecture&lt;Resource, Link&gt;();
+		Resource r1 = new Resource("r1");
+		r1.setAttribute("costs", 100);
+		Resource r2 = new Resource("r2");
+		r2.setAttribute("costs", 50);
+		Link l1 = new Link("l1");
+		architecture.addVertex(r1);
+		architecture.addVertex(r2);
+		architecture.addEdge(l1, r1, r2);
+		/*
+		 * The mappings define how tasks are mapped to resources. For a
+		 * specification is it possible to define more than one possible mapping
+		 * for a task such that the optimization selects the optimal mapping.
+		 */
+		Mappings&lt;Task, Resource&gt; mappings = new Mappings&lt;Task, Resource&gt;();
+		Mapping&lt;Task, Resource&gt; m1 = new Mapping&lt;Task, Resource&gt;("m1", t1, r1);
+		Mapping&lt;Task, Resource&gt; m2 = new Mapping&lt;Task, Resource&gt;("m2", t2, r2);
+		mappings.add(m1);
+		mappings.add(m2);
+		/*
+		 * The specification consists of the application, architecture, and
+		 * mappings. Additionally it is possible to specify routings for
+		 * communication tasks.
+		 */
+		Specification specification = new Specification(application, architecture, mappings);
+		/*
+		 * It is possible to write the specification to a file. Correspondingly,
+		 * the class SpecificationReader can read classes.
+		 */
+		SpecificationWriter writer = new SpecificationWriter();
+		writer.write(specification, "specs/Specification1.xml");
+		/*
+		 * It is also possible to view the specification in a GUI.
+		 */
+		SpecificationViewer.view(specification);
+	}
+}
+</pre>
+	
+	The corresponding XML representation looks as follows:
+	
+	<pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;specification xmlns="http://opendse.sourceforge.net"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://opendse.sourceforge.net http://opendse.sourceforge.net/schema.xsd"&gt;
+  &lt;architecture&gt;
+    &lt;resource id="r1"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="costs" type="INT"&gt;100&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/resource&gt;
+    &lt;resource id="r2"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="costs" type="INT"&gt;50&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/resource&gt;
+    &lt;link id="l1" source="r1" destination="r2" orientation="UNDIRECTED"/&gt;
+  &lt;/architecture&gt;
+  &lt;application&gt;
+    &lt;task id="t2"/&gt;
+    &lt;task id="t1"/&gt;
+    &lt;dependency id="d1" source="t1" destination="t2" orientation="DIRECTED"/&gt;
+    &lt;functions&gt;
+      &lt;function anchor="t2"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="ID" type="STRING"&gt;func0&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/function&gt;
+    &lt;/functions&gt;
+  &lt;/application&gt;
+  &lt;mappings&gt;
+    &lt;mapping id="m1" source="t1" target="r1"/&gt;
+    &lt;mapping id="m2" source="t2" target="r2"/&gt;
+  &lt;/mappings&gt;
+  &lt;routings/&gt;
+&lt;/specification&gt;
+</pre>
+
+	<p>The resulting specification looks as follows in the viewer:</p>
+	
+	<img src="img/Specification1.png" alt="Basic Specification"/>
+
+</body>
+</html>

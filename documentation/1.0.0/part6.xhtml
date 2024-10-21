@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<link href="tutstyle.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+<title>6. Optimization (OpenDSE Tutorial)</title>
+</head>
+<body onload="prettyPrint()">
+
+	<h1>6. Optimization (OpenDSE Tutorial)</h1>
+	<p>Version: 1.0.0 - Date: 2024-10-21</p>
+	<p>(<a href="tutorial.xhtml">Tutorial Overview</a>)</p>
+
+	<p>
+	For each specification, an optimization can be carried out.
+	The optimization can be started by running the main method of the Opt4J class or by simply evoking the run task via gradle:</p>
+	<pre class="prettyprint">opendse> ./gradlew run</pre>
+	<img src="img/Optimization6.png" alt="Implementation"/>
+	
+	<p>The optimization has to be properly configured by selecting modules for your input specification, the preferred optimizer, as well as design objectives as illustrated exemplary in the figure.
+	For convenience, we provide a sample optimization-config.xml in</p>
+	<p>./opendse-tutorial/optimization-config.xml</p>
+	<p>that can be loaded via the Load button in the Opt4J configurator.
+	In this example, we optimize a single objective which are the costs.
+	It is possible to implement any kind of evaluator, including non-linear objectives. 
+	Furthermore, it is possible to use external evaluators, i.e., programs that receive the respective implementation as XML and return their result as XML. </p>
+	
+	<p>
+	The exploration delivers after a few iterations the optimal solution: </p>
+	
+	<img src="img/Exploration6.png" alt="Implementation"/>
+	
+
+</body>
+</html>

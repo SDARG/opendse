@@ -1,0 +1,646 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<link href="tutstyle.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+<title>4. Constraints (OpenDSE Tutorial)</title>
+</head>
+<body onload="prettyPrint()">
+
+	<h1>4. Constraints (OpenDSE Tutorial)</h1>
+	<p>Version: 1.0.0 - Date: 2024-10-21</p>
+	<p>(<a href="tutorial.xhtml">Tutorial Overview</a>)</p>
+
+	<p>It is possible to define further constraints:
+	</p>
+	
+	<pre class="prettyprint">public class Part4 {
+	public static void main(String[] args) {
+		/*
+		 */
+		Application&lt;Task, Dependency&gt; application = new Application&lt;Task, Dependency&gt;();
+		Task t1 = new Task("t1");
+		Communication c1 = new Communication("c1");
+		Task t2 = new Task("t2");
+		application.addVertex(t1);
+		application.addVertex(t2);
+		application.addVertex(c1);
+		application.addEdge(new Dependency("d1"), t1, c1);
+		application.addEdge(new Dependency("d2"), c1, t2);
+		Task t3 = new Task("t3");
+		Communication c2 = new Communication("c2");
+		Task t4 = new Task("t4");
+		Task t5 = new Task("t5");
+		Communication c3 = new Communication("c3");
+		Task t6 = new Task("t6");
+		application.addVertex(t3);
+		application.addVertex(t4);
+		application.addVertex(t5);
+		application.addVertex(c2);
+		application.addEdge(new Dependency("d3"), t3, c2);
+		application.addEdge(new Dependency("d4"), c2, t4);
+		application.addEdge(new Dependency("d5"), c2, t5);
+		application.addEdge(new Dependency("d6"), t5, c3);
+		application.addEdge(new Dependency("d7"), c3, t6);
+		/*
+		 * It is possible to define any kind of attribute that specifies
+		 * requirements like bus load, memory requirements, etc.
+		 */
+		for (Task task : application) {
+			if (task instanceof Communication) {
+				task.setAttribute("utilization", 10);
+			} else {
+				task.setAttribute("memory", 5);
+			}
+		}
+		/*
+		 */
+		Architecture&lt;Resource, Link&gt; architecture = new Architecture&lt;Resource, Link&gt;();
+		Resource r1 = new Resource("r1");
+		r1.setAttribute("costs", 100);
+		Resource r2 = new Resource("r2");
+		r2.setAttribute("costs", 50);
+		Resource r3 = new Resource("r3");
+		r1.setAttribute("costs", 70);
+		Resource bus1 = new Resource("bus1");
+		bus1.setAttribute("costs", 20);
+		Resource bus2 = new Resource("bus2");
+		bus2.setAttribute("costs", 20);
+		architecture.addVertex(r1);
+		architecture.addVertex(r1);
+		architecture.addVertex(r3);
+		architecture.addVertex(bus1);
+		architecture.addVertex(bus2);
+		architecture.addEdge(new Link("l1"), r1, bus1);
+		architecture.addEdge(new Link("l2"), r2, bus1);
+		architecture.addEdge(new Link("l3"), r1, bus2);
+		architecture.addEdge(new Link("l4"), r2, bus2);
+		architecture.addEdge(new Link("l5"), r3, bus2);
+		/*
+		 * It is possible to define connection constraints for resources. Here,
+		 * we define that each link is of type "cc" and r1 can only connect to
+		 * one of these links while r2 and r3 can connect to at most 2 of these
+		 * links.
+		 */
+		for (Link link : architecture.getEdges()) {
+			link.setType("cc");
+		}
+		r1.setAttribute("cc" + SpecificationConstraints.CONNECT_MAX, 1);
+		r2.setAttribute("cc" + SpecificationConstraints.CONNECT_MAX, 2);
+		r3.setAttribute("cc" + SpecificationConstraints.CONNECT_MAX, 2);
+		/*
+		 * It is possible to define capacity constraints for resources. Here, we
+		 * define a capacity constraints for our buses using the utilization
+		 * value of the communication tasks.
+		 */
+		bus1.setAttribute("utilization" + SpecificationConstraints.CAPACITY_MAX, 25);
+		bus2.setAttribute("utilization" + SpecificationConstraints.CAPACITY_MAX, 25);
+		/*
+		 * For each resource that is not a bus, we specify to have a given
+		 * amount of memory. This memory constraints how many tasks can be
+		 * implemented on the specific resource.
+		 */
+		for (Resource resource : architecture) {
+			if (resource.getId().startsWith("r")) {
+				resource.setAttribute("memory" + SpecificationConstraints.CAPACITY_MAX, 15);
+			}
+		}
+		/*
+		 */
+		Mappings&lt;Task, Resource&gt; mappings = new Mappings&lt;Task, Resource&gt;();
+		Mapping&lt;Task, Resource&gt; m1 = new Mapping&lt;Task, Resource&gt;("m1", t1, r1);
+		/*
+		 * It is also possible to define attributes not per task but per
+		 * mapping. Here, the memory requirement for task t1 is overwritten in
+		 * case it is mapped with m1.
+		 */
+		m1.setAttribute("memory", 2);
+		Mapping&lt;Task, Resource&gt; m2 = new Mapping&lt;Task, Resource&gt;("m2", t2, r2);
+		Mapping&lt;Task, Resource&gt; m3 = new Mapping&lt;Task, Resource&gt;("m3", t1, r3);
+		Mapping&lt;Task, Resource&gt; m4 = new Mapping&lt;Task, Resource&gt;("m4", t2, r3);
+		Mapping&lt;Task, Resource&gt; m5 = new Mapping&lt;Task, Resource&gt;("m5", t3, r3);
+		Mapping&lt;Task, Resource&gt; m6 = new Mapping&lt;Task, Resource&gt;("m6", t4, r3);
+		Mapping&lt;Task, Resource&gt; m7 = new Mapping&lt;Task, Resource&gt;("m7", t5, r2);
+		Mapping&lt;Task, Resource&gt; m8 = new Mapping&lt;Task, Resource&gt;("m8", t6, r1);
+		mappings.add(m1);
+		mappings.add(m2);
+		mappings.add(m3);
+		mappings.add(m4);
+		mappings.add(m5);
+		mappings.add(m6);
+		mappings.add(m7);
+		mappings.add(m8);
+		/*
+		 */
+		Specification specification = new Specification(application, architecture, mappings);
+		/*
+		 */
+		SpecificationWriter writer = new SpecificationWriter();
+		writer.write(specification, "specs/Specification4.xml");
+		SingleImplementation singleImplementation = new SingleImplementation();
+		Specification implementation = singleImplementation.get(specification);
+		writer.write(specification, "specs/Implementation4.xml");
+		/*
+		 */
+		SpecificationViewer.view(implementation);
+	}
+}
+</pre>
+	
+	The corresponding XML representation of the specification looks as follows:
+	
+	<pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;specification xmlns="http://opendse.sourceforge.net"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://opendse.sourceforge.net http://opendse.sourceforge.net/schema.xsd"&gt;
+  &lt;architecture&gt;
+    &lt;resource id="bus1"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="costs" type="INT"&gt;20&lt;/attribute&gt;
+        &lt;attribute name="utilization:CAPACITY-MAX" type="INT"&gt;25&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/resource&gt;
+    &lt;resource id="bus2"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="costs" type="INT"&gt;20&lt;/attribute&gt;
+        &lt;attribute name="utilization:CAPACITY-MAX" type="INT"&gt;25&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/resource&gt;
+    &lt;resource id="r1"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="cc:CONNECT-MAX" type="INT" parameter="SELECT"&gt;1 [1, 2, 3] variant&lt;/attribute&gt;
+        &lt;attribute name="costs" type="INT"&gt;70&lt;/attribute&gt;
+        &lt;attribute name="memory:CAPACITY-MAX" type="INT" parameter="SELECT"&gt;15 [15, 20, 30] variant&lt;/attribute&gt;
+        &lt;attribute name="variant" type="STRING" parameter="SELECT"&gt;alpha [alpha, beta, gamma]&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/resource&gt;
+    &lt;resource id="r2"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="cc:CONNECT-MAX" type="INT"&gt;2&lt;/attribute&gt;
+        &lt;attribute name="costs" type="INT"&gt;50&lt;/attribute&gt;
+        &lt;attribute name="memory:CAPACITY-MAX" type="INT"&gt;15&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/resource&gt;
+    &lt;resource id="r3"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="cc:CONNECT-MAX" type="INT"&gt;2&lt;/attribute&gt;
+        &lt;attribute name="memory:CAPACITY-MAX" type="INT"&gt;15&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/resource&gt;
+    &lt;link id="l4" source="r2" destination="bus2" orientation="UNDIRECTED"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/link&gt;
+    &lt;link id="l5" source="r3" destination="bus2" orientation="UNDIRECTED"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/link&gt;
+    &lt;link id="l2" source="r2" destination="bus1" orientation="UNDIRECTED"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/link&gt;
+    &lt;link id="l3" source="r1" destination="bus2" orientation="UNDIRECTED"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/link&gt;
+    &lt;link id="l1" source="r1" destination="bus1" orientation="UNDIRECTED"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/link&gt;
+  &lt;/architecture&gt;
+  &lt;application&gt;
+    &lt;task id="t3"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="memory" type="INT"&gt;5&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/task&gt;
+    &lt;task id="t2"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="memory" type="INT"&gt;5&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/task&gt;
+    &lt;task id="t1"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="memory" type="INT"&gt;5&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/task&gt;
+    &lt;task id="t4"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="memory" type="INT"&gt;5&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/task&gt;
+    &lt;task id="t5"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="memory" type="INT"&gt;5&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/task&gt;
+    &lt;task id="t6"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="memory" type="INT"&gt;5&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/task&gt;
+    &lt;communication id="c1"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="utilization" type="INT"&gt;10&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/communication&gt;
+    &lt;communication id="c2"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="utilization" type="INT"&gt;10&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/communication&gt;
+    &lt;communication id="c3"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="utilization" type="INT"&gt;10&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/communication&gt;
+    &lt;dependency id="d1" source="t1" destination="c1" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d2" source="c1" destination="t2" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d3" source="t3" destination="c2" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d5" source="c2" destination="t5" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d4" source="c2" destination="t4" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d7" source="c3" destination="t6" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d6" source="t5" destination="c3" orientation="DIRECTED"/&gt;
+    &lt;functions&gt;
+      &lt;function anchor="t2"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="ID" type="STRING"&gt;func0&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/function&gt;
+      &lt;function anchor="t3"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="ID" type="STRING"&gt;func1&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/function&gt;
+    &lt;/functions&gt;
+  &lt;/application&gt;
+  &lt;mappings&gt;
+    &lt;mapping id="m5" source="t3" target="r3"/&gt;
+    &lt;mapping id="m6" source="t4" target="r3"/&gt;
+    &lt;mapping id="m7" source="t5" target="r2"/&gt;
+    &lt;mapping id="m8" source="t6" target="r1"/&gt;
+    &lt;mapping id="m1" source="t1" target="r1"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="memory" type="INT"&gt;2&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/mapping&gt;
+    &lt;mapping id="m2" source="t2" target="r2"/&gt;
+    &lt;mapping id="m3" source="t1" target="r3"/&gt;
+    &lt;mapping id="m4" source="t2" target="r3"/&gt;
+  &lt;/mappings&gt;
+  &lt;routings&gt;
+    &lt;routing source="c1"&gt;
+      &lt;resource id="bus1"/&gt;
+      &lt;resource id="bus2"/&gt;
+      &lt;resource id="r1"/&gt;
+      &lt;resource id="r2"/&gt;
+      &lt;resource id="r3"/&gt;
+      &lt;link id="l4" source="r2" destination="bus2" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l5" source="r3" destination="bus2" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l2" source="r2" destination="bus1" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l3" source="r1" destination="bus2" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l1" source="r1" destination="bus1" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+    &lt;/routing&gt;
+    &lt;routing source="c2"&gt;
+      &lt;resource id="bus1"/&gt;
+      &lt;resource id="bus2"/&gt;
+      &lt;resource id="r1"/&gt;
+      &lt;resource id="r2"/&gt;
+      &lt;resource id="r3"/&gt;
+      &lt;link id="l4" source="r2" destination="bus2" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l5" source="r3" destination="bus2" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l2" source="r2" destination="bus1" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l3" source="r1" destination="bus2" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l1" source="r1" destination="bus1" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+    &lt;/routing&gt;
+    &lt;routing source="c3"&gt;
+      &lt;resource id="bus1"/&gt;
+      &lt;resource id="bus2"/&gt;
+      &lt;resource id="r1"/&gt;
+      &lt;resource id="r2"/&gt;
+      &lt;resource id="r3"/&gt;
+      &lt;link id="l4" source="r2" destination="bus2" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l5" source="r3" destination="bus2" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l2" source="r2" destination="bus1" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l3" source="r1" destination="bus2" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l1" source="r1" destination="bus1" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+    &lt;/routing&gt;
+  &lt;/routings&gt;
+&lt;/specification&gt;
+</pre>
+	
+	The corresponding XML representation of the obtained implementation looks as follows:
+	
+	<pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;specification xmlns="http://opendse.sourceforge.net"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://opendse.sourceforge.net http://opendse.sourceforge.net/schema.xsd"&gt;
+  &lt;architecture&gt;
+    &lt;resource id="bus1"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="costs" type="INT"&gt;20&lt;/attribute&gt;
+        &lt;attribute name="utilization:CAPACITY-MAX" type="INT"&gt;25&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/resource&gt;
+    &lt;resource id="bus2"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="costs" type="INT"&gt;20&lt;/attribute&gt;
+        &lt;attribute name="utilization:CAPACITY-MAX" type="INT"&gt;25&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/resource&gt;
+    &lt;resource id="r1"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="cc:CONNECT-MAX" type="INT" parameter="SELECT"&gt;1 [1, 2, 3] variant&lt;/attribute&gt;
+        &lt;attribute name="costs" type="INT"&gt;70&lt;/attribute&gt;
+        &lt;attribute name="memory:CAPACITY-MAX" type="INT" parameter="SELECT"&gt;15 [15, 20, 30] variant&lt;/attribute&gt;
+        &lt;attribute name="variant" type="STRING" parameter="SELECT"&gt;alpha [alpha, beta, gamma]&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/resource&gt;
+    &lt;resource id="r2"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="cc:CONNECT-MAX" type="INT"&gt;2&lt;/attribute&gt;
+        &lt;attribute name="costs" type="INT"&gt;50&lt;/attribute&gt;
+        &lt;attribute name="memory:CAPACITY-MAX" type="INT"&gt;15&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/resource&gt;
+    &lt;resource id="r3"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="cc:CONNECT-MAX" type="INT"&gt;2&lt;/attribute&gt;
+        &lt;attribute name="memory:CAPACITY-MAX" type="INT"&gt;15&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/resource&gt;
+    &lt;link id="l4" source="r2" destination="bus2" orientation="UNDIRECTED"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/link&gt;
+    &lt;link id="l5" source="r3" destination="bus2" orientation="UNDIRECTED"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/link&gt;
+    &lt;link id="l2" source="r2" destination="bus1" orientation="UNDIRECTED"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/link&gt;
+    &lt;link id="l3" source="r1" destination="bus2" orientation="UNDIRECTED"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/link&gt;
+    &lt;link id="l1" source="r1" destination="bus1" orientation="UNDIRECTED"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/link&gt;
+  &lt;/architecture&gt;
+  &lt;application&gt;
+    &lt;task id="t3"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="memory" type="INT"&gt;5&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/task&gt;
+    &lt;task id="t2"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="memory" type="INT"&gt;5&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/task&gt;
+    &lt;task id="t1"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="memory" type="INT"&gt;5&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/task&gt;
+    &lt;task id="t4"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="memory" type="INT"&gt;5&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/task&gt;
+    &lt;task id="t5"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="memory" type="INT"&gt;5&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/task&gt;
+    &lt;task id="t6"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="memory" type="INT"&gt;5&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/task&gt;
+    &lt;communication id="c1"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="utilization" type="INT"&gt;10&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/communication&gt;
+    &lt;communication id="c2"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="utilization" type="INT"&gt;10&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/communication&gt;
+    &lt;communication id="c3"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="utilization" type="INT"&gt;10&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/communication&gt;
+    &lt;dependency id="d1" source="t1" destination="c1" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d2" source="c1" destination="t2" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d3" source="t3" destination="c2" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d5" source="c2" destination="t5" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d4" source="c2" destination="t4" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d7" source="c3" destination="t6" orientation="DIRECTED"/&gt;
+    &lt;dependency id="d6" source="t5" destination="c3" orientation="DIRECTED"/&gt;
+    &lt;functions&gt;
+      &lt;function anchor="t2"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="ID" type="STRING"&gt;func0&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/function&gt;
+      &lt;function anchor="t3"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="ID" type="STRING"&gt;func1&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/function&gt;
+    &lt;/functions&gt;
+  &lt;/application&gt;
+  &lt;mappings&gt;
+    &lt;mapping id="m5" source="t3" target="r3"/&gt;
+    &lt;mapping id="m6" source="t4" target="r3"/&gt;
+    &lt;mapping id="m7" source="t5" target="r2"/&gt;
+    &lt;mapping id="m8" source="t6" target="r1"/&gt;
+    &lt;mapping id="m1" source="t1" target="r1"&gt;
+      &lt;attributes&gt;
+        &lt;attribute name="memory" type="INT"&gt;2&lt;/attribute&gt;
+      &lt;/attributes&gt;
+    &lt;/mapping&gt;
+    &lt;mapping id="m2" source="t2" target="r2"/&gt;
+    &lt;mapping id="m3" source="t1" target="r3"/&gt;
+    &lt;mapping id="m4" source="t2" target="r3"/&gt;
+  &lt;/mappings&gt;
+  &lt;routings&gt;
+    &lt;routing source="c1"&gt;
+      &lt;resource id="bus1"/&gt;
+      &lt;resource id="bus2"/&gt;
+      &lt;resource id="r1"/&gt;
+      &lt;resource id="r2"/&gt;
+      &lt;resource id="r3"/&gt;
+      &lt;link id="l4" source="r2" destination="bus2" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l5" source="r3" destination="bus2" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l2" source="r2" destination="bus1" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l3" source="r1" destination="bus2" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l1" source="r1" destination="bus1" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+    &lt;/routing&gt;
+    &lt;routing source="c2"&gt;
+      &lt;resource id="bus1"/&gt;
+      &lt;resource id="bus2"/&gt;
+      &lt;resource id="r1"/&gt;
+      &lt;resource id="r2"/&gt;
+      &lt;resource id="r3"/&gt;
+      &lt;link id="l4" source="r2" destination="bus2" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l5" source="r3" destination="bus2" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l2" source="r2" destination="bus1" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l3" source="r1" destination="bus2" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l1" source="r1" destination="bus1" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+    &lt;/routing&gt;
+    &lt;routing source="c3"&gt;
+      &lt;resource id="bus1"/&gt;
+      &lt;resource id="bus2"/&gt;
+      &lt;resource id="r1"/&gt;
+      &lt;resource id="r2"/&gt;
+      &lt;link id="l4" source="r2" destination="bus2" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l2" source="r2" destination="bus1" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l3" source="r1" destination="bus2" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+      &lt;link id="l1" source="r1" destination="bus1" orientation="UNDIRECTED"&gt;
+        &lt;attributes&gt;
+          &lt;attribute name="TYPE" type="STRING"&gt;cc&lt;/attribute&gt;
+        &lt;/attributes&gt;
+      &lt;/link&gt;
+    &lt;/routing&gt;
+  &lt;/routings&gt;
+&lt;/specification&gt;
+</pre>
+
+	<p>The resulting implementation looks as follows in the viewer:</p>
+	
+	<img src="img/Implementation4.png" alt="Implementation"/>
+	
+
+</body>
+</html>
