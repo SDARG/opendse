@@ -13,6 +13,9 @@ The documentation of the framework is based on a tutorial, javadocs, and source 
 *   A tutorial shows the basic model, XML and optimization.
 *   The Javadocs give an overview of the structure of the framework and its elements.
 
+## Java Versions
+Starting with Release 1.0.0, OpenDSE requires Java 21 (LTS) or higher. OpenDSE version 0.9.0 and lower is Java 11 compatible.
+
 ## History
 
 _OpenDSE_ was formerly hosted at https://sourceforge.net/projects/opendse/
@@ -24,6 +27,8 @@ Brought to you by
 *   Felix Reimann
 *   Fedor Smirnov
 *   Falko Hoefte
+*   Michael Glaß
+*   Lukas Pfeifer
 
 This project uses
 *   [opt4j](https://github.com/sdarg/opt4j) for metaheuristic optimization
